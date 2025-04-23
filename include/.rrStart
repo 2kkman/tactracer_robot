@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# 모든 Python3 프로세스 종료
+killall -9 python3
+
+# 현재 호스트이름 확인
+HOSTNAME=$(hostname)
+
+# ITX 포함 여부 확인
+if [[ "$HOSTNAME" == *"ITX"* ]]; then
+    echo "✅ Hostname contains 'ITX' → 전체 실행"
+    
+    pulseaudio --start
+    iwconfig wlp2s0 power off
+    roslaunch tta_blb BLB_start_itx.launch rviz:=false &
+    /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+    cd "$SCR_DIR" && ./videoplay.sh
+
+else
+    echo "⚠️ Hostname does NOT contain 'ITX' → 일부만 실행"
+    
+    roslaunch tta_blb BLB_start_itx.launch rviz:=false &
+    /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+fi

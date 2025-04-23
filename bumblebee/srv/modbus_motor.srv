@@ -1,0 +1,9 @@
+string cmd
+int64 mb_id
+int64 mode
+int64 pos
+int64 spd
+int64 acc
+int64 decc
+---
+string cmdID

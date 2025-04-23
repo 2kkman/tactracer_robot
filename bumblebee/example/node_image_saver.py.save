@@ -1,0 +1,192 @@
+y#! /usr/bin/python3
+# Copyright (c) 2015, Rethink Robotics, Inc.
+
+# Using this CvBridge Tutorial for converting
+# ROS images to OpenCV2 images
+# http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
+
+# Using this OpenCV2 tutorial for saving Images:
+# http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_gui/py_image_display/py_image_display.html
+
+# rospy for the subscriber
+import enum
+from pydoc_data.topics import topics
+from tkinter.font import names
+from unittest import result
+import rospy
+# ROS Image message
+from sensor_msgs.msg import Image
+# ROS Image message -> OpenCV2 image converter
+from cv_bridge import CvBridge, CvBridgeError
+# OpenCV2 for saving an image
+import cv2
+from std_srvs.srv import Trigger, TriggerResponse
+from tta_spg.srv import *
+import rosnode
+
+import os
+import subprocess
+
+# Instantiate CvBridge
+bridge = CvBridge()
+
+'''class ImageSaver():'''
+class saveImage():
+    def __init__(self):
+        self.set_saveImage_service = rospy.Service('/utilbox/saveImage', utilboxData, self.saveImage)
+        self.set_saveImageStop_service = rospy.Service('/utilbox/saveStop', Trigger, self.saveStop)
+        self.set_save_service = rospy.Service('/utilbox/save', Trigger, self.save)
+
+        self.process = None
+        self.saving = False
+
+        self.save_directory = rospy.get_param('/tta_spg/utilbox/saveImageDirectory', '/root/SpiderGo/')
+        # print(self.output_directory)
+        self.topics = rospy.get_param('/tta_spg/utilbox/saveImageTopics', ['/usb_cam_R/image_raw', '/usb_cam_L/image_raw'])
+        # print(self.topics)
+        # print(self.save_directory)
+        self.names = rospy.get_param('/tta_spg/utilbox/saveImageNames', ['spg_utilbox_cam_R', 'spg_utilbox_cam_L'])
+        self.filenames = rospy.get_param('/tta_spg/utilbox/saveImageFilenames', ['_R','_L'])
+        # filename = self.save_directory + "S1_20220921_1539_01_%04d_R.jpg"
+        # self.nodenames = 'spg_utilbox_cam_R'
+        self.save_all_image_flg = False
+
+        # for i, topic in enumerate(self.topics):
+        #     # print(topic)
+        #     # print(type(self.topics[i]))
+        #     self.command = ['rosrun', 'image_view', 'image_saver']
+        #     self.command.append('__name:=%s' % self.nodename)
+        #     self.command.append('image:=%s' % self.topics[i])
+        #     self.command.append('_save_all_image:=%s' % self.save_all_image_flg)
+        #     filename = self.save_directory + "S1_20220921_1539_01_%04d_R.jpg"
+        #     self.command.append('_filename_format:=%s' % filename)
+
+            # print(self.command)
+
+        # self.command = ['rosrun', 'image_view', 'image_saver', '__image:'] + self.topics + ['__name:=image_saver_R']
+        
+        if not self.topics:
+            rospy.logerr('No Topics Specified.')
+
+            # self.sub = rospy.Subscriber(i, Image, self.image_callback)
+
+        # self.command = ['rosrun', 'image_view', 'image_saver', '__filename_format:'] + self.save_directory + self.topics[1] + ['__name:=data_recording_tta_spg']
+        rospy.loginfo('SPG Image Sever Started')
+
+    def saveImage(self, req):
+        
+        reqData = req.message
+
+        # image_topic_R = "/usb_cam_R/image_raw"
+        # Set up your subscriber and define its callback
+        # print(self.topics)
+        # rospy.Subscriber(self.topics, Image, image_callback)
+
+        # return TriggerResponse(True, 'Started recorder, PID %s' % self.process.pid)
+        # resp = utilboxDataResponse(True, f'SET Filename :{reqData}')
+        # for i, topic in enumerate(self.topics):
+        for i, topic in enumerate(self.topics):
+            # print(topic)
+            # print(type(self.topics[i]))
+            self.command = ['rosrun', 'image_view', 'image_saver']
+            self.command.append('__name:=%s' % self.names[i])
+            # print(self.names[i])
+            self.command.append('image:=%s' % self.topics[i])
+            # print(self.topics[i])
+            self.command.append('_save_all_image:=%s' % self.save_all_image_flg)
+            print("reqData=========================")
+
+            if reqData is not None:
+                # image = self.topics[i])
+                # for i, filename in enumerate(self.filenames):
+                print(self.filenames[i])
+                # self.command[6] = '_filename_format:=%s' % self.filenames[i]
+                self.command.append('_filename_format:=%s' % self.save_directory + reqData + '_%04d' + self.filenames[i] + '.jpg')
+                print(self.command)            
+                self.process = subprocess.Popen(self.command)
+                
+            resp = utilboxDataResponse(True, 'Started saveImage, PID %s' % self.process.pid)
+            print("============================")
+
+            # print(self.filenames[i])
+            # self.command.append('_filename_format:=%s' % self.filenames[i])
+
+
+
+        # self.filenames = self.save_directory + reqData + "_%04d_R.jpg"
+    
+        # self.saving = True
+        # self.process.wait()
+        # proc.terminate()
+        # out, err = self.process.communicate()
+        # print("----------------------------")
+        return resp
+
+    def saveStop(self, req):
+        print("[stop]============================")
+
+        # if self.saving:
+        #     rospy.logerr('Not Saving')
+        #     return TriggerResponse(False, 'Not Saving')
+
+        # print('kill node =' + self.names)
+        for i, name in enumerate(self.names):
+            print(self.names[i])
+            rosnode.kill_nodes(self.names[i])
+
+            # rosnode.kill_nodes(['/spg_utilbox_cam_R'])
+        self.process = None
+        self.saving = False
+        
+        rospy.loginfo('Stopped Saving')
+        return TriggerResponse(True, 'Stopped Saving')
+
+    def save(self, req):
+        print("[save]============================")
+        # if self.saving:
+        #     rospy.logerr('Already Saving')
+        #     return utilboxData(False, 'Already Saving')
+        # print(self.names)
+
+        for i, name in enumerate(self.names):
+            print(self.names[i])
+            # self.command = ['rosservice', 'call', '/spg_utilbox_cam_R/save']
+            self.command = ['rosservice', 'call', '/' + self.names[i] + '/save']
+            print(self.command)     
+            self.process = subprocess.Popen(self.command)
+
+            rospy.loginfo('Started saveImage, PID %s' % self.process.pid)
+        self.saving = True
+        resp = TriggerResponse(True, 'Started saveImage, PID %s' % self.process.pid)
+
+        # print(reqData)
+
+        # if self.saving:
+        #     rospy.logerr('Already Saveding')
+        #     return utilboxData(False, 'Already Saveding')
+
+
+        # image_topic_R = "/usb_cam_R/image_raw"
+        # Set up your subscriber and define its callback
+        # print(self.topics)
+        # rospy.Subscriber(self.topics, Image, image_callback)
+
+        # return TriggerResponse(True, 'Started recorder, PID %s' % self.process.pid)
+        # resp = utilboxDataResponse(True, f'SET Filename :{reqData}')
+        print("============================")
+        
+       
+        # proc.terminate()
+        # out, err = self.process.communicate()
+        # print("----------------------------")
+
+
+        # print(self.process('utf-8'))
+        # self.recording = True
+        return resp
+        
+if __name__ == "__main__":
+    # main()
+    rospy.init_node('spg_ImageSaver')
+    saveImage()
+    rospy.spin()

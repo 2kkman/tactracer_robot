@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="BLB_MODBUS" pkg="tta_blb" type="node_BMS.py" respawn="False" output="log"> 
+  </node>
+</launch>

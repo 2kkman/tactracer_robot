@@ -1,0 +1,28 @@
+<launch>
+  <!-- This is a sensor_msgs/Image (proof in attached image) -->
+  <arg name="image_R_topic" default="/usb_cam_R/image_raw" />
+  <arg name="image_L_topic" default="/usb_cam_L/image_raw" />
+  <arg name="save_all_image" default="false"/>  
+
+  <!-- <arg name="storage_folder" default="$(find tta_blb)/pictures" /> -->
+  <arg name="storage_folder" default="/root/SpiderGo" />
+
+  <arg name="prefix" default='' />
+  <arg name="file_seq" default="%04i" />
+  <arg name="filename_format" default="$(arg storage_folder)/$(arg prefix)" />
+
+  <node pkg="image_view" type="image_saver" name="image_saver_R" >
+    <remap from="image" to="$(arg image_R_topic)"/>
+    <param name="save_all_image" value="$(arg save_all_image)"/>
+    <param name="filename_format" value="$(arg filename_format)_$(arg file_seq)_R.jpg" />
+    <!-- <param name="filename_format" command="$(find tta_blb)/scripts/timestamp.sh" /> -->
+  </node>
+
+  <node pkg="image_view" type="image_saver" name="image_saver_L" >
+    <remap from="image" to="$(arg image_L_topic)"/>
+    <param name="save_all_image" value="$(arg save_all_image)"/>
+    <param name="filename_format" value="$(arg filename_format)_$(arg file_seq)_L.jpg" />
+    <!-- <param name="filename_format" command="$(find tta_blb)/scripts/timestamp.sh" /> -->
+  </node>
+
+</launch>

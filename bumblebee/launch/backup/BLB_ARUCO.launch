@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="startReal" default='False'/>
+  <node name="BLB_aruco" pkg="tta_blb" type="node_CamArucoMarker.py" respawn="False" output="screen"> 
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

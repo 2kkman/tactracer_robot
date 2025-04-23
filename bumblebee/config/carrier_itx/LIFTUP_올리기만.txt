@@ -1,0 +1,1 @@
+[[{"CMD": "WMOVE", "ACC": 1000, "DECC": 1000, "MBID": 30, "MODE": 1, "POS": 0, "SPD": 300,"DESCRIPT" : "리프트 올림"}]]

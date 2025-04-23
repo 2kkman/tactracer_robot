@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="startReal" default='True'/>
+  <node name="BLB_MONITOR_$(env CONFIG)" pkg="tta_blb" type="node_Monitor.py" respawn="False" output="log"> 
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- ldldiar message publisher node -->
+    <node name="LD06UTIL" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_node" output="screen" respawn="true" >
+        <param name="product_name" value="LDLiDAR_LD06"/>
+        <param name="topic_name" value="scanutil"/>
+        <param name="port_name" value ="/dev/ttCLIDAR"/>
+        <param name="frame_id" value="base_laser"/>
+        <!-- Set laser scan directon: -->
+        <!--    1. Set counterclockwise, example: <param name="laser_scan_dir" type="bool" value="true"/> -->
+        <!--    2. Set clockwise,        example: <param name="laser_scan_dir" type="bool" value="false"/> -->
+        <param name="laser_scan_dir" type="bool" value="true"/>
+        <!-- Angle crop setting, Mask data within the set angle range -->
+        <!--    1. Enable angle crop fuction: -->
+        <!--       1.1. enable angle crop,  example: <param name="enable_angle_crop_func" type="bool" value="true"/> -->
+        <!--       1.2. disable angle crop, example: <param name="enable_angle_crop_func" type="bool" value="false"/> -->
+        <param name="enable_angle_crop_func" type="bool" value="false"/>
+        <!--    2. Angle cropping interval setting, The distance and intensity data within the set angle range will be set to 0 --> 
+        <!--       angle >= "angle_crop_min" and angle <= "angle_crop_max", unit is degress -->
+        <param name="angle_crop_min" type="double" value="135.0"/>
+        <param name="angle_crop_max" type="double" value="225.0"/>
+    </node>
+    <!-- ldlidar message subscriber node -->
+    <!-- node name="ListenLD06" pkg="ldlidar_stl_ros" type="ldlidar_stl_ros_listen_node" output="screen">
+    <param name="topic_name" value="scan"/>
+    </node -->
+    <!-- publisher tf transform, parents frame is base_link, child frame is base_laser -->
+    <!-- args="x y z yaw pitch roll parents_frame_id child_frame_id period_in_ms"-->
+    <node name="base_util_laser" pkg="tf" type="static_transform_publisher"  args="0.0 0.0 0.18 0 0.0 0.0 sensor_frame base_laser 50"/>
+
+
+    <arg name="view_publish_pointcloud" default="true"/>
+    <arg name="view_o3d" default="false"/>
+    <arg name="subscribe_topic_name" default="/scanutil"/>
+    <arg name="publish_topic_name" default="detect_2D"/>
+    <arg name="distance_topic_name" default="bumblebee/distance"/>
+    <arg name="publish_frame_id" default="base_laser"/>
+    <arg name="marker_topic_name" default="bounding_box_marker"/>   
+
+    <arg name="range_max_x" default="5"/>
+    <arg name="range_max_y" default="0.5"/>
+    <arg name="range_max_z" default="0"/>
+    <arg name="range_min_x" default="0"/>
+    <arg name="range_min_y" default="-0.5"/>
+    <arg name="range_min_z" default="0"/>
+
+    <node name="bumblebee_reconfigure_2D" pkg="bumblebee_reconfigure" type="server_publisher_laser.py" output="screen" >
+        
+        <param name="view_publish_pointcloud" value="$(arg view_publish_pointcloud)" />
+        <param name="view_o3d" value="$(arg view_o3d)" />
+        <param name="subscribe_topic_name" value="$(arg subscribe_topic_name)" />
+        <param name="publish_topic_name" value="$(arg publish_topic_name)" />
+        <param name="distance_topic_name" value="$(arg distance_topic_name)" />
+        <param name="publish_frame_id" value="$(arg publish_frame_id)" />
+        <param name="marker_topic_name" value="$(arg marker_topic_name)" />
+        <param name="range_max_x" value="$(arg range_max_x)" />
+        <param name="range_max_y" value="$(arg range_max_y)" />
+        <param name="range_max_z" value="$(arg range_max_z)" />
+        <param name="range_min_x" value="$(arg range_min_x)" />
+        <param name="range_min_y" value="$(arg range_min_y)" />
+        <param name="range_min_z" value="$(arg range_min_z)" />
+
+    </node>
+
+</launch>
+

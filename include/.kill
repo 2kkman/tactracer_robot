@@ -1,0 +1,2 @@
+#!/bin/bash
+killall -9 rosmaster;killall -9 rosout;killall -9 python3;killall -9 roslaunch;killall -9  cyglidar_h2_pub;killall -9  usb_cam_node

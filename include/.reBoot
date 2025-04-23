@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#sleep 2
+
+#rosnode kill -a
+#killall -9 python3
+#killall -9 node
+#source ~/catkin_ws/devel/setup.bash
+#export ROS_MASTER_URI=http://172.30.1.63:11311
+#
+#sleep 2
+reboot

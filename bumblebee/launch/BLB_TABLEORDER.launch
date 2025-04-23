@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="startReal" default='True'/>
+  <node name="BLB_table" pkg="tta_blb" type="node_TableOrderDemo.py" respawn="True" output="log"> 
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

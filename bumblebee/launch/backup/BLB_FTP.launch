@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="port" default='60131'/>
+  <arg name="ftpaddr" default='iot.tactracer.com'/>
+  <arg name="dirPath" default='BLB_1'/>
+  <node name="BLB_FTP" pkg="tta_blb" type="ftp_watcher.py" respawn="True" output="log"> 
+    <param name="port" value="$(arg port)"/>
+    <param name="ftpaddr" value="$(arg ftpaddr)"/>
+    <param name="dirPath" value="$(arg dirPath)"/>
+  </node>
+</launch>

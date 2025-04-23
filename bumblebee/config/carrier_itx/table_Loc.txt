@@ -1,0 +1,2 @@
+marker_value	distance	angle	marker_z	angle_z	table_x	table_y	distanceH	node_id
+5	1.4	-171	1.186	1	-1.179	1.174	1.397	41

@@ -1,0 +1,60 @@
+090,FPGA communication error 0
+091,FPGA communication error 1
+092,FPGA communication error 2
+093,FPGA communication error 3
+094,FPGA communication error 4
+095,FPGA communication error 5
+096,FPGA communication error 6
+097,FPGA communication error 7
+098,FPGA communication error 8
+099,FPGA communication error 9
+09A,FPGA communication error A
+09B,FPGA communication error B
+09C,FPGA communication error C
+09D,FPGA communication error D
+09E,FPGA communication error E
+09F,FPGA communication error F
+0A0,Current detection circuit error 0
+0A1,Current detection circuit error 1
+0A2,Analog input circuit error 2
+0A3,Analog input circuit error 3
+0A4,Analog input circuit error 4
+0A5,DC bus circuit error
+0A6,Temperature detection circuit error
+060,Control power under-voltage
+0C0,DC bus over-voltage
+0D0,DC bus under-voltage
+0E0,Over current
+0E1,IPM Over current
+0F0,Driver over-heat
+100,Motor over-load/parameter auto tune error
+101,Motor overload/driver overload
+120,Resistance discharge circuit over-load
+121,Leakage triode malfunction
+150,Encoder line broken
+151,Encoder communication error
+152,Initialized position of encoder error
+153,Multiple turn absolute value encoder battery error
+170,Encoder data error
+180,Position deviation error
+181,Velocity error over-large error
+190,Excessive vibration
+1A0,over-speed 1
+1A1,Motor speed out of Control
+1B1,Electronic gear ratio error
+210,I/F input interface allocation error
+211,I/F input interface set error 1
+212,I/F input interface set error 2
+240,CRC verification error when EEPROM parameter is saved
+260,Positive negative over-travel input valid
+270,Analog value 1 input error limit
+570,Forced alarm input valid
+5F0,Motor code error-Set Pr7.15 correctly
+000,READY
+001,Over Current
+002,Over voltage
+040,Current sampling circuit error
+080,Shaft locking error
+200,EEPROM error
+020,위치편차 오류
+FFFF,서보접속불가

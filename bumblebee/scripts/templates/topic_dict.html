@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic_name }} 실시간 데이터</title>
+    <link rel="icon" href="data:,">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px 0;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        .data-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .column {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        #connection-status {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ topic_name }} 실시간 데이터</h1>
+        <div id="connection-status">연결 상태: 대기중...</div>
+    </div>
+    <div id="data" class="data-container"></div>
+    <script>
+        const ITEMS_PER_COLUMN = {{ items_per_column }};
+        let socket;
+
+        function connectWebSocket() {
+            socket = io("ws://" + location.hostname + ":6001", {
+                transports: ["websocket"],
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionDelayMax: 5000,
+                reconnectionAttempts: Infinity
+            });
+
+            socket.on("connect", () => {
+                console.log("WebSocket 연결됨");
+                document.getElementById("connection-status").className = "connected";
+                document.getElementById("connection-status").innerHTML = '연결 상태: 연결됨';
+            });
+
+            socket.on("disconnect", () => {
+                console.log("WebSocket 연결 끊김");
+                document.getElementById("connection-status").className = "disconnected";
+                document.getElementById("connection-status").innerHTML = '연결 상태: 연결 끊김';
+            });
+
+            socket.on("update_{{ topic_name }}", (data) => {
+                console.log("데이터 수신:", data);
+                updateDisplay(data);
+            });
+
+            socket.on("connect_error", (error) => {
+                console.error("연결 오류:", error);
+                document.getElementById("connection-status").className = "disconnected";
+                document.getElementById("connection-status").innerHTML = '연결 상태: 오류 발생';
+            });
+        }
+
+        function updateDisplay(data) {
+            const entries = Object.entries(data);
+            const numColumns = Math.ceil(entries.length / ITEMS_PER_COLUMN);
+            let displayText = "";
+            
+            for (let i = 0; i < numColumns; i++) {
+                const startIdx = i * ITEMS_PER_COLUMN;
+                const endIdx = Math.min(startIdx + ITEMS_PER_COLUMN, entries.length);
+                const columnEntries = entries.slice(startIdx, endIdx);
+                
+                displayText += `<div class="column">`;
+                columnEntries.forEach(([key, value]) => {
+                    displayText += `
+                        <div class='data-item'>
+                            <strong>${key}:</strong> ${value}
+                            <div class='timestamp'>${new Date().toLocaleTimeString()}</div>
+                        </div>`;
+                });
+                displayText += `</div>`;
+            }
+            
+            document.getElementById("data").innerHTML = displayText;
+        }
+
+        document.addEventListener('DOMContentLoaded', connectWebSocket);
+        window.addEventListener('online', connectWebSocket);
+    </script>
+</body>
+</html>

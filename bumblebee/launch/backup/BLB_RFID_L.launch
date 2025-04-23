@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="readerID" default='L'/>
+  <arg name="startReal" default='True'/>
+  <node name="BLB_RFID_$(arg readerID)" pkg="tta_blb" type="node_KLM900_EX.py" respawn="False" output="log"> 
+    <param name="readerID" value="$(arg readerID)"/>
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

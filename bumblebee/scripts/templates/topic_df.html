@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic_name }} 실시간 데이터</title>
+    <link rel="icon" href="data:,">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        #connection-status {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ topic_name }} 실시간 데이터</h1>
+    <div id="connection-status">연결 상태: 대기중...</div>
+    <table>
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+    <script>
+        let socket;
+
+        function connectWebSocket() {
+            socket = io("ws://" + location.hostname + ":6001");
+
+            socket.on("connect", () => {
+                document.getElementById("connection-status").className = "connected";
+                document.getElementById("connection-status").innerHTML = '연결 상태: 연결됨';
+            });
+
+            socket.on("disconnect", () => {
+                document.getElementById("connection-status").className = "disconnected";
+                document.getElementById("connection-status").innerHTML = '연결 상태: 연결 끊김';
+            });
+
+            socket.on("update_{{ topic_name }}", (data) => {
+                console.log("Data received:", data);
+                updateTable(data);
+            });
+        }
+
+        function updateTable(data) {
+            const tableHeader = document.getElementById("table-header");
+            const tableBody = document.getElementById("table-body");
+
+            tableHeader.innerHTML = "";
+            tableBody.innerHTML = "";
+
+            if (data.length > 0) {
+                const headers = Object.keys(data[0]); // 첫 번째 행의 키를 테이블 헤더로 사용
+
+                headers.forEach(header => {
+                    tableHeader.innerHTML += `<th>${header}</th>`;
+                });
+
+                data.forEach(row => {
+                    let rowHTML = "<tr>";
+                    headers.forEach(header => {
+                        rowHTML += `<td>${row[header]}</td>`;
+                    });
+                    rowHTML += "</tr>";
+                    tableBody.innerHTML += rowHTML;
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', connectWebSocket);
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="spg_util_ard" pkg="tta_blb" type="node_ArduinoServer.py" respawn="True" output="log"/> 
+</launch>

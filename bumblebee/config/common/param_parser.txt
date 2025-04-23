@@ -1,0 +1,17 @@
+Voltage`/100
+Vmax`/1000
+Vmin`/1000
+VCell1`/1000
+VCell2`/1000
+VCell3`/1000
+VCell4`/1000
+VCell5`/1000
+VCell6`/1000
+VCell7`/1000
+VCell8`/1000
+CurCadc`/10-1000
+Temp1`/10-40
+Temp2`/10-40
+Temp3`/10-40
+Tmax`/10-40
+Tmin`/10-40

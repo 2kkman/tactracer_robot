@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find ldlidar_stl_ros)/launch/ld06.launch" />
+  
+  <node name="spg_ld06" pkg="tta_blb" type="node_LD06.py"  respawn="True" output="log"/> 
+
+</launch>

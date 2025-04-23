@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="ns" default="itops_f07"/>
+    <arg name="nn" default="camera"/>
+    <arg name="respawn" default="false"/>
+    <arg name="port_name" default="/dev/ttyACM0"/>
+    <arg name="frame_rate" default="30"/>
+    <arg name="stream" default="distance"/>
+    <arg name="integrationTimeTOF1"  default="10"/>
+    <arg name="integrationTimeTOF2"  default="200"/>
+    <arg name="integrationTimeTOF3"  default="400"/>
+    <arg name="integrationTimeTOF4"  default="1000"/>
+    <arg name="integrationTimeGray" default="0"/>
+    <arg name="lowPowerIllumination" default="false"/>
+    <arg name="kalmanFactor"   default="1000"/>
+    <arg name="kalmanThreshold" default="300"/>
+    <arg name="averageFilter" default="false"/>
+    <arg name="edgeFilter" default="0"/>
+    <arg name="loopFilter" default="true"/>
+    <arg name="iEdgeFilter" default="500"/>
+    <arg name="minAmplitude" default="100"/>
+    <arg name="offsetDistance" default="0"/>
+    <arg name="imageType" default="2"/>
+    <arg name="mode" default="0"/>
+    <arg name="channel" default="0"/>
+    <arg name="roi_leftX" default="0"/>
+    <arg name="roi_topY" default="0"/>
+    <arg name="roi_rightX" default="159"/>
+    <arg name="roi_bottomY" default="59"/>
+
+
+    <group ns="$(arg ns)">
+        <node pkg="itops_f07"
+            type="f07_node"
+            name="$(arg nn)"
+            output="screen"
+            respawn="$(arg respawn)">
+
+        <param name="stream" value="$(arg stream)"/>
+        <param name="port_name" value="$(arg port_name)"/>
+        <param name="frame_rate" value="$(arg frame_rate)"/>
+        <param name="integrationTimeTOF1" value="$(arg integrationTimeTOF1)"/>
+        <param name="integrationTimeTOF2" value="$(arg integrationTimeTOF2)"/>
+        <param name="integrationTimeTOF3" value="$(arg integrationTimeTOF3)"/>
+        <param name="integrationTimeTOF4" value="$(arg integrationTimeTOF4)"/>
+        <param name="integrationTimeGray" value="$(arg integrationTimeGray)"/>
+        <param name="lowPowerIllumination" value="$(arg lowPowerIllumination)"/>
+        <param name="kalmanFactor" value="$(arg kalmanFactor)"/>
+        <param name="kalmanThreshold" value="$(arg kalmanThreshold)"/>
+        <param name="averageFilter" value="$(arg averageFilter)"/>
+        
+        <param name="edgeFilter" value="$(arg edgeFilter)"/>
+        <param name="loopFilter" value="$(arg loopFilter)"/>
+        <param name="iEdgeFilter" value="$(arg iEdgeFilter)"/>
+        
+        <param name="minAmplitude" value="$(arg minAmplitude)"/>
+        <param name="offsetDistance" value="$(arg offsetDistance)"/>      
+        <param name="imageType"   value="$(arg imageType)"/>
+        <param name="mode"        value="$(arg mode)"/>
+        <param name="channel"     value="$(arg channel)"/>
+        <param name="roi_leftX"   value="$(arg roi_leftX)"/>
+        <param name="roi_topY"    value="$(arg roi_topY)"/>
+        <param name="roi_rightX"  value="$(arg roi_rightX)"/>
+        <param name="roi_bottomY" value="$(arg roi_bottomY)"/>
+
+        <remap from="image_raw" to="$(arg nn)/image_raw"/> 
+        <remap from="camera_info" to="$(arg nn)/camera_info"/> 
+        <remap from="set_camera_info" to="$(arg nn)/set_camera_info"/> 
+        </node>
+
+        <!-- 2024-02-06 개발용으로만 필요 
+        <node name="rviz" pkg="rviz" type="rviz" args= "-d $(find itops_f07)/rviz/config_f07.rviz" > </node>
+        <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"> </node>
+         -->
+        <node name="base_link" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map sensor_frame 1" />
+
+    </group>
+
+    <arg name="view_publish_pointcloud" default="true"/>
+    <arg name="view_o3d" default="true"/>
+    <arg name="subscribe_topic_name" default="/itops_f07/camera/points"/>
+    <arg name="publish_topic_name" default="detect_3D"/>
+    <arg name="distance_topic_name" default="bumblebee/distance"/>
+    <arg name="publish_frame_id" default="sensor_frame"/>
+    <arg name="marker_topic_name" default="bounding_box_marker"/>   
+
+    <arg name="range_max_x" default="4.0"/>
+    <arg name="range_max_y" default="1.5"/>
+    <arg name="range_max_z" default="0.1"/>
+    <arg name="range_min_x" default="0"/>
+    <arg name="range_min_y" default="-1.5"/>
+    <arg name="range_min_z" default="0.0"/>
+
+    <node name="bumblebee_reconfigure_3D" pkg="bumblebee_reconfigure" type="server_publisher_lidar.py" output="screen" >
+        <param name="view_publish_pointcloud" value="$(arg view_publish_pointcloud)" />
+        <param name="view_o3d" value="$(arg view_o3d)" />
+        <param name="subscribe_topic_name" value="$(arg subscribe_topic_name)" />
+        <param name="publish_topic_name" value="$(arg publish_topic_name)" />
+        <param name="distance_topic_name" value="$(arg distance_topic_name)" />
+        <param name="publish_frame_id" value="$(arg publish_frame_id)" />
+        <param name="marker_topic_name" value="$(arg marker_topic_name)" />
+        <param name="range_max_x" value="$(arg range_max_x)" />
+        <param name="range_max_y" value="$(arg range_max_y)" />
+        <param name="range_max_z" value="$(arg range_max_z)" />
+        <param name="range_min_x" value="$(arg range_min_x)" />
+        <param name="range_min_y" value="$(arg range_min_y)" />
+        <param name="range_min_z" value="$(arg range_min_z)" />
+
+    </node>
+
+</launch>

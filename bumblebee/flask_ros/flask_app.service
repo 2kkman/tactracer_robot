@@ -1,0 +1,14 @@
+[Unit]
+Description=Flask Application
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/
+ExecStart=/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py
+Restart=always
+RestartSec=5 
+
+[Install]
+WantedBy=multi-user.target
+

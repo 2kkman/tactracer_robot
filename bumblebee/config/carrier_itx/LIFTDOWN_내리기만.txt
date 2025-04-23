@@ -1,0 +1,1 @@
+[[{"CMD": "WMOVE", "ACC": 300, "DECC": 300, "MBID": 30, "MODE": 1, "POS": -1496000, "SPD": 1000, "DESCRIPT" : "리프팅 다운"}]]

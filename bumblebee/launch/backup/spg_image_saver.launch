@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="tta_blb" type="node_image_saver.py" name="spg_image_saver"  respawn="True" output="log">
+  </node>
+
+</launch>

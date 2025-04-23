@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="readerID_R" default='R'/>
+  <arg name="readerID_L" default='L'/>
+  <arg name="startReal" default='True'/>
+  <!-- <node name="BLB_RFID_$(arg readerID_R)" pkg="tta_blb" type="node_KLM900_EX_Test.py" respawn="False" output="log">  -->
+  <node name="BLB_RFID_$(arg readerID_R)" pkg="tta_blb" type="node_KLM900_EX.py" respawn="False" output="log"> 
+    <param name="readerID" value="$(arg readerID_R)"/>
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+  <node name="BLB_RFID_$(arg readerID_L)" pkg="tta_blb" type="node_KLM900_EX.py" respawn="False" output="log"> 
+  <!-- <node name="BLB_RFID_$(arg readerID_L)" pkg="tta_blb" type="node_KLM900_EX_Test.py" respawn="False" output="log">  -->
+    <param name="readerID" value="$(arg readerID_L)"/>
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MQTT.launch" />
+  <include file="$(find tta_blb)/launch/BLB_ANDROID.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MODBUS_FAST.launch" />
+  <!-- rosbridge_websocket 가 없는 경우 웹 API 실행 불가함 -->
+  
+  <!-- <include file="$(find tta_blb)/launch/BLB_RFID_L.launch" /> 
+  <include file="$(find tta_blb)/launch/BLB_tts.launch" />
+  <include file="$(find tta_blb)/launch/BLB_RFID_ESP32.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MODBUS.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MONITOR.launch" />
+  <include file="$(find tta_blb)/launch/BLB_CCTV.launch" />
+  
+
+  마지막 노드를 10초 지연하여 실행 
+
+  <group>
+    <node pkg="roslaunch" type="roslaunch" name="delayed_blb_modbus_fast" output="screen" args="$(find tta_blb)/launch/BLB_MODBUS_FAST.launch">
+      <param name="launch-prefix" value="bash -c 'sleep 10; $0 $@'" />
+    </node>
+  </group>-->
+</launch>

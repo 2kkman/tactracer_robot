@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="res">
+    <file>bumblebee.jpg</file>
+    <file>bumblebee.png</file>
+    <file>moving.png</file>
+    <file>setting.png</file>
+    <file>Tray.jpg</file>
+  </qresource>
+</RCC>

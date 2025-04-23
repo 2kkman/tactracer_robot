@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="BLB_RFID" pkg="tta_blb" type="node_rfidESP32.py" respawn="False" output="screen" /> 
+</launch>

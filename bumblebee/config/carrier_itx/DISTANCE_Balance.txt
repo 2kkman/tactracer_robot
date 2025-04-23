@@ -1,0 +1,4 @@
+pulseV	distanceSTD	distanceLD	timestampLD
+3230000	0.0036	1670	17:51.0
+2950000	0.0036	907	17:51.0
+0	0.001	0	18:22.9

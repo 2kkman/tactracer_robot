@@ -1,0 +1,7 @@
+# Configuration parameters for data recording node.
+
+save_directory: '/root/SpiderGo'
+
+imgtopics:
+  - '/usb_cam_L/image_raw'
+  - '/usb_cam_R/image_raw' 

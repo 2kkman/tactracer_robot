@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../../../opt/ros/noetic/share/rtabmap_ros"
+		}
+	],
+	"settings": {}
+}

@@ -1,0 +1,105 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file '/root/ui/custom_massagebox.ui'
+#
+# Created by: PyQt5 UI code generator 5.14.1
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_blbMessagebox(object):
+    def setupUi(self, blbMessagebox):
+        blbMessagebox.setObjectName("blbMessagebox")
+        blbMessagebox.setWindowModality(QtCore.Qt.ApplicationModal)
+        blbMessagebox.setEnabled(True)
+        blbMessagebox.resize(320, 240)
+        font = QtGui.QFont()
+        font.setFamily("Noto Sans Mono CJK KR")
+        font.setBold(True)
+        font.setWeight(75)
+        blbMessagebox.setFont(font)
+        blbMessagebox.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("/root/ui/resource/bumblebee.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        blbMessagebox.setWindowIcon(icon)
+        blbMessagebox.setStyleSheet("QDialog{background-color: #FDDE45; border-radius: 5px; font-size: 18px; padding: 10px; text-align: center;}")
+        self.verticalLayoutWidget = QtWidgets.QWidget(blbMessagebox)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 322, 231))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.lbl_title = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.lbl_title.setMinimumSize(QtCore.QSize(0, 40))
+        self.lbl_title.setMaximumSize(QtCore.QSize(320, 50))
+        self.lbl_title.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lbl_title.setAutoFillBackground(False)
+        self.lbl_title.setStyleSheet("QLabel{text-align: center; font-size: 36px;background-color: #A6A7A9; color: #FDDE45;}")
+        self.lbl_title.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.lbl_title.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_title.setObjectName("lbl_title")
+        self.verticalLayout.addWidget(self.lbl_title)
+        self.lbl_message = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.lbl_message.setMinimumSize(QtCore.QSize(300, 0))
+        self.lbl_message.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.lbl_message.setStyleSheet("QLabel{min-width: 300px; border-radius: 10px; text-align: center; font-size: 36px;}")
+        self.lbl_message.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.lbl_message.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.lbl_message.setLineWidth(0)
+        self.lbl_message.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_message.setObjectName("lbl_message")
+        self.verticalLayout.addWidget(self.lbl_message)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.btn_left = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_left.sizePolicy().hasHeightForWidth())
+        self.btn_left.setSizePolicy(sizePolicy)
+        self.btn_left.setMaximumSize(QtCore.QSize(154, 50))
+        font = QtGui.QFont()
+        font.setFamily("Noto Sans Mono CJK KR")
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_left.setFont(font)
+        self.btn_left.setStyleSheet("QPushButton {font-size: 20px; border-radius: 10px; background-color: #A6A7A9; color: #FDDE45;}\n"
+                                    "QPushButton:hover {background-color: #323232;}")
+        self.btn_left.setObjectName("btn_left")
+        self.horizontalLayout.addWidget(self.btn_left)
+        self.btn_right = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_right.sizePolicy().hasHeightForWidth())
+        self.btn_right.setSizePolicy(sizePolicy)
+        self.btn_right.setMaximumSize(QtCore.QSize(154, 50))
+        font = QtGui.QFont()
+        font.setFamily("Noto Sans Mono CJK KR")
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_right.setFont(font)
+        self.btn_right.setStyleSheet("QPushButton {font-size: 20px; border-radius: 10px; background-color: #A6A7A9; color: #FDDE45;}\n"
+                                     "QPushButton:hover {background-color: #323232;}")
+        self.btn_right.setObjectName("btn_right")
+        self.horizontalLayout.addWidget(self.btn_right)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 3)
+        self.verticalLayout.setStretch(2, 1)
+
+        self.retranslateUi(blbMessagebox)
+        self.btn_left.clicked.connect(blbMessagebox.evt_clicked_left)
+        self.btn_right.clicked.connect(blbMessagebox.evt_clicked_right)
+        QtCore.QMetaObject.connectSlotsByName(blbMessagebox)
+
+    def retranslateUi(self, blbMessagebox):
+        _translate = QtCore.QCoreApplication.translate
+        blbMessagebox.setWindowTitle(_translate("blbMessagebox", "Dialog"))
+        self.lbl_title.setText(_translate("blbMessagebox", "Title"))
+        self.lbl_message.setText(_translate("blbMessagebox", "TextLabel"))
+        self.btn_left.setText(_translate("blbMessagebox", "PushButton"))
+        self.btn_right.setText(_translate("blbMessagebox", "PushButton"))

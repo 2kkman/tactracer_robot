@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="ns" default="cyglidar_h2"/>
+  <arg name="ns_R" default="cyglidar_h2_R"/>
+  <arg name="ns_L" default="cyglidar_h2_L"/>
+  <arg name="nn_R" default="camera_R"/>
+  <arg name="nn_L" default="camera_L"/>
+  <arg name="respawn" default="false"/>  
+  <arg name="lens_type" default="1"/> <!-- CygLiDAR_H2(0), CygLiDAR_H2A(1)  -->
+  <arg name="lens_center_offset_x" default="0"/>
+  <arg name="lens_center_offset_y" default="0"/>
+  <arg name="image_type" default="5"/> <!-- x, x, DISTANCE(2), x, x, PointCloud(5)  -->
+  <arg name="start_stream" default="true"/>
+  <arg name="int0"  default="100"/>
+  <arg name="int1"  default="100"/>
+  <arg name="int2"  default="0"/>
+  <arg name="int_gray" default="50"/>
+  <arg name="offset" default="0"/>
+  <arg name="min_amplitude" default="100"/>
+  <arg name="frequence_modulation" default="1"/> <!-- 0: 24, 1: 12, 2: 6, 3: 3, 4: 1.5, 5: 0.75 [MHz] -->
+  <arg name="channel_R" default="0"/>
+  <arg name="channel_L" default="15"/>
+  <arg name="median_filter" default="true"/>
+  <arg name="average_filter" default="false"/>
+  <arg name="edge_filter" default="true"/>
+  <arg name="edge_filter_threshold" default="300"/>
+  <arg name="temporal_filter_factor" default="0.0"/>
+  <arg name="temporal_filter_threshold" default="0"/>
+  <arg name="temporal_edge_filter_threshold_low" default="0"/>
+  <arg name="temporal_edge_filter_threshold_high" default="0"/>
+  <arg name="hdr_mode" default="2"/>
+  <arg name="interference_detect_limit" default="0"/>
+  <arg name="use_last_value" default="false"/>
+  <arg name="cartesian" default="true"/>
+  <arg name="publish_point_cloud" default="true"/>
+  <arg name="Tcp_Host_R" default="10.10.31.180"/>
+  <arg name="Tcp_Port_R" default="50660"/>
+  <arg name="Udp_Port_R" default="45454"/>
+  <arg name="Tcp_Host_L" default="10.10.31.182"/>
+  <arg name="Tcp_Port_L" default="50660"/>
+  <arg name="Udp_Port_L" default="45456"/>
+
+  <group ns="$(arg ns)">
+    <node pkg="cyglidar_h2"
+          type="cyglidar_h2_publisher_R"
+          name="$(arg nn_R)"
+          output="screen"
+          respawn="$(arg respawn)">
+
+      <param name="lens_type" value="$(arg lens_type)"/>
+      <param name="lens_center_offset_x" value="$(arg lens_center_offset_x)"/>
+      <param name="lens_center_offset_y" value="$(arg lens_center_offset_y)"/>
+      <param name="image_type" value="$(arg image_type)"/>
+      <param name="start_stream" value="$(arg start_stream)"/>
+      <param name="int0" value="$(arg int0)"/>
+      <param name="int1" value="$(arg int1)"/>
+      <param name="int2" value="$(arg int2)"/>
+      <param name="int_gray" value="$(arg int_gray)"/>
+      <param name="offset" value="$(arg offset)"/>
+      <param name="min_amplitude" value="$(arg min_amplitude)"/>
+      <param name="frequence_modulation" value="$(arg frequence_modulation)"/>
+      <param name="channel" value="$(arg channel_R)"/>
+      <param name="median_filter" value="$(arg median_filter)"/>
+      <param name="average_filter" value="$(arg average_filter)"/>
+      <param name="edge_filter" value="$(arg edge_filter)"/>
+      <param name="edge_filter_threshold" value="$(arg edge_filter_threshold)"/>
+      <param name="temporal_filter_factor" value="$(arg temporal_filter_factor)"/>
+      <param name="temporal_filter_threshold" value="$(arg temporal_filter_threshold)"/>
+      <param name="temporal_edge_filter_threshold_low" value="$(arg temporal_edge_filter_threshold_low)"/>
+      <param name="temporal_edge_filter_threshold_high" value="$(arg temporal_edge_filter_threshold_high)"/>
+      <param name="hdr_mode" value="$(arg hdr_mode)"/>
+      <param name="interference_detect_limit" value="$(arg interference_detect_limit)"/>
+      <param name="use_last_value" value="$(arg use_last_value)"/>
+      <param name="cartesian" value="$(arg cartesian)"/>
+      <param name="publish_point_cloud" value="$(arg publish_point_cloud)"/>
+      <param name="Tcp_Port" value="$(arg Tcp_Port_R)"/>
+      <param name="Tcp_Host" value="$(arg Tcp_Host_R)"/>
+      <param name="Udp_Port" value="$(arg Udp_Port_R)"/>
+    </node>
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_laserlinkR" args="0.0 -0.1 1 0 0 0 base_link_R laser_link_R 10"> -->
+
+    <node pkg="cyglidar_h2"
+          type="cyglidar_h2_publisher_L"
+          name="$(arg nn_L)"
+          output="screen"
+          respawn="$(arg respawn)">
+
+      <param name="lens_type" value="$(arg lens_type)"/>
+      <param name="lens_center_offset_x" value="$(arg lens_center_offset_x)"/>
+      <param name="lens_center_offset_y" value="$(arg lens_center_offset_y)"/>
+      <param name="image_type" value="$(arg image_type)"/>
+      <param name="start_stream" value="$(arg start_stream)"/>
+      <param name="int0" value="$(arg int0)"/>
+      <param name="int1" value="$(arg int1)"/>
+      <param name="int2" value="$(arg int2)"/>
+      <param name="int_gray" value="$(arg int_gray)"/>
+      <param name="offset" value="$(arg offset)"/>
+      <param name="min_amplitude" value="$(arg min_amplitude)"/>
+      <param name="frequence_modulation" value="$(arg frequence_modulation)"/>
+      <param name="channel" value="$(arg channel_L)"/>
+      <param name="median_filter" value="$(arg median_filter)"/>
+      <param name="average_filter" value="$(arg average_filter)"/>
+      <param name="edge_filter" value="$(arg edge_filter)"/>
+      <param name="edge_filter_threshold" value="$(arg edge_filter_threshold)"/>
+      <param name="temporal_filter_factor" value="$(arg temporal_filter_factor)"/>
+      <param name="temporal_filter_threshold" value="$(arg temporal_filter_threshold)"/>
+      <param name="temporal_edge_filter_threshold_low" value="$(arg temporal_edge_filter_threshold_low)"/>
+      <param name="temporal_edge_filter_threshold_high" value="$(arg temporal_edge_filter_threshold_high)"/>
+      <param name="hdr_mode" value="$(arg hdr_mode)"/>
+      <param name="interference_detect_limit" value="$(arg interference_detect_limit)"/>
+      <param name="use_last_value" value="$(arg use_last_value)"/>
+      <param name="cartesian" value="$(arg cartesian)"/>
+      <param name="publish_point_cloud" value="$(arg publish_point_cloud)"/>
+      <param name="Tcp_Port" value="$(arg Tcp_Port_L)"/>
+      <param name="Tcp_Host" value="$(arg Tcp_Host_L)"/>
+      <param name="Udp_Port" value="$(arg Udp_Port_L)"/>
+    </node>
+    
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="to_odom" args="0 0 0 0 0 0 map odom"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_basefp" args="0 0 0 0 0 0 odom base_footprint"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselink" args="0.05 0 -1.4 0 0 0 base_footprint base_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselinkR" args="0 0.06 0 0 0 0 base_link base_link_R" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_laserlinkR" args="0 0 0 0 0 0 base_link_R laser_link_R" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselinkL" args="0 -0.12 0 0 0 0 base_link_R base_link_L" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_laserlinkL" args="0 0 0 0 0 0 base_link_L laser_link_L" /> -->
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_odom" args="0 0 0 0 0 0 map odom"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_basefp" args="0 0 0 0 0 0 odom base_footprint"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselink" args="0 0 0 0 0 0 base_footprint base_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselinkR" args="0 0 0 0 0 0 base_link base_link_R" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_laserlinkR" args="0 0 0 0 0 0 base_link_R laser_link_R" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_baselinkL" args="0 0 0 0 0 0 base_link_R base_link_L" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="to_laserlinkL" args="0 0 0 0 0 0 base_link_L laser_link_L" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_laserlinkL" args="0.0 0.1 1 0 0 0 base_link_L laser_link_L 10"> -->
+
+  </group>
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args= "-d $(find cyglidar_h2)/rviz/config_spg_start.rviz" > </node> -->
+
+    <!-- <remap from="laser_link" to="laser_link_R" /> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_map" args="0 0 0 0 0 0 map odom 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_bf" args="0 0 0 0 0 0 odom base_footprint 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_laserlinkL" args="0.19 -0.06 1.0 -0.90 0 0 base_link laser_link 10"> -->
+    <!-- <remap from="laser_link" to="laser_link_L" /> -->
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_map" args="0 0 0 0 0 0 map odom 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_bf" args="0 0 0 0 0 0 odom base_footprint 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_laserlink" args="0.19 -0.2 0.6 0.3 0 0 base_link laser_link 10"/> -->
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_map_L" args="0 0 0 0 0 0 map odom 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_bf_L" args="0 0 0 0 0 0 odom base_footprint 10"/> -->
+    <!-- <node pkg="tf" type="static_transform_publisher" name="to_laserlink_L" args="0.19 0.2 0.6 -0.3 0 0 base_link_L laser_link 10"/> -->
+
+</launch>

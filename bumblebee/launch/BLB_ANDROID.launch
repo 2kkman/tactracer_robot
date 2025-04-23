@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="$(env CONFIG)_and" pkg="tta_blb" type="node_SSESVR_log.py" respawn="False" output="log" /> 
+</launch>

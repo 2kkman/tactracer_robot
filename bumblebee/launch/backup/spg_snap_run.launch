@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- <include file="$(find usb_cam)/launch/usb_cam-test.launch" />
+  <include file="$(find tta_blb)/launch/spg_image_saver.launch" /> -->
+  
+  <node pkg="rosservice" type="rosservice" name="usb_cam_R_start" args="call /usb_cam_R/start_capture" output="screen"/>
+  <node pkg="rosservice" type="rosservice" name="usb_cam_L_start" args="call /usb_cam_L/start_capture" output="screen"/>
+
+  <node pkg="rosservice" type="rosservice" name="image_saver_R_save" args="call --wait /image_saver_R/save" output="screen"/>
+  <node pkg="rosservice" type="rosservice" name="image_saver_L_save" args="call --wait /image_saver_L/save" output="screen"/>
+
+  <!-- <node pkg="rosservice" type="rosservice" name="usb_cam_R_stop" args="call /usb_cam_R/stop_capture" output="screen"/>
+  <node pkg="rosservice" type="rosservice" name="usb_cam_L_stop" args="call /usb_cam_L/stop_capture" output="screen"/> -->
+
+  <!-- <node pkg="rosservice" type="rosservice" name="rosservice_R_start" args="call /usb_cam_R/start_capture"/>
+  <node name="image_view_R" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_R/image_raw"/>
+    <param name="autosize" value="true" />
+  </node>
+
+  <node pkg="rosservice" type="rosservice" name="rosservice_L_start" args="call /usb_cam_L/start_capture"/>
+  <node name="image_view_L" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_L/image_raw"/>
+    <param name="autosize" value="true" />
+  </node> -->
+</launch>

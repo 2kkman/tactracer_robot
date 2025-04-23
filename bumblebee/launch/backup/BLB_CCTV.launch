@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="BLB_CCTV" pkg="tta_blb" type="node_CamStream2.py" respawn="False" output="screen"> 
+  </node>
+</launch>

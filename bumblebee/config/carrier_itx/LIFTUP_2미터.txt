@@ -1,0 +1,1 @@
+[[{"CMD": "WMOVE", "ACC": 1000, "DECC": 1000, "MBID": 30, "MODE": 1, "POS": 0, "SPD": 1000,"DESCRIPT" : "리프트 올림"}],[{"CMD": "WMOVE", "ACC": 1000, "DECC": 5000, "MBID": 26, "MODE": 1, "POS": -800000, "SPD": 1000, "DESCRIPT" : "트레이 우측방향"}]]

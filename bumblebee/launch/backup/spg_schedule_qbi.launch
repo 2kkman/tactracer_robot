@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="util_schedule" pkg="tta_blb" type="node_schedule.py" respawn="True" output="log">
+  </node>
+</launch>

@@ -1,0 +1,5 @@
+start	end	distance	angle	railtype
+4	5	785	135	LS1
+6	5	785	225	ES1
+8	9	785	135	ES1
+3	9	785	225	LS1

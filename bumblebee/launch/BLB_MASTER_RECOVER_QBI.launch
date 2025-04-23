@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="$(env CONFIG)_ard" pkg="tta_blb" type="node_MasterCheck.py" respawn="False" output="log" /> 
+</launch>

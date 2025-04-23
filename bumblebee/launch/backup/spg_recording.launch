@@ -1,0 +1,8 @@
+<launch>
+    <group ns="tta_blb">
+      <rosparam command="load" file="$(find tta_blb)/config/spg_recording.yaml" />
+    </group>
+
+    <node name="spg_recording" pkg="tta_blb" type="node_recording.py" output="screen" />
+
+</launch>

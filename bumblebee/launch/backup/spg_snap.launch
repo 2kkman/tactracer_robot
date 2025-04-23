@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="video_device_R" default="/dev/video2"/>
+  <arg name="video_device_L" default="/dev/video0"/>
+  <arg name="image_width" default="2048"/>
+  <arg name="image_height" default="1536"/>
+  <arg name="pixel_format" default="mjpeg"/>
+  <arg name="camera_frame_id" default="usb_cam"/>
+  <arg name="io_method" default="mmap"/>
+  <arg name="view" default="false"/>
+  <arg name="stopCam" default="true"/>
+  <arg name="autofocus" default="true"/>
+  <arg name="framerate" default="30"/>
+  <arg name="absolutefocus" default="100"/>
+  <arg name="autoexposure" default="true"/>
+  <arg name="exposure" default="100"/>
+  <arg name="gain" default="-1"/>
+  <arg name="auto_white_balance" default="true"/>
+  <arg name="brightness" default="0"/>
+  <arg name="saturation" default="64"/>
+  <arg name="gamma" default="100"/>
+  <arg name="sharpness" default="6"/>
+
+  <node name="usb_cam_R" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="$(arg video_device_R)" />
+    <param name="image_width" value="$(arg image_width)" />
+    <param name="image_height" value="$(arg image_height)" />
+    <param name="pixel_format" value="$(arg pixel_format)" />
+    <param name="camera_frame_id" value="$(arg camera_frame_id)" />
+    <param name="io_method" value="$(arg io_method)"/>
+    <param name="autofocus" value="$(arg autofocus)"/>
+    <param name="framerate" value="$(arg framerate)"/>
+    <param name="absolutefocus" value="$(arg absolutefocus)"/>
+    <param name="autoexposure" value="$(arg autoexposure)"/>
+    <param name="exposure" value="$(arg exposure)"/>
+    <param name="gain" value="$(arg gain)"/>
+    <param name="brightness" value="$(arg brightness)"/>
+    <param name="saturation" value="$(arg saturation)"/>
+    <param name="sharpness" value="$(arg sharpness)"/>
+    <param name="gamma" value="$(arg gamma)"/>
+    <param name="auto_white_balance" value="$(arg auto_white_balance)"/>
+    <param name="camera_info_url" value="file:///$(find tta_blb)/camera_info/spg_cam_R_2048x1536.yaml"/>    
+  </node>
+  
+  <node name="usb_cam_L" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="$(arg video_device_L)" />
+    <param name="image_width" value="$(arg image_width)" />
+    <param name="image_height" value="$(arg image_height)" />
+    <param name="pixel_format" value="$(arg pixel_format)" />
+    <param name="camera_frame_id" value="$(arg camera_frame_id)" />
+    <param name="io_method" value="$(arg io_method)"/>
+    <param name="autofocus" value="$(arg autofocus)"/>
+    <param name="framerate" value="$(arg framerate)"/>
+    <param name="absolutefocus" value="$(arg absolutefocus)"/>
+    <param name="autoexposure" value="$(arg autoexposure)"/>
+    <param name="exposure" value="$(arg exposure)"/>
+    <param name="gain" value="$(arg gain)"/>
+    <param name="brightness" value="$(arg brightness)"/>
+    <param name="saturation" value="$(arg saturation)"/>
+    <param name="gamma" value="$(arg gamma)"/>
+    <param name="auto_white_balance" value="$(arg auto_white_balance)"/>
+    <param name="camera_info_url" value="file:///$(find tta_blb)/camera_info/spg_cam_L_2048x1536.yaml"/>
+  </node>
+
+  <node if="$(arg view)" name="image_view_R" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_R/image_raw"/>
+    <param name="autosize" value="false" />
+  </node>
+  
+  <node if="$(arg view)" name="image_view_L" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_L/image_raw"/>
+    <param name="autosize" value="false" />
+  </node>
+
+  <node if="$(arg stopCam)" pkg="rosservice" type="rosservice" name="rosservice_R_stop" args="call --wait /usb_cam_R/stop_capture" output="screen"/>
+  <node if="$(arg stopCam)" pkg="rosservice" type="rosservice" name="rosservice_L_stop" args="call --wait /usb_cam_L/stop_capture" output="screen"/>
+
+  <!-- <node pkg="rosservice" type="rosservice" name="rosservice_R_start" args="call /usb_cam_R/start_capture"/>
+  <node name="image_view_R" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_R/image_raw"/>
+    <param name="autosize" value="true" />
+  </node>
+
+  <node pkg="rosservice" type="rosservice" name="rosservice_L_start" args="call /usb_cam_L/start_capture"/>
+  <node name="image_view_L" pkg="image_view" type="image_view" respawn="false" output="screen">
+    <remap from="image" to="/usb_cam_L/image_raw"/>
+    <param name="autosize" value="true" />
+  </node> -->
+</launch>

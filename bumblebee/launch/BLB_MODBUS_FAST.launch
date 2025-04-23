@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="fastModbus" default='True'/>
+  <arg name="startReal" default='True'/>
+  <node name="BLB_MODBUS_FAST" pkg="tta_blb" type="node_ModbusIF.py" respawn="False" output="screen"> 
+    <param name="fastModbus" value="$(arg fastModbus)"/>
+    <param name="startReal" value="$(arg startReal)"/>
+  </node>
+</launch>

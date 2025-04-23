@@ -1,0 +1,1 @@
+[[{"CMD": "WMOVE", "ACC": 2000, "DECC": 2000, "MBID": 25, "MODE": 1, "POS": 100000, "SPD": 1000,"DESCRIPT" : "회전판 돌림"},{"CMD": "WMOVE", "ACC": 1000, "DECC": 6000, "MBID": 30, "MODE": 1, "POS": 100000, "SPD": 1000, "DESCRIPT" : "리프팅 다운"}]]

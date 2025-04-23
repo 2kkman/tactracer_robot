@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="BLB_MONITOR_STATUS" pkg="tta_blb" type="node_Status_temp.py" respawn="False" output="log" /> 
+</launch>

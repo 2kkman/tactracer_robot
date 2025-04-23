@@ -1,0 +1,1 @@
+[[{"CMD": "WMOVE", "ACC": 5000, "DECC": 1000, "MBID": 13, "MODE": 1, "POS": 0, "SPD": 500,"DESCRIPT" : "밸런싱1관절수축"}],[{"CMD": "WMOVE", "ACC": 1000, "DECC": 1000, "MBID": 10, "MODE": 1, "POS": 0, "SPD": 1000, "DESCRIPT" : "밸런싱2관절수축"}]]

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <arg name="start_stream" default="true"/>
+  <arg name="int0_R" default="240" />
+  <arg name="int1_R" default="500" />
+  <arg name="int0_L" default="240" />
+  <arg name="int1_L" default="440" />  
+  <arg name="rviz" default="false" />
+  <arg name="view_o3d" default="false" />
+
+<!-- 
+  <include file="$(find tta_blb)/launch/spg_lidar.launch" >
+    <arg name="int0_R" value="$(arg int0_R)" />
+    <arg name="int0_L" value="$(arg int0_L)" />
+    <arg name="int1_R" value="$(arg int1_R)" />
+    <arg name="int1_L" value="$(arg int1_L)" />
+    <arg name="start_stream" value="$(arg start_stream)" />
+    <arg name="rviz" value="$(arg rviz)" />
+  </include>
+  <include file="$(find cyglidar_h2)/launch/lidar_ros.launch" >
+    <arg name="int0" value="$(arg int0)" />
+    <arg name="int1" value="$(arg int1)" />
+    <arg name="start_stream" value="$(arg start_stream)" />
+  </include> -->
+
+  <include file="$(find ldlidar_stl_ros)/launch/ld06.launch" />
+  <include file="$(find bumblebee_reconfigure)/launch/bumblebee_reconfigure_laser.launch">
+    <arg name="view_o3d" value="$(arg view_o3d)" />
+  </include>
+
+  <include file="$(find itops_f07)/launch/camera.launch" />
+  <include file="$(find bumblebee_reconfigure)/launch/bumblebee_reconfigure_lidar.launch">
+    <arg name="view_o3d" value="$(arg view_o3d)" />
+  </include>
+
+  <include file="$(find tta_blb)/launch/spg_tts.launch" /> 
+  <include file="$(find tta_blb)/launch/spg_ard.launch" /> 
+
+
+  <!-- <include file="$(find tta_blb)/launch/spg_snap.launch" /> -->
+  <include file="$(find tta_blb)/launch/spg_3Dlidar_detection.launch" />
+  <!-- <include file="$(find tta_blb)/launch/spg_imu.launch" />
+  <include file="$(find tta_blb)/launch/spg_aht.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_arduino.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_image_saver.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_recording.launch" /> -->
+  <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args= "-d $(find cyglidar_h2)/rviz/config_spg_start.rviz" output="screen"/> -->
+  <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args= "-d $(find cyglidar_h2)/rviz/config_cyglidar_h2.rviz" output="screen"/> -->
+  
+
+</launch>

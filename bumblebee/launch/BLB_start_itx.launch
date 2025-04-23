@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="hostname" default="$(env HOST)" />
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MQTT.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MODBUS_FAST.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MONITOR.launch" />
+  <include file="$(find tta_blb)/launch/BLB_ANDROID.launch" />
+  <!--   
+  DEV에서만 실행되어야 할 노드 -->
+  <group if="$(eval 'ITX' not in hostname)">
+    <include file="$(find tta_blb)/launch/BLB_ard_ITX.launch" />
+  </group>
+  <!-- ITX에서만 실행되어야 할 노드 -->
+  <group if="$(eval 'ITX' in hostname)">
+    <include file="$(find tta_blb)/launch/BLB_RFID_ESP32.launch" />
+    <include file="$(find tta_blb)/launch/BLB_MODBUS.launch" />
+    <include file="$(find tta_blb)/launch/BLB_SD.launch" />
+  </group>
+</launch>

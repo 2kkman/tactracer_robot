@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  <arg name="start_stream" default="true"/>
+  <arg name="int0_R" default="1" />
+  <arg name="int1_R" default="1000" />
+  <arg name="int0_L" default="1" />
+  <arg name="int1_L" default="1000" />  
+  <arg name="rviz" default="false" />
+  <arg name="view" default="false" />
+  -->
+  
+  <!-- <include file="$(find tta_blb)/launch/spg_lidar.launch" >
+    <arg name="int0_R" value="$(arg int0_R)" />
+    <arg name="int0_L" value="$(arg int0_L)" />
+    <arg name="int1_R" value="$(arg int1_R)" />
+    <arg name="int1_L" value="$(arg int1_L)" />
+    <arg name="start_stream" value="$(arg start_stream)" />
+    <arg name="rviz" value="$(arg rviz)" />
+  </include> -->
+
+  <!-- <include file="$(find tta_blb)/launch/spg_snap.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/BLB_schedule.launch" />-->
+  <include file="$(find tta_blb)/launch/BLB_MQTT.launch" />
+  <!-- <include file="$(find tta_blb)/launch/BLB_MODBUS.launch" /> -->
+  <include file="$(find tta_blb)/launch/BLB_MODBUS_FAST.launch" />
+  <!-- <include file="$(find tta_blb)/launch/BLB_CtlCenter.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/BLB_RFID.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/BLB_RFID_F.launch" /> -->
+  <include file="$(find tta_blb)/launch/BLB_MONITOR.launch" />
+  <!-- <include file="$(find tta_blb)/launch/BLB_SD.launch" /> -->
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <!-- <include file="$(find tta_blb)/launch/spg_imu.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_aht.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_arduino.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_image_saver.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_recording.launch" /> -->
+  <!-- <include file="$(find tta_blb)/launch/spg_schedule.launch" /> -->
+  
+  <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args= "-d $(find cyglidar_h2)/rviz/config_spg_start.rviz" output="screen"/> -->
+  
+
+</launch>

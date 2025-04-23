@@ -1,0 +1,2 @@
+#!/bin/bash
+rosrun dynamic_reconfigure dynparam set /itops_f07/camera/ start_stream true
