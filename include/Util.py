@@ -1007,6 +1007,7 @@ class RFID_RESULT(Enum):
     RSSI = auto()
     TIMESTAMP = auto()
     inventoryMode = auto()
+    status = auto()
 
 
 class StrParser(Enum):

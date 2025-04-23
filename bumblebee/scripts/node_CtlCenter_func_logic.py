@@ -1160,7 +1160,8 @@ def GetPotNotHomeStatus(mbid:ModbusID):
   DI_POT = GetItemsFromModbusTable(mbid,MonitoringField.DI_POT)
   DI_NOT = GetItemsFromModbusTable(mbid,MonitoringField.DI_NOT)
   DI_HOME = GetItemsFromModbusTable(mbid,MonitoringField.DI_HOME)
-  return isTrue(DI_POT),isTrue(DI_NOT),isTrue(DI_HOME)
+  SI_POT = GetItemsFromModbusTable(mbid,MonitoringField.SI_POT)
+  return isTrue(DI_POT),isTrue(DI_NOT),isTrue(DI_HOME),SI_POT
 
 def GetPotNotCurPosServo(mbid:ModbusID):
   pot_int,not_int = GetPotNotServo(mbid)
@@ -1362,7 +1363,7 @@ def isReadyToMoveH_and_540(modbusClass = None):
             pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(mbid_instance)
             if mbid == (str)(ModbusID.ROTATE_MAIN_540.value) or mbid == (str)(ModbusID.ROTATE_SERVE_360.value) or mbid == (str)(ModbusID.MOTOR_H.value):
               continue
-            DI_POT,DI_NOT,DI_HOME = GetPotNotHomeStatus(mbid_instance)
+            DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(mbid_instance)
             if abs(not_cur-cur_pos) > roundPulse and not DI_NOT:
                 return False
         return True
@@ -1379,7 +1380,7 @@ def isReadyToMoveMotor(lsCheckList):
             if isActivatedMotor(mbid):
                 return False            
             pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(mbid_instance)
-            DI_POT,DI_NOT,DI_HOME = GetPotNotHomeStatus(mbid_instance)
+            DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(mbid_instance)
             #if abs(cur_pos) > roundPulse and not DI_NOT:
             if abs(not_cur-cur_pos) > roundPulse and not DI_NOT:
                 return False

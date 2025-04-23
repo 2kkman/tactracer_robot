@@ -1041,7 +1041,7 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
 
 def SendStatus(blb_status: BLB_STATUS_FIELD):
     cur_pos_cross = try_parse_int(GetCrossInfo(MonitoringField.CUR_POS.name), MIN_INT)
-    DI_POT_15,DI_NOT_15,DI_ESTOP_15 = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    DI_POT_15,DI_NOT_15,DI_ESTOP_15,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
     table_target = GetTableTarget()
     dicCurrentJob = GetCurrentJob(table_target)
     dicFirstJob = GetCurrentJob(table_target, True)
@@ -1111,12 +1111,23 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
       #목적지가 충전소로 가는 경우에는 반드시 현재 RFID태그가 읽히고 있고 POT_15 ON 이어야 함.
       #분기기로 가는 경우에는 현재 정지상태인지만 체크하면 됨.
       #제정신일때 다시 정의하자.
-      if bSendJCCmd and isRealMachine and GetRFIDInventoryStatus():
+      if bSendJCCmd and isRealMachine:
         for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
           if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
-            # if isCrossStatus == 0: #세로 로 만들어야 할때 - 충전소에서 진입할때
-            #     if isTrue(DI_POT_15) and 
-                API_CROSS_set(jc_id,isCrossStatus)
+            if isCrossStatus == 0:
+                if curNode == 10: #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
+                    if isTrue(DI_POT_15):
+                        API_CROSS_set(jc_id,isCrossStatus)
+                else:   #세로 로 만들어야 할때 - 충전소에서 분기기로 진입시
+                    if SI_POT == 'GPI':
+                        API_CROSS_set(jc_id,isCrossStatus)
+            elif isCrossStatus == 1:    #가로로 만들어야 할때
+                if curNode == 10:   #분기기에 올라타 있는 상태 - 
+                    if isTrue(DI_POT_15):
+                        API_CROSS_set(jc_id,isCrossStatus)
+                else:
+                    if SI_POT == 'GPI':
+                        API_CROSS_set(jc_id,isCrossStatus)
         
         # dicSendMqttTopic = {}
         # # mqttTopic = f'BLB/mcu_relay_CMD/set'

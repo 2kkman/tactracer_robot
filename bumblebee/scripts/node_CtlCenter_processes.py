@@ -462,7 +462,8 @@ def CheckMotorAlarms():
           SetWaitConfirmFlag(True, {key:value})
 
 def CheckETCActions():
-    stateCharger = isChargerPlugOn()
+    DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    #stateCharger = isChargerPlugOn()
     cur_node = GetCurrentNode()
     node_pos = GetNodePos_fromNode_ID(cur_node)
     cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
@@ -470,11 +471,12 @@ def CheckETCActions():
     #     dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
     #     SendCMD_Device([dicLoc])
     # el
-    if isChargeSensorOn() and cur_node == node_KITCHEN_STATION:
+    #if isChargeSensorOn() and cur_node == node_KITCHEN_STATION:
+    if cur_node == node_KITCHEN_STATION:        
         if abs(cur_pos - node_pos) > roundPulse/2:
             dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
             SendCMD_Device([dicLoc])
-        if not stateCharger and not isActivatedMotor(ModbusID.MOTOR_H.value):
+        if isTrue(DI_POT) and SI_POT == 'NOT' and not isActivatedMotor(ModbusID.MOTOR_H.value):
             SetChargerPlug(True)
         
     
@@ -534,8 +536,8 @@ def MotorBalanceControlEx(bSkip):
 
     pot_cur_arm1,not_cur_arm1, cmdpos_arm1,cur_pos_arm1 = GetPotNotCurPosServo(ModbusID.BAL_ARM1)
     pot_cur_arm2,not_cur_arm2 ,cmdpos_arm2,cur_pos_arm2 =GetPotNotCurPosServo(ModbusID.BAL_ARM2)
-    DI_POT_arm1,DI_NOT_arm1,DI_HOME_arm1 = GetPotNotHomeStatus(ModbusID.BAL_ARM1)
-    DI_POT_arm2,DI_NOT_arm2,DI_HOME_arm2 = GetPotNotHomeStatus(ModbusID.BAL_ARM2)
+    DI_POT_arm1,DI_NOT_arm1,DI_HOME_arm1,SI_POT_arm1 = GetPotNotHomeStatus(ModbusID.BAL_ARM1)
+    DI_POT_arm2,DI_NOT_arm2,DI_HOME_arm2,SI_POT_arm2 = GetPotNotHomeStatus(ModbusID.BAL_ARM2)
     pot_cur_SrvTele,not_cur_SrvTele ,cmdpos_SrvTele,cur_pos_SrvTele =GetPotNotCurPosServo(ModbusID.TELE_SERV_MAIN)
     pot_cur_BalTele,not_cur_BalTele ,cmdpos_BalTele,cur_pos_BalTele =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
     #pot_cur_SrvInner,not_cur_SrvInner ,cmdpos_SrvInner,cur_pos_SrvInner =GetPotNotCurPosServo(ModbusID.TELE_SERV_INNER)    
@@ -914,7 +916,7 @@ def MotorBalanceControlEx(bSkip):
     #isPendingArm1 = motorStatus_arm1 == STATUS_MOTOR.PENDING_CCW or motorStatus_arm1 == STATUS_MOTOR.PENDING_CW
     isTimeOK = isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
     if isActivatedMotor(ModbusID.ROTATE_SERVE_360.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_tray:
-        DI_POT_tray,DI_NOT_tray,DI_HOME_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
+        DI_POT_tray,DI_NOT_tray,DI_HOME_tray,SI_POT_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
         #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
         if DI_HOME_tray:
             #StopMotor(ModbusID.ROTATE_SERVE_360.value, DECC_540)
@@ -927,7 +929,7 @@ def MotorBalanceControlEx(bSkip):
             SendCMD_Device([dicLoc]) 
             
     if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_mainRotate:
-        DI_POT_540,DI_NOT_540,DI_HOME_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
+        DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
         #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
         if DI_HOME_540:
             StopMotor(ModbusID.ROTATE_MAIN_540.value, 800)

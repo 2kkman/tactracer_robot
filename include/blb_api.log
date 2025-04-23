@@ -90,3 +90,42 @@ Traceback (most recent call last):
     raise ROSSerializationException(str(e))
 rospy.exceptions.ROSSerializationException: field data must be of type bytes or an ascii string
 :dispatch_request:service_cmd:logSSE_error
+2025-04-23 19:07:29,098 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 721, in service_charge
+    loaded_data=immutable_multi_dict_to_dict(request.args,'_CHARGE')
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+:callbackRFID:service_charge:logSSE_error
+2025-04-23 19:07:31,062 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 721, in service_charge
+    loaded_data=immutable_multi_dict_to_dict(request.args,'_CHARGE')
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+:callbackRFID:service_charge:logSSE_error
+2025-04-23 19:07:33,069 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 721, in service_charge
+    loaded_data=immutable_multi_dict_to_dict(request.args,'_CHARGE')
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+  File "/usr/local/lib/python3.8/dist-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+:callbackRFID:service_charge:logSSE_error

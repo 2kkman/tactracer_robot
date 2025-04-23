@@ -84,7 +84,7 @@ def PrintColorDict(data):
   print(f'{output} {getCurrentTime()}')        
 
 dicSICode = {}
-dicSICode[0] = 'DEFAULT'
+dicSICode[0] = 'GPI'
 dicSICode[136] = 'ICS'
 dicSICode[33] = 'HOME'
 dicSICode[34] = 'ESTOP'
@@ -124,11 +124,10 @@ dic_485OverLoad = {}
 dic_485ctl = {}
 dic_485cmd = {}
 dic_485poll = {}
-dic_485Inverted = {}
-dic_485AutoGain = {}
-dic_485Inertia_Ratio = {}
-dic_485POTInfo = {}
-dic_485TorQueLimitInfo = {}
+#dic_485Inverted = {}
+#dic_485AutoGain = {}
+#dic_485Inertia_Ratio = {}
+#dic_485TorQueLimitInfo = {}
 dic_485pollLen = {}
 dic_485pollRate = {}
 dic_topics = {}
@@ -318,12 +317,12 @@ def callbackCmd(data):
 
                 #CMD_Queue
                 
-                if sCMDValue == MotorCmdField.WGAIN.name or sCMDValue == MotorCmdField.WRATIO.name:
-                    while(len(CMD_Queue) > 0):
-                        time.sleep(0.1)
-                    Setup(sMBID)
+                # if sCMDValue == MotorCmdField.WGAIN.name or sCMDValue == MotorCmdField.WRATIO.name:
+                #     while(len(CMD_Queue) > 0):
+                #         time.sleep(0.1)
+                #     Setup(sMBID)
                     
-                elif sCMDValue == MotorCmdField.WMOVE.name:
+                if sCMDValue == MotorCmdField.WMOVE.name:
                     dtnow = getDateTime().timestamp()
                     lock.acquire()
                     try:
@@ -573,18 +572,18 @@ def Setup(mbidCur=None):
                 dic_485poll[mbid] = poll485
                 if mbName.startswith("RS"):
                     dicInitTimeStamp[mbid] = getDateTime()
-                    checkMBresult = instrumentH.read_registers(checkAddrValCCW, 1, 3)
-                    dic_485Inverted[mbid] = checkMBresult[0]
-                    checkMBresult = instrumentH.read_registers(checkAddrValPOTChanged, 1, 3)
-                    dic_485POTInfo[mbid] = checkMBresult[0]
-                    checkMBresult = instrumentH.read_registers(checkAddrValToqLimit, 1, 3)
-                    dic_485TorQueLimitInfo[mbid] = checkMBresult[0]
-                    checkMBresult = instrumentH.read_registers(checkAddrValToqLimit, 1, 3)
-                    dic_485TorQueLimitInfo[mbid] = checkMBresult[0]
-                    checkresultAG = instrumentH.read_registers(checkAddrValAutoGain, 1, 3)
-                    dic_485AutoGain[mbid] = checkresultAG[0]
-                    checkresultRatio = instrumentH.read_registers(checkAddrVaRatio, 1, 3)
-                    dic_485Inertia_Ratio[mbid] = checkresultRatio[0]
+                    # checkMBresult = instrumentH.read_registers(checkAddrValCCW, 1, 3)
+                    # dic_485Inverted[mbid] = checkMBresult[0]
+                    # checkMBresult = instrumentH.read_registers(checkAddrValPOTChanged, 1, 3)
+                    # dic_485POTInfo[mbid] = checkMBresult[0]
+                    # checkMBresult = instrumentH.read_registers(checkAddrValToqLimit, 1, 3)
+                    # dic_485TorQueLimitInfo[mbid] = checkMBresult[0]
+                    # checkMBresult = instrumentH.read_registers(checkAddrValToqLimit, 1, 3)
+                    # dic_485TorQueLimitInfo[mbid] = checkMBresult[0]
+                    # checkresultAG = instrumentH.read_registers(checkAddrValAutoGain, 1, 3)
+                    # dic_485AutoGain[mbid] = checkresultAG[0]
+                    # checkresultRatio = instrumentH.read_registers(checkAddrVaRatio, 1, 3)
+                    # dic_485Inertia_Ratio[mbid] = checkresultRatio[0]
                     initMotor(mbid)
                     rospy.loginfo(f"Check MB({mbid}) result OK at try {iTryCheckModbus+1}")
                     # if is_equal(mbid, ModbusID.MOTOR_H.value):
@@ -613,7 +612,7 @@ def Setup(mbidCur=None):
             logmsg = f"{message} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name}"
             rospy.loginfo(logmsg)
     #rospy.loginfo(dic_485Inverted)
-    rospy.loginfo(dic_485POTInfo)    
+    #rospy.loginfo(dic_485POTInfo)    
     return True
 
 
@@ -973,6 +972,7 @@ while not rospy.is_shutdown():
 
     try:
         print_time(0)
+        lsModifiedMbid = []
         while len(CMD_Queue) > 0:
             cmd_buf = list(CMD_Queue.popleft())
             addr = cmd_buf[0]
@@ -985,6 +985,8 @@ while not rospy.is_shutdown():
                 valueStr = ','.join([str(val) for val in valueList])  # 10진수 출력
 
             infoStr = f"Addr:0x{addr:04X},Value:{valueStr},MB_ID:{drvID} from {caller}"
+            if drvID not in lsModifiedMbid:
+                lsModifiedMbid.append(drvID)
             #infoStr = f"Addr:0x{addr:04X},Value:{valueList},MB_ID:{drvID} from {caller}"
             instrumentTmp: minimalmodbus.Instrument = dic_485ctl[drvID]
             if not testModbus:
@@ -1029,6 +1031,13 @@ while not rospy.is_shutdown():
         # rospy.loginfo(traceback.format_exc())
         # dtNow = getDateTime()
         # td = getDateTime() - lastLogTime
+    for drvIDExecuted in lsModifiedMbid:
+        for poll_id in dic_485pollRate.keys():
+            poll_id_str = str(poll_id)    
+            if poll_id_str.startswith(str(drvIDExecuted)) :
+                dic_485pollRate[poll_id] = DATETIME_OLD
+    lsModifiedMbid.clear()
+    
     if not testModbus:
       # TODO : Polling Read Part
       try:
@@ -1040,7 +1049,9 @@ while not rospy.is_shutdown():
               print_time(f"{modbusID}-0")
 
               # 한 디바이스에서 2개 이상 다른 주소로 Polling시 cmdData 원소가 여러개가 된다.
+              readLineIdx = -1
               for dicRecord in cmdData:
+                  readLineIdx += 1
                   start_addr = 1
                   if POLL_COMMON.START.name not in dicRecord.keys():
                       start_addr = 0
@@ -1089,6 +1100,11 @@ while not rospy.is_shutdown():
 
                       # 지정된 폴링주기에 이르지 못한 경우도 건너뛴다
                       if not isTimeExceeded(lastPublishedTime, pollrate):
+                          continue
+                      
+                      #움직이는 동안에는 전송딜레이를 최소화 하기 위해
+                      #포지션데이터와 센서데이터만 전송한다. (포지션+센서 데이터는 readLineIdx 가 무조건 0 이다.)
+                      if pollrate == 10 and readLineIdx > 1:
                           continue
                       # print(dic_485ack)
                       # Lock을 해제해서 다른 Thread도 사용할 수 있도록 만든다.
@@ -1358,15 +1374,16 @@ while not rospy.is_shutdown():
                       
                   return485data[MotorWMOVEParams.MBID.name] = modbusID
                   NoValue = -1
-                  isCCW = dic_485Inverted.get(modbusID, NoValue)
-                  autogain = dic_485AutoGain.get(modbusID, NoValue)
-                  inertia_ratio = dic_485Inertia_Ratio.get(modbusID, NoValue)
-                  ToqLimit = dic_485TorQueLimitInfo.get(modbusID,NoValue)
-                  return485data[MonitoringField.AUTO_GAIN.name] = autogain
-                  return485data[MonitoringField.INERTIA_RATIO.name] = inertia_ratio
-                  return485data[MonitoringField.IS_CCW.name] = isCCW
-                  return485data[MonitoringField.TOQ_LIMIT.name] = ToqLimit
+                #   isCCW = dic_485Inverted.get(modbusID, NoValue)
+                #   autogain = dic_485AutoGain.get(modbusID, NoValue)
+                #   inertia_ratio = dic_485Inertia_Ratio.get(modbusID, NoValue)
+                #   ToqLimit = dic_485TorQueLimitInfo.get(modbusID,NoValue)
+                #   return485data[MonitoringField.AUTO_GAIN.name] = autogain
+                #   return485data[MonitoringField.INERTIA_RATIO.name] = inertia_ratio
+                #   return485data[MonitoringField.IS_CCW.name] = isCCW
+                #   return485data[MonitoringField.TOQ_LIMIT.name] = ToqLimit
                   rpm = int(return485data.get(MonitoringField.CUR_SPD.name,NoValue))
+                  isCCW = int(return485data.get(MonitoringField.IS_CCW.name,NoValue))
                   cur_current = int(return485data.get(MonitoringField.CUR_CURRENT.name, NoValue))
                   cur_current = abs(cur_current) if cur_current != NoValue else cur_current
 
@@ -1404,9 +1421,9 @@ while not rospy.is_shutdown():
                         
                   if modbusID in dic_485Torque.keys() and cur_torque != MIN_INT:
                       TorqueDataInsert(modbusID, cur_torque,cur_ovrLoad)
-                  POTInfo = dic_485POTInfo.get(modbusID,MIN_INT)
+                  #POTInfo = dic_485POTInfo.get(modbusID,MIN_INT)
                   
-                  return485data[MonitoringField.POT_ALLOCATION.name] = dicSICode.get(POTInfo,MIN_INT)
+                  #return485data[MonitoringField.POT_ALLOCATION.name] = dicSICode.get(POTInfo,MIN_INT)
                   isESTOP = return485data.get(f"{MonitoringField.DI_ESTOP.name}", '-1')
                   alarm_name = "NONE"
                   alarm_code = return485data.get(f"{MonitoringField.ALM_CD.name}", '-1')
@@ -1430,12 +1447,12 @@ while not rospy.is_shutdown():
                       return485data.update(dicSIStatus)
                       
                   #     dicSI_TotalStatus[modbusID] = 
-                  sendbuf = getStr_fromDic(return485data, sDivFieldColon, sDivItemComma)
-                  dic_topics[modbusID].publish(sendbuf)
                   dicCurStatus = dic_status.get(modbusID)
                   if dicCurStatus is None:
                     dic_status[modbusID] = {}
-                  dic_status[modbusID].update(return485data)                                    
+                  dic_status[modbusID].update(return485data)
+                  sendbuf = getStr_fromDic(dic_status[modbusID], sDivFieldColon, sDivItemComma)
+                  dic_topics[modbusID].publish(sendbuf)
                   int485id = int(modbusID)
                   # motorOpCheck = dic_485ack[int485id]
 

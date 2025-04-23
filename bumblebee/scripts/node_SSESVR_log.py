@@ -12,10 +12,15 @@ from flask_cors import CORS
 sEPCKey = RFID_RESULT.EPC.name
 sRSSIKey = RFID_RESULT.RSSI.name
 sPOS_Key = MonitoringField.CUR_POS.name
+sLAST_TARGET_POS = MonitoringField.LAST_TARGET_POS.name
+sST_CMD_FINISH = MonitoringField.ST_CMD_FINISH.name
 sSPD_Key = MonitoringField.CUR_SPD.name
+sSI_POT =MonitoringField.SI_POT.name
+sDI_POT =MonitoringField.DI_POT.name
 sInv_Key = RFID_RESULT.inventoryMode.name
-dicPOTNOT_ON = getMotorDefaultDic(ModbusID.MOTOR_H.value,True)
-dicPOTNOT_OFF = getMotorDefaultDic(ModbusID.MOTOR_H.value,False)
+sALIVE_Key = RFID_RESULT.status.name
+# dicPOTNOT_ON = getMotorDefaultDic(ModbusID.MOTOR_H.value,True)
+# dicPOTNOT_OFF = getMotorDefaultDic(ModbusID.MOTOR_H.value,False)
 
 isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 app = Flask(__name__)
@@ -39,6 +44,7 @@ pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
 target_pulse_cw = 50000000
 ACC_DECC_MOTOR_H = 5000
 ACC_DECC_NORMAL = 3000
+findNodeTryPulse = 10000
 #target_pulse_ccw = -target_pulse_cw
 
 dicServExpand = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, target_pulse_cw, DEFAULT_RPM_SLOW, ACC_DECC_NORMAL,ACC_DECC_NORMAL)
@@ -82,6 +88,15 @@ lastAck = ''
 isScan = False
 isRetry = False
 lastcalledAck = DATETIME_OLD
+dicLastMotor15 = {}
+
+def GetMotorHPos():
+    cur_pos = try_parse_int(dicMotorPos.get('MB_15'))
+    return cur_pos
+
+def GetMotorPot():
+    di_pot = try_parse_int(dicLastMotor15.get(sDI_POT))
+    return di_pot
 
 def GetSpeicificEPCNodeInfo():
     local_epcnodeinfo = [GetNodeFromTable(HOME_CHARGE),GetNodeFromTable(HOME_TABLE)]
@@ -164,6 +179,7 @@ def SendCMDArd(enable):
     return resultArd
 
 def SendCMD_Device(sendbuf):
+    log_all_frames(sendbuf)
     cmdTmp = sendbuf
     if isinstance(sendbuf, list):
         if len(sendbuf) > 0:
@@ -184,6 +200,7 @@ def getRFIDInvStatus():
                 return False
         return True
     except Exception as e:
+        return False
         message = traceback.format_exc()
         rospy.loginfo(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
@@ -201,7 +218,7 @@ def callbackACK(recvData):
     global lastcalledAck
     global isRetry
     global epcTotalView
-    rfidMissPulse = 5000
+    
     try:
         '''
         print(dfEPCTotal)
@@ -234,7 +251,7 @@ def callbackACK(recvData):
         if not isTrue(flag):
             isRetry = 0
             return
-
+        
         #lastcalledAck = getDateTime()
         if len(lsResult) >= 9:
             #print(lsResult)
@@ -245,11 +262,8 @@ def callbackACK(recvData):
             last_started_pos = int(lsResult[7])  # 최대오버로드
             last_targeted_pos = int(lsResult[8])  # 평균오버로드
             rospy.loginfo(f'torque_max:{torque_max},torque_ave:{torque_ave},ovr_max:{ovr_max},ovr_ave:{ovr_ave},last_started_pos:{last_started_pos},last_targeted_pos:{last_targeted_pos}')
-        
-
         # if not isTimeExceeded(lastcalledAck, 200):
         #     return
-        
         # last_inv = dfEPCTotal.iloc[-1][sInv_Key] if not dfEPCTotal.empty else None
         # last_EPC = dfEPCTotal.iloc[-1][sEPCKey] if not dfEPCTotal.empty else None        
         # print(last_inv)
@@ -265,12 +279,19 @@ def callbackACK(recvData):
             RFIDControl(False)
             return
         
+        if not getRFIDInvStatus():
+            return
+        
         if endnode == lastNode:
         #if lastRSSI is None:
             return
         
         if epcTarget is None:
             return
+        
+        if isTrue(GetMotorPot()):
+            return
+        
         dfEPCTotal = pd.read_csv(strFileEPC_total, sep=sDivTab)    
         epcViewInfo = df_to_dict(epcTotalView, sEPCKey, sInv_Key)
         dicEPCNode = GetEPCNodeInfoDic()
@@ -285,23 +306,23 @@ def callbackACK(recvData):
             elif not isTrue(invStatus):
                 isInvOff = True
                 
-        dicSmartPlug = shared_data.get(TopicName.SMARTPLUG_INFO.name)
-        chargeSensorinfo = dicSmartPlug.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
-        chargerInfo = dicSmartPlug.get(SMARTPLUG_INFO.CHARGERPLUG_STATE.name)
-        if isTrue(chargeSensorinfo):
-            if isTrue(chargerInfo):
-                SetChargerPlug(True)
-            return
+        # dicSmartPlug = shared_data.get(TopicName.SMARTPLUG_INFO.name)
+        # chargeSensorinfo = dicSmartPlug.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
+        # chargerInfo = dicSmartPlug.get(SMARTPLUG_INFO.CHARGERPLUG_STATE.name)
+        # if isTrue(chargeSensorinfo):
+        #     if isTrue(chargerInfo):
+        #         SetChargerPlug(True)
+        #     return
         
         #SendAlarmHTTP(f'RFID 인식이 안됨! {epcTarget} - {lastNode}',True,BLB_ANDROID_IP_DEFAULT)
         diff_pos = cur_pos - startPos
         diff_pos_abs = abs(diff_pos)
-        if diff_pos < 0:
-            rfidMissPulse = -rfidMissPulse
+        
+        findNodePulse = -findNodeTryPulse if diff_pos < 0 else findNodeTryPulse
         if isRetry < 4:
         #if diff_pos_abs > roundPulse and :
             isRetry += 1
-            finalPos = cur_pos + rfidMissPulse
+            finalPos = cur_pos + findNodePulse
             dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,DEFAULT_RPM_SLOW,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
             if isInvOff:
                 RFIDControl(True)
@@ -316,6 +337,73 @@ def callbackACK(recvData):
         rospy.loginfo(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
+def isCrossRailDirection():
+    crossRailDirectionPos = 500000
+    cross_pos = round(crossRailDirectionPos / 2)
+    dic_CROSSINFO = shared_data.get(TopicName.CROSS_INFO.name)
+    if dic_CROSSINFO:
+        cross_pos = try_parse_int(dic_CROSSINFO.get(MonitoringField.CUR_POS.name))
+        if is_between(roundPulse,500000,cross_pos):
+            return None
+    return False if cross_pos > roundPulse else True
+
+def callbackMB_15(recvDataMap):
+    global lastNode
+    global lastPos
+    global endnode
+    global isScan
+    global lastcalledAck
+    global dicLastMotor15
+    dicLastMotor15.update(recvDataMap)
+    try:
+        if not isTimeExceeded(lastcalledAck, MODBUS_EXECUTE_DELAY_ms):
+            return
+        
+        isST_CMD_FINISH = recvDataMap.get(sST_CMD_FINISH)
+        if isTrue(isST_CMD_FINISH):
+            return
+        
+        target_pos = try_parse_int(recvDataMap.get(sLAST_TARGET_POS))
+        if target_pos == MIN_INT:
+            return
+
+        isCrossRailRunOK = isCrossRailDirection()
+        sSPD_signed = try_parse_int(recvDataMap.get(sSPD_Key))
+        sPOS = try_parse_int(recvDataMap.get(sPOS_Key))
+        si_pot = recvDataMap.get(sSI_POT,"")
+
+        #목적지까지 10만 펄스 이내가 아니면 리턴.
+        if not is_within_range(target_pos,sPOS, roundPulse*10):
+            return
+
+        listReturnTmp = []
+        #목적지가 충전소면 NOT활성화.        
+        dicSpd = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_SLOW, ACC_DECC_LONG,ACC_DECC_LONG)
+        potnotControlDic = getMotorWP_ONDic() if sSPD_signed > 0 else getMotorWN_ONDic()
+
+        if endnode == NODE_KITCHEN and si_pot != "NOT":
+            listReturnTmp.append(getMotorWN_ONDic())
+        #목적지가 분기기이고,분기기가 충전소 방향인 경우 POT 를 활성화 한다.
+        elif endnode == NODE_CROSS:
+            if isCrossRailRunOK:
+                if si_pot != "POT" and sSPD_signed > 0:
+                    listReturnTmp.append(potnotControlDic)
+        else:
+            if si_pot != "POT" and sSPD_signed > 0:
+                listReturnTmp.append(getMotorWP_ONDic())
+            elif si_pot != "NOT" and sSPD_signed < 0:
+                listReturnTmp.append(getMotorWN_ONDic())
+        #그외에는 모두 댐핑이며 추후 구현.
+        
+        if len(listReturnTmp) > 0:
+            SendCMD_Device(listReturnTmp)
+            lastcalledAck = getDateTime()
+            
+        #목적펄스까지 
+    except Exception as e:
+        message = traceback.format_exc()
+        rospy.loginfo(message)
+        SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
 def callbackRFID(recvDataMap):
     global epcTarget
@@ -330,8 +418,8 @@ def callbackRFID(recvDataMap):
     try:
         sEPC = recvDataMap.get(sEPCKey)
         sRSSI = abs(try_parse_int(recvDataMap.get(sRSSIKey,0)))
-        sPOS = try_parse_int(recvDataMap.get(sPOS_Key,-1))
-        sSPD = (try_parse_int(recvDataMap.get(sSPD_Key,-1)))
+        sPOS = try_parse_int(recvDataMap.get(sPOS_Key))
+        sSPD = (try_parse_int(recvDataMap.get(sSPD_Key)))
         sInv = recvDataMap.get(sInv_Key,notagstr)
         sSPDAbs = abs(sSPD)
         epcnodeinfo = GetEPCNodeInfoDic()
@@ -347,6 +435,12 @@ def callbackRFID(recvDataMap):
             recvDataMap[sInv_Key] = 'on'
         if sRSSI > RSSI_FILTER:
             return
+
+        if recvDataMap.get(sALIVE_Key) is not None:
+            #스마트 플러그값 폴링
+            handle_charge()
+            return
+        
         #dfEPCTotal = pd.read_csv(strFileEPC_total, sep=sDivTab)        
         if isScan:
             dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
@@ -356,7 +450,7 @@ def callbackRFID(recvDataMap):
                 result=epcnodeinfo2.get(sEPC)
             
             #기준이 되는 노드는 업데이트 하지 않는다.
-            if result == 1 or result == 10:
+            if result in NODES_SPECIAL:
                 return
             
             dicEPCNodeInfo = {TableInfo.NODE_ID.name : int(result) ,MotorWMOVEParams.POS.name : sPOS,MAPFIELD.EPC.name: sEPC}
@@ -465,6 +559,9 @@ def callback_factory(topic_name):
 
             if topic_name == TopicName.RFID.name:
                 callbackRFID(recvDataMap)
+            
+            if topic_name == 'MB_15':
+                callbackMB_15(recvDataMap)
             
             if topic_name == TopicName.ACK.name:
                 if lastAck != recvData:
@@ -653,11 +750,7 @@ def service_ard2():
   
     return {"message": f"{request.method},{request.args}"}, 200  
 
-@app.route('/CHARGE', methods=['GET'])
-def service_charge():
-    try:
-        #rospy.loginfo(request.args)
-        loaded_data=immutable_multi_dict_to_dict(request.args,'_CHARGE')
+def handle_charge(loaded_data = {}):
         for k,v in ip_dict.items():
             if 'PLUG' in k and 'IP' in k:
                 info = get_tasmota_info(v)
@@ -671,7 +764,15 @@ def service_charge():
                 loaded_data[f'{kDevice}_STATE'] = state
         
         data_out = json.dumps(loaded_data)
-        pub_SMARTPLUG.publish(data_out)        
+        pub_SMARTPLUG.publish(data_out)     
+           
+@app.route('/CHARGE', methods=['GET'])
+def service_charge():
+    try:
+        #rospy.loginfo(request.args)
+        loaded_data=immutable_multi_dict_to_dict(request.args,'_CHARGE')
+        return handle_charge(loaded_data)
+    
     except Exception as e:
         rospy.logerr(f"데이터 처리 오류: {traceback.format_exc()}")
         logSSE_error(traceback.format_exc())
@@ -705,11 +806,11 @@ def service_jog():
         if endnode_tmp is None:
             return {"error": "endnode is required."}, 400
         
-        dic_CROSSINFO = shared_data.get(TopicName.CROSS_INFO.name)
-        if dic_CROSSINFO:
-            chargeSensor = dic_CROSSINFO.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
-            if isTrue(chargeSensor):
-                lastNode = 1
+        # dic_CROSSINFO = shared_data.get(TopicName.CROSS_INFO.name)
+        # if dic_CROSSINFO:
+        #     chargeSensor = dic_CROSSINFO.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
+        #     if isTrue(chargeSensor):
+        #         lastNode = 1
         
         endnode = try_parse_int(endnode_tmp,MIN_INT)
         if endnode == MIN_INT:
@@ -748,25 +849,33 @@ def service_jog():
         # SendCMDESTOP(f'I{ACC_DECC_MOTOR_H}')
         # time.sleep(MODBUS_EXCEPTION_DELAY)
         #distancePulse = distance_to_pulseH(distance)
-        lsSpecialNodes = GetSpeicificEPCNodeInfo()
-        if endnode in lsSpecialNodes:
-            listReturnTmp.append(dicPOTNOT_ON)
-        else:
-            listReturnTmp.append(dicPOTNOT_OFF)
+        # lsSpecialNodes = GetSpeicificEPCNodeInfo()
+        # if endnode in lsSpecialNodes:
+        #     listReturnTmp.append(dicPOTNOT_ON)
+        # else:
+        #     listReturnTmp.append(dicPOTNOT_OFF)
         
+        #isCrossRailRunOK = isCrossRailDirection()        
         dicMotorH = getMotorMoveDic(ModbusID.MOTOR_H.value,isAbsPos,distancePulse,spd,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
+        cur_posH = GetMotorHPos()
+        distanceDiff = abs(distancePulse-(cur_posH))
+        dicPotNot = getMotorWPN_OFFDic()
+        if  distanceDiff < roundPulse / 2:
+           dicPotNot = getMotorWP_ONDic()  if distancePulse > cur_posH else getMotorWN_ONDic()
+        listReturnTmp.append(dicPotNot)
         listReturnTmp.append(dicMotorH)
         SetChargerPlug(False)
         time.sleep(MODBUS_EXCEPTION_DELAY)        
-        RFIDControl(True)
-        time.sleep(MODBUS_EXCEPTION_DELAY)
+        if endnode not in NODES_SPECIAL:
+            RFIDControl(True)
+            time.sleep(MODBUS_EXCEPTION_DELAY)
         lastRSSI = None
         SendCMD_Device(listReturnTmp)
         startPos = try_parse_int(dicMotorPos.get('MB_15'),MIN_INT)
         sJob = 'JOG'
         if isScan:
             sJob = 'SCAN'
-        sMsg = f"{sJob} start from {startPos} to :{endnode},{sEPC}"
+        sMsg = f"{sJob} from {startPos} to :{distancePulse},Node:{endnode},EPC:{sEPC}"
         rospy.loginfo(sMsg)
         time.sleep(MODBUS_EXCEPTION_DELAY)
         return {"OK": sMsg}, 200

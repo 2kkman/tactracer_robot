@@ -12,6 +12,10 @@ import ros_numpy
 minGYRO = -90
 maxGYRO = 45
 
+NODE_KITCHEN = 1
+NODE_CROSS = 10
+NODES_SPECIAL = [NODE_KITCHEN,NODE_CROSS]
+
 HTTP_COMMON_PORT=6001
 WEIGHT_OCCUPIED = 200
 HOME_TABLE='H1'
@@ -1793,6 +1797,7 @@ class MonitoringField(Enum):
     TOQ_LIMIT = auto()
     INERTIA_RATIO = auto()
     AUTO_GAIN = auto()
+    SI_POT = auto()
 
 
 class MonitoringField_BMS(Enum):
@@ -2073,7 +2078,10 @@ class MotorCmdField(Enum):
     WTORQUE = auto()  # 토크 제한 설정
     WGAIN = auto()  # 모터 게인
     WRATIO = auto()  # 모터 관성비
-    WPOTNOT_OFF = auto()  # POT NOT 활성화 설정
+    WPN_OFF = auto()  # POT NOT 활성화 설정
+    WP_ON = auto()  #`P 정방향에 반응
+    WN_ON = auto() #`0x409:0x26,0x40B:0x0`N 역방향에 반응
+    
 
 
 class MotorWMOVEParams(Enum):
@@ -2990,30 +2998,25 @@ def getMotorSpeedDic(mbid, isMode: bool, spd, acc, decc):
     strVal = getMotorSpeedString(mbid, isMode, round(spd), round(acc), round(decc))
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 
-def getMotorDefaultString(mbid, mtr: MotorCmdField):
+def getMotorDefaultString(mbid, mtr):
     sCmd = (
         f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
         f"{MotorWMOVEParams.CMD.name}{sDivFieldColon}{mtr}{sDivItemComma}"
     )
     return sCmd
 
-def getMotorDefaultDic(mbid, mtr: MotorCmdField):
+def getMotorDefaultDic(mbid, mtr):
     strVal = getMotorDefaultString(mbid, mtr)
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 
-def getMotorPOTNOT_EnableString(mbid,potnot_on=True):
-    potnotOFF = 0 if isTrue(potnot_on) else 1
-    sCmd = (
-        f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
-        f"{MotorWMOVEParams.CMD.name}{sDivFieldColon}{MotorCmdField.WPOTNOT_OFF.name}{sDivItemComma}"
-        f"{MotorWMOVEParams.MODE.name}{sDivFieldColon}{potnotOFF}"
-    )
-    return sCmd
+def getMotorWN_ONDic(mbid = ModbusID.MOTOR_H.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WN_ON.name)
 
-def getMotorPOTNOT_EnableDic(mbid,potnot_on=True):
-    strVal = getMotorPOTNOT_EnableString(mbid,potnot_on)
-    return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
+def getMotorWP_ONDic(mbid = ModbusID.MOTOR_H.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WP_ON.name)
 
+def getMotorWPN_OFFDic(mbid = ModbusID.MOTOR_H.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WPN_OFF.name)
 
 def getMotorStopString(mbid,decc=EMERGENCY_DECC):
     sCmd = (

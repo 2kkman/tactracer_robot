@@ -20,6 +20,7 @@ def RunListBlbMotorsEx(listBLB):
     curTargetTable,curTargetNode = GetCurrentTargetTable()
     #curTargetTable,curTarNode = GetTargetTableNode()
     df = GetDF(curTargetTable)    
+      
     dicTagretTableInfoCurrent = getTableServingInfo(curTargetTable)
     target540 = dicTagretTableInfoCurrent.get(TableInfo.SERVING_ANGLE.name)
     targetH = dicTagretTableInfoCurrent.get(TableInfo.MOVE_DISTANCE.name)
@@ -33,6 +34,7 @@ def RunListBlbMotorsEx(listBLB):
     #get_tasmota_info
     #현재 뻗은 암 길이 / 메인회전각도 / 트레이각도
     cmd_posH, cur_posH = GetPosServo(ModbusID.MOTOR_H)
+    DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)  
     cur_pos_mm = pulseH_to_distance(cur_posH)
     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
     #dicInfo_local = listBLB[0]
@@ -291,11 +293,12 @@ def RunListBlbMotorsEx(listBLB):
             PrintStatusInfoEverySec(1)
             return APIBLB_ACTION_REPLY.R101
     elif isinstance(dicInfo_local, list):
+        #cmd_pos11,cur_pos11=GetPosServo(ModbusID.TELE_SERV_MAIN)
         if GetRFIDInventoryStatus():
             rospy.loginfo(f"RFID is on, suspend motor action : {dicInfo_local}")
             return APIBLB_ACTION_REPLY.E104
+                
         
-        #cmd_pos11,cur_pos11=GetPosServo(ModbusID.TELE_SERV_MAIN)
         filtered_data = [item for item in dicInfo_local if item]
         if len(filtered_data) > 0:
             #print(dicInfo_local)
@@ -722,6 +725,9 @@ def RunListBlbMotorsEx(listBLB):
                 lsFinalCmdEx.append(dicCtlTmp2)
             else:
                 rospy.loginfo(f"Skipped motor : {dicCtlTmp2}")
+
+
+
         if len(lsFinalCmdEx) > 0:
             dfPrev = pd.DataFrame(lsFinalCmdEx)
             PrintDF(dfPrev)
