@@ -111,7 +111,7 @@ BLB_CROSSPLUG_IP_DEFAULT=ip_dict[IPList.BLB_CROSSPLUG_IP.name]
 BLB_SVR_PORT_DEFAULT=4041
 
 WEIGHT_ISNOT_EMPTY = 100
-CAM_LOCATION_MARGIN_OK = 0.02
+CAM_LOCATION_MARGIN_OK = 0.04
 CAM_LOCATION_MARGIN_FINE = 0.1
 PATH_RECORDING = '/root/Downloads/'
 MOVE_H_SAMPLE_PULSE = 1200000
@@ -137,6 +137,7 @@ SPEED_RATE_ARM = 0.6
 DEFAULT_RPM_MIN = 2
 DEFAULT_RPM_SLOW = 300
 DEFAULT_RPM_SLOWER = 100
+MAINROTATE_RPM_CALI = 100
 MAINROTATE_RPM_SLOWEST = 20
 DEFAULT_RPM_MID = 500
 DEFAULT_RPM_NORMAL = 1000
@@ -491,6 +492,7 @@ class EndPoints(Enum):
     info = auto()  # info 정보 수신 (디버그용)
     control = auto()  # KEEP_ALIVE 메세지 발행 토픽
     ARD = auto()  # 아두이노 제어
+    CONTROL = auto()  # 테이블 탐색 정보 저장
 
 class TopicName(Enum):
     CMD_DEVICE = auto()  # 모드버스 제어 커맨드 토픽.
@@ -2206,6 +2208,10 @@ def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
     msg = f"q={params}"
     return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, msg)  
 
+def SaveTableInfo(curTableInt):
+    msg = f"{TableInfo.TABLE_ID.name}={curTableInt}"
+    return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.CONTROL.name, msg)  
+
 class TRAY_ARD_Field(Enum):
     GLA_SVN = auto()  # linear_acceleration
     GAV_SVN = auto()  # angular_velocity
@@ -3056,6 +3062,7 @@ def getMotorTorqueDic(mbid,tql=EMERGENCY_DECC):
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 
 def getMotorLocationSetDic(mbid,position_pulse):
+    log_all_frames(mbid)
     strVal = getMotorLocationSetString(mbid,position_pulse)
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 

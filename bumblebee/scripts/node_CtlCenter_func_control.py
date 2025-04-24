@@ -62,7 +62,7 @@ def StartCaliMainRotate():
   
     if runningMotors == 0 and statusCurrent == Robot_Status.idle:
         pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-        cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, pot_cur-not_cur, 100, ACC_DECC_LONG, ACC_DECC_LONG)
+        cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -(pot_cur-not_cur), MAINROTATE_RPM_CALI, ACC_DECC_LONG, ACC_DECC_LONG)
         SendCMD_Device([cmdCaliStart])
         node_CtlCenter_globals.robot.trigger_start_calibration_mainRotate()
         return True
@@ -347,6 +347,7 @@ def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPo
         #return listReturn,timeEst
     mbid_instance = ModbusID.TELE_SERV_MAIN
     pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(mbid_instance)
+    cur_distance = GetSerArmDistance()
     distanceServingTele = distanceServingTeleTotal
     # if distanceServingTeleTotal > STROKE_INNER:
     #     distanceServingTele = distanceServingTeleTotal - STROKE_INNER
@@ -358,9 +359,11 @@ def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPo
     #pulse_ServeTeleTarget,pulse_SrvTelePulseMove=CalculateTarPosFromLength(ModbusID.TELE_SERV_MAIN,distanceServingTele)
     pulseTarget = GetTargetPulseServingArm(distanceServingTele)        
     pulse_SrvTelePulseMove = 0 if pulseTarget <= 0 else pulseTarget
-    
+    # if bUseCurrentPosition:
+    #     pulse_SrvTelePulseMove = pulseTarget-cur_pos
+    #pulse_MovePulseAbs 변수로 모터 동작 시간 및 속도 계산함.
     if bUseCurrentPosition:
-        pulse_MovePulseAbs = abs(cur_pos-pulse_SrvTelePulseMove)
+        pulse_MovePulseAbs = abs(pulse_SrvTelePulseMove-cur_pos)
     else:
         pulse_MovePulseAbs = pulse_SrvTelePulseMove
     # if not bUseCurrentPosition:
@@ -381,7 +384,8 @@ def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPo
     rpm_ServeTeleTarget = min( DEFAULT_RPM_SLOW,calculate_targetRPM_fromtime(pulse_MovePulseAbs/PULSES_PER_ROUND, timeEst))
     estTimeSrvTele = calculate_rpm_time(pulse_MovePulseAbs/PULSES_PER_ROUND, rpm_ServeTeleTarget)    
     timeSec_ExtendServe = estTimeSrvTele
-    dicReturnSrvTele = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, pulse_SrvTelePulseMove,rpm_ServeTeleTarget,ACC_ST,DECC_ST)
+    dicReturnSrvTele = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, pulseTarget,rpm_ServeTeleTarget,ACC_ST,DECC_ST)
+    #dicReturnSrvTele = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, pulse_SrvTelePulseMove,rpm_ServeTeleTarget,ACC_ST,DECC_ST)
     # if pulse_SrvTelePulseMove <= 0:
     #     return [dicReturnSrvTele], timeSec_ExtendServe
     # if pulse_InnerPulseMove > 0:
@@ -882,7 +886,7 @@ def TiltTrayCenter():
     Tilting(TRAY_TILT_STATUS.TiltTrayCenter)
 
 def TiltDown(cropProfile=LidarCropProfile.CHECK_GROUND):
-    SetCameraMode(CameraMode.WIDE_HIGH)
+    SetCameraMode(CameraMode.WIDE_FHD)
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltDown)
     #Tilting(TRAY_TILT_STATUS.TiltFace)
@@ -922,7 +926,8 @@ def DoorOpen(doorIdx=4):
     #SendInfoHTTP(log_all_frames(doorIdx))
     if isLiftTrayDownFinished() or not isRealMachine:
         #LightWelcome(False) 
-        SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
+        
+        #SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
         
         #V캘리 하는 동안만 주석처리
         TiltMaxUp()
@@ -1095,7 +1100,6 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
     if len(node_CtlCenter_globals.StateSet) > 0:
       if len(node_CtlCenter_globals.stateDic) < 0:
           return
-      rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')
       dicReceivedJC = {}
       bSendJCCmd = False
       for jc_id, isCrossStatus in node_CtlCenter_globals.stateDic.items():
@@ -1112,15 +1116,18 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
       #분기기로 가는 경우에는 현재 정지상태인지만 체크하면 됨.
       #제정신일때 다시 정의하자.
       if bSendJCCmd and isRealMachine:
+        rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')
+          
         for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
           if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
             if isCrossStatus == 0:
-                if curNode == 10: #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
-                    if isTrue(DI_POT_15):
-                        API_CROSS_set(jc_id,isCrossStatus)
-                else:   #세로 로 만들어야 할때 - 충전소에서 분기기로 진입시
-                    if SI_POT == 'GPI':
-                        API_CROSS_set(jc_id,isCrossStatus)
+                if curNode in NODES_SPECIAL and isTrue(DI_POT_15): #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
+                    API_CROSS_set(jc_id,isCrossStatus)
+                #     if isTrue(DI_POT_15):
+                #         API_CROSS_set(jc_id,isCrossStatus)
+                # else:   #세로 로 만들어야 할때 - 충전소에서 분기기로 진입시
+                #     if SI_POT == 'GPI':
+                #         API_CROSS_set(jc_id,isCrossStatus)
             elif isCrossStatus == 1:    #가로로 만들어야 할때
                 if curNode == 10:   #분기기에 올라타 있는 상태 - 
                     if isTrue(DI_POT_15):
@@ -1514,7 +1521,7 @@ def GetNewRotateArmList(dicAruco, ignoreArm=False):
     # distance_new_pulse = GetTargetPulseServingArm(distance_final_mm_real)
     # rt540pulse= GetRotateMainPulseFromAngle(angle_cal)
     rospy.loginfo(format_vars(resultDiff,diff_X,diff_Y))
-    rospy.loginfo(f'현재좌표:{curPosX,curPosY},좌표마진:{diff_X,diff_Y},신규좌표:{newPosX,newPosY},{distance_new_pulse},최종각도:{distance_new_mm_real, angle_new_degrees},트레이각도:{marker_angle}')
+    rospy.loginfo(f'현재좌표:{curPosX,curPosY},좌표마진:{diff_X,diff_Y},신규좌표:{newPosX,newPosY},최종각도:{distance_new_mm_real, angle_new_degrees},트레이각도:{marker_angle}')
     # rospy.loginfo(f'추가길이:{dISTANCE_delta_mm_real},추가각도:{angle_delta_degree},최종길이:{distance_final_mm_real},{distance_new_pulse},최종각도:{angle_cal},{rt540pulse},트레이각도:{marker_angle}')
     #CAMERA_DISTANCE_FROM_CENTER = ConvertRealToArucoSize(0.32)
     rospy.loginfo(f'카메라보정:{get_camera_offset(CAMERA_DISTANCE_FROM_CENTER,marker_angle)}')
@@ -1548,12 +1555,17 @@ def GetNewRotateArmList(dicAruco, ignoreArm=False):
     return lsMotorOperationNew
 
 def calculate_robot_translation_aruco(dicAruco):
+    GetNewRotateArmList(dicAruco)
+    lsMotorOperationNew=[]
     current_x = dicAruco['X']
     current_y = dicAruco['Y']
+    current_marker_angle = dicAruco['ANGLE']
     target_x = ref_dict['X']
     target_y = ref_dict['Y']
+    target_marker_angle = ref_dict['ANGLE']
+    marker_diff = target_marker_angle - current_marker_angle
     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
-    diffX,diffY=calculate_robot_translation(current_x,current_y,cur_angle_360,target_x,target_y)
+    diffX,diffY=calculate_robot_translation(current_x,current_y,marker_diff,target_x,target_y)
     diffx_meter = ConvertArucoSizeToReal(diffX)
     diffy_meter = -ConvertArucoSizeToReal(diffY)
     #distanceServingTeleTotal, angle_degrees =calculate_relative_extension_and_rotation(diffx_meter,diffy_meter,curDistanceSrvTele,0)
@@ -1561,6 +1573,29 @@ def calculate_robot_translation_aruco(dicAruco):
     
     #distanceServingTeleTotal, angle_degrees =calculate_robot_movement(diffx_meter,diffy_meter,curDistanceSrvTele,0)        
     # distanceServingTeleTotal, angle_degrees = calculate_distance_and_angle(diffx_meter,diffy_meter)
-    print(f'X축:{diffx_meter},Y축:{diffy_meter},회전각:{angle_degrees:.1f},현재거리:{curDistanceSrvTele},추가거리:{distanceServingTeleTotal}')
-    
+    curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+    newX = curX + diffx_meter
+    newY = curY + diffy_meter
+    distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+    print(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+    print(f'마커각도:{current_marker_angle:.1f},마커각마진:{marker_diff:.1f},현재위치각:{curDistanceSrvTele,curAngle_540},타겟위치각:{distanceFinal,angle_degrees_final}')
+    lsMotorOperationNew.append([GetDicRotateMotorMain(angle_degrees_final)])
+    lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final, True))
+    lsMotorOperationNew.append([GetDicRotateMotorTray(current_marker_angle)])
+    return []
     return 
+
+def calculate_robot_translation2(dicAruco):
+    curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
+    angle = dicAruco['ANGLE']
+    curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+    diffX, diffY = calculate_position_shift(angle, marker_coords_goldsample)
+    diffx_meter = ConvertArucoSizeToReal(diffX)
+    diffy_meter = ConvertArucoSizeToReal(diffY)    
+    newX = curX + diffx_meter
+    newY = curY + diffy_meter
+    distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+    print(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+    print(f'마커각도:{angle:.1f},마커각마진:{cur_angle_360-angle:.1f},현재위치각:{curDistanceSrvTele,curAngle_540},타겟위치각:{distanceFinal,angle_degrees_final}')
+    return []
+    return lsMotorOperationNew

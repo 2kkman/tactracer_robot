@@ -94,13 +94,13 @@ def BLB_CMD_Profile(PROFILE):
                 lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),1)
                 if lsAruco:
                     dicAruco.update(lsAruco[0])
-                    calculate_robot_translation_aruco(dicAruco)
+                    lsDF=calculate_robot_translation2(dicAruco)
                     # node_CtlCenter_globals.dicARUCO_last.clear()
                     # lsDF = GetNewRotateArmList(dicAruco)
-                    return
+                    #return
                     #rospy.loginfo(json.dumps(lsDF, indent=4))
                     #print(lsDF)
-                    #lsModbusRequests.extend(lsDF)
+                    lsModbusRequests.extend(lsDF)
                 else:
                     print('Marker not found.')
                 #lsModbusRequests.extend(lsDF)
@@ -194,11 +194,10 @@ def BLB_CMD_Profile(PROFILE):
         elif paramInt1 == BLD_PROFILE_CMD.CALI_TRAY.value:
             callResult = StartCaliTray()
             rospy.loginfo(f'트레이 캘리브레이션 요청결과 : {callResult}')
-
         elif paramInt1 == BLD_PROFILE_CMD.TrayHome.value:
+            #서빙 텔레스코픽 트레이 최소화
             lsModbusRequests.extend(GetLiftControl(True))
             lsModbusRequests.append(getListedDic(dicServFold))
-            rospy.loginfo(f'메인회전 캘리브레이션 요청결과 : {callResult}')
         elif paramInt1 == BLD_PROFILE_CMD.CALI_MAINROTATE.value:
             callResult = StartCaliMainRotate()
             rospy.loginfo(f'메인회전 캘리브레이션 요청결과 : {callResult}')

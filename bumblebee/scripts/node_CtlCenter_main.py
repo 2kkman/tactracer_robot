@@ -173,7 +173,7 @@ if __name__ == "__main__":
     
     # 현재 생성된 토픽 리스트를 모아 토픽명 배열을 만든다.
     lsTmp = rospy.get_published_topics()
-    rospy.loginfo(lsTmp)
+    #rospy.loginfo(lsTmp)
     service540 = rospy.Service(ServiceBLB.ROTATE_540.value, Kill, Rotate540)
     service360 = rospy.Service(ServiceBLB.ROTATE_360.value, Kill, Rotate360)
     cur_ros_param = getROS_Param(LIDAR_CROP_PARAMS.range_max_x.name)

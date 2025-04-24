@@ -42,9 +42,9 @@ def RunListBlbMotorsEx(listBLB):
     onScan = isScanTableMode(curTargetTable)
     dicAruco = {}
     lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),0.2)
-    if len(lsAruco) > 0 and onScan:
+    if len(lsAruco) > 0:
         dicAruco = lsAruco[0]
-        lsDF = GetNewRotateArmList(dicAruco)
+        #lsDF = GetNewRotateArmList(dicAruco)
     
     if isinstance(dicInfo_local, dict):  # 주행모드
         bIsAllMotorFolded = isReadyToMoveH_and_540()
@@ -442,11 +442,11 @@ def RunListBlbMotorsEx(listBLB):
                     
                     if dicAruco:
                         # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
-                        # TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)
+                        # TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)                        
                         resultDiff,diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
                         rospy.loginfo(format_vars(resultDiff,diff_X,diff_Y))
                         #rospy.loginfo(json.dumps(dicAruco, indent=4))
-                        GetNewRotateArmList(dicAruco)
+                        #GetNewRotateArmList(dicAruco)
                         # if diff_Y < 0.1:
                         # #if resultDiff:
                         #     TTSAndroid('테이블 위치파악 성공')
@@ -483,110 +483,30 @@ def RunListBlbMotorsEx(listBLB):
                 tray_angle = GetRotateTrayAngleFromPulse(iPOS)
                 if abs(tray_angle) > 0:
                     if dicAruco:
-                        GetNewRotateArmList(dicAruco)
-                        # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
-                        # TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)
-                        resultDiff , diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
-                        #dicAruco = lsAruco[0]
-                        rospy.loginfo(json.dumps(dicAruco, indent=4))
-                        
-                        # marker_X = dicAruco[ARUCO_RESULT_FIELD.X.name] / MARKER_X_RATE
-                        # marker_Y = dicAruco[ARUCO_RESULT_FIELD.Y.name] / MARKER_Y_RATE
-                        # #marker_X = dicAruco[ARUCO_RESULT_FIELD.XX.name] / MARKER_X_RATE
-                        # #marker_Y = dicAruco[ARUCO_RESULT_FIELD.YY.name] / MARKER_Y_RATE
-                        # marker_angle = (dicAruco[ARUCO_RESULT_FIELD.ANGLE.name]+360)%360
-                        # #P1 - 범블비 원점 (회전중심)
-                        # #P2 - 현재 카메라의 센터 좌표.
-                        # #P3 - 아르코마커의 좌표
-                        # P2X = CAM_OFFSET_TOP_X
-                        # P2Y = CAM_OFFSET_TOP_Y
-                        # P1X = P2X
-                        # P1Y = P2Y+curDistanceSrvTele
-                        # P3X = marker_X - P2X
-                        # P3Y = marker_Y - P2Y
-                        # #삼각형이 이루어지지 않는 경우 서빙암거리만 조절하는 예외처리 루틴 추가.
-                        # side_a, distance_new_mm,side_c,angle_diff_to_minus, angle_B_deg, angle_C_deg = calculate_triangle(P1X,P1Y,P2X,P2Y,P3X,P3Y)
-                        # curAngle_540_new = curAngle_540 + angle_diff_to_minus if P3X-P1X > 0 else curAngle_540 - angle_diff_to_minus
-                        # rospy.loginfo(f'P1:{P1X},{P1Y},P2:{P2X},{P2Y},P3:{P3X},{P3Y},보정암길이:{distance_new_mm},보정각도:{curAngle_540_new}')
-                        # lsArmBeTunedFromOrigin = GetStrArmExtendMain(distance_new_mm,curAngle_540_new,False)
-                        # lsArmBeTunedFromCurrent = GetStrArmExtendMain(distance_new_mm,curAngle_540_new,True)
-                        # lsArmBeFold = GetStrArmExtendMain(0,0,True)
-                        # dicRotateNewVerySlow = GetDicRotateMotorMain(curAngle_540_new,MAINROTATE_RPM_SLOWEST,False)
-                        # dicRotateNewNormal = GetDicRotateMotorMain(curAngle_540_new)
-                        # rotateTime = dicRotateNewVerySlow.get(MotorWMOVEParams.TIME.name, MIN_INT)
-                        # #is_within_deviationX = abs(CAM_OFFSET_TOP_X - marker_X) <= CAM_LOCATION_MARGIN_OK
-                        # #is_within_deviationY = abs(CAM_OFFSET_TOP_Y - marker_Y) <= CAM_LOCATION_MARGIN_OK
-                        # diff_X = abs(CAM_OFFSET_TOP_X - marker_X)
-                        # diff_Y = abs(CAM_OFFSET_TOP_Y - marker_Y)
-                        # diff_arm = abs(distance_new_mm-curDistanceSrvTele)
-                        # rospy.loginfo(f'이동해야할 각도/시간:{-angle_diff_to_minus}:{rotateTime},이동해야할암길이:{diff_arm}mm,X오차:{diff_X},Y오차:{diff_Y}')
-                        # #아르코마커가 정위치에 감지되어 바로 내리면 되는 경우
-                        # if (diff_X <= CAM_LOCATION_MARGIN_OK and diff_Y <= CAM_LOCATION_MARGIN_OK) or node_CtlCenter_globals.aruco_try == 3:
-                        #     rospy.loginfo(json.dumps(dicAruco, indent=4))
-                        #     if (diff_X <= CAM_LOCATION_MARGIN_OK and diff_Y <= CAM_LOCATION_MARGIN_OK):
-                        #         TTSAndroid(TTSMessage.ARUCO_CORRECTED.value)
-                        #         #제대로 찾아냈으면 테이블 정보를 업데이트 한다.
-                        #         updateTableServingInfo(curTargetTable,curDistanceSrvTele,curAngle_540,marker_angle,cur_posH)
-                        #     else:
-                        #         TTSAndroid(TTSMessage.ARUCO_NOT_CORRECTED.value)
-                        #     node_CtlCenter_globals.aruco_try = 0
-
-                        # #아르코마커가 약간 벗어나 있어 내리기 전 약간의 위치보정이 필요한 경우
-                        # #아주 느린 속도로 메인회전을 돌리면서 암길이를 조절한다.
-                        # elif rotateTime < 5 and diff_arm < 100:
-                        # #elif rotateTime < 10 and diff_arm < 300:
-                        # #elif diff_X <= CAM_LOCATION_MARGIN_FINE and diff_Y <= CAM_LOCATION_MARGIN_FINE:
-                        #     #lsMotorOperationNew.insert(0,dicRotateNew)
-                        #     #node_CtlCenter_globals.listBLB.pop(0)
-                        #     if distance_new_mm > curDistanceSrvTele:
-                        #         lsMotorOperationNew.append([dicRotateNewVerySlow])
-                        #         lsMotorOperationNew.append(lsArmBeTunedFromCurrent)
-                        #     else:
-                        #         lsMotorOperationNew.append(lsArmBeTunedFromCurrent)                                
-                        #         lsMotorOperationNew.append([dicRotateNewVerySlow])
-                        #     listBLB[:] = lsMotorOperationNew + listBLB
-                        #     # node_CtlCenter_globals.listBLB.insert(0, [GetDicRotateMotorMain(curAngle_540_new,MAINROTATE_SPD_SLOWEST,False)])
-                        #     node_CtlCenter_globals.aruco_try += 1
-                        #     TTSAndroid(TTSMessage.ARUCO_FINE_TUNING.value)
-                        #     return APIBLB_ACTION_REPLY.E105
-                        # else:
-                        #     #lsArmFoldControl = GetStrArmExtendMain(0,0,False)
-                        #     #node_CtlCenter_globals.listBLB.pop(0)
-                        #     lsMotorOperationNew.append(lsArmBeFold)
-                        #     lsMotorOperationNew.append([dicRotateNewNormal])
-                        #     lsMotorOperationNew.append(lsArmBeTunedFromOrigin)
-                        #     #node_CtlCenter_globals.listBLB.insert(0,lsMotorOperationNew)
-                        #     listBLB[:] = lsMotorOperationNew + listBLB
-                            
-                        #     # node_CtlCenter_globals.listBLB.insert(0,[GetDicRotateMotorMain(curAngle_540_new)])
-                        #     # node_CtlCenter_globals.listBLB.insert(0,GetStrArmExtendMain(0,0,True))
-                        #     node_CtlCenter_globals.aruco_try += 1
-                        #     TTSAndroid(TTSMessage.ARUCO_FOLD_TUNING.value)
-                        #     return APIBLB_ACTION_REPLY.E105
-                        
-                        # x2 = 152
-                        # y2=-2278
-                        # angle_rotate_gap = GetAngleMargin(DIFF_X,DIFF_Y,x2,y2)
-                        # angle_rotate_abs = abs(angle_rotate_gap)
-                        #print(f'메인 회전 조금 더 돌아가야하는 각도 : {angle_rotate_gap}')
-                        #아래 동작부는 정확한 움직임이 구현될 때까지 주석처리. 
-                        # if  angle_rotate_abs > 10 and angle_rotate_abs < 30:
-                        #     potRotate540, notRotate540, poscmdRotate540,poscurRotate540= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-                        #     target_pulse = angle_rotate_abs*(abs(notRotate540)+potRotate540)/MAX_ANGLE_BLBBODY
-                        #     dicTuning = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -target_pulse,20,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH*2)
-                        #     dicInfo_local.append(dicTuning)
-                        #angle_new = int(dicAruco[ARUCO_RESULT_FIELD.ANGLE.name])-angle_rotate_gap
-                        angle_new = (180+ int(dicAruco[ARUCO_RESULT_FIELD.ANGLE.name]))%360
-                        dicNewTray = GetDicRotateMotorTray(angle_new)
-                        dicInfo_local[i].update(dicNewTray)
-                        infoMsg = f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicAruco, indent=4)}'
-                        SendInfoHTTP(f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new}')
+                        marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
+                        marker_angle = dicAruco.get(ARUCO_RESULT_FIELD.ANGLE.name)
+                        dicTagretTableInfo = getTableServingInfo(curTargetTable)
+                        target_marker = dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name,-1)
+                        if is_equal(marker_value,target_marker):
+                            angle_new = (180+ marker_angle)%360
+                            #GetNewRotateArmList(dicAruco)
+                            # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
+                            TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)
+                            resultDiff , diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
+                            #dicAruco = lsAruco[0]
+                            rospy.loginfo(json.dumps(dicAruco, indent=4))
+                            dicNewTray = GetDicRotateMotorTray(angle_new)
+                            dicInfo_local[i].update(dicNewTray)
+                            infoMsg = f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicAruco, indent=4)}'
+                            SendInfoHTTP(f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new}')
+                            rospy.loginfo(infoMsg)
+                        else:
+                            infoMsg = f'마커값이 다릅니다 : {marker_value,target_marker}'
+                            rospy.loginfo(infoMsg)
+                    else:
+                        infoMsg = '아르코마커가 인식되지 않았습니다.'
                         rospy.loginfo(infoMsg)
                         
-                        #print(f'기존메인회전타켓:{dicInfo_local[0][MotorWMOVEParams.POS.name]},마커타겟:{dicNewRotate[MotorWMOVEParams.POS.name]}')
-                    # else:
-                    #     #TTSQbi(TTSMessage.ARUCO_FOUND_FAIL.value)
-                    #     TTSQbi(TTSMessage.REMAIN_30S.value)
         node_CtlCenter_globals.lock.acquire()
         node_CtlCenter_globals.dicTargetPos.clear()
         node_CtlCenter_globals.dicTargetPos.update(create_mbid_dict(dicInfo_local, MotorWMOVEParams.POS.name))

@@ -1,501 +1,290 @@
 timestamp	value
-2025:04:23 19:54:42.036	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.054	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.070	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.086	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.100	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.115	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.131	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 19:54:42.147	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:00:31.279	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:00:31.395	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:00:31.634	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""9215"", ""SPD""; ""42"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:00:55.377	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:01:07.175	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:01:08.571	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""962962"", ""SPD""; ""205"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:03:26.774	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:03:38.618	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:03:40.475	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""979"", ""SPD""; ""113"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:04:17.713	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:04:29.601	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:04:31.165	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""966930"", ""SPD""; ""177"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:05:03.799	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""324900"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:05:28.193	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:05:39.155	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-172568"", ""SPD""; ""193"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:06:35.206	V12;0
-2025:04:23 20:06:35.611	svrIP Changed ; 172.30.1.6
-2025:04:23 20:06:36.369	4;_run_code;<module>;SetCurrentNodeE2009A3030033AF000000913
-2025:04:23 20:06:36.508	TTS OK ; 10,10,RFID 위치감지 성공.
-2025:04:23 20:06:36.578	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
-2025:04:23 20:06:36.613	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""-185820""}] from callbackCmd - SendCMD"
-2025:04:23 20:06:36.649	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:23 20:06:36.679	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:23 20:07:58.787	V12;0
-2025:04:23 20:07:59.169	svrIP Changed ; 172.30.1.6
-2025:04:23 20:08:00.802	4;_run_code;<module>;SetCurrentNodeE2009A3030033AF000000913
-2025:04:23 20:08:00.956	TTS OK ; 10,10,RFID 위치감지 성공.
-2025:04:23 20:08:01.013	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
-2025:04:23 20:08:01.052	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""-185820""}] from callbackCmd - SendCMD"
-2025:04:23 20:08:01.086	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:23 20:08:01.117	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:23 20:08:51.981	118;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:23 20:08:52.036	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:23 20:08:53.274	Camera settings updated; 2,1920,1440
-2025:04:23 20:08:53.609	aprilTagOn parsing; true
-2025:04:23 20:08:53.715	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
-2025:04:23 20:08:54.335	MBID;27,현재펄스;324900,최단회전 펄스 선택;189525,839325,-460275 = (189525)
-2025:04:23 20:09:02.196	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:09:02.387	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 189525, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:23 20:09:06.256	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:23 20:09:06.395	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:09:06.432	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""150"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:23 20:09:14.738	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:23 20:09:15.121	Camera settings updated; 2,1920,1440
-2025:04:23 20:09:17.096	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:09:17.168	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""88766"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""952703"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 10.8}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""680502"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 10.6}] from callbackCmd - SendCMD"
-2025:04:23 20:09:26.815	SHAKE_MBID;10,평균;10.011,최소;0.0,최대;71.2
-2025:04:23 20:09:26.856	SHAKE_MBID;11,평균;10.011,최소;0.0,최대;71.2
-2025:04:23 20:09:27.379	SHAKE_MBID;13,평균;8.495,최소;0.0,최대;71.2
-2025:04:23 20:09:27.490	MBID;31,현재펄스;1,최단회전 펄스 선택;243001,1076147,-590145 = (243001)
-2025:04:23 20:09:38.888	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:09:38.922	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 243001, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:23 20:09:43.809	SHAKE_MBID;31,평균;0.892,최소;0.0,최대;3.97
-2025:04:23 20:09:44.036	aprilTagOn parsing; false
-2025:04:23 20:10:04.083	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:04.211	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""129045"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 2.5}] from callbackCmd - SendCMD"
-2025:04:23 20:10:05.988	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:23 20:10:06.023	V12;0
-2025:04:23 20:10:06.338	aprilTagOn parsing; false
-2025:04:23 20:10:14.718	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:23 20:10:14.801	TTS OK ; 10,10,H1 시작.
-2025:04:23 20:10:14.952	TTS OK ; 10,10,테이블 인덱스 에러.
-2025:04:23 20:10:14.982	54004; Home Called
-2025:04:23 20:10:14.997	Camera settings updated; 2,1920,1440
-2025:04:23 20:10:15.286	aprilTagOn parsing; true
-2025:04:23 20:10:15.421	V12;0
-2025:04:23 20:10:15.481	O;1,4
-2025:04:23 20:10:15.654	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:15.689	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 2.5}] from callbackCmd - SendCMD"
-2025:04:23 20:10:17.467	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:23 20:10:17.502	V12;0
-2025:04:23 20:10:17.606	MBID;31,현재펄스;243016,최단회전 펄스 선택;0,833146,-833146 = (0)
-2025:04:23 20:10:17.701	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:17.714	aprilTagOn parsing; false
-2025:04:23 20:10:17.736	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:23 20:10:22.596	SHAKE_MBID;31,평균;0.325,최소;0.0,최대;1.55
-2025:04:23 20:10:22.962	Camera settings updated; 2,1920,1440
-2025:04:23 20:10:23.236	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:23.268	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""168"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 6.6}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 4.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.3}] from callbackCmd - SendCMD"
-2025:04:23 20:10:26.888	SHAKE_MBID;11,평균;0.369,최소;0.0,최대;2.95
-2025:04:23 20:10:27.841	SHAKE_MBID;10,평균;0.583,최소;0.0,최대;2.95
-2025:04:23 20:10:28.134	SHAKE_MBID;13,평균;0.714,최소;0.0,최대;2.95
-2025:04:23 20:10:28.218	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:28.248	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:23 20:10:32.951	SHAKE_MBID;11,평균;0.264,최소;0.0,최대;1.73
-2025:04:23 20:10:33.107	MBID;27,현재펄스;189530,최단회전 펄스 선택;0,649800,-649800 = (0)
-2025:04:23 20:10:33.195	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:23 20:10:33.224	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.8}] from callbackCmd - SendCMD"
-2025:04:23 20:10:38.181	SHAKE_MBID;27,평균;0.667,최소;0.0,최대;3.28
-2025:04:23 20:10:38.489	Camera settings updated; 2,1024,768
-2025:04:23 20:10:38.686	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:23 20:10:38.879	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:10:49.471	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""953255"", ""SPD""; ""277"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:10:51.411	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.424	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.442	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.458	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.473	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.492	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.512	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.527	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:51.701	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 20:10:51.812	SHAKE_MBID;15,평균;0.189,최소;0.0,최대;1.35
-2025:04:23 20:10:51.862	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:23 20:10:51.913	SHAKE_MBID;15,평균;1.35,최소;1.35,최대;1.35
-2025:04:23 20:10:51.958	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:23 20:10:52.772	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.786	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.805	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.819	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.838	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.853	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.872	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:52.892	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.059	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 20:10:53.095	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.115	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.139	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.158	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.181	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.218	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.238	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.262	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.324	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.342	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.359	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.388	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.418	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.439	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.449	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.471	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.629	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.653	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.676	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.691	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.707	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.732	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.748	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.770	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.870	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.886	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.903	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.924	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.940	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.958	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.977	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:53.993	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.103	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.120	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.146	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.168	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.186	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.205	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.226	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.259	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.381	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.399	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.414	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.435	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.453	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.480	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.510	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.528	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.715	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.738	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.763	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.781	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.802	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.817	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.836	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.858	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.950	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.971	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:54.985	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.006	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.021	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.052	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.070	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.093	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.226	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.243	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.260	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.280	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.302	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.319	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.336	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.361	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.489	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.511	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.532	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.549	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.572	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.596	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.636	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.650	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.851	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.868	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.886	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.905	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.923	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.941	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.961	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:55.984	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.073	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.089	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.105	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.120	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.138	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.156	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.177	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.194	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.357	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.373	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.391	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.413	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.435	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.450	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.463	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.489	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.582	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.602	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.623	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.649	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.669	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.689	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.708	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:56.735	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.090	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.105	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.122	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.138	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.153	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.170	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.184	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.202	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.328	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.451	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.469	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.492	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.528	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.552	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.572	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.594	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.691	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.725	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.756	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.790	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.811	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.830	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.850	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.875	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:57.995	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.015	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.032	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.051	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.069	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.088	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.105	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.138	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.322	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.341	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.356	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.373	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.389	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.407	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.425	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.445	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.603	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.620	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.638	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.660	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.677	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.697	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.721	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.743	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.954	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.972	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:58.989	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.005	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.021	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.040	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.057	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.077	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.220	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.236	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.260	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.276	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.294	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.313	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.338	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.369	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.544	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.590	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.616	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.636	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.652	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.671	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.687	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.704	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.795	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.828	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.844	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.859	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.875	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.896	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.914	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:10:59.939	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.039	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.058	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.073	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.089	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.104	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.120	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.142	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.164	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.324	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.342	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.368	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.387	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.415	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.446	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.459	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.481	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.649	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.669	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.691	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.705	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.721	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.740	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.759	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.776	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.860	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.879	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.894	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.911	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.928	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.947	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.965	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:00.981	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.166	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.189	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.224	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.254	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.289	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.306	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.322	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.338	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.413	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.437	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.460	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.496	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.513	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.531	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.547	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.563	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.695	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.730	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.753	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.773	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.793	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.809	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.830	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.847	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.942	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.958	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.979	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:01.993	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:11:02.009	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:23 20:21:35.549	MBID;15,CMD;WMOVE,MODE;1,POS;0,SPD;1100,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
-2025:04:23 20:30:06.830	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:30:14.773	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:30:18.673	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:30:18.849	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 20:30:52.997	MBID;15,CMD;WMOVE,MODE;1,POS;0,SPD;1100,ACC;3000,DECC;3000 from callbackCmd - _invoke_callback
-2025:04:23 20:31:16.448	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:31:22.743	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:31:36.539	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-170707"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:31:36.932	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:31:37.495	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:34:10.856	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:34:19.759	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:34:24.021	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 20:35:18.230	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:35:24.494	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:35:38.763	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-175989"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:35:38.862	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:35:39.455	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:36:14.909	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:36:23.871	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:36:26.289	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 20:44:04.174	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-638825"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:44:07.516	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:44:34.975	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-633668"", ""SPD""; ""219"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:47:35.336	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:51:56.476	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-638825"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:00.426	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:09.752	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-629678"", ""SPD""; ""195"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:09.758	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:10.872	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:21.803	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:33.377	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:33.963	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 20:52:35.280	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:23 21:03:01.796	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-638825"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:03:05.629	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:03:15.330	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-627188"", ""SPD""; ""210"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:03:15.545	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:03:16.114	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:09:42.360	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:09:47.314	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:09:49.599	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185101"", ""SPD""; ""37"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:09:49.730	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:10:34.520	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-638825"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:10:39.602	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:10:40.965	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-626678"", ""SPD""; ""213"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:10:42.066	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:12:57.850	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:02.867	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:05.178	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185262"", ""SPD""; ""21"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:05.379	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:08.149	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:17.649	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:18.256	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:19.591	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""981411"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:20.170	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""981327"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:13:20.740	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""981328"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:19:26.760	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:19:33.390	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:19:37.411	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-167133"", ""SPD""; ""263"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:19:38.726	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:19:50.672	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:20:00.067	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}, {""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:20:00.618	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:23 21:22:59.751	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:23:06.384	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:23:10.358	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-166402"", ""SPD""; ""270"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:23:11.719	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:23:23.428	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:23:32.934	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:26:29.220	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-638825"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:26:33.142	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:26:42.005	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-620968"", ""SPD""; ""260"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:26:43.337	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:26:53.909	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:27:05.454	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:27:07.875	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""985014"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:27:41.432	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:27:49.974	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:29:18.463	V12;0
-2025:04:23 21:29:18.994	svrIP Changed ; 172.30.1.6
-2025:04:23 21:29:20.867	1;_run_code;<module>;SetCurrentNodeE2009A4040054AF000000495
-2025:04:23 21:29:21.017	TTS OK ; 10,10,RFID 위치감지 성공.
-2025:04:23 21:29:21.052	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
-2025:04:23 21:29:21.157	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
-2025:04:23 21:29:21.192	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:23 21:29:21.229	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:23 21:30:01.550	118;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:23 21:30:01.591	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:23 21:30:01.871	Camera settings updated; 2,1920,1440
-2025:04:23 21:30:02.515	aprilTagOn parsing; true
-2025:04:23 21:30:02.629	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
-2025:04:23 21:30:02.992	Camera settings updated; 2,1024,768
-2025:04:23 21:30:03.364	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:23 21:30:03.549	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:30:04.827	모터명령어;_run_code;<module>;CheckETCActions;SendCMD_Device
-2025:04:23 21:30:04.861	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
-2025:04:23 21:30:14.461	SHAKE_MBID;15,평균;0.421,최소;0.0,최대;2.36
-2025:04:23 21:30:14.492	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""985003"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:30:14.540	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:23 21:31:17.999	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:31:18.046	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:31:26.627	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:32:13.932	V12;0
-2025:04:23 21:32:14.335	svrIP Changed ; 172.30.1.6
-2025:04:23 21:32:36.925	TTS OK ; 10,10,RFID 위치에러
-2025:04:23 21:32:36.974	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:23 21:32:37.010	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:23 21:32:44.659	V12;0
-2025:04:23 21:32:44.999	svrIP Changed ; 172.30.1.6
-2025:04:23 21:32:51.646	TTS OK ; 10,10,RFID 위치에러
-2025:04:23 21:32:51.703	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:23 21:38:43.336	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""353630"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:38:47.555	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:38:49.141	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""344629"", ""SPD""; ""169"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:38:50.028	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:38:52.796	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:23 21:38:56.912	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:23 21:40:56.595	"[{""MBID""; ""15"", ""CMD""; ""WPOTNOT_OFF"", ""MODE""; ""1""}] from callbackCmd - SendCMD"
-2025:04:23 21:41:10.158	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}] from callbackCmd - SendCMD"
-2025:04:23 21:41:27.807	MBID;15,CMD;WMOVE,MODE;65,POS;-5000,SPD;1100,ACC;3000,DECC;3000 from callbackCmd - _invoke_callback
-2025:04:23 21:41:27.930	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-"; """"1"""", """"POS""""; """"582850"""", """"SPD""""; """"300"""", """"ACC""""; """"5000"""", """"DECC""""; """"5000""""}] from callbackCmd - SendCMD"""	
+2025:04:24 23:13:18.422	118;_invoke_callback;callbackBLB_CMD;AppendTableList
+2025:04:24 23:13:18.475	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:24 23:13:18.873	Camera settings updated; 2,1280,960
+2025:04:24 23:13:19.233	aprilTagOn parsing; true
+2025:04:24 23:13:20.031	V12;0
+2025:04:24 23:13:20.097	O;1,4
+2025:04:24 23:13:25.767	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:13:25.969	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
+2025:04:24 23:13:28.272	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:13:28.314	V12;0
+2025:04:24 23:13:28.525	MBID;31,현재펄스;-416592,최단회전 펄스 선택;0,833146,-833146 = (-833146)
+2025:04:24 23:13:36.530	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:13:36.567	aprilTagOn parsing; false
+2025:04:24 23:13:36.670	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.0}] from callbackCmd - SendCMD"
+2025:04:24 23:13:43.584	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:13:44.041	Camera settings updated; 2,1280,960
+2025:04:24 23:13:51.159	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:13:51.422	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 6.0}] from callbackCmd - SendCMD"
+2025:04:24 23:13:54.563	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:13:54.756	MBID;27,현재펄스;325006,최단회전 펄스 선택;189583,839583,-460417 = (189583)
+2025:04:24 23:13:58.579	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:13:58.630	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 189583, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
+2025:04:24 23:14:02.528	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:02.780	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:14:02.819	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""150"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:24 23:14:11.132	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:11.618	Camera settings updated; 2,1280,960
+2025:04:24 23:14:24.238	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:14:24.377	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""89368"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""959459"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 10.9}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""685327"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 10.7}] from callbackCmd - SendCMD"
+2025:04:24 23:14:34.054	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:34.108	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:34.668	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:34.872	MBID;31,현재펄스;-833168,최단회전 펄스 선택;-590145,243001,-1423291 = (-590145)
+2025:04:24 23:14:40.956	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:14:41.092	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -590145, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
+2025:04:24 23:14:45.983	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:14:46.317	aprilTagOn parsing; false
+2025:04:24 23:15:50.638	V12;0
+2025:04:24 23:15:51.148	svrIP Changed ; 172.30.1.6
+2025:04:24 23:15:52.077	4;_run_code;<module>;SetCurrentNodeE2009A3030033AF000000913
+2025:04:24 23:15:52.237	TTS OK ; 10,10,RFID 위치감지 성공.
+2025:04:24 23:15:52.294	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
+2025:04:24 23:15:52.334	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""-185820""}] from callbackCmd - SendCMD"
+2025:04:24 23:15:52.376	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
+2025:04:24 23:15:52.416	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
+2025:04:24 23:16:37.054	120;_invoke_callback;callbackBLB_CMD;AppendTableList
+2025:04:24 23:16:37.124	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:24 23:16:37.427	Camera settings updated; 2,1280,960
+2025:04:24 23:16:38.258	aprilTagOn parsing; true
+2025:04:24 23:16:38.394	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:24 23:16:39.830	MBID;31,현재펄스;-590151,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
+2025:04:24 23:16:43.650	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:16:43.826	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
+2025:04:24 23:16:48.682	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:16:49.301	Camera settings updated; 2,1280,960
+2025:04:24 23:16:49.819	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:16:49.859	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""169"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 13.7}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 4.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.3}] from callbackCmd - SendCMD"
+2025:04:24 23:16:54.477	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:16:54.812	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:00.482	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:00.689	MBID;27,현재펄스;189585,최단회전 펄스 선택;451389,1101389,-198611 = (451389)
+2025:04:24 23:17:00.827	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:17:00.866	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 451389, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.2}] from callbackCmd - SendCMD"
+2025:04:24 23:17:07.260	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:07.464	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:17:07.506	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""150"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:24 23:17:15.822	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:16.409	Camera settings updated; 2,1280,960
+2025:04:24 23:17:41.472	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:17:41.747	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""88766"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""952703"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 10.8}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""680502"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 10.6}] from callbackCmd - SendCMD"
+2025:04:24 23:17:42.804	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
+2025:04:24 23:17:42.882	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:24 23:17:42.961	모터명령어;_run_code;<module>;MotorBalanceControlEx;SendCMD_Device
+2025:04:24 23:17:43.032	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""126382"", ""SPD""; ""20"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:17:43.303	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:43.343	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
+2025:04:24 23:17:43.421	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}] from callbackCmd - SendCMD"
+2025:04:24 23:17:43.628	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:43.900	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:43.994	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:17:44.658	Camera settings updated; 2,1280,960
+2025:04:24 23:19:11.914	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:19:12.239	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""217323"", ""SPD""; ""169"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 10.5}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""2331081"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 8.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1665057"", ""SPD""; ""1380"", ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 8.3}] from callbackCmd - SendCMD"
+2025:04:24 23:19:16.021	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
+2025:04:24 23:19:16.062	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}] from callbackCmd - SendCMD"
+2025:04:24 23:19:36.456	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:19:36.527	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:19:36.733	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:19:37.632	MBID;27,현재펄스;450032,최단회전 펄스 선택;447778,1097778,-202222 = (447778)
+2025:04:24 23:19:56.949	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:19:57.309	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""103216"", ""SPD""; ""77"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 4.8}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1114865"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 2.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""796332"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 2.2}] from callbackCmd - SendCMD"
+2025:04:24 23:19:59.069	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:19:59.735	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:20:00.190	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:20:00.444	MBID;31,현재펄스;-833169,최단회전 펄스 선택;-1092347,-259201,-1925493 = (-1092347)
+2025:04:24 23:20:04.129	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:20:04.191	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -1092347, ""SPD""; ""500"", ""ACC""; ""800"", ""DECC""; ""3000"", ""TIME""; 6.0}] from callbackCmd - SendCMD"
+2025:04:24 23:20:08.235	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:20:08.681	aprilTagOn parsing; false
+2025:04:24 23:20:19.281	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:20:19.345	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""200000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
+2025:04:24 23:20:21.654	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:20:21.695	V12;0
+2025:04:24 23:20:22.033	aprilTagOn parsing; false
+2025:04:24 23:22:30.389	2;_invoke_callback;callbackBLB_CMD;AppendTableList
+2025:04:24 23:22:30.446	2;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:24 23:22:30.679	V12;0
+2025:04:24 23:22:30.760	O;1,4
+2025:04:24 23:22:38.140	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:22:38.256	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
+2025:04:24 23:22:40.549	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:22:40.576	V12;0
+2025:04:24 23:22:40.669	MBID;31,현재펄스;-1092369,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
+2025:04:24 23:22:40.750	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:22:40.773	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
+2025:04:24 23:22:40.827	aprilTagOn parsing; false
+2025:04:24 23:22:45.824	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:22:46.006	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:22:46.028	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""167"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 14.1}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.0}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.8}] from callbackCmd - SendCMD"
+2025:04:24 23:22:51.084	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:22:51.486	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:22:57.243	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:22:57.414	MBID;27,현재펄스;450032,최단회전 펄스 선택;0,650000,-650000 = (650000)
+2025:04:24 23:22:57.513	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:22:57.543	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
+2025:04:24 23:23:02.702	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:23:03.113	Camera settings updated; 2,1024,768
+2025:04:24 23:23:10.049	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:23:10.220	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:23:19.711	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:23:21.078	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:23:21.113	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:23:21.170	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:24 23:23:52.371	MBID;27,현재펄스;649999,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:24 23:23:52.473	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:23:52.505	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:24 23:24:00.144	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:00.617	Camera settings updated; 2,1024,768
+2025:04:24 23:24:00.862	POS=572830 SPD=2000 endnode=3;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:24:01.115	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""572830"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:05.578	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:08.021	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:08.063	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""562801"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:08.096	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
+2025:04:24 23:24:09.281	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:09.314	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""552791"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:09.349	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
+2025:04:24 23:24:09.966	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""554065"", ""SPD""; ""106"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:10.539	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:24:10.943	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:11.028	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
+2025:04:24 23:24:11.202	MBID;27,현재펄스;325006,최단회전 펄스 선택;187778,837778,-462222 = (187778)
+2025:04:24 23:24:11.209	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
+2025:04:24 23:24:11.392	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:24:11.434	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 187778, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
+2025:04:24 23:24:15.348	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:15.658	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:24:15.701	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-57617"", ""SPD""; 100, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.0}] from callbackCmd - SendCMD"
+2025:04:24 23:24:24.442	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:24.619	MBID;31,현재펄스;-833171,최단회전 펄스 선택;-807689,25457,-1640835 = (-807689)
+2025:04:24 23:24:24.749	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:24:24.793	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -807689, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.6}] from callbackCmd - SendCMD"
+2025:04:24 23:24:26.373	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:26.743	aprilTagOn parsing; false
+2025:04:24 23:24:26.830	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:24:26.872	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:24 23:24:34.304	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:24:34.358	V12;0
+2025:04:24 23:24:34.964	aprilTagOn parsing; false
+2025:04:24 23:25:34.870	120;_invoke_callback;callbackBLB_CMD;AppendTableList
+2025:04:24 23:25:34.932	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:24 23:25:35.187	V12;0
+2025:04:24 23:25:35.259	O;1,4
+2025:04:24 23:25:35.534	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:25:35.575	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:24 23:25:43.013	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:25:43.064	V12;0
+2025:04:24 23:25:43.233	MBID;31,현재펄스;-807711,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
+2025:04:24 23:25:43.377	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:25:43.419	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.6}] from callbackCmd - SendCMD"
+2025:04:24 23:25:43.478	aprilTagOn parsing; false
+2025:04:24 23:25:44.982	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:25:45.324	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:25:45.366	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 6.4}] from callbackCmd - SendCMD"
+2025:04:24 23:25:48.934	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:25:49.217	MBID;27,현재펄스;187774,최단회전 펄스 선택;0,650000,-650000 = (0)
+2025:04:24 23:25:49.358	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:25:49.401	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.8}] from callbackCmd - SendCMD"
+2025:04:24 23:25:54.333	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:25:54.699	Camera settings updated; 2,1024,768
+2025:04:24 23:25:54.936	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:25:55.122	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:25:59.920	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:01.185	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:01.245	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:01.328	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:24 23:26:10.243	MBID;27,현재펄스;4,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:24 23:26:10.398	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:10.440	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:24 23:26:18.077	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:18.461	Camera settings updated; 2,1024,768
+2025:04:24 23:26:18.671	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:26:18.962	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:25.461	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:30.288	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185712"", ""SPD""; ""102"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:30.813	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:30.996	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:31.071	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
+2025:04:24 23:26:31.256	MBID;27,현재펄스;325002,최단회전 펄스 선택;449583,1099583,-200417 = (449583)
+2025:04:24 23:26:31.265	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
+2025:04:24 23:26:31.450	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:31.495	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 449583, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.4}] from callbackCmd - SendCMD"
+2025:04:24 23:26:35.176	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:35.371	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:35.414	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:24 23:26:40.124	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:40.434	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:40.478	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""113029"", ""SPD""; ""156"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 7.5}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1304054"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.6}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""931467"", ""SPD""; ""1380"", ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 5.6}] from callbackCmd - SendCMD"
+2025:04:24 23:26:45.246	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:46.379	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:46.591	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:46.797	MBID;31,현재펄스;-833169,최단회전 펄스 선택;-1092347,-259201,-1925493 = (-1092347)
+2025:04:24 23:26:46.939	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:46.983	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -1092347, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
+2025:04:24 23:26:52.055	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:26:52.401	aprilTagOn parsing; false
+2025:04:24 23:26:52.493	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:26:52.540	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:24 23:26:59.963	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:00.017	V12;0
+2025:04:24 23:27:00.580	aprilTagOn parsing; false
+2025:04:24 23:27:12.593	TTS OK ; 10,10,H1 시작.
+2025:04:24 23:27:12.863	H1;_invoke_callback;callbackBLB_CMD;HomeCall;InsertTableList;SetTableTarget
+2025:04:24 23:27:12.923	54004; Home Called
+2025:04:24 23:27:13.021	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:24 23:27:13.269	V12;0
+2025:04:24 23:27:13.355	O;1,4
+2025:04:24 23:27:13.633	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:27:13.678	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:24 23:27:21.108	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:21.162	V12;0
+2025:04:24 23:27:21.417	MBID;31,현재펄스;-1092369,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
+2025:04:24 23:27:21.529	aprilTagOn parsing; false
+2025:04:24 23:27:21.569	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:27:21.615	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
+2025:04:24 23:27:26.675	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:27.003	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:27:27.049	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""156"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 15.2}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.6}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 5.4}] from callbackCmd - SendCMD"
+2025:04:24 23:27:32.741	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:33.184	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:39.385	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:39.650	MBID;27,현재펄스;449585,최단회전 펄스 선택;0,650000,-650000 = (650000)
+2025:04:24 23:27:39.786	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:27:39.834	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
+2025:04:24 23:27:45.007	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:45.368	Camera settings updated; 2,1024,768
+2025:04:24 23:27:45.603	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:27:45.738	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:27:55.212	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:27:56.455	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:27:56.478	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:27:56.565	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:24 23:28:05.646	MBID;27,현재펄스;650000,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:24 23:28:05.789	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:28:05.835	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:24 23:28:13.485	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:13.870	Camera settings updated; 2,1024,768
+2025:04:24 23:28:14.108	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:24 23:28:14.252	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:22.613	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:24.999	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:25.031	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-10009"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:25.093	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:24 23:28:26.287	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:26.307	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-20026"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:26.362	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:24 23:28:27.569	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:27.620	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-30049"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:27.647	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:24 23:28:27.873	MBID;27,현재펄스;325006,최단회전 펄스 선택;0,650000,-650000 = (0)
+2025:04:24 23:28:28.016	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:24 23:28:28.065	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:04:24 23:28:28.552	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:28.666	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:24 23:28:34.852	모터명령어;_run_code;<module>;CheckETCActions;SendCMD_Device
+2025:04:24 23:28:34.910	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
+2025:04:24 23:28:35.723	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:24 23:28:35.926	현재서빙암펄스;-199994,생략된지시정보;{'MBID'; '11', 'CMD'; 'WMOVE', 'MODE'; '1', 'POS'; '-200000', 'SPD'; 100, 'ACC'; '1800', 'DECC'; '3000', 'TIME'; 5.8}
+2025:04:24 23:28:36.582	MBID;31,현재펄스;-833171,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)

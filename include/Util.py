@@ -69,6 +69,49 @@ from UtilHTTP import *
 import logging
 import os
 import inspect
+import math
+import numpy as np
+
+def estimate_rotation_center(marker_coords_by_angle):
+    """
+    주어진 회전 각도와 마커 좌표들로부터 회전 중심을 추정
+    """
+    angles = []
+    xs, ys = [], []
+
+    for angle_deg, (x, y) in marker_coords_by_angle.items():
+        angles.append(math.radians(angle_deg))
+        xs.append(x)
+        ys.append(y)
+
+    # 중심점은 평균 좌표 (대략적인 원 중심)
+    center_x = np.mean(xs)
+    center_y = np.mean(ys)
+    return center_x, center_y
+
+def calculate_position_shift(current_angle_deg, marker_coords_by_angle, target_x=0.03, target_y=0.48):
+    """
+    주어진 회전각에서 마커가 기준 위치(target_x, target_y)에 위치하게 하려면
+    로봇을 x, y 방향으로 얼마나 이동시켜야 하는지 계산
+    """
+    # 회전 중심 추정
+    cx, cy = estimate_rotation_center(marker_coords_by_angle)
+
+    # 현재 회전각에서 마커 위치 예측
+    radius = math.hypot(marker_coords_by_angle[0][0] - cx, marker_coords_by_angle[0][1] - cy)
+    initial_angle_rad = math.atan2(marker_coords_by_angle[0][1] - cy, marker_coords_by_angle[0][0] - cx)
+
+    # 회전 후 예상 마커 위치
+    theta = math.radians(current_angle_deg)
+    expected_x = cx + radius * math.cos(initial_angle_rad + theta)
+    expected_y = cy + radius * math.sin(initial_angle_rad + theta)
+
+    # 기준 위치에 맞추기 위한 로봇 이동량
+    dx = target_x - expected_x
+    dy = target_y - expected_y
+
+    return dx*1000, dy*1000
+
 def calculate_robot_movement( target_x, target_y, current_length,current_angle=None):
     """
     로봇 팔의 현재 상태에서 목표 위치로 이동하기 위한 길이 변화와 회전 각도를 계산합니다.
@@ -107,6 +150,21 @@ def calculate_robot_movement( target_x, target_y, current_length,current_angle=N
     
     #return target_distance, target_angle_deg, length_change, angle_change
     return length_change, angle_change
+
+# 마커 좌표: 회전각도 → (x, y)
+marker_coords_goldsample = {
+    0: (0.03, 0.48),
+    90: (0.13, 0.51),
+    180: (0.17, 0.41),
+    270: (0.06, 0.37)
+}
+
+# # 임의 회전 각도에서 보정 이동량 계산
+# angle = 45  # 현재 로봇이 45도 회전했다면?
+# dx, dy = calculate_position_shift(angle, marker_coords_goldsample)
+# print(f"로봇을 X축 {dx:.4f}m, Y축 {dy:.4f}m 이동시키면 마커가 기준 위치에 옴")
+
+
 
 def get_camera_offset(armLength_mm, angle_degree):
     angle_rad = math.radians(angle_degree)
@@ -263,7 +321,7 @@ def compute_distance_and_rotation_from_dict(reference: dict, current: dict, mirr
 #Y
 ref_dict = {
     "MARKER_VALUE": 2, "DIFF_X": 1017.92, "DIFF_Y": 1246.92,
-    "X": 0.07, "Y": 0.50, "Z": 0.624784,
+    "X": 0.03, "Y": 0.48, "Z": 0.624784,
     "ANGLE": 179.74, "CAM_ID": 2,
     "cx1": 1059.45, "cy1": 1206.35, "cx2": 974.972, "cy2": 1204.24,
     "cx3": 975.387, "cy3": 1288.48, "cx4": 1059.62, "cy4": 1288.36
@@ -284,7 +342,7 @@ cur3 = {
 cur4 = {
     "X": -0.51, "Y": -0.05, "Z": 0.61,
 }
-print(compute_distance_and_rotation_from_dict(ref_dict, cur3))
+#print(compute_distance_and_rotation_from_dict(ref_dict, cur3))
 # print(compute_distance_and_rotation_from_dict(ref_dict, cur4))
 # print(compute_distance_and_rotation_from_dict(ref_dict, cur1))
 # print(compute_distance_and_rotation_from_dict(ref_dict, cur8))
@@ -1688,7 +1746,7 @@ def flipBoolan(anything):
 def intToBit(value, dicTmp: Dict[str, str]):
     strBit = bin(int(value))
     strBMSDataPartBit = ConstBitStream(strBit)
-    print(strBMSDataPartBit)
+    #print(strBMSDataPartBit)
 
 
 dicTmp = {

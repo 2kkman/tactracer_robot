@@ -378,6 +378,15 @@ def callbackAck(data,topic_name='' ):
                 if isLiftTrayDown and node_current is not None:
                     #if int(node_current) != node_KITCHEN_STATION:
                     # 리프트 모터 하강구동이 완료된 경우 30초내로 꺼내가라는 방송을 한다.
+                    #if not isScanOn:
+                    DoorOpen()
+                    targetTable =GetCurrentTargetTable()
+                    dicTagretTableInfo = getTableServingInfo(targetTable)
+                    target_marker = dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name,-1)
+                    if is_equal(targetTable,target_marker):
+                        bReturn,strResult=SaveTableInfo(targetTable)
+                        SendInfoHTTP(f'{targetTable} 번 테이블정보 저장 :{bReturn} - {strResult}')
+                    
                     if curTargetN != node_KITCHEN_STATION and curTargetN != node_CHARGING_STATION and isLiftTrayDown and IsEnableSvrPath():
                         SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
                         nowTime = getDateTime()

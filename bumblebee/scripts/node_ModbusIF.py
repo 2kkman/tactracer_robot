@@ -124,7 +124,7 @@ dic_485OverLoad = {}
 dic_485ctl = {}
 dic_485cmd = {}
 dic_485poll = {}
-#dic_485Inverted = {}
+dic_485Inverted = {}
 #dic_485AutoGain = {}
 #dic_485Inertia_Ratio = {}
 #dic_485TorQueLimitInfo = {}
@@ -444,7 +444,7 @@ def Setup(mbidCur=None):
     global dicConfigInitReverse
     global dicInitTimeStamp
     global iTryCheckModbus
-    global dic_485TorQueLimitInfo
+    #global dic_485TorQueLimitInfo
     # ModbusConfig.txt 를 읽어들인다.
     dicConfigTmp = getDic_FromFile(filePath_modbusconfig, sDivEmart)
     for mbid, mbName in dicConfigTmp.items():
@@ -549,17 +549,17 @@ def Setup(mbidCur=None):
                 # checkAddr 이 -1 로 나오는 경우 구성정보 자체가 잘못되었으므로 알람이 가야됨.
                 # 이 경우 Invalid Config 로 알람낼것.
                 #checkAddrIsCCW = poll485[0].get(POLL_COMMON.START.name, "-1")
-                checkAddrAutoGain = '7' if mbName.startswith("RS2") else '7'
-                checkAddrValAutoGain = int(checkAddrAutoGain, 16)
-                checkAddrIsRatio = '9' if mbName.startswith("RS2") else '9'
-                checkAddrVaRatio = int(checkAddrIsRatio, 16)
+                # checkAddrAutoGain = '7' if mbName.startswith("RS2") else '7'
+                # checkAddrValAutoGain = int(checkAddrAutoGain, 16)
+                # checkAddrIsRatio = '9' if mbName.startswith("RS2") else '9'
+                # checkAddrVaRatio = int(checkAddrIsRatio, 16)
                 checkAddrIsCCW = '7' if mbName.startswith("RS2") else 'D'
                 checkAddrValCCW = int(checkAddrIsCCW, 16)
-                checkAddrIsPOTChanged = '0x149' if mbName.startswith("RS2") else '0x409'
-                checkAddrValPOTChanged = int(checkAddrIsPOTChanged, 16)
-                # 토크 리밋에 관련된 변수 설정. 추후개발예정
-                checkAddrIsToqLimit = '0x6014' if mbName.startswith("RS2") else '0x1B'
-                checkAddrValToqLimit = int(checkAddrIsToqLimit, 16)
+                # checkAddrIsPOTChanged = '0x149' if mbName.startswith("RS2") else '0x409'
+                # checkAddrValPOTChanged = int(checkAddrIsPOTChanged, 16)
+                # # 토크 리밋에 관련된 변수 설정. 추후개발예정
+                # checkAddrIsToqLimit = '0x6014' if mbName.startswith("RS2") else '0x1B'
+                # checkAddrValToqLimit = int(checkAddrIsToqLimit, 16)
 
                 # checkAddrIsToqLimit = '0x6014' if mbName.startswith("RS2") else '0x1B'
                 # checkAddrValToqLimit = int(checkAddrIsToqLimit, 16)
@@ -572,8 +572,8 @@ def Setup(mbidCur=None):
                 dic_485poll[mbid] = poll485
                 if mbName.startswith("RS"):
                     dicInitTimeStamp[mbid] = getDateTime()
-                    # checkMBresult = instrumentH.read_registers(checkAddrValCCW, 1, 3)
-                    # dic_485Inverted[mbid] = checkMBresult[0]
+                    checkMBresult = instrumentH.read_registers(checkAddrValCCW, 1, 3)
+                    dic_485Inverted[mbid] = checkMBresult[0]
                     # checkMBresult = instrumentH.read_registers(checkAddrValPOTChanged, 1, 3)
                     # dic_485POTInfo[mbid] = checkMBresult[0]
                     # checkMBresult = instrumentH.read_registers(checkAddrValToqLimit, 1, 3)
@@ -611,7 +611,7 @@ def Setup(mbidCur=None):
             message = traceback.format_exc()
             logmsg = f"{message} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name}"
             rospy.loginfo(logmsg)
-    #rospy.loginfo(dic_485Inverted)
+    rospy.loginfo(dic_485Inverted)
     #rospy.loginfo(dic_485POTInfo)    
     return True
 
@@ -653,10 +653,10 @@ def initMotor(mbidAll=None):
         pot_pos=int(dicCaliFinalPos.get(mbid, MAX_INT))
         not_pos=int(dicCaliNotLoad.get(mbid, MIN_INT))
         
-        if tql != MIN_INT:
-            dic_485TorQueLimitInfo[mbid] = tql        
-            callData2.data = getMotorTorqueString(mbid, tql)
-            callbackCmd(callData2)
+        # if tql != MIN_INT:
+        #     dic_485TorQueLimitInfo[mbid] = tql        
+        #     callData2.data = getMotorTorqueString(mbid, tql)
+        #     callbackCmd(callData2)
         
         if pot_pos != MAX_INT and not_pos != MIN_INT:
             #callData3.data = getMotorSetPOTNOTString(mbid, not_pos,pot_pos)
@@ -1339,6 +1339,7 @@ while not rospy.is_shutdown():
                   except Exception as e:
                       # exception_read_count += 3
                       dicMB_Exception_count[modbusID] += 3
+                      rospy.loginfo(traceback.format_exc())
                       # rospy.loginfo(
                       #     f"{dicConfigTmp[modbusID]}:{poll_id}-{e} : Count:{dicMB_Exception_count[modbusID]}"
                       # )
@@ -1374,13 +1375,13 @@ while not rospy.is_shutdown():
                       
                   return485data[MotorWMOVEParams.MBID.name] = modbusID
                   NoValue = -1
-                #   isCCW = dic_485Inverted.get(modbusID, NoValue)
+                  isCCW = dic_485Inverted.get(modbusID, NoValue)
                 #   autogain = dic_485AutoGain.get(modbusID, NoValue)
                 #   inertia_ratio = dic_485Inertia_Ratio.get(modbusID, NoValue)
                 #   ToqLimit = dic_485TorQueLimitInfo.get(modbusID,NoValue)
                 #   return485data[MonitoringField.AUTO_GAIN.name] = autogain
                 #   return485data[MonitoringField.INERTIA_RATIO.name] = inertia_ratio
-                #   return485data[MonitoringField.IS_CCW.name] = isCCW
+                  return485data[MonitoringField.IS_CCW.name] = isCCW
                 #   return485data[MonitoringField.TOQ_LIMIT.name] = ToqLimit
                   rpm = int(return485data.get(MonitoringField.CUR_SPD.name,NoValue))
                   isCCW = int(return485data.get(MonitoringField.IS_CCW.name,NoValue))

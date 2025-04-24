@@ -104,6 +104,22 @@ def GetSpeicificEPCNodeInfo():
     local_epcnodeinfo.extend(state_keys)
     return local_epcnodeinfo
 
+def handle_charge(loaded_data = {}):
+        for k,v in ip_dict.items():
+            if 'PLUG' in k and 'IP' in k:
+                info = get_tasmota_info(v)
+                if info is None:
+                    continue
+                kDevice = k[:-3]
+                kDevice = kDevice[4:]
+                for k2,v2 in info.items():
+                    loaded_data[f'{kDevice}_{k2}'] = v2
+                state = get_tasmota_state(v)
+                loaded_data[f'{kDevice}_STATE'] = state
+        
+        data_out = json.dumps(loaded_data)
+        pub_SMARTPLUG.publish(data_out)     
+           
 
 def rfidInstanceDefault():
     global epcTarget
@@ -380,25 +396,29 @@ def callbackMB_15(recvDataMap):
         #목적지가 충전소면 NOT활성화.        
         dicSpd = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_SLOW, ACC_DECC_LONG,ACC_DECC_LONG)
         potnotControlDic = getMotorWP_ONDic() if sSPD_signed > 0 else getMotorWN_ONDic()
-
-        if endnode == NODE_KITCHEN and si_pot != "NOT":
+        rospy.loginfo(f'#현재속도:{sSPD_signed},현재위치:{sPOS},목표위치:{target_pos},모드:{si_pot}')
+        #목적지가 충전소 일땐 NOT 활성
+        # if endnode == NODE_KITCHEN and si_pot != "NOT":
+        #     listReturnTmp.append(getMotorWN_ONDic())
+        #     rospy.loginfo('#목적지가 충전소 일땐 NOT 활성')
+        # #목적지가 분기기이고,충전소에서 출발하는 경우는 POT 활성
+        # elif endnode == NODE_CROSS:
+        #     if not isCrossRailRunOK:
+        #         if si_pot != "POT" and sSPD_signed > 0:
+        #             listReturnTmp.append(potnotControlDic)
+        #             rospy.loginfo('#목적지가 분기기이고,충전소에서 출발하는 경우는 POT 활성')
+        # else:   #그 외에는 움직이는 방향에 따라 좌우됨.
+        if si_pot != "POT" and sSPD_signed > 0:
+            listReturnTmp.append(getMotorWP_ONDic())
+            rospy.loginfo('POT ON')
+        elif si_pot != "NOT" and sSPD_signed < 0:
             listReturnTmp.append(getMotorWN_ONDic())
-        #목적지가 분기기이고,분기기가 충전소 방향인 경우 POT 를 활성화 한다.
-        elif endnode == NODE_CROSS:
-            if isCrossRailRunOK:
-                if si_pot != "POT" and sSPD_signed > 0:
-                    listReturnTmp.append(potnotControlDic)
-        else:
-            if si_pot != "POT" and sSPD_signed > 0:
-                listReturnTmp.append(getMotorWP_ONDic())
-            elif si_pot != "NOT" and sSPD_signed < 0:
-                listReturnTmp.append(getMotorWN_ONDic())
+            rospy.loginfo('NOT ON')
         #그외에는 모두 댐핑이며 추후 구현.
         
         if len(listReturnTmp) > 0:
             SendCMD_Device(listReturnTmp)
             lastcalledAck = getDateTime()
-            
         #목적펄스까지 
     except Exception as e:
         message = traceback.format_exc()
@@ -750,22 +770,6 @@ def service_ard2():
   
     return {"message": f"{request.method},{request.args}"}, 200  
 
-def handle_charge(loaded_data = {}):
-        for k,v in ip_dict.items():
-            if 'PLUG' in k and 'IP' in k:
-                info = get_tasmota_info(v)
-                if info is None:
-                    continue
-                kDevice = k[:-3]
-                kDevice = kDevice[4:]
-                for k2,v2 in info.items():
-                    loaded_data[f'{kDevice}_{k2}'] = v2
-                state = get_tasmota_state(v)
-                loaded_data[f'{kDevice}_STATE'] = state
-        
-        data_out = json.dumps(loaded_data)
-        pub_SMARTPLUG.publish(data_out)     
-           
 @app.route('/CHARGE', methods=['GET'])
 def service_charge():
     try:
@@ -1100,10 +1104,14 @@ def topic_page(topic_name):
 def update_data():
     """주기적으로 데이터를 업데이트하고 클라이언트에 전송"""
     while True:
-        for topic_name, data in shared_data.items():
-            if data:
-                socketio.emit(f"update_{topic_name}", data)
-        time.sleep(1)
+        try:
+            for topic_name, data in shared_data.items():
+                if data:
+                    socketio.emit(f"update_{topic_name}", data)
+            time.sleep(1)
+        except Exception as e:  
+            message = traceback.format_exc()
+            rospy.loginfo(message)
 
 @socketio.on("connect")
 def handle_connect():
