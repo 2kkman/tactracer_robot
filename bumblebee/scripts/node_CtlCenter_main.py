@@ -188,23 +188,25 @@ if __name__ == "__main__":
     lsServiceRaw = get_available_services()
     for lsServiceSet in lsServiceRaw:
       node_CtlCenter_globals.lsServices.append(lsServiceSet[0])  
-    
     #rospy.loginfo(node_CtlCenter_globals.lsServices)
     waitCnt = 0
     while(not isInitMotorsAll()):
         waitCnt += 1
         rospy.loginfo(f'Wait {waitCnt}s for modbus_IF')
         time.sleep(1)
+    DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
     
     if not isRealMachine:
         fieldvalue = f'q={BLD_PROFILE_CMD.WLOC_NOT.value}'
         print(API_call_http(GetMasterIP(), HTTP_COMMON_PORT, 'CMD_DEVICE', fieldvalue))
         # pot_int,not_int =GetPotNotServo(ModbusID.TELE_SERV_MAIN)
         # SendCMD_Device([getMotorLocationSetDic(ModbusID.TELE_SERV_MAIN.value, not_int)])
-    # elif isChargeSensorOn():
-    #   dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, 0)
-    #   SendCMD_Device([dicLoc])
-    #   TTSAndroid('현재 충전소에 있습니다.',True,1)
+    
+    if isTrue(DI_POT):
+      dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, 0)
+      SendCMD_Device([dicLoc])
+      TTSAndroid('현재 충전소에 있습니다.',True,1)
+      SetCurrentNode(node_KITCHEN_STATION)
     else:
       #RFID로 위치 확인 isRealMachine 일때만
       #RFID_DF 에 값이 들어올때까지 기다릴것.

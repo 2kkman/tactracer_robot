@@ -609,8 +609,8 @@ def MotorBalanceControlEx(bSkip):
         lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),0.2)
         if len(lsAruco) > 0:
             dicAruco = lsAruco[0]
-            marker_X = int(dicAruco[ARUCO_RESULT_FIELD.X.name])
-            marker_Y = int(dicAruco[ARUCO_RESULT_FIELD.Y.name])
+            marker_X = float(dicAruco[ARUCO_RESULT_FIELD.X.name])
+            marker_Y = float(dicAruco[ARUCO_RESULT_FIELD.Y.name])
             marker_Y_abs = abs(marker_Y)
             angle_marker = int(dicAruco[ARUCO_RESULT_FIELD.ANGLE.name])
             value_marker = int(dicAruco[ARUCO_RESULT_FIELD.MARKER_VALUE.name])
@@ -671,8 +671,8 @@ def MotorBalanceControlEx(bSkip):
                         isScanOn = False
                         node_CtlCenter_globals.listBLB.clear()
                         node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
-                    else:
-                    #elif marker_Y_abs > 0 and marker_Y_abs < 0.4:
+                    #else:
+                    elif marker_Y_abs > 0 and marker_Y_abs < 0.4:
                     # elif abs(diff_X3) > CAM_LOCATION_MARGIN_FINE:
                         targetPosKey = str(ModbusID.TELE_SERV_MAIN.value)
                         targetPosTeleSrv=try_parse_int(node_CtlCenter_globals.dicTargetPos.get(targetPosKey), MIN_INT)
@@ -826,9 +826,9 @@ def MotorBalanceControlEx(bSkip):
     #트레이 리프트 관련 제어
     if isActivatedMotor(ModbusID.MOTOR_V.value):
     #if GetWaitConfirmFlag() and isActivatedMotor(ModbusID.MOTOR_V.value):
-        rpmLift = int(GetItemsFromModbusTable(ModbusID.MOTOR_V,MonitoringField.CUR_SPD))
-        angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name)
-        move_level = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.MOVE_LEVEL.name)
+        rpmLift = int(GetItemsFromModbusTable(ModbusID.MOTOR_V,MonitoringField.CUR_SPD),0)
+        angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name,0)
+        move_level = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.MOVE_LEVEL.name,0)
         if not isRealMachine and move_level is None:
             move_level = 0
         

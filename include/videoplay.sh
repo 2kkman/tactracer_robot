@@ -1,31 +1,29 @@
 #!/bin/bash
 
-# 비디오 플레이어 프로세스가 실행 중인지 확인하는 함수
-check_player() {
-    pgrep -x mpv >/dev/null
-    return $?
-}
-
-# 기존 플레이어 프로세스 종료
-if check_player; then
-    killall mpv
-    sleep 1
+# 잠금 파일로 중복 실행 방지
+LOCKFILE="/tmp/mpv_player.lock"
+if [ -e "$LOCKFILE" ]; then
+    echo "이미 실행 중입니다."
+    exit 1
 fi
 
-# MPV 실행을 위한 디스플레이 설정
-DISPLAY=:0
-# xhost를 사용하여 권한 부여
+touch "$LOCKFILE"
+trap "rm -f $LOCKFILE /tmp/mpv.conf /tmp/playlist.txt" EXIT
+
+# DISPLAY 설정
+export DISPLAY=:0
+
+# xhost 권한 부여
 xhost +SI:localuser:$(whoami)
 
-
-# 검은 화면 배경을 설정
+# 검은 배경
 xsetroot -solid black
 
-# MPV 설정 파일 생성
+# MPV 설정파일 생성
 cat > /tmp/mpv.conf << EOF
 fullscreen=yes
 border=no
-keep-open=always
+keep-open=yes
 force-window=yes
 keepaspect=no
 cursor-autohide=always
@@ -38,30 +36,25 @@ video-unscaled=no
 input-conf=/dev/null
 no-input-default-bindings
 
-# 기본 재생 설정
 loop-playlist=inf
 reset-on-next-file=all
 
-# 하드웨어 가속 비활성화
-hwdec=vaapi 
+hwdec=vaapi
 vo=gpu
 gpu-context=x11
 
-# 간단한 전환 효과
 video-sync=display-resample
 EOF
 
 # 재생목록 생성
-find /root/Downloads -name "*.mp4" -type f > /tmp/playlist.txt
+find /root/Downloads -type f \( -iname "*.mp4" -o -iname "*.mkv" -o -iname "*.avi" \) > /tmp/playlist.txt
 
-# MPV로 재생
-exec mpv \
-    --config-dir=/tmp \
-    --playlist=/tmp/playlist.txt \
-    --video-aspect-override=no \
-    --hr-seek=yes \
-    --hr-seek-framedrop=no \
-    --video-latency-hacks=yes
+# 파일이 없을 경우 종료
+if [ ! -s /tmp/playlist.txt ]; then
+    echo "재생할 영상이 없습니다."
+    exit 1
+fi
 
-# 임시 파일 정리
-trap 'rm -f /tmp/mpv.conf /tmp/playlist.txt' EXIT
+# MPV 실행
+mpv --config-dir=/tmp \
+    --playlist=/tmp/playlist.txt

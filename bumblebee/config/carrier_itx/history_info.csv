@@ -1,290 +1,501 @@
 timestamp	value
-2025:04:24 23:13:18.422	118;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:24 23:13:18.475	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:24 23:13:18.873	Camera settings updated; 2,1280,960
-2025:04:24 23:13:19.233	aprilTagOn parsing; true
-2025:04:24 23:13:20.031	V12;0
-2025:04:24 23:13:20.097	O;1,4
-2025:04:24 23:13:25.767	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:13:25.969	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
-2025:04:24 23:13:28.272	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:13:28.314	V12;0
-2025:04:24 23:13:28.525	MBID;31,현재펄스;-416592,최단회전 펄스 선택;0,833146,-833146 = (-833146)
-2025:04:24 23:13:36.530	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:13:36.567	aprilTagOn parsing; false
-2025:04:24 23:13:36.670	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.0}] from callbackCmd - SendCMD"
-2025:04:24 23:13:43.584	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:13:44.041	Camera settings updated; 2,1280,960
-2025:04:24 23:13:51.159	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:13:51.422	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 6.0}] from callbackCmd - SendCMD"
-2025:04:24 23:13:54.563	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:13:54.756	MBID;27,현재펄스;325006,최단회전 펄스 선택;189583,839583,-460417 = (189583)
-2025:04:24 23:13:58.579	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:13:58.630	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 189583, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:24 23:14:02.528	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:02.780	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:14:02.819	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""150"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:24 23:14:11.132	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:11.618	Camera settings updated; 2,1280,960
-2025:04:24 23:14:24.238	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:14:24.377	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""89368"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""959459"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 10.9}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""685327"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 10.7}] from callbackCmd - SendCMD"
-2025:04:24 23:14:34.054	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:34.108	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:34.668	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:34.872	MBID;31,현재펄스;-833168,최단회전 펄스 선택;-590145,243001,-1423291 = (-590145)
-2025:04:24 23:14:40.956	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:14:41.092	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -590145, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:24 23:14:45.983	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:14:46.317	aprilTagOn parsing; false
-2025:04:24 23:15:50.638	V12;0
-2025:04:24 23:15:51.148	svrIP Changed ; 172.30.1.6
-2025:04:24 23:15:52.077	4;_run_code;<module>;SetCurrentNodeE2009A3030033AF000000913
-2025:04:24 23:15:52.237	TTS OK ; 10,10,RFID 위치감지 성공.
-2025:04:24 23:15:52.294	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
-2025:04:24 23:15:52.334	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""-185820""}] from callbackCmd - SendCMD"
-2025:04:24 23:15:52.376	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:24 23:15:52.416	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:24 23:16:37.054	120;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:24 23:16:37.124	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:24 23:16:37.427	Camera settings updated; 2,1280,960
-2025:04:24 23:16:38.258	aprilTagOn parsing; true
-2025:04:24 23:16:38.394	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
-2025:04:24 23:16:39.830	MBID;31,현재펄스;-590151,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
-2025:04:24 23:16:43.650	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:16:43.826	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:24 23:16:48.682	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:16:49.301	Camera settings updated; 2,1280,960
-2025:04:24 23:16:49.819	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:16:49.859	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""169"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 13.7}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 4.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.3}] from callbackCmd - SendCMD"
-2025:04:24 23:16:54.477	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:16:54.812	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:00.482	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:00.689	MBID;27,현재펄스;189585,최단회전 펄스 선택;451389,1101389,-198611 = (451389)
-2025:04:24 23:17:00.827	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:17:00.866	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 451389, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.2}] from callbackCmd - SendCMD"
-2025:04:24 23:17:07.260	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:07.464	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:17:07.506	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""150"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:24 23:17:15.822	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:16.409	Camera settings updated; 2,1280,960
-2025:04:24 23:17:41.472	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:17:41.747	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""88766"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""952703"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 10.8}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""680502"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 10.6}] from callbackCmd - SendCMD"
-2025:04:24 23:17:42.804	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
-2025:04:24 23:17:42.882	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:24 23:17:42.961	모터명령어;_run_code;<module>;MotorBalanceControlEx;SendCMD_Device
-2025:04:24 23:17:43.032	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""126382"", ""SPD""; ""20"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:17:43.303	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:43.343	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
-2025:04:24 23:17:43.421	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}] from callbackCmd - SendCMD"
-2025:04:24 23:17:43.628	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:43.900	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:43.994	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:17:44.658	Camera settings updated; 2,1280,960
-2025:04:24 23:19:11.914	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:19:12.239	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""217323"", ""SPD""; ""169"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 10.5}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""2331081"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 8.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1665057"", ""SPD""; ""1380"", ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 8.3}] from callbackCmd - SendCMD"
-2025:04:24 23:19:16.021	모터명령어;<module>;MotorBalanceControlEx;StopAllMotors;SendCMD_Device
-2025:04:24 23:19:16.062	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""800""}] from callbackCmd - SendCMD"
-2025:04:24 23:19:36.456	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:19:36.527	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:19:36.733	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:19:37.632	MBID;27,현재펄스;450032,최단회전 펄스 선택;447778,1097778,-202222 = (447778)
-2025:04:24 23:19:56.949	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:19:57.309	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""103216"", ""SPD""; ""77"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 4.8}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1114865"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 2.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""796332"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 2.2}] from callbackCmd - SendCMD"
-2025:04:24 23:19:59.069	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:19:59.735	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:20:00.190	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:20:00.444	MBID;31,현재펄스;-833169,최단회전 펄스 선택;-1092347,-259201,-1925493 = (-1092347)
-2025:04:24 23:20:04.129	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:20:04.191	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -1092347, ""SPD""; ""500"", ""ACC""; ""800"", ""DECC""; ""3000"", ""TIME""; 6.0}] from callbackCmd - SendCMD"
-2025:04:24 23:20:08.235	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:20:08.681	aprilTagOn parsing; false
-2025:04:24 23:20:19.281	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:20:19.345	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""200000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
-2025:04:24 23:20:21.654	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:20:21.695	V12;0
-2025:04:24 23:20:22.033	aprilTagOn parsing; false
-2025:04:24 23:22:30.389	2;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:24 23:22:30.446	2;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:24 23:22:30.679	V12;0
-2025:04:24 23:22:30.760	O;1,4
-2025:04:24 23:22:38.140	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:22:38.256	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 3.0}] from callbackCmd - SendCMD"
-2025:04:24 23:22:40.549	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:22:40.576	V12;0
-2025:04:24 23:22:40.669	MBID;31,현재펄스;-1092369,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
-2025:04:24 23:22:40.750	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:22:40.773	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
-2025:04:24 23:22:40.827	aprilTagOn parsing; false
-2025:04:24 23:22:45.824	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:22:46.006	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:22:46.028	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""167"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 14.1}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.0}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.8}] from callbackCmd - SendCMD"
-2025:04:24 23:22:51.084	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:22:51.486	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:22:57.243	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:22:57.414	MBID;27,현재펄스;450032,최단회전 펄스 선택;0,650000,-650000 = (650000)
-2025:04:24 23:22:57.513	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:22:57.543	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
-2025:04:24 23:23:02.702	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:23:03.113	Camera settings updated; 2,1024,768
-2025:04:24 23:23:10.049	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:23:10.220	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:23:19.711	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:23:21.078	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:23:21.113	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:23:21.170	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:24 23:23:52.371	MBID;27,현재펄스;649999,최단회전 펄스 선택;325000,975000,-325000 = (325000)
-2025:04:24 23:23:52.473	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:23:52.505	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
-2025:04:24 23:24:00.144	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:00.617	Camera settings updated; 2,1024,768
-2025:04:24 23:24:00.862	POS=572830 SPD=2000 endnode=3;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:24:01.115	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""572830"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:05.578	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:08.021	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:08.063	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""562801"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:08.096	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
-2025:04:24 23:24:09.281	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:09.314	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""552791"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:09.349	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
-2025:04:24 23:24:09.966	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""554065"", ""SPD""; ""106"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:10.539	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:24:10.943	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:11.028	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
-2025:04:24 23:24:11.202	MBID;27,현재펄스;325006,최단회전 펄스 선택;187778,837778,-462222 = (187778)
-2025:04:24 23:24:11.209	3;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000958
-2025:04:24 23:24:11.392	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:24:11.434	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 187778, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.8}] from callbackCmd - SendCMD"
-2025:04:24 23:24:15.348	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:15.658	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:24:15.701	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-57617"", ""SPD""; 100, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.0}] from callbackCmd - SendCMD"
-2025:04:24 23:24:24.442	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:24.619	MBID;31,현재펄스;-833171,최단회전 펄스 선택;-807689,25457,-1640835 = (-807689)
-2025:04:24 23:24:24.749	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:24:24.793	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -807689, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.6}] from callbackCmd - SendCMD"
-2025:04:24 23:24:26.373	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:26.743	aprilTagOn parsing; false
-2025:04:24 23:24:26.830	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:24:26.872	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:24 23:24:34.304	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:24:34.358	V12;0
-2025:04:24 23:24:34.964	aprilTagOn parsing; false
-2025:04:24 23:25:34.870	120;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:24 23:25:34.932	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:24 23:25:35.187	V12;0
-2025:04:24 23:25:35.259	O;1,4
-2025:04:24 23:25:35.534	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:25:35.575	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:24 23:25:43.013	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:25:43.064	V12;0
-2025:04:24 23:25:43.233	MBID;31,현재펄스;-807711,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
-2025:04:24 23:25:43.377	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:25:43.419	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.6}] from callbackCmd - SendCMD"
-2025:04:24 23:25:43.478	aprilTagOn parsing; false
-2025:04:24 23:25:44.982	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:25:45.324	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:25:45.366	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 6.4}] from callbackCmd - SendCMD"
-2025:04:24 23:25:48.934	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:25:49.217	MBID;27,현재펄스;187774,최단회전 펄스 선택;0,650000,-650000 = (0)
-2025:04:24 23:25:49.358	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:25:49.401	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.8}] from callbackCmd - SendCMD"
-2025:04:24 23:25:54.333	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:25:54.699	Camera settings updated; 2,1024,768
-2025:04:24 23:25:54.936	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:25:55.122	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:25:59.920	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:01.185	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:01.245	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:01.328	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:24 23:26:10.243	MBID;27,현재펄스;4,최단회전 펄스 선택;325000,975000,-325000 = (325000)
-2025:04:24 23:26:10.398	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:10.440	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
-2025:04:24 23:26:18.077	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:18.461	Camera settings updated; 2,1024,768
-2025:04:24 23:26:18.671	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:26:18.962	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:25.461	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:30.288	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185712"", ""SPD""; ""102"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:30.813	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:30.996	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:31.071	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
-2025:04:24 23:26:31.256	MBID;27,현재펄스;325002,최단회전 펄스 선택;449583,1099583,-200417 = (449583)
-2025:04:24 23:26:31.265	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
-2025:04:24 23:26:31.450	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:31.495	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 449583, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.4}] from callbackCmd - SendCMD"
-2025:04:24 23:26:35.176	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:35.371	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:35.414	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:24 23:26:40.124	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:40.434	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:40.478	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""113029"", ""SPD""; ""156"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 7.5}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1304054"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.6}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""931467"", ""SPD""; ""1380"", ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 5.6}] from callbackCmd - SendCMD"
-2025:04:24 23:26:45.246	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:46.379	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:46.591	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:46.797	MBID;31,현재펄스;-833169,최단회전 펄스 선택;-1092347,-259201,-1925493 = (-1092347)
-2025:04:24 23:26:46.939	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:46.983	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -1092347, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
-2025:04:24 23:26:52.055	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:26:52.401	aprilTagOn parsing; false
-2025:04:24 23:26:52.493	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:26:52.540	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:24 23:26:59.963	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:00.017	V12;0
-2025:04:24 23:27:00.580	aprilTagOn parsing; false
-2025:04:24 23:27:12.593	TTS OK ; 10,10,H1 시작.
-2025:04:24 23:27:12.863	H1;_invoke_callback;callbackBLB_CMD;HomeCall;InsertTableList;SetTableTarget
-2025:04:24 23:27:12.923	54004; Home Called
-2025:04:24 23:27:13.021	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:24 23:27:13.269	V12;0
-2025:04:24 23:27:13.355	O;1,4
-2025:04:24 23:27:13.633	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:27:13.678	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:24 23:27:21.108	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:21.162	V12;0
-2025:04:24 23:27:21.417	MBID;31,현재펄스;-1092369,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
-2025:04:24 23:27:21.529	aprilTagOn parsing; false
-2025:04:24 23:27:21.569	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:27:21.615	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
-2025:04:24 23:27:26.675	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:27.003	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:27:27.049	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""156"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 15.2}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 5.6}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 5.4}] from callbackCmd - SendCMD"
-2025:04:24 23:27:32.741	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:33.184	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:39.385	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:39.650	MBID;27,현재펄스;449585,최단회전 펄스 선택;0,650000,-650000 = (650000)
-2025:04:24 23:27:39.786	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:27:39.834	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
-2025:04:24 23:27:45.007	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:45.368	Camera settings updated; 2,1024,768
-2025:04:24 23:27:45.603	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:27:45.738	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:27:55.212	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:27:56.455	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:27:56.478	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:27:56.565	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
-2025:04:24 23:28:05.646	MBID;27,현재펄스;650000,최단회전 펄스 선택;325000,975000,-325000 = (325000)
-2025:04:24 23:28:05.789	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:28:05.835	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
-2025:04:24 23:28:13.485	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:13.870	Camera settings updated; 2,1024,768
-2025:04:24 23:28:14.108	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:24 23:28:14.252	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:22.613	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:24.999	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:25.031	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-10009"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:25.093	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
-2025:04:24 23:28:26.287	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:26.307	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-20026"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:26.362	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
-2025:04:24 23:28:27.569	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:27.620	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-30049"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:27.647	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
-2025:04:24 23:28:27.873	MBID;27,현재펄스;325006,최단회전 펄스 선택;0,650000,-650000 = (0)
-2025:04:24 23:28:28.016	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:24 23:28:28.065	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
-2025:04:24 23:28:28.552	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:28.666	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
-2025:04:24 23:28:34.852	모터명령어;_run_code;<module>;CheckETCActions;SendCMD_Device
-2025:04:24 23:28:34.910	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
-2025:04:24 23:28:35.723	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
-2025:04:24 23:28:35.926	현재서빙암펄스;-199994,생략된지시정보;{'MBID'; '11', 'CMD'; 'WMOVE', 'MODE'; '1', 'POS'; '-200000', 'SPD'; 100, 'ACC'; '1800', 'DECC'; '3000', 'TIME'; 5.8}
-2025:04:24 23:28:36.582	MBID;31,현재펄스;-833171,최단회전 펄스 선택;-833146,0,-1666292 = (-833146)
+2025:04:25 16:43:32.287	2;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000043
+2025:04:25 16:43:36.244	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:43:37.495	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 16:43:38.165	SHAKE_MBID;15,평균;16.545,최소;0.43,최대;60.65
+2025:04:25 16:43:38.227	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:43:38.291	cur_posH=968870,{543338; 250425044242994}
+2025:04:25 16:43:38.306	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543338, 'T118'; 0}
+2025:04:25 16:43:38.878	cur_posH=968870,{543338; 250425044242994}
+2025:04:25 16:43:38.893	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543338, 'T118'; 0}
+2025:04:25 16:43:39.463	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:39.478	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:40.052	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:40.066	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:40.659	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:40.679	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:41.283	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:41.302	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:41.899	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:41.919	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:42.517	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:42.538	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:43.139	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:43.159	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:43.761	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:43.779	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:44.424	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:44.444	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:45.039	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:45.057	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:45.661	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:45.677	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:46.273	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:46.295	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:43:46.501	MBID;27,현재펄스;650001,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:25 16:43:46.680	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:43:46.720	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:04:25 16:43:54.371	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:43:54.471	cur_posH=968755,{543223; 250425044242994}
+2025:04:25 16:43:54.493	{'2'; 335276, '3'; 973148, '10'; 1611020, '4'; 543223, 'T118'; 0}
+2025:04:25 16:44:16.055	An error occurred; ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2025:04:25 16:44:16.239	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:44:16.493	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:21.796	4;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:44:23.095	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:27.378	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-174714"", ""SPD""; ""209"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:28.434	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:29.592	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:29.638	SHAKE_MBID;15,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:29.716	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:44:30.003	MBID;27,현재펄스;325004,최단회전 펄스 선택;198611,848611,-451389 = (198611)
+2025:04:25 16:44:30.137	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:44:30.175	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 198611, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.6}] from callbackCmd - SendCMD"
+2025:04:25 16:44:33.887	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:34.126	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:44:34.161	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:25 16:44:38.851	SHAKE_MBID;11,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:39.098	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1280,960 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c071ca0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:44:39.387	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:44:39.423	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""94787"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1020270"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 11.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""728764"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 11.3}] from callbackCmd - SendCMD"
+2025:04:25 16:44:49.698	SHAKE_MBID;10,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:49.756	SHAKE_MBID;11,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:50.334	SHAKE_MBID;13,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:50.645	MBID;31,현재펄스;833130,최단회전 펄스 선택;1085404,1918550,252258 = (1085404)
+2025:04:25 16:44:50.781	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:44:50.821	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 1085404, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:44:55.819	SHAKE_MBID;31,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:44:56.096	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c086280>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:44:56.171	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:44:56.207	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:25 16:45:02.518	4;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:45:03.625	SHAKE_MBID;6,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:03.736	V12;0
+2025:04:25 16:45:04.355	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c08d5e0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:05.130	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,주문하신 음식이 나왔습니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c08cb50>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:10.227	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,5초 후 닫힙니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c08b730>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:10.262	L;1,0,200
+2025:04:25 16:45:15.963	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,이제 곧 닫힙니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c05c760>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:16.166	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,T118완료 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c08de50>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:16.331	20;_run_module_code;_run_code;<module>;SetWaitConfirmFlag;SetTaskCompleted
+2025:04:25 16:45:16.360	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:04:25 16:45:16.471	<module>;SetWaitConfirmFlag;RemoveDF
+2025:04:25 16:45:16.502	4;<module>;SetWaitConfirmFlag;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:45:16.988	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,H1 시작. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c08d760>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:17.039	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:04:25 16:45:17.074	54004; Home Called
+2025:04:25 16:45:17.114	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:45:19.000	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:25 16:45:19.159	V12;0
+2025:04:25 16:45:19.226	O;1,4
+2025:04:25 16:45:19.498	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:45:19.538	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:25 16:45:26.963	SHAKE_MBID;6,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:27.005	V12;0
+2025:04:25 16:45:27.194	MBID;31,현재펄스;1085394,최단회전 펄스 선택;833146,1666292,0 = (833146)
+2025:04:25 16:45:27.334	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:45:27.390	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:45:32.377	SHAKE_MBID;31,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:32.772	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:45:32.809	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""167"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 13.8}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 4.7}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.5}] from callbackCmd - SendCMD"
+2025:04:25 16:45:37.628	SHAKE_MBID;10,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:37.979	SHAKE_MBID;13,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:43.726	SHAKE_MBID;11,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:43.870	cur_posH=-174714,{250818; 250425044516666}
+2025:04:25 16:45:43.889	{'2'; 0, '3'; 0, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; 0, 'H1'; 0}
+2025:04:25 16:45:44.094	MBID;27,현재펄스;198602,최단회전 펄스 선택;0,650000,-650000 = (0)
+2025:04:25 16:45:44.285	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:45:44.323	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
+2025:04:25 16:45:49.472	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:45:49.595	cur_posH=-174714,{250818; 250425044516666}
+2025:04:25 16:45:49.614	{'2'; 0, '3'; 0, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; 0, 'H1'; 0}
+2025:04:25 16:45:49.753	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c012520>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:45:49.980	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:45:51.129	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:45:56.344	10;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:46:00.538	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:02.382	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:02.461	SHAKE_MBID;15,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:02.542	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:46:02.619	cur_posH=967898,{330026; 250425044516683, -307846; 250425044516685, -645293; 250425044516687}
+2025:04:25 16:46:02.642	{'2'; -307846, '3'; 330026, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645293, 'H1'; 0}
+2025:04:25 16:46:03.384	cur_posH=967898,{330026; 250425044516683, -307846; 250425044516685, -645293; 250425044516687}
+2025:04:25 16:46:03.406	{'2'; -307846, '3'; 330026, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645293, 'H1'; 0}
+2025:04:25 16:46:04.020	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:04.043	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:04.649	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:04.672	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:05.290	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:05.313	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:05.917	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:05.938	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:06.541	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:06.563	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:07.169	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:07.195	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:07.801	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:07.824	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:08.428	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:08.448	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:09.059	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:09.082	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:09.681	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:09.703	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:10.308	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:10.331	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:10.537	MBID;27,현재펄스;1,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:25 16:46:10.723	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:46:10.765	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:25 16:46:18.408	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:18.554	cur_posH=967821,{329949; 250425044516683, -307923; 250425044516685, -645370; 250425044516687}
+2025:04:25 16:46:18.576	{'2'; -307923, '3'; 329949, '10'; 250818, '4'; 543223, 'T118'; 0, '1'; -645370, 'H1'; 0}
+2025:04:25 16:46:18.741	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff814ffabe0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:46:18.916	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:46:19.125	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:25.610	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 16:46:27.577	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:30.016	SHAKE_MBID;15,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:30.030	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-10036"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:30.099	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 16:46:30.320	MBID;27,현재펄스;325001,최단회전 펄스 선택;487500,1137500,-162500 = (487500)
+2025:04:25 16:46:30.455	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:46:30.500	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 487500, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.2}] from callbackCmd - SendCMD"
+2025:04:25 16:46:30.978	SHAKE_MBID;15,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:31.056	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 16:46:34.949	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:35.274	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:46:35.314	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-85250"", ""SPD""; 100, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 10.2}] from callbackCmd - SendCMD"
+2025:04:25 16:46:38.274	모터명령어;_run_code;<module>;CheckETCActions;SendCMD_Device
+2025:04:25 16:46:38.317	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
+2025:04:25 16:46:42.418	SHAKE_MBID;11,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:42.620	MBID;31,현재펄스;833131,최단회전 펄스 선택;833146,1666292,0 = (833146)
+2025:04:25 16:46:43.413	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff80c0184f0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:46:43.616	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,H1완료 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff815018310>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:46:43.992	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:04:25 16:46:44.024	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:04:25 16:46:44.045	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:04:25 16:46:44.078	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:04:25 16:46:44.109	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 16:46:44.185	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:46:44.224	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1000000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:46:50.547	L;3,0,1000
+2025:04:25 16:46:52.457	SHAKE_MBID;6,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:46:52.512	V12;0
+2025:04:25 16:46:52.743	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff815023dc0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:48:01.312	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:48:01.352	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:48:02.120	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:48:02.165	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:48:02.672	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:25 16:48:02.824	V12;0
+2025:04:25 16:48:02.887	O;1,4
+2025:04:25 16:48:03.152	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:03.190	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:48:11.449	SHAKE_MBID;6,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:11.493	V12;0
+2025:04:25 16:48:11.738	MBID;31,현재펄스;833131,최단회전 펄스 선택;833146,1666292,0 = (833146)
+2025:04:25 16:48:11.797	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff814ff4c40>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:48:12.499	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1280,960 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff814f7a8b0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:48:12.867	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:12.907	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 5.8}] from callbackCmd - SendCMD"
+2025:04:25 16:48:15.914	SHAKE_MBID;11,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:16.061	cur_posH=0,{337447; 250425044801435, 975319; 250425044801478, 1613191; 250425044801485}
+2025:04:25 16:48:16.086	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 0, 'T118'; 0}
+2025:04:25 16:48:16.287	MBID;27,현재펄스;487488,최단회전 펄스 선택;0,650000,-650000 = (650000)
+2025:04:25 16:48:16.461	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:16.500	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.2}] from callbackCmd - SendCMD"
+2025:04:25 16:48:20.923	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:21.034	cur_posH=0,{337447; 250425044801435, 975319; 250425044801478, 1613191; 250425044801485}
+2025:04:25 16:48:21.056	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 0, 'T118'; 0}
+2025:04:25 16:48:21.200	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff814f860d0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:48:21.892	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:48:21.998	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:48:26.653	2;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000043
+2025:04:25 16:48:30.481	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:48:31.878	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 16:48:32.469	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:48:32.507	SHAKE_MBID;15,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:32.603	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:48:32.710	cur_posH=970245,{544713; 250425044801492}
+2025:04:25 16:48:32.732	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544713, 'T118'; 0}
+2025:04:25 16:48:33.339	cur_posH=970245,{544713; 250425044801492}
+2025:04:25 16:48:33.364	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544713, 'T118'; 0}
+2025:04:25 16:48:33.969	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:33.993	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:34.594	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:34.616	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:35.221	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:35.246	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:35.855	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:35.879	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:36.484	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:36.507	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:37.109	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:37.130	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:37.737	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:37.759	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:38.360	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:38.380	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:38.987	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:39.011	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:39.608	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:39.633	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:40.236	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:40.261	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:40.863	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:40.888	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:41.099	MBID;27,현재펄스;649998,최단회전 펄스 선택;325000,975000,-325000 = (325000)
+2025:04:25 16:48:41.283	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:41.325	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:25 16:48:48.972	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:49.311	cur_posH=970200,{544668; 250425044801492}
+2025:04:25 16:48:49.376	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544668, 'T118'; 0}
+2025:04:25 16:48:49.568	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff814fa14f0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:48:49.834	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:48:51.080	MBID;27,현재펄스;325004,최단회전 펄스 선택;198611,848611,-451389 = (198611)
+2025:04:25 16:48:51.513	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:51.631	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 198611, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.6}] from callbackCmd - SendCMD"
+2025:04:25 16:48:55.410	SHAKE_MBID;27,평균;1.96,최소;1.96,최대;1.96
+2025:04:25 16:48:56.143	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:48:56.260	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:25 16:49:57.041	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""200"", ""ACC""; ""3000"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:25 16:50:14.713	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:50:43.077	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:50:51.719	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:52:24.292	V12;0
+2025:04:25 16:52:25.082	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?svrip=172.30.1.6 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f70941a79d0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:52:26.501	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
+2025:04:25 16:52:26.630	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
+2025:04:25 16:52:26.860	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,현재 충전소에 있습니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f7094101d90>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:52:26.959	1;_run_code;<module>;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 16:52:27.593	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
+2025:04:25 16:52:27.712	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
+2025:04:25 16:52:56.488	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:52:56.607	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:52:57.637	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:52:57.755	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:52:59.123	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:25 16:52:59.421	cur_posH=0,{337447; 250425045256910, 975319; 250425045256943, 1613191; 250425045256946}
+2025:04:25 16:52:59.483	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 0, 'T118'; 0}
+2025:04:25 16:52:59.738	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f708c7d8d90>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:53:00.066	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:53:00.222	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:53:05.252	2;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000043
+2025:04:25 16:53:08.801	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:53:10.403	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 16:53:10.748	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:53:10.954	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:53:11.528	cur_posH=969598,{544066; 250425045256948}
+2025:04:25 16:53:11.603	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 544066, 'T118'; 0}
+2025:04:25 16:53:12.477	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:12.534	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:13.727	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:13.803	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:14.586	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:14.647	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:19.884	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:19.947	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:20.825	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:20.896	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:21.570	MBID;27,현재펄스;-3,최단회전 펄스 선택;325000,975000,-325000 = (-325000)
+2025:04:25 16:53:22.230	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:53:22.360	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:25 16:53:30.039	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:53:30.458	cur_posH=969494,{543962; 250425045256948}
+2025:04:25 16:53:30.523	{'2'; 337447, '3'; 975319, '10'; 1613191, '4'; 543962, 'T118'; 0}
+2025:04:25 16:53:30.762	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f708c71ce20>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:53:31.068	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:53:32.253	MBID;27,현재펄스;-324995,최단회전 펄스 선택;198611,848611,-451389 = (-451389)
+2025:04:25 16:53:32.684	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:53:32.804	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -451389, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.6}] from callbackCmd - SendCMD"
+2025:04:25 16:53:36.578	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:53:37.369	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:54:42.621	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:55:07.677	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:55:16.293	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:56:01.639	V12;0
+2025:04:25 16:56:02.518	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?svrip=172.30.1.6 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6583ba520>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:56:03.817	모터명령어;_run_module_code;_run_code;<module>;SendCMD_Device
+2025:04:25 16:56:03.980	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
+2025:04:25 16:56:04.255	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,현재 충전소에 있습니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd658375760>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:56:04.367	1;_run_code;<module>;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 16:56:05.057	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
+2025:04:25 16:56:05.214	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
+2025:04:25 16:56:15.104	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:56:15.253	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:56:16.352	118;<module>;GenerateServingTableList;AppendTableList
+2025:04:25 16:56:16.505	118;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:56:17.914	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:25 16:56:18.165	cur_posH=-1,{337446; 250425045615533, 975318; 250425045615556, 1613190; 250425045615558}
+2025:04:25 16:56:18.270	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 0, 'T118'; 0}
+2025:04:25 16:56:18.595	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd658260a30>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:56:18.978	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:56:59.912	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:05.213	2;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000043
+2025:04:25 16:57:08.682	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:10.312	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 16:57:10.510	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:57:10.780	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:57:11.161	cur_posH=969020,{543488; 250425045615560}
+2025:04:25 16:57:11.250	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543488, 'T118'; 0}
+2025:04:25 16:57:12.620	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:12.716	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:13.581	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:13.701	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:14.645	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:14.737	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:15.603	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:15.748	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:16.714	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:16.809	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:17.705	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:17.804	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:18.763	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:18.857	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:19.768	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:19.857	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:20.584	MBID;27,현재펄스;-3,최단회전 펄스 선택;325000,975000,-325000 = (-325000)
+2025:04:25 16:57:21.272	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:57:21.404	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:04:25 16:57:29.147	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:57:29.513	cur_posH=968926,{543394; 250425045615560}
+2025:04:25 16:57:29.618	{'2'; 337446, '3'; 975318, '10'; 1613190, '4'; 543394, 'T118'; 0}
+2025:04:25 16:57:29.964	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd658220400>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:57:30.318	POS=-185820 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:57:42.394	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:48.055	4;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:57:49.320	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:53.593	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-172057"", ""SPD""; ""184"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:54.647	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:55.757	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:57:55.770	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:57:56.098	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:57:56.865	4;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:57:57.540	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:57:57.708	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -451389, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.6}] from callbackCmd - SendCMD"
+2025:04:25 16:58:01.508	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:02.323	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:02.471	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:25 16:58:07.261	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:08.061	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1280,960 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd65824a7c0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:08.822	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:08.966	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""94787"", ""SPD""; 56, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 12.3}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1020270"", ""SPD""; 600, ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 11.5}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""728764"", ""SPD""; 460, ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 11.3}] from callbackCmd - SendCMD"
+2025:04:25 16:58:19.314	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:19.531	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:20.023	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:20.784	MBID;31,현재펄스;833130,최단회전 펄스 선택;1085404,1918550,252258 = (1085404)
+2025:04:25 16:58:21.267	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:21.426	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 1085404, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:58:26.516	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:27.617	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581dbf70>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:27.841	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:27.984	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:25 16:58:34.715	4;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:58:35.535	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:35.675	V12;0
+2025:04:25 16:58:36.059	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581db250>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:37.584	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,주문하신 음식이 나왔습니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581f8f10>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:41.543	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,3초 후 닫힙니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581f6fd0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:41.670	L;1,0,200
+2025:04:25 16:58:44.718	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,이제 곧 닫힙니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581f67c0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:45.024	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,T118완료 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581e4850>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:45.356	23;_run_module_code;_run_code;<module>;SetWaitConfirmFlag;SetTaskCompleted
+2025:04:25 16:58:45.469	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:04:25 16:58:45.921	<module>;SetWaitConfirmFlag;RemoveDF
+2025:04:25 16:58:46.060	4;<module>;SetWaitConfirmFlag;SetCurrentNodeE2009A3030033AF000000913
+2025:04:25 16:58:46.975	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,H1 시작. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581e40a0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:47.123	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:04:25 16:58:47.242	54004; Home Called
+2025:04:25 16:58:47.390	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:04:25 16:58:48.822	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:04:25 16:58:49.346	V12;0
+2025:04:25 16:58:49.545	O;1,4
+2025:04:25 16:58:50.481	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:50.625	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:04:25 16:58:58.155	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:58:58.320	V12;0
+2025:04:25 16:58:59.093	MBID;31,현재펄스;1085394,최단회전 펄스 선택;833146,1666292,0 = (833146)
+2025:04:25 16:58:59.118	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581e91f0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:58:59.581	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:58:59.724	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 833146, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 16:59:04.804	SHAKE_MBID;31,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:06.299	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:59:06.470	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""167"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 13.8}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 4.7}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 4.5}] from callbackCmd - SendCMD"
+2025:04:25 16:59:11.302	SHAKE_MBID;10,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:11.736	SHAKE_MBID;13,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:17.487	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:17.944	cur_posH=-172058,{253474; 250425045846630}
+2025:04:25 16:59:18.055	{'2'; 0, '3'; 0, '10'; 253474, '4'; 543394, 'T118'; 0, '1'; 0, 'H1'; 0}
+2025:04:25 16:59:18.779	MBID;27,현재펄스;-451399,최단회전 펄스 선택;0,650000,-650000 = (-650000)
+2025:04:25 16:59:19.429	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:59:19.607	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -650000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 10.0}] from callbackCmd - SendCMD"
+2025:04:25 16:59:24.916	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:25.337	cur_posH=-172057,{253475; 250425045846630}
+2025:04:25 16:59:25.420	{'2'; 0, '3'; 0, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; 0, 'H1'; 0}
+2025:04:25 16:59:25.673	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581a9310>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:59:26.102	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 16:59:27.067	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 16:59:32.719	10;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:59:36.620	"[{""MBID""; ""15"", ""CMD""; ""WP_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:59:38.493	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 16:59:38.800	10;_invoke_callback;callbackAck;SetCurrentNodeE2009A3030033AF000000036
+2025:04:25 16:59:39.097	cur_posH=967536,{329664; 250425045846653, -308208; 250425045846659, -645655; 250425045846665}
+2025:04:25 16:59:39.199	{'2'; -308208, '3'; 329664, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645655, 'H1'; 0}
+2025:04:25 16:59:40.492	cur_posH=967535,{329663; 250425045846653, -308209; 250425045846659, -645656; 250425045846665}
+2025:04:25 16:59:40.583	{'2'; -308209, '3'; 329663, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645656, 'H1'; 0}
+2025:04:25 16:59:41.476	cur_posH=967535,{329663; 250425045846653, -308209; 250425045846659, -645656; 250425045846665}
+2025:04:25 16:59:41.572	{'2'; -308209, '3'; 329663, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645656, 'H1'; 0}
+2025:04:25 16:59:42.555	cur_posH=967535,{329663; 250425045846653, -308209; 250425045846659, -645656; 250425045846665}
+2025:04:25 16:59:42.653	{'2'; -308209, '3'; 329663, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645656, 'H1'; 0}
+2025:04:25 16:59:43.553	cur_posH=967536,{329664; 250425045846653, -308208; 250425045846659, -645655; 250425045846665}
+2025:04:25 16:59:43.647	{'2'; -308208, '3'; 329664, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645655, 'H1'; 0}
+2025:04:25 16:59:44.643	cur_posH=967536,{329664; 250425045846653, -308208; 250425045846659, -645655; 250425045846665}
+2025:04:25 16:59:44.722	{'2'; -308208, '3'; 329664, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645655, 'H1'; 0}
+2025:04:25 16:59:45.602	cur_posH=967535,{329663; 250425045846653, -308209; 250425045846659, -645656; 250425045846665}
+2025:04:25 16:59:45.701	{'2'; -308209, '3'; 329663, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645656, 'H1'; 0}
+2025:04:25 16:59:46.635	cur_posH=967535,{329663; 250425045846653, -308209; 250425045846659, -645656; 250425045846665}
+2025:04:25 16:59:46.732	{'2'; -308209, '3'; 329663, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645656, 'H1'; 0}
+2025:04:25 16:59:47.640	cur_posH=967536,{329664; 250425045846653, -308208; 250425045846659, -645655; 250425045846665}
+2025:04:25 16:59:47.726	{'2'; -308208, '3'; 329664, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645655, 'H1'; 0}
+2025:04:25 16:59:48.803	MBID;27,현재펄스;-650001,최단회전 펄스 선택;325000,975000,-325000 = (-325000)
+2025:04:25 16:59:49.464	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 16:59:49.636	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:04:25 16:59:57.369	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 16:59:57.689	cur_posH=967536,{329664; 250425045846653, -308208; 250425045846659, -645655; 250425045846665}
+2025:04:25 16:59:57.788	{'2'; -308208, '3'; 329664, '10'; 253475, '4'; 543394, 'T118'; 0, '1'; -645655, 'H1'; 0}
+2025:04:25 16:59:58.249	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?camid=2,1024,768 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581b46a0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 16:59:58.621	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
+2025:04:25 17:00:00.924	"[{""MBID""; ""15"", ""CMD""; ""WPN_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 17:00:07.779	3;<module>;MotorBalanceControlEx;SetCurrentNodeE2009A3030033AF000000958
+2025:04:25 17:00:09.616	"[{""MBID""; ""15"", ""CMD""; ""WN_ON""}] from callbackCmd - SendCMD"
+2025:04:25 17:00:11.939	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 17:00:12.016	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-10033"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:04:25 17:00:12.239	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 17:00:13.010	MBID;27,현재펄스;-324999,최단회전 펄스 선택;487500,1137500,-162500 = (-162500)
+2025:04:25 17:00:13.129	SHAKE_MBID;15,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 17:00:13.563	1;_invoke_callback;callbackAck;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 17:00:13.614	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 17:00:13.844	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -162500, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 9.2}] from callbackCmd - SendCMD"
+2025:04:25 17:00:18.371	SHAKE_MBID;27,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 17:00:19.553	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 17:00:19.685	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-85250"", ""SPD""; 100, ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 10.2}] from callbackCmd - SendCMD"
+2025:04:25 17:00:23.524	모터명령어;_run_code;<module>;CheckETCActions;SendCMD_Device
+2025:04:25 17:00:23.737	"[{""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}] from callbackCmd - SendCMD"
+2025:04:25 17:00:26.865	SHAKE_MBID;11,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 17:00:27.561	MBID;31,현재펄스;833131,최단회전 펄스 선택;833146,1666292,0 = (833146)
+2025:04:25 17:00:28.793	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581cefa0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 17:00:29.014	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,H1완료 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581c0430>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 17:00:29.389	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:04:25 17:00:29.505	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:04:25 17:00:29.572	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:04:25 17:00:29.726	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:04:25 17:00:29.850	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeE2009A4040054AF000000495
+2025:04:25 17:00:30.060	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
+2025:04:25 17:00:30.216	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1000000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 9.0}] from callbackCmd - SendCMD"
+2025:04:25 17:00:37.026	L;3,0,1000
+2025:04:25 17:00:38.543	SHAKE_MBID;6,평균;0.0,최소;0.0,최대;0.0
+2025:04:25 17:00:38.711	V12;0
+2025:04:25 17:00:39.327	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tag=0 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fd6581ab3a0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:04:25 17:01:23.345	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:04:25 17:01:29.334	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""200"", ""ACC""; ""3000"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
+2025:04:25 17:01:33.823	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"

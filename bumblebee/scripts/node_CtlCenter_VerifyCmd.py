@@ -40,6 +40,9 @@ def RunListBlbMotorsEx(listBLB):
     #dicInfo_local = listBLB[0]
     stateCharger = isChargerPlugOn()
     onScan = isScanTableMode(curTargetTable)
+    dicTagretTableInfo = getTableServingInfo(curTargetTable)
+    infoLIFT_Height = try_parse_int(dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name), 0)
+    finalScan = is_equal(infoLIFT_Height,curTargetTable)
     dicAruco = {}
     lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),0.2)
     if len(lsAruco) > 0:
@@ -328,7 +331,7 @@ def RunListBlbMotorsEx(listBLB):
             iSPD = int(sSPD)
             iSPDSlow = round(iSPD /3)
             #테이블 탐색 모드에서는 속도 줄인다.
-            if iPOS > 0 and (valuesInlist == 3) and onScan:
+            if iPOS > 0 and (valuesInlist > 1) and (onScan or finalScan):
                 dicArray[MotorWMOVEParams.SPD.name] = iSPDSlow
             elif (valuesInlist == 1) and iMBID == ModbusID.TELE_SERV_MAIN.value:
                 dicArray[MotorWMOVEParams.SPD.name] = iSPDSlow
@@ -603,7 +606,7 @@ def RunListBlbMotorsEx(listBLB):
             if CheckMotorOrderValid(dicCtlTmp2):                
                 dicCtlTmp2[MotorWMOVEParams.TIME.name] = GetRPMFromTimeAccDecc(dicCtlTmp2)
                 if mbid == str(ModbusID.TELE_SERV_MAIN.value):
-                    if onScan:
+                    if onScan or finalScan:
                     #if target_pulse != 0 and :
                         #모니터 감지각으로 틸팅 변경
                         #TiltDetectingMonitor()

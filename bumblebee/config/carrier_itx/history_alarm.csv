@@ -1,0 +1,229 @@
+timestamp	value
+2025:04:25 15:18:44.074	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 386, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 906, in MotorBalanceControlEx
+    LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_func_control.py"", line 961, in LightTrayCell
+    SendCMDArd(sCmd)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_func_control.py"", line 784, in SendCMDArd
+    bReturn,strResult=SendInfoHTTP(cmdStr.replace(sDivFieldColon,sDivSemiCol))
+TypeError: cannot unpack non-iterable NoneType object
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:30:11.604	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:30:12.835	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:30:14.050	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:30:15.054	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:30:16.305	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:22.412	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:23.544	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:24.316	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:24.904	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:25.477	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:26.100	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:54.647	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:55.232	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:55.843	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:56.475	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:57.149	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:57.686	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:58.355	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:58.983	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:31:59.551	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:02.089	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:02.819	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:03.387	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:03.971	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:04.538	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:05.116	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:05.731	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:06.316	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:06.950	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:07.601	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"
+2025:04:25 16:33:08.232	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
+    MotorBalanceControlEx(bSkip)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
+    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+TypeError: '>' not supported between instances of 'NoneType' and 'float'
+:_run_code:<module>:SendAlarmHTTP"

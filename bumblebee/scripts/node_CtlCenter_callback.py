@@ -269,8 +269,8 @@ def callbackAck(data,topic_name='' ):
                 end_node = dicMotorH[SeqMapField.END_NODE.name]
                 started_node_mm = pulseH_to_distance(startPos)
                 linkKey = GetLinkKey(start_node,end_node)
-                if not IsEnableSvrPath():
-                  SetCurrentNode(end_node)
+                #if not IsEnableSvrPath():
+                SetCurrentNode(end_node)
                 dicLinkInfo = {TableInfo.LINK_ID.name:linkKey,SeqMapField.START_NODE.name:startPos,SeqMapField.END_NODE.name:endPos}
                 if node_CtlCenter_globals.dfLinkPosInfo.empty or linkKey not in node_CtlCenter_globals.dfLinkPosInfo[SeqMapField.START_NODE.name]:
                   node_CtlCenter_globals.dfLinkPosInfo=pd.concat([node_CtlCenter_globals.dfLinkPosInfo, pd.DataFrame([dicLinkInfo])], ignore_index=True)
@@ -393,7 +393,7 @@ def callbackAck(data,topic_name='' ):
                         # 경과 시간 리스트 (초 단위)
                         time_deltas = [5, 10, 15, 20, 25,30,35,40,45,50,55,60]
                         time_deltas = [5, 60]
-                        time_deltas = [5, 10]
+                        time_deltas = [3, 6]
                         # 딕셔너리 생성
                         time_dict = {
                             (nowTime + timedelta(seconds=delta)): ("이제 곧 닫힙니다." if delta == time_deltas[-1] else f"{time_deltas[-1]-delta}초 후 닫힙니다.")

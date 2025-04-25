@@ -93,7 +93,7 @@ def CheckMotorOrderValid(dictMotor:dict):
     # if pos >= potpos or pos <= notpos:
     #     return False
     distance_pulse = abs(int(pos) - cur_pos)
-    if distance_pulse < (PULSES_PER_ROUND):
+    if distance_pulse < (PULSES_PER_ROUND/5):
         if mbid_class == ModbusID.TELE_SERV_MAIN:
             SendInfoHTTP(f'현재서빙암펄스:{cur_pos},생략된지시정보:{dictMotor}')
         return False
@@ -682,12 +682,15 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
         lsRotate360_down.extend(lsLiftDown)
         listBLBTmp.append(lsRotate540_down) #몸통회전해서 각 잡고
         listBLBTmp.append(lsArmControl) #서빙-밸런스 전개하고
-        if IsEnableSvrPath():
-            listBLBTmp.append(lsRotate360_down)   #지정된 각도에 따라 돌리고
-        else:
-            listBLBTmp.append([dicRotate360_down])   
-            listBLBTmp.append(lsLiftDown)   
-        #listBLBTmp.append(lsLiftDown)   #리프트를 내리면서 아르코 마커의 각도에 따라 내린다.
+        listBLBTmp.append([dicRotate360_down])   
+        listBLBTmp.append(lsLiftDown)   
+
+        # if IsEnableSvrPath():
+        #     listBLBTmp.append(lsRotate360_down)   #지정된 각도에 따라 돌리고
+        # else:
+        #     listBLBTmp.append([dicRotate360_down])   
+        #     listBLBTmp.append(lsLiftDown)   
+        # #listBLBTmp.append(lsLiftDown)   #리프트를 내리면서 아르코 마커의 각도에 따라 내린다.
     return listBLBTmp
 
 # def LiftDown():
@@ -733,6 +736,9 @@ def GetCustomFileControl(strProfileName: str):
 
 
 def CamControl(enable):
+    onScan = isScanTableMode(GetTableTarget())
+    if onScan:
+        return
     ttsMsg = 1 if enable else 0
     log_all_frames(f"Trying to start Marker Scan : {enable}")
     return API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'tag={ttsMsg}')
@@ -992,7 +998,8 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
     dictGlobal = node_CtlCenter_globals.dic_485ex.get(TopicName.BMS.name, {})
     curcadc = float(dictGlobal.get(MonitoringField_BMS.CurCadc.name, 1))
     charging = True if curcadc <= 0 else False
-    curTable,curNode = GetCurrentTargetTable()
+    #curTable,curNode = GetCurrentTargetTable()
+    curNode = GetCurrentNode()
     for mbid, dictModbus in node_CtlCenter_globals.dic_485ex.items():
         if mbid in node_CtlCenter_globals.lsSlowDevices:
             continue
@@ -1010,7 +1017,8 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
     
     minSpd = 10
     isDoorOpened = True if TRAYDOOR_STATUS.OPENED == doorStatus else False
-    if isDoorOpened and curNode == node_KITCHEN_STATION:
+    #if isDoorOpened and curNode == node_KITCHEN_STATION:
+    if curNode == node_KITCHEN_STATION:        
         return BLB_STATUS_FIELD.READY
     elif isDoorOpened:
         return BLB_STATUS_FIELD.CONFIRM    
