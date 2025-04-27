@@ -22,6 +22,7 @@
   <include file="$(find tta_blb)/launch/BLB_3Dlidar_detection.launch" />
   <include file="$(find tta_blb)/launch/BLB_ard.launch" />
   <include file="$(find tta_blb)/launch/BLB_MONITOR.launch" />
+  <include file="$(find tta_blb)/launch/BLB_LIDAR_DETECT.launch" />
   <!-- <include file="$(find tta_blb)/launch/BLB_MASTER_RECOVER_QBI.launch" /> -->
   <!-- 
   <include file="$(find tta_blb)/launch/BLB_CCTV.launch" />

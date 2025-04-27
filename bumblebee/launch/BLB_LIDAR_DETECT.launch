@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="$(env CONFIG)_and" pkg="tta_blb" type="node_Lidar_checker.py" respawn="False" output="log" /> 
+</launch>

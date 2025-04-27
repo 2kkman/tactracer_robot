@@ -494,6 +494,12 @@ class EndPoints(Enum):
     ARD = auto()  # 아두이노 제어
     CONTROL = auto()  # 테이블 탐색 정보 저장
 
+class OBSTACLE_INFO(Enum):
+    LASTSEEN = auto()
+    OBSTACLE_DISTANCE = auto()  # 알람정보 수신
+    OBSTACLE_POINTS= auto()  # info 정보 수신 (디버그용)
+    GND_DISTANCE = auto()  # 탐지된 선반 높이
+
 class TopicName(Enum):
     CMD_DEVICE = auto()  # 모드버스 제어 커맨드 토픽.
     KEEPALIVE = auto()  # KEEP_ALIVE 메세지 발행 토픽
@@ -536,6 +542,8 @@ class TopicName(Enum):
     JOB_PATH = auto()
     CROSS_INFO = auto()
     SMARTPLUG_INFO = auto()
+    LIDAR_OBSTACLE = auto
+    LIDAR_CROPPED = auto()
 
 class SMARTPLUG_INFO(Enum):
     GPI1_CHARGE = auto()
@@ -2241,10 +2249,11 @@ class LIDAR_DISTANCE_PARAMS(Enum):
 
 class ROS_PARAMS(Enum):
     startReal = auto()  # 런치 파일을 통해서 실행시켰는지 여부
-    fastModbus = (
-        auto()
-    )  # itx 에서 modbus 통신 장치 구분 (True : 서보등 고속통신, False : BMS 등 저속통신)
-
+    fastModbus = auto()
+    lidar_interval = auto()
+    lidar_gnd_margin= auto()
+    lidar_gnd_limit= auto()
+    lidar_obstacle_points = auto()
 
 def CheckNodeType(start,dictCross):
     lsCross = dictCross.keys()

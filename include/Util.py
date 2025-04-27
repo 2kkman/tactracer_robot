@@ -71,6 +71,47 @@ import os
 import inspect
 import math
 import numpy as np
+import cv2
+import numpy as np
+import requests
+from datetime import datetime
+
+def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir="/root/Downloads", timeout=5):
+    """
+    MJPEG 스트림에서 1프레임을 캡처해서 저장하는 함수
+    """
+    os.makedirs(save_dir, exist_ok=True)
+
+    # SSL 무시하고 MJPEG 스트림 연결
+    try:
+        session = requests.Session()
+        stream = session.get(url, stream=True, verify=False, timeout=timeout)
+    except Exception as e:
+        print(traceback.format_exc())
+        print(f"Failed to connect to stream: {e}")
+        return False
+
+    bytes_data = b''
+    for chunk in stream.iter_content(chunk_size=1024):
+        bytes_data += chunk
+        a = bytes_data.find(b'\xff\xd8')  # JPEG 시작
+        b = bytes_data.find(b'\xff\xd9')  # JPEG 끝
+        if a != -1 and b != -1:
+            jpg = bytes_data[a:b+2]
+            bytes_data = bytes_data[b+2:]
+            img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
+
+            # 저장
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+            save_path = os.path.join(save_dir, f"captured_{timestamp}.jpg")
+            cv2.imwrite(save_path, img)
+            print(f"Captured and saved: {save_path}")
+
+            stream.close()
+            return True
+
+    print("Failed to capture frame")
+    return False
 
 def estimate_rotation_center(marker_coords_by_angle):
     """
@@ -1111,7 +1152,8 @@ def calculate_offset(image_width, image_height, points):
 
 
 def GetMasterIP():
-  return GetUbutuParam(UbuntuEnv.ROS_HOSTNAME.name)
+  ipAddr = extract_hostname_from_uri(GetUbutuParam(UbuntuEnv.ROS_MASTER_URI.name))
+  return ipAddr
 
 def GetMachineStr():
     return GetUbutuParam(UbuntuEnv.CONFIG.name)

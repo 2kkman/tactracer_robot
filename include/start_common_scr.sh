@@ -183,6 +183,7 @@ source $WS_PATH/devel/setup.bash
 export ROS_PACKAGE_PATH=$WS_PATH:$ROS_PACKAGE_PATH
 export PYTHONPATH=$PYTHONPATH:$script_dir
 export ROS_LOG_DIR="${WS_PATH}/log/"
+export PYTHONDONTWRITEBYTECODE=1
 echo "ROS_PACKAGE_PATH : $ROS_PACKAGE_PATH"
 echo "ROS_LOG_DIR : $ROS_LOG_DIR"
 #source ~/ydlidar_ros_ws/devel/setup.bash
