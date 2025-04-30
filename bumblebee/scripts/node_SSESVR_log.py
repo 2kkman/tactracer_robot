@@ -349,7 +349,7 @@ def callbackACK(recvData):
             return
         
         if endnode not in NODES_SPECIAL:
-            if curNode_type.find(node_virtual_str) >= 0 and curNodeID_fromPulse == endnode:
+            if curNode_type.find(notagstr) < 0 and curNodeID_fromPulse == endnode:
             #if (curNode_type == 'NONE' or len(curNode_type) == 24) and curNodeID_fromPulse == endnode:
                 RFIDControl(False)
                 return
