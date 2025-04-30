@@ -18,9 +18,10 @@ def RunListBlbMotorsEx(listBLB):
         return APIBLB_ACTION_REPLY.E110
     nextAction = {}
     curTargetTable,curTargetNode = GetCurrentTargetTable()
+    curNode = GetCurrentNode()
     #curTargetTable,curTarNode = GetTargetTableNode()
     df = GetDF(curTargetTable)    
-      
+    tiltStutus = GetTiltStatus()
     dicTagretTableInfoCurrent = getTableServingInfo(curTargetTable)
     target540 = dicTagretTableInfoCurrent.get(TableInfo.SERVING_ANGLE.name)
     targetH = dicTagretTableInfoCurrent.get(TableInfo.MOVE_DISTANCE.name)
@@ -42,9 +43,10 @@ def RunListBlbMotorsEx(listBLB):
     onScan = isScanTableMode(curTargetTable)
     dicTagretTableInfo = getTableServingInfo(curTargetTable)
     infoLIFT_Height = try_parse_int(dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name), 0)
-    finalScan = is_equal(infoLIFT_Height,curTargetTable)
+    finalScan = not is_equal(infoLIFT_Height,curTargetTable)
     dicAruco = {}
     lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),0.2)
+    angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name)
     if len(lsAruco) > 0:
         dicAruco = lsAruco[0]
         #lsDF = GetNewRotateArmList(dicAruco)
@@ -330,10 +332,11 @@ def RunListBlbMotorsEx(listBLB):
             sSPD = dicArray[MotorWMOVEParams.SPD.name]
             iSPD = int(sSPD)
             iSPDSlow = round(iSPD /3)
+            
             #테이블 탐색 모드에서는 속도 줄인다.
-            if iPOS > 0 and (valuesInlist > 1) and (onScan or finalScan):
+            if iPOS > cur_pos_srv and (valuesInlist > 1) and (onScan or finalScan):
                 dicArray[MotorWMOVEParams.SPD.name] = iSPDSlow
-            elif (valuesInlist == 1) and iMBID == ModbusID.TELE_SERV_MAIN.value:
+            elif (valuesInlist == 1) and iMBID == ModbusID.TELE_SERV_MAIN.value and finalScan and iPOS > cur_pos_srv:
                 dicArray[MotorWMOVEParams.SPD.name] = iSPDSlow
                 
             sACC = dicArray[MotorWMOVEParams.ACC.name]
@@ -431,19 +434,35 @@ def RunListBlbMotorsEx(listBLB):
             #     else:
             #       TiltTrayCenter()
             
-            #리프팅 모터 제어
+            #리프팅 모터 제어정보 사전 점검
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
-                if sMBID == str(ModbusID.MOTOR_V.value):
-                    currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
-                    if currentWeightTotal >= WEIGHT_LOADCELL_LIMITGRAM*10000:
-                        SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAY_WEIGHT_LIMIT.value)
-                        SetWaitConfirmFlag(True,ALM_User.TRAY_WEIGHT_LIMIT)
-                        return APIBLB_ACTION_REPLY.E109
-                    else:
-                        if iPOS < roundPulse:
-                            DoorClose()
-                    
-                    if dicAruco:
+                if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan:    #하강전 라이다 스캔 결과 확인후 내려간다.
+                    imgPath = capture_frame_from_mjpeg()
+                    lsObstacleInfo = get_obstacle_data(1)
+                    descendable_distance = node_CtlCenter_globals.DefaultGndDistance
+                    isObstaclePresent = len(lsObstacleInfo)
+                    rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
+                    bins_points = 0
+                    isCoolTimePassed = True
+                    if isObstaclePresent:
+                        descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
+                        bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
+                        isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
+                    if imgPath is not None and angle_y is not None and isCoolTimePassed:
+                        save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
+                    if isObstaclePresent:
+                        return APIBLB_ACTION_REPLY.E111
+
+                # currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+
+                # if currentWeightTotal >= WEIGHT_LOADCELL_LIMITGRAM*10000:
+                #     SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAY_WEIGHT_LIMIT.value)
+                #     SetWaitConfirmFlag(True,ALM_User.TRAY_WEIGHT_LIMIT)
+                #     return APIBLB_ACTION_REPLY.E109
+                # else:
+                #     if iPOS < roundPulse:
+                #         DoorClose()
+                    if dicAruco:    #아르코마커가 인식되면 로그.
                         # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
                         # TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)                        
                         resultDiff,diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
@@ -468,47 +487,69 @@ def RunListBlbMotorsEx(listBLB):
                         #         node_CtlCenter_globals.aruco_try = 0
                         #         # dicInfo_local[i][MotorWMOVEParams.POS.name] = 100000
                         #         # TTSAndroid('위치파악실패')
-                            
-                            
-
                         # else:
                             #SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
-                            
-            
             #elif iMBID == ModbusID.ROTATE_SERVE_360.value and CheckMotorOrderValid(dicArray) and GetTiltStatus() == TRAY_TILT_STATUS.TiltTrayCenter:
-            elif iMBID == ModbusID.ROTATE_SERVE_360.value and CheckMotorOrderValid(dicArray):
-                #트레이 모터를 움직일때 현재 서빙부의 길이를 구한 후 200mm 이상이지 않으면 알람.
-                if curDistanceSrvTele <= 50 and isRealMachine:
-                    rospy.loginfo(dicArray)
-                    StopEmergency(ALM_User.TRAY360_SAFETY.value)
-                    return APIBLB_ACTION_REPLY.E102
-                #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
-                tray_angle = GetRotateTrayAngleFromPulse(iPOS)
-                if abs(tray_angle) > 0:
-                    if dicAruco:
-                        marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
-                        marker_angle = dicAruco.get(ARUCO_RESULT_FIELD.ANGLE.name)
-                        dicTagretTableInfo = getTableServingInfo(curTargetTable)
-                        target_marker = dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name,-1)
-                        if is_equal(marker_value,target_marker):
-                            angle_new = (180+ marker_angle)%360
-                            #GetNewRotateArmList(dicAruco)
-                            # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
-                            TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)
-                            resultDiff , diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
-                            #dicAruco = lsAruco[0]
-                            rospy.loginfo(json.dumps(dicAruco, indent=4))
-                            dicNewTray = GetDicRotateMotorTray(angle_new)
-                            dicInfo_local[i].update(dicNewTray)
-                            infoMsg = f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicAruco, indent=4)}'
-                            SendInfoHTTP(f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new}')
-                            rospy.loginfo(infoMsg)
+            elif iMBID == ModbusID.ROTATE_SERVE_360.value:
+                if not dicAruco:
+                    TiltTableObstacleScan()
+                if CheckMotorOrderValid(dicArray):
+                    #트레이 모터를 움직일때 현재 서빙부의 길이를 구한 후 200mm 이상이지 않으면 알람.
+                    if curDistanceSrvTele <= 50 and isRealMachine:
+                        rospy.loginfo(dicArray)
+                        StopEmergency(ALM_User.TRAY360_SAFETY.value)
+                        return APIBLB_ACTION_REPLY.E102
+                    #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
+                    tray_angle = GetRotateTrayAngleFromPulse(iPOS)
+                    if abs(tray_angle) > 0:
+                        if dicAruco:
+                            marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
+                            marker_angle = round(dicAruco.get(ARUCO_RESULT_FIELD.ANGLE.name))
+                            dicTagretTableInfo = getTableServingInfo(curTargetTable)
+                            target_marker = dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name,-1)
+                            if True:
+                            #if is_equal(marker_value,target_marker):
+                                angle_new = (180+ marker_angle)%360
+                                #GetNewRotateArmList(dicAruco)
+                                # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
+                                #TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)
+                                resultDiff , diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
+                                #dicAruco = lsAruco[0]
+                                rospy.loginfo(json.dumps(dicAruco, indent=4))
+                                dicNewTray = GetDicRotateMotorTray(angle_new)
+                                dicInfo_local[i].update(dicNewTray)
+                                infoMsg = f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicAruco, indent=4)}'
+                                SendInfoHTTP(f'이전 각도:{tray_angle},마커로 바뀐각도:{angle_new}')
+                                dic_newNodeInfo2 = {}
+                                dic_newNodeInfo2[TableInfo.TABLE_ID.name] = curTargetTable
+                                dic_newNodeInfo2[TableInfo.NODE_ID.name] = curNode
+                                dic_newNodeInfo2[TableInfo.SERVING_DISTANCE.name] = curDistanceSrvTele
+                                dic_newNodeInfo2[TableInfo.SERVING_ANGLE.name] = curAngle_540
+                                dic_newNodeInfo2[TableInfo.MARKER_ANGLE.name] = angle_new
+                                dic_newNodeInfo2[TableInfo.HEIGHT_LIFT.name] = 880000   #나중에 라이다 하강거리로 대체
+                                dic_newNodeInfo2[TableInfo.MARKER_VALUE.name] = curTargetTable
+                                
+                                add_or_update_row(strFileTableNodeEx,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
+                                
+                                #df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                                df = pd.read_csv(strFileTableNodeEx, dtype={TableInfo.NODE_ID.name: int}, sep=sDivTab)
+                                filtered = df[(df[TableInfo.NODE_ID.name] == curNode) & (df[TableInfo.MARKER_VALUE.name] < 0)]
+                                lsDictNotScaned = filtered.to_dict(orient='records')
+                                if len(lsDictNotScaned)>0:
+                                    dicNext = lsDictNotScaned[0]
+                                    nextTable = dicNext[TableInfo.TABLE_ID.name]
+                                    SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
+                                    InsertTableList(nextTable)
+                                    TTSAndroid(f'{curTargetTable}번 테이블정보 저장 후 {nextTable}번 테이블 스캔을 시작합니다.')
+                                else:
+                                    TTSAndroid(f'{curTargetTable}번 테이블 위치정보 및 현재 노드 스캔 완료')    
+                                rospy.loginfo(infoMsg)
+                            else:
+                                infoMsg = f'마커값이 다릅니다 : {marker_value,target_marker}'
+                                rospy.loginfo(infoMsg)
                         else:
-                            infoMsg = f'마커값이 다릅니다 : {marker_value,target_marker}'
+                            infoMsg = '아르코마커가 인식되지 않았습니다.'
                             rospy.loginfo(infoMsg)
-                    else:
-                        infoMsg = '아르코마커가 인식되지 않았습니다.'
-                        rospy.loginfo(infoMsg)
                         
         node_CtlCenter_globals.lock.acquire()
         node_CtlCenter_globals.dicTargetPos.clear()
@@ -531,11 +572,10 @@ def RunListBlbMotorsEx(listBLB):
         lsFinalCmdEx = []
         #isArmControl = False
         for dicCtlTmp in dicInfo_local:
-            sPos = dicCtlTmp.get(MotorWMOVEParams.POS.name, None)
+            sPos = dicCtlTmp.get(MotorWMOVEParams.POS.name, MIN_INT)
             mbid = dicCtlTmp.get(MotorWMOVEParams.MBID.name, None)
-            
+            target_pulse = int(sPos)
             if mbid == str(ModbusID.ROTATE_MAIN_540.value):
-                target_pulse = int(sPos)
                 targetCW = target_pulse +potRotate540
                 targetCCW = target_pulse -potRotate540
                 arr =[target_pulse,targetCW,targetCCW]
@@ -566,6 +606,10 @@ def RunListBlbMotorsEx(listBLB):
                     rpmSrv = round((DEFAULT_RPM_SLOW/2)) if onScan else DEFAULT_RPM_SLOW
                     dicMoveTeleSrv = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,0, rpmSrv,ACC_ST,DECC_ST)                    
                     node_CtlCenter_globals.dicTargetPos.clear()
+                    if onScan and iPOS > cur_pos_srv:
+                        TiltArucoScan()
+                        CamControl(True)
+                        
                     SendCMD_Device([dicMoveTeleSrv])
                     node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
                     return APIBLB_ACTION_REPLY.E108
@@ -606,12 +650,12 @@ def RunListBlbMotorsEx(listBLB):
             if CheckMotorOrderValid(dicCtlTmp2):                
                 dicCtlTmp2[MotorWMOVEParams.TIME.name] = GetRPMFromTimeAccDecc(dicCtlTmp2)
                 if mbid == str(ModbusID.TELE_SERV_MAIN.value):
-                    if onScan or finalScan:
+                    if (onScan or finalScan) and iPOS > cur_pos_srv:
                     #if target_pulse != 0 and :
                         #모니터 감지각으로 틸팅 변경
                         #TiltDetectingMonitor()
-                        TiltDown()  #데모에서는 아래로.
-                        #CamControl(True)
+                        TiltArucoScan()
+                        CamControl(True)
                     # if dicInfo_local_org is not None and target_pulse == 0 and abs(node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE - cur_pos11) > roundPulse and node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE < cur_pos11:
                     #     dicMoveH = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE, DEFAULT_RPM_SLOW,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
                     #     node_CtlCenter_globals.dicTargetPos.clear()
@@ -626,30 +670,26 @@ def RunListBlbMotorsEx(listBLB):
                     #     node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
                     #     return APIBLB_ACTION_REPLY.E108
 
-                if mbid == str(ModbusID.MOTOR_V.value) and target_pulse != 0:
-                    #모니터 감지각으로 틸팅 변경
-                    CamControl(False)
-                    #TiltMaxUp()
-                    #TiltDetectingMonitor()
-                    #TiltDown()  #데모에서는 아래로.
-                    if int(curTargetNode) == node_KITCHEN_STATION:
-                        #dicCtlTmp2[MotorWMOVEParams.POS.name] = 1131241
-                        SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
-                        # if abs(cur_posH) > roundPulse:
-                        #   dicLoc = getMotorHomeDic(ModbusID.MOTOR_H.value)
-                        #   SendCMD_Device([dicLoc])
-                          #SendAlarmHTTP(f'포지션을 0 으로 보정합니다:{cur_posH}',True,node_CtlCenter_globals.BLB_ANDROID_IP)
-                        node_CtlCenter_globals.dicPOS_ABS.clear()
-                          #SendInfoHTTP()
-                    # elif int(curNode) == 4 or int(curNode) == 5:
-                    #     dicCtlTmp2[MotorWMOVEParams.POS.name] = 1290000
+                #최종 필터링 이후 추가해야할 동작 확인
+                if mbid == str(ModbusID.MOTOR_V.value):
+                    if target_pulse ==0:    #상승시
+                        TiltTableObstacleScan()
+                    else:#target_pulse != 0:   #하강시
+                        #모니터 감지각으로 틸팅 변경
+                        CamControl(False)
+                        TiltServFinish()
+                        if int(curTargetNode) == node_KITCHEN_STATION:
+                            SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
+                            # if abs(cur_posH) > roundPulse:
+                            #   dicLoc = getMotorHomeDic(ModbusID.MOTOR_H.value)
+                            #   SendCMD_Device([dicLoc])
+                            #SendAlarmHTTP(f'포지션을 0 으로 보정합니다:{cur_posH}',True,node_CtlCenter_globals.BLB_ANDROID_IP)
+                            node_CtlCenter_globals.dicPOS_ABS.clear()
                         
                 node_CtlCenter_globals.dicTargetPos[mbid] = dicCtlTmp2[MotorWMOVEParams.POS.name]                        
                 lsFinalCmdEx.append(dicCtlTmp2)
             else:
                 rospy.loginfo(f"Skipped motor : {dicCtlTmp2}")
-
-
 
         if len(lsFinalCmdEx) > 0:
             dfPrev = pd.DataFrame(lsFinalCmdEx)
@@ -712,3 +752,5 @@ def RunListBlbMotorsEx(listBLB):
         #   print(listBLB)
     
     return APIBLB_ACTION_REPLY.R101
+
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

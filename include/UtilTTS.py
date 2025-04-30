@@ -16,3 +16,4 @@ class TTSMessage(Enum):
     OBSTACLE_STOP = '장애물이 감지되어 정지합니다'
     SHAKE_TRAY_DETECTED = '트레이 흔들림이 감지되었습니다'
     SHAKE_TRAY_OK = '트레이 흔들림이 사라졌습니다'
+    REQUEST_TABLECLEAR = '서빙 위치에 장애물을 치워주세요'

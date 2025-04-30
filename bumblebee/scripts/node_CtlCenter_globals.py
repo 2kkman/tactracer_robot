@@ -14,8 +14,8 @@ param_ARD_show = False
 enableDummyArduino = False
 
 #샤누이사 서버랑 연동할때 True
-#enableSvrPath = False
-enableSvrPath = True
+enableSvrPath = False
+#enableSvrPath = True
 
 stateDic = {}
 dicTorqueAve = {}
@@ -40,10 +40,14 @@ lastCmdBalanceStamp = getDateTime()
 lastMainLoopTimeStamp = getDateTime()
 lastCmdTimeStamp = getDateTime()
 lastUpdatedLidar = getDateTime()
-
+# 최근 100개 데이터를 저장할 deque 생성
+obstacle_history = deque(maxlen=10)
 lastSendStatus = getDateTime()
 lastSendStatusDelaySec = 3
 lastSendStatusList = []
+
+aruco_lastDiffX = aruco_lastDiff_Default
+aruco_lastDiffY = aruco_lastDiff_Default
 
 lsXYLoc = [0,0]
 tiltStatus = TRAY_TILT_STATUS.TiltDiagonal
@@ -178,6 +182,7 @@ SERVING_ARM_FOLD_CONSTANT = 0
 SERVING_ARM_EXPAND_CONSTANT = 0
 SERVING_ARM_BALANCE_PULSE = 530000
 SERVING_ARM_EXPAND_PULSE = 200000
+DefaultGndDistance = 0.56
 
 if not isRealMachine:
     BLB_ANDROID_IP = '172.30.1.22'
@@ -270,9 +275,9 @@ def LoadMap():
     return graph, bgraphOK ,lsTotalMap,node_location,node_seq
 graph, bgraphOK ,lsTotalMap,node_location,node_seq = LoadMap()
 
-lsNoLiftDownNodes.extend(StateInfo.keys())
+#lsNoLiftDownNodes.extend(StateInfo.keys())
 #lsNoLiftDownNodes.extend([10])
-lsNoLiftDownNodes.append(node_CHARGING_STATION)
+#lsNoLiftDownNodes.append(node_CHARGING_STATION)
 
 lastPath = []
 dicSTROKE={}
@@ -304,4 +309,5 @@ robot= Robot()
 #getattr(robot, Robot_Event.start_calibration_tray.name)()
 #robot.trigger_start_calibration_tray()
 #print(robot.get_current_state())
-print(dicWeightBal)
+#print(dicWeightBal)
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

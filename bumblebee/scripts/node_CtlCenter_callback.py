@@ -400,7 +400,7 @@ def callbackAck(data,topic_name='' ):
                             for delta in time_deltas
                         }
                         #tts 서비스 가용하면 음식을 꺼내가라는 안내방송 진행
-                        ttsResult = TTSAndroid(messageTTS,True,1)
+                        ttsResult = TTSAndroid(messageTTS,1)
                         if ttsResult:
                             node_CtlCenter_globals.dicTTS.clear()
                             sorted_time_dict = OrderedDict(sorted(time_dict.items()))
@@ -997,8 +997,23 @@ def callback_ARUCO_RESULT(data,topic_name=''):
         rospy.logerr(message)
         print(message)
         SendAlarmHTTP(e,True,node_CtlCenter_globals.BLB_ANDROID_IP)
-        # SendFeedback(e)
-
+        
+def callback_lidar_obstacle(data,topic_name=''):
+    recvDatalist = []
+    try:
+        recvData = data.data.replace("'", '"')
+        if is_valid_python_dict_string(recvData):
+            recvDataMap2 = ast.literal_eval(recvData)
+        elif is_json(recvData):
+            recvDataMap2 = json.loads(recvData)
+        else:
+            recvDataMap2 = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)        
+        add_new_obstacle_data(recvDataMap2)
+    except Exception as e:
+        message = traceback.format_exc()
+        rospy.logerr(message)
+        print(message)
+        SendAlarmHTTP(e,True,node_CtlCenter_globals.BLB_ANDROID_IP)
 
 def callbackRFID_DF(data,topic_name=''):
     """
@@ -1038,7 +1053,7 @@ def callbackRFID(data,topic_name=''):
         else:
             recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
         
-        sEPC = recvDataMap.get(sEPCKey,'NOTAG')
+        sEPC = recvDataMap.get(sEPCKey,RailNodeInfo.NOTAG.name)
         sRSSI = try_parse_int(recvDataMap.get(sRSSIKey,-1))
         sPOS = try_parse_int(recvDataMap.get(sPOS_Key,-1))
         sSPD = try_parse_int(recvDataMap.get(sSPD_Key,-1))
@@ -1463,14 +1478,16 @@ node_CtlCenter_globals.dictTopicToSubscribe = {
     TopicName.ARUCO_RESULT.name : callback_ARUCO_RESULT,
     TopicName.CROSS_INFO.name : callback_CROSS_INFO,
     TopicName.SMARTPLUG_INFO.name : callback_CROSS_INFO,    
-    '/bumblebee/distance' : callBackLidarDistance,
-    '/detect_cropped_distance' : callBackLidarDistanceOnly
+    TopicName.LIDAR_OBSTACLE.name : callback_lidar_obstacle
+    # ,
+    # '/bumblebee/distance' : callBackLidarDistance,
+    # '/detect_cropped_distance' : callBackLidarDistanceOnly
 }
 for topic, callback in node_CtlCenter_globals.dictTopicToSubscribe.items():
     rospy.Subscriber(topic, String, callback, queue_size=ROS_TOPIC_QUEUE_SIZE,callback_args=topic)
-rospy.Subscriber(TopicName.detect_3D.name, PointCloud2, callback_detect_3D)
-#rospy.Subscriber(TopicName.BLB_TRAY_IMU.name, Imu, imu_callback)
 
+#rospy.Subscriber(TopicName.detect_3D.name, PointCloud2, callback_detect_3D)
+#rospy.Subscriber(TopicName.BLB_TRAY_IMU.name, Imu, imu_callback)
 # rospy.Subscriber(TopicName.RFID.name, String, callbackRFID, queue_size=ROS_TOPIC_QUEUE_SIZE)
 # rospy.Subscriber(TopicName.ARD_CARRIER.name, String, callbackARD_CARRIER, queue_size=ROS_TOPIC_QUEUE_SIZE)
 # rospy.Subscriber(TopicName.ACK.name, String, callbackAck, queue_size=ROS_TOPIC_QUEUE_SIZE)
@@ -1478,3 +1495,4 @@ rospy.Subscriber(TopicName.detect_3D.name, PointCloud2, callback_detect_3D)
 # rospy.Subscriber(TopicName.RECEIVE_MQTT.name, String, callbackTopic2mqtt, queue_size=ROS_TOPIC_QUEUE_SIZE)
 # rospy.Subscriber(TopicName.ARUCO_RESULT.name, String, callback_ARUCO_RESULT, queue_size=ROS_TOPIC_QUEUE_SIZE)
 #rospy.Subscriber(TopicName.BLB_CMD.name, String, callbackBLB_CMD, queue_size=ROS_TOPIC_QUEUE_SIZE,callback_args=TopicName.BLB_CMD.name)  # UI에서 명령어 수신
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

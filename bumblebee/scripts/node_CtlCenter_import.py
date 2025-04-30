@@ -138,3 +138,4 @@ dicCaliHome = getMotorMoveDic(ModbusID.MOTOR_H.value, False, -200001, 200,3000,3
 # EPC_NODE7 = "E2009A3030033AF000000136"
 # EPC_NODE4 = "E2009A3030033AF000000923"
 # targetEPC = {NODE_KITCHEN_EPC : 1, EPC_NODE7:7,EPC_NODE4:4}
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

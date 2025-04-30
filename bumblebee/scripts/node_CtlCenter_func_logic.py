@@ -1,6 +1,37 @@
 #!/usr/bin/env python3
 from node_CtlCenter_import import *
 import node_CtlCenter_globals
+
+
+def CamControl(enable):
+    # onScan = isScanTableMode(GetTableTarget())
+    # if onScan:
+    #     return
+    ttsMsg = 1 if enable else 0
+    log_all_frames(f"Trying to start Marker Scan : {enable}")
+    return API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'tag={ttsMsg}')
+    #rospy.loginfo(f"Trying to start Marker Scan : {enable}")
+    camSet = service_setbool_client(ServiceBLB.MarkerScan.value, enable, SetBool)
+    rospy.loginfo(f"Start Marker Scan Result : {camSet}")
+    return camSet
+
+def ArucoLastRecordSetX(aruco_lastDiff):
+  node_CtlCenter_globals.aruco_lastDiffX = aruco_lastDiff
+
+def ArucoLastRecordSetY(aruco_lastDiff):
+  node_CtlCenter_globals.aruco_lastDiffY = aruco_lastDiff
+
+def ArucoLastRecordClear():
+  node_CtlCenter_globals.aruco_lastDiffX = aruco_lastDiff_Default
+  node_CtlCenter_globals.aruco_lastDiffY = aruco_lastDiff_Default
+
+# 새로운 데이터가 들어올 때마다 append
+def add_new_obstacle_data(new_data):
+    node_CtlCenter_globals.obstacle_history.append(new_data)
+
+def get_obstacle_data(seconds=1.0):
+    now = time.time()
+    return [data for data in node_CtlCenter_globals.obstacle_history if now - data[MonitoringField.LASTSEEN.name] <= seconds]
   
 lastTTS = getDateTime()
 def GetRFIDInventoryStatus():
@@ -470,6 +501,7 @@ def IsOrderEmpty():
   return False
 
 def SetDynamicConfigROS(new_params : dict):
+    return
     if node_CtlCenter_globals.dynamic_reconfigure_client is not None:
         node_CtlCenter_globals.dynamic_reconfigure_client.update_configuration(new_params)
 
@@ -482,6 +514,7 @@ def GetDynamicConfigROS():
     return {}
   
 def SetLidarCrop(pf : LidarCropProfile):
+  return
   if not isRealMachine:
     return
   log_all_frames()
@@ -1726,3 +1759,4 @@ def SetDFTableInfo(lsDicArray):
       rospy.loginfo(f'수신된 지시정보 파싱 에러 : {df}')
   else:
     rospy.loginfo(f'Empty DF : {df}')  
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

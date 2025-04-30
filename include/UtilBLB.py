@@ -11,6 +11,7 @@ from scipy.spatial import *
 import ros_numpy
 minGYRO = -90
 maxGYRO = 45
+aruco_lastDiff_Default = 100
 
 NODE_KITCHEN = 1
 NODE_CROSS = 10
@@ -34,6 +35,7 @@ class IPList(Enum):
     BLB_CHARGERPLUG_IP = '172.30.1.26'
     BLB_CROSS_IP = '172.30.1.16'
     BLB_CROSSPLUG_IP = '172.30.1.25'
+    BLB_LIGHTPLUG_IP = '172.30.1.23'
     BLB_SVR_PORT = '4041'
     
 def getConfigPath(host=None) -> str:
@@ -108,10 +110,11 @@ BLB_CHARGE_IP = ip_dict[IPList.BLB_CHARGE_IP.name]
 BLB_CHARGERPLUG_IP_DEFAULT=ip_dict[IPList.BLB_CHARGERPLUG_IP.name]
 BLB_CROSS_IP_DEFAULT=ip_dict[IPList.BLB_CROSS_IP.name]
 BLB_CROSSPLUG_IP_DEFAULT=ip_dict[IPList.BLB_CROSSPLUG_IP.name]
+BLB_LIGHTPLUG_IP_DEFAULT=ip_dict[IPList.BLB_LIGHTPLUG_IP.name]
 BLB_SVR_PORT_DEFAULT=4041
 
 WEIGHT_ISNOT_EMPTY = 100
-CAM_LOCATION_MARGIN_OK = 0.04
+CAM_LOCATION_MARGIN_OK = 0.01
 CAM_LOCATION_MARGIN_FINE = 0.1
 PATH_RECORDING = '/root/Downloads/'
 MOVE_H_SAMPLE_PULSE = 1200000
@@ -549,6 +552,7 @@ class SMARTPLUG_INFO(Enum):
     GPI1_CHARGE = auto()
     CHARGERPLUG_STATE = auto()
     SET_CHARGERPLUG = auto()
+    SET_LIGHTPLUG = auto()
     SET_CROSSPLUG = auto()
     
 class SeqMapField(Enum):
@@ -574,6 +578,12 @@ class TableInfo(Enum):
     MOVE_DISTANCE = auto()
     HEIGHT_LIFT = auto()
     MARKER_VALUE = auto()
+    
+class RailNodeInfo(Enum):
+    NOTAG = auto()
+    NONE = auto()
+    R_END = auto()
+    R_START = auto()
 
 class ARUCO_RESULT_FIELD(Enum):
     IS_MARKERSCAN = auto()  # 마커 스캔 동작 여부
@@ -1713,6 +1723,7 @@ class APIBLB_ACTION_REPLY(Enum):
     E108 = 'BLB heading side is invalid to move carrier.'   #알람이 감지된 상태에서 모터 제어 명령어를 보내면 응답
     E109 = 'Overload error,too much foods in the tray.'   #알람이 감지된 상태에서 모터 제어 명령어를 보내면 응답
     E110 = 'MotorH is paused.'   #주행중지 모드 (관절 및 리프트만 동작)
+    E111 = 'Not able to lift down cause table is not clean.'    #서빙 테이블 장애물로 트레이를 내리지 못하는 상태
 
 class MonitoringField_EX(Enum):
     def __init__(
@@ -2192,7 +2203,7 @@ class MonitorROS(Enum):
     ros_start_time = auto()
 
 class CameraMode(Enum):
-    WIDE_LOW = 'camid=2,1024,768'
+    WIDE_LOW = 'camid=2,640,480'
     WIDE_FHD = 'camid=2,1280,960'
     WIDE_HIGH = 'camid=2,1920,1440'
     MAIN_LOW = 'camid=0,640,480'
@@ -2206,9 +2217,9 @@ class TRAY_TILT_STATUS(Enum):
     TiltDetectingMonitor = 90
     TiltDown = 0   #수직으로 밑을 봤을때
     TiltFace = -90    #똑바로 봤을때
-    TiltMaxUp = 45
+    TiltMax = 45
     TiltDiagonal = -45   #테이블 스캔모드 (Angle_Y : -45)
-    TiltTrayCenter = 30
+    TiltTableObstacleScan = 30
 
 def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
     targetServo = mapRange(tiltStatus.value, minGYRO,maxGYRO,0,180)
@@ -3949,8 +3960,8 @@ def compare_dicts(dict1, dict2, threshold):
     :param threshold: 차이의 기준값
     :return: 차이가 threshold 이상이면 True, 아니면 False
     """
-    x_diff_signed = (dict1[ARUCO_RESULT_FIELD.X.name] - dict2[ARUCO_RESULT_FIELD.X.name])
-    y_diff_signed = (dict1[ARUCO_RESULT_FIELD.Y.name] - dict2[ARUCO_RESULT_FIELD.Y.name])
+    x_diff_signed =round((dict1[ARUCO_RESULT_FIELD.X.name] - dict2[ARUCO_RESULT_FIELD.X.name]),3)
+    y_diff_signed = round((dict1[ARUCO_RESULT_FIELD.Y.name] - dict2[ARUCO_RESULT_FIELD.Y.name]),3)
     x_diff = abs(x_diff_signed)
     y_diff = abs(y_diff_signed)
     
@@ -5455,8 +5466,14 @@ def SetCrossPlug(state : bool):
 def SetChargerPlug(state : bool):
     return set_tasmota_state(BLB_CHARGERPLUG_IP_DEFAULT, state)
 
+def SetLightPlug(state : bool):
+    return set_tasmota_state(BLB_LIGHTPLUG_IP_DEFAULT, state)
+
 def getStatePlug(ip : str):
     return get_tasmota_state(ip)
+
+def getLightPlugState():
+    return getStatePlug(BLB_LIGHTPLUG_IP_DEFAULT)
 
 def getCrossPlugState():
     return getStatePlug(BLB_CROSSPLUG_IP_DEFAULT)
@@ -5495,9 +5512,30 @@ def SetCameraMode(cm : CameraMode):
     calStr = cm.value
     API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,calStr)
 
-def TTSAndroid(ttsMsg,isQueueing = True, ttsInterval = 1):
+# def TTSAndroid(ttsMsg,isQueueing = True, ttsInterval = 1):
+#     calStr = f'tts=10,10,{ttsMsg}'
+#     API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,calStr)
+#     return True
+
+def TTSAndroid(ttsMsg, ttsIntervalSec=5):
+    # 함수에 필요한 속성 없으면 초기화
+    if not hasattr(TTSAndroid, "last_tts_time"):
+        TTSAndroid.last_tts_time = 0
+    if not hasattr(TTSAndroid, "last_tts_msg"):
+        TTSAndroid.last_tts_msg = None
+
+    now = time.time()
+
+    if ttsMsg == TTSAndroid.last_tts_msg:
+        # 같은 메시지면 쿨타임 검사
+        if now - TTSAndroid.last_tts_time < ttsIntervalSec:
+            return False
+
+    # 다르거나, 쿨타임이 지난 경우 TTS 실행
     calStr = f'tts=10,10,{ttsMsg}'
-    API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,calStr)
+    API_call_Android(BLB_ANDROID_IP_DEFAULT, HTTP_COMMON_PORT, calStr)
+    TTSAndroid.last_tts_time = now
+    TTSAndroid.last_tts_msg = ttsMsg
     return True
 
 def GetCrossInfo():
@@ -5523,16 +5561,36 @@ def GetCrossInfo():
             #SendAlarmHTTP(sMsg)
     return StateInfo
 
-def GetNodeFromTable(curTable):
+def GetNodeFromTable(curTable, retry_count=5, retry_delay=0.1):
     file_path = strFileTableNodeEx
-    df_manager = DataFrameManager(file_path)
-    if curTable is not None:
-        curNodeList = df_manager.filter_by_key(TableInfo.TABLE_ID.name, str(curTable))
-        if len(curNodeList) == 0:
+    
+    for attempt in range(retry_count):
+        try:
+            df_manager = DataFrameManager(file_path)
+            if curTable is not None:
+                curNodeList = df_manager.filter_by_key(TableInfo.TABLE_ID.name, str(curTable))
+                if len(curNodeList) == 0:
+                    return None
+                curNode = curNodeList.iloc[0][TableInfo.NODE_ID.name]
+                return try_parse_int(curNode)
             return None
-        curNode = curNodeList.iloc[0][TableInfo.NODE_ID.name]
-        return try_parse_int(curNode)
-    return None
+        except (pd.errors.EmptyDataError, OSError) as e:
+            if attempt < retry_count - 1:
+                time.sleep(retry_delay)
+            else:
+                # 마지막 시도에서도 실패하면 에러를 다시 던진다
+                raise e
+            
+# def GetNodeFromTable(curTable):
+#     file_path = strFileTableNodeEx
+#     df_manager = DataFrameManager(file_path)
+#     if curTable is not None:
+#         curNodeList = df_manager.filter_by_key(TableInfo.TABLE_ID.name, str(curTable))
+#         if len(curNodeList) == 0:
+#             return None
+#         curNode = curNodeList.iloc[0][TableInfo.NODE_ID.name]
+#         return try_parse_int(curNode)
+#     return None
 
 def GetRange(value=None, column_input="", column_output=None, df = pd.DataFrame()):
     # 컬럼 존재 여부 확인    
@@ -5667,4 +5725,10 @@ def compare_better_marker(dictOld, dictNew, dictSample = ref_dict):
     resultDiff1,diff_X1,diff_Y1= compare_dicts(dictOld, dictSample, CAM_LOCATION_MARGIN_OK)
     resultDiff2,diff_X2,diff_Y2= compare_dicts(dictNew, dictSample, CAM_LOCATION_MARGIN_OK)
     return abs(diff_X1) > abs(diff_X2)
-    
+
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())    
+# df = pd.read_csv(strFileTableNodeEx, dtype={TableInfo.NODE_ID.name: int})
+# print(df)
+# filtered = df[(df['NODE_ID'] == 2) & (df['MARKER_VALUE'] < 0)]
+# lsDictNotScaned = filtered.to_dict(orient='records')
+# print(lsDictNotScaned)

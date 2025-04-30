@@ -395,9 +395,8 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
     크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
     현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%,밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
     """
-    #이부분에 Set() 적용해서 퍼센테이지 별로 한번씩만 TTS 나가게 하자.
     if bAPI_Result and battery_level < 15 and not ischarging:
-      TTSAndroid(TTSMessage.ALARM_BATTERY.value, True, 20000)
+      TTSAndroid(TTSMessage.ALARM_BATTERY.value, 60)
     #서빙전개율:{curSrvPer}%,밸런싱암전개율:{curBalPer}%,정확도:{accuBalnceLength:.1f}%,
     #남은 서빙 시간 : {GetRPMFromTimeAccDecc(node_CtlCenter_globals.listBLB)}
     # 토크맥스정보:{json.dumps(node_CtlCenter_globals.dicTorqueMax, indent=2)}
@@ -433,7 +432,7 @@ def KeepArmBalancing():
         rospy.loginfo(lsFiltered)
         SendCMD_Device(lsFiltered)
         UpdateLastBalanceTimeStamp()
-        TTSAndroid('중량이 변경되었습니다.',True,1000)
+        TTSAndroid('중량이 변경되었습니다.',1000)
 
 def CheckMotorAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()
@@ -463,6 +462,7 @@ def CheckMotorAlarms():
 
 def CheckETCActions():
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
     #stateCharger = isChargerPlugOn()
     cur_node = GetCurrentNode()
     node_pos = GetNodePos_fromNode_ID(cur_node)
@@ -476,7 +476,7 @@ def CheckETCActions():
         if abs(cur_pos - node_pos) > roundPulse/2:
             dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
             SendCMD_Device([dicLoc])
-        if SI_POT == 'NOT' and not isActivatedMotor(ModbusID.MOTOR_H.value):
+        if not isActivatedMotor(ModbusID.MOTOR_H.value):
             SetChargerPlug(True)
         
     
@@ -619,21 +619,24 @@ def MotorBalanceControlEx(bSkip):
             
             if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value):
                 isScanSpd =is_within_range(abs(spd_cur_540),MAINROTATE_RPM_SLOWEST,15)
-                rospy.loginfo(f'Scan spd_cur_540:{spd_cur_540},isScanSpd:{isScanSpd},MarkerXY:{marker_X},{marker_Y}')
+                rospy.loginfo(f'Scan spd_cur_540:{spd_cur_540},isScanSpd:{isScanSpd},MarkerXY:{marker_X},{marker_Y},lastDifX={node_CtlCenter_globals.aruco_lastDiffX},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                 if isScanSpd:
-                    ClearArucoTable()
+                    #ClearArucoTable()
                     rospy.loginfo(f'spd_cur_540 : {spd_cur_540}')
                     resultDiff1,diff_X1,diff_Y1= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
                     #resultDiff2,diff_X2,diff_Y2= compare_dicts(dicAruco, ref_dict2, CAM_LOCATION_MARGIN_OK)
-                    rospy.loginfo(f'Aruco X1 Check : resultDiff={resultDiff1},diff_X={diff_X1},diff_Y={diff_Y1}')
+                    rospy.loginfo(f'Aruco X1 Check : resultDiff={resultDiff1},diff_X={diff_X1},diff_Y={diff_Y1},lastDifX={node_CtlCenter_globals.aruco_lastDiffX}')
                     #rospy.loginfo(f'Aruco X2 Check : resultDiff={resultDiff2},diff_X={diff_X2},diff_Y={diff_Y2}')
                     # rospy.loginfo(format_vars(currTime,resultDiff,diff_X,diff_Y))
-                    if abs(diff_X1) < CAM_LOCATION_MARGIN_OK:
+                    
+                    if abs(diff_X1) < CAM_LOCATION_MARGIN_OK or (abs(diff_X1) < CAM_LOCATION_MARGIN_FINE and node_CtlCenter_globals.aruco_lastDiffX < abs(diff_X1)):
                     #if diff_X1 < CAM_LOCATION_MARGIN_OK:
                         StopAllMotors(ACC_DECC_SMOOTH)
-                        rospy.loginfo(f'Aruco X OK : cam diff_X={diff_X},cam diff_Y={diff_Y}')
+                        rospy.loginfo(f'Aruco X OK : cam diff_X={diff_X},cam diff_Y={diff_Y},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                         lsMotorOperationNew=GetStrArmExtendMain(1250,0,True)
                         node_CtlCenter_globals.listBLB.append(lsMotorOperationNew)
+                    else:
+                        node_CtlCenter_globals.aruco_lastDiffX = abs(diff_X1)
 
             elif isActivatedMotor(ModbusID.TELE_SERV_MAIN.value):
                 rospy.loginfo(f'Scan spd_cur_srvTele:{spd_cur_srvTele},MarkerXY:{marker_X,marker_Y}')
@@ -641,14 +644,15 @@ def MotorBalanceControlEx(bSkip):
                     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
                     resultDiff3,diff_X3,diff_Y3= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
                     #resultDiff4,diff_X4,diff_Y4= compare_dicts(dicAruco, ref_dict2, CAM_LOCATION_MARGIN_OK)
-                    rospy.loginfo(f'Check Y result Diff3:{resultDiff3},diff_X3={diff_X3},diff_Y3={diff_Y3}')
+                    rospy.loginfo(f'Check Y result Diff3:{resultDiff3},diff_X3={diff_X3},diff_Y3={diff_Y3},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                     #rospy.loginfo(f'Check Y result Diff4={resultDiff4},diff_X4={diff_X4},diff_Y4={diff_Y4}')
-                    ClearArucoTable()
-                    
+                    #ClearArucoTable()
+                    lastY = node_CtlCenter_globals.aruco_lastDiffY
+                    node_CtlCenter_globals.aruco_lastDiffY = abs(diff_Y3)
                     seekRange = int(pot_cur_540 / 2)
-                    if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK:
+                    if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK or (lastY < abs(diff_Y3) and abs(diff_Y3) < CAM_LOCATION_MARGIN_FINE):
                         StopAllMotors(ACC_DECC_SMOOTH)
-                        rospy.loginfo(f'Aruco Y OK : resultDiff={resultDiff3},diff_X={diff_X3},diff_Y={diff_Y3}')
+                        rospy.loginfo(f'Aruco Y OK : resultDiff={resultDiff3},diff_X={diff_X3},diff_Y={diff_Y3},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                         #curDistanceSrvTele, curAngle_540,cur_angle_360
                         curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
                         diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
@@ -656,11 +660,13 @@ def MotorBalanceControlEx(bSkip):
                         diffy_meter = ConvertArucoSizeToReal(diffY)    
                         newX = curX + diffx_meter
                         newY = curY + diffy_meter
+                        rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
                         distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
                         df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
                         # 조건에 맞는 행의 MARKER_VALUE 업데이트
                         df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
                         df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                        isScanOn = False
                         dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
                         angle_new = (180+ angle_marker)%360
                         lsMotorOperationNew = []
@@ -668,15 +674,41 @@ def MotorBalanceControlEx(bSkip):
                         lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
                         lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
                         lsMotorOperationNew.append(GetListLiftDown(200000))
-                        isScanOn = False
                         node_CtlCenter_globals.listBLB.clear()
                         node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
                     #else:
-                    elif marker_Y_abs > 0 and marker_Y_abs < 0.4:
+                    elif marker_Y_abs > 0 and marker_Y_abs < 0.4 and node_CtlCenter_globals.aruco_lastDiffX == aruco_lastDiff_Default:
                     # elif abs(diff_X3) > CAM_LOCATION_MARGIN_FINE:
                         targetPosKey = str(ModbusID.TELE_SERV_MAIN.value)
                         targetPosTeleSrv=try_parse_int(node_CtlCenter_globals.dicTargetPos.get(targetPosKey), MIN_INT)
                         if is_between(not_cur_SrvTele,200000,targetPosTeleSrv):
+                            # StopAllMotors(ACC_DECC_SMOOTH)
+                            # resultDiff4,diff_X4,diff_Y4= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
+                            # rospy.loginfo(f'한번에 보정하기. : resultDiff={resultDiff4},diff_X={diff_X4},diff_Y={diff_Y4},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
+                            # #curDistanceSrvTele, curAngle_540,cur_angle_360
+                            # curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+                            # #diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
+                            # diffx_meter = ConvertArucoSizeToReal(diff_X4)
+                            # diffy_meter = ConvertArucoSizeToReal(diff_Y4)    
+                            # newX = curX + diffx_meter
+                            # newY = curY + diffy_meter
+                            # rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+                            # distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+                            # df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+                            # # 조건에 맞는 행의 MARKER_VALUE 업데이트
+                            # df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
+                            # df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                            # isScanOn = False                            
+                            # dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
+                            # angle_new = (180+ angle_marker)%360
+                            # lsMotorOperationNew = []
+                            # lsMotorOperationNew.append([dicFinalRotate])
+                            # lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
+                            # lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
+                            # lsMotorOperationNew.append(GetListLiftDown(200000))
+                            # node_CtlCenter_globals.listBLB.clear()
+                            # node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
+                            
                             seekMargin = seekRange if diff_X3 < 0 else -seekRange
                             StopAllMotors(ACC_DECC_LONG)
                             node_CtlCenter_globals.dicTargetPos[targetPosKey] = 200000
@@ -684,9 +716,9 @@ def MotorBalanceControlEx(bSkip):
                             dicRotateNewVerySlow = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, True, target_pulse,MAINROTATE_RPM_SLOWEST,ACC_540,DECC_540)
                             #dicRotateNewVerySlow = GetDicRotateMotorMain(curAngle_540_new,MAINROTATE_RPM_SLOWEST,False)
                             node_CtlCenter_globals.listBLB.clear()
+                            node_CtlCenter_globals.aruco_lastDiffY = aruco_lastDiff_Default
                             SendCMD_Device([dicRotateNewVerySlow])
                             time.sleep(MODBUS_EXCEPTION_DELAY)
-
             # elif isActivatedMotor(ModbusID.TELE_SERV_MAIN.value) and spd_cur_srvTele > 0:
             #     if lsDF:
             #         resultDiff,diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
@@ -779,7 +811,7 @@ def MotorBalanceControlEx(bSkip):
                     SendCMD_Device([dicSpd])            
                     UpdateLastBalanceTimeStamp()
                     #ClearDistanceV()
-                    TTSAndroid(TTSMessage.OBSTACLE_STOP.value,True,5000)
+                    TTSAndroid(TTSMessage.OBSTACLE_STOP.value,5000)
                     SetSuspend(True)
 
                 #목표까지 1미터 이상 남았고, 장애물과 거리가 1.5m 이내이고 속도는 300 보다 빠르고 장애물 마지막 감지시간이 0.5초 이내인 경우
@@ -789,7 +821,7 @@ def MotorBalanceControlEx(bSkip):
                     if node_CtlCenter_globals.last_detect_status is not None and node_CtlCenter_globals.last_detect_status["type"] != 'wall':
                       SendCMD_Device([dicSpd])
                       UpdateLastBalanceTimeStamp()
-                      TTSAndroid(TTSMessage.OBSTACLE_SLOW.value,True,5000)
+                      TTSAndroid(TTSMessage.OBSTACLE_SLOW.value,5000)
                       #ClearDistanceV()
                       SetSuspend(True)
                     #주행일때 - 1~2m 남았는데 속도가 RPM 보다 빠르면 속도를 변경한다.
@@ -879,7 +911,7 @@ def MotorBalanceControlEx(bSkip):
                       target_distance_fromGND = cur_distance_fromGND - height_difference + 0.15 #마진이 10
                       target_pulse = round(GetRangeV(target_distance_fromGND,DISTANCE_V.distanceLD.name, DISTANCE_V.pulseV.name))
                       node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_V.value)] = target_pulse
-                      TTSAndroid('물체가 감지되었습니다',True,1000)
+                      TTSAndroid('물체가 감지되었습니다',1000)
                       #StopMotor(ModbusID.MOTOR_V.value)
                       SendCMD_Device([getMotorMoveDic(ModbusID.MOTOR_V.value,True,target_pulse,DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)])
                       UpdateLastBalanceTimeStamp()
@@ -925,7 +957,7 @@ def MotorBalanceControlEx(bSkip):
                 DoorClose()
                 LightTrayCell(TraySector.Cell1.value,LightBlink.Solid.value,LightColor.OFF.value)
                 UpdateLastBalanceTimeStamp()
-                TiltDown()
+                #TiltArucoScan()
                 rospy.loginfo(f"도어닫음/상태:{doorStatus},속도:{rpmLift}")
         return    
     #targetPOS_arm1
@@ -1217,18 +1249,16 @@ def GenerateServingTableList():
               #인접한 노드들을 모두 AppendTableList한다.
               #거리는 -1 로 생성하며 -1 인 경우 300RPM 으로 주행한다. (DEV 에서는 구찮으니까 SPD_FAST 로 하자)
             dicTagretTableInfo = getTableServingInfo(tableTarget_local)
+            ClearArucoTable()
+            ArucoLastRecordClear()
+            CamControl(False)            
             #현재 목적지 테이블을 세팅한다. 다음 오더를 시작할때 갱신된다
             infoTABLE_ID = dicTagretTableInfo.get(TableInfo.TABLE_ID.name, None)
             infoNODE_ID = dicTagretTableInfo.get(TableInfo.NODE_ID.name, None)
-            
             infoSERVING_ANGLE = dicTagretTableInfo.get(TableInfo.SERVING_ANGLE.name, None)
             infoSERVING_DISTANCE = dicTagretTableInfo.get(TableInfo.SERVING_DISTANCE.name, None)
             infoMARKER_ANGLE = dicTagretTableInfo.get(TableInfo.MARKER_ANGLE.name, None)
             infoHEIGHT_LIFT = dicTagretTableInfo.get(TableInfo.HEIGHT_LIFT.name, None)
-            if isScanTableMode(tableTarget_local):
-                TiltDown()
-                CamControl(True)
-                
             
             if IsEnableSvrPath():
                 dfChk = GetDF(tableTarget_local)
@@ -1374,3 +1404,4 @@ def GenerateServingTableList():
                 except:
                     pass
                 
+rospy.loginfo(os.path.splitext(os.path.basename(__file__))[0])

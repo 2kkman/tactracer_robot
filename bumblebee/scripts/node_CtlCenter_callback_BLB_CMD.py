@@ -212,9 +212,9 @@ def BLB_CMD_Profile(PROFILE):
                   )])
             #lsModbusRequests.clear()
         elif paramInt1 == BLD_PROFILE_CMD.TiltMaxUp.value:
-            TiltMaxUp()
+            TiltServFinish()
         elif paramInt1 == BLD_PROFILE_CMD.TiltDown.value:
-            TiltDown()
+            TiltArucoScan()
         elif paramInt1 == BLD_PROFILE_CMD.TiltFace.value:
             TiltFace()
         elif paramInt1 == BLD_PROFILE_CMD.TiltDiagonal.value:
@@ -246,3 +246,5 @@ def BLB_CMD_Profile(PROFILE):
       return APIBLB_ACTION_REPLY.R101
     else:
       return lsModbusRequests
+
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

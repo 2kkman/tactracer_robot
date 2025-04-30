@@ -1,229 +1,822 @@
 timestamp	value
-2025:04:25 15:18:44.074	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 386, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 906, in MotorBalanceControlEx
-    LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_func_control.py"", line 961, in LightTrayCell
-    SendCMDArd(sCmd)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_func_control.py"", line 784, in SendCMDArd
-    bReturn,strResult=SendInfoHTTP(cmdStr.replace(sDivFieldColon,sDivSemiCol))
-TypeError: cannot unpack non-iterable NoneType object
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:30:11.604	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:30:12.835	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:30:14.050	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:30:15.054	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:30:16.305	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:22.412	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:23.544	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:24.316	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:24.904	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:25.477	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:26.100	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:54.647	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:55.232	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:55.843	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:56.475	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:57.149	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:57.686	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:58.355	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:58.983	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:31:59.551	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:02.089	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:02.819	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:03.387	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:03.971	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:04.538	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:05.116	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:05.731	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:06.316	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:06.950	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:07.601	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
-2025:04:25 16:33:08.232	"Traceback (most recent call last):
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_main.py"", line 388, in <module>
-    MotorBalanceControlEx(bSkip)
-  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_CtlCenter_processes.py"", line 854, in MotorBalanceControlEx
-    if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
-TypeError: '>' not supported between instances of 'NoneType' and 'float'
-:_run_code:<module>:SendAlarmHTTP"
+2025:04:29 18:53:18.616	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:18.957	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:19.156	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:19.347	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:19.533	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:19.730	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:19.920	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:20.108	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:20.303	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:20.507	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:20.697	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:20.895	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:21.079	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:21.262	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:21.453	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:21.641	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:21.831	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:22.018	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:22.232	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:22.431	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:22.619	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:22.802	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:23.000	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:23.193	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.033	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.219	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.405	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.594	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.788	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:25.989	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:26.189	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:26.375	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:26.573	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:26.760	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:26.950	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:27.135	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:27.327	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:27.516	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:27.711	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:27.895	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:28.091	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:28.288	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:28.477	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:29.073	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:29.265	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:29.466	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:29.659	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 18:53:29.834	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 478, in callbackMB_15
+    dicEndNodeInfo=GetCurrentNodeDicFromPulsePos(dfNodeInfo,endNodePos)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 542, in GetCurrentNodeDicFromPulsePos
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+  File ""/root/catkin_ws/src/tactracer_robot/include/Util.py"", line 528, in find_nearest_pos
+    df['diff'] = (df['POS'] - pos_target).abs()
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/common.py"", line 81, in new_method
+    return method(self, other)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/arraylike.py"", line 194, in __sub__
+    return self._arith_method(other, operator.sub)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/series.py"", line 6112, in _arith_method
+    return base.IndexOpsMixin._arith_method(self, other, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/base.py"", line 1348, in _arith_method
+    result = ops.arithmetic_op(lvalues, rvalues, op)
+  File ""/usr/local/lib/python3.8/dist-packages/pandas/core/ops/array_ops.py"", line 232, in arithmetic_op
+    res_values = _na_arithmetic_op(left, right, op)  "
+2025:04:29 19:09:31.643	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
+2025:04:29 19:14:08.349	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
+2025:04:29 19:14:34.249	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
+2025:04:29 19:21:28.184	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
+2025:04:29 19:26:12.010	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
