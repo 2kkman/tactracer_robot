@@ -31,12 +31,12 @@ fieldvalue = f'topicname={TopicName.ANDROID.name}'
 log_period = float(rospy.get_param(f"~{ROS_PARAMS.lidar_interval.name}", default=0.2))
 ground_threshold = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_margin.name}", default=0.04))
 ground_distance_limit = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.560))
-point_threshold = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=3))
+point_threshold = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=5))
 
 ipAddr = GetMasterIP()
 # Ground보다 위쪽(bin_z > ground_z) 중 points threshold 넘는 것만 배열로 리턴하는 버전
-def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.28, crop_y=0.55, max_descend_distance=2.0,
-                              bin_size=0.005, point_threshold=3, ground_threshold =0.04 ):
+def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.26, crop_y_low=0.0, crop_y_high=0.55, max_descend_distance=2.0,
+                              bin_size=0.005, point_threshold=3, ground_threshold =0.04,ground_distance_limit = ground_distance_limit ):
     """
     Ground 계산 후, Ground보다 라이다쪽에 있는 장애물 후보 리스트를 리턴하는 버전
     points: np.array(N, 3)
@@ -65,7 +65,7 @@ def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.28, cr
     # (2) crop
     cropped_points = []
     for x, y, z in rotated_points:
-        if (left_x <= x <= right_x) and (0 <= y <= crop_y):
+        if (left_x <= x <= right_x) and (crop_y_low <= y <= crop_y_high):
             cropped_points.append((x, y, z))
 
     if not cropped_points:
@@ -204,17 +204,20 @@ def pointcloud_callback(msg):
         # recvDataMap = json.loads(strResult)
         
         angle_y = try_parse_int((dicAndroid.get(DataKey.Angle_Y.name)),MIN_INT)
+        
         if angle_y == MIN_INT:
             return
         #recvDataMap = ast.literal_eval(strResult)
         #print(recvDataMap)
 
         points = np.array(list(pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)))
-        
+        crop_y_low=0;crop_y_high=0.55;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=3;ground_threshold_current=0.04;ground_distance_limit=0.56
+        if is_between(-20,-90,angle_y):
+            crop_y_low=-0.15;crop_y_high=0.30;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=10;ground_threshold_current =0.04;ground_distance_limit=2
         #distanceMax, cropped_points = calculate_descendable_distance_with_rotation(points,angle_y)
         #distanceMax, cropped_points = calculate_descendable_distance_with_rotation(points,angle_y)
         #distanceMax, cropped_points= calculate_descendable_distance(points,angle_y,-0.3,0.25)
-        ground_z_center, cropped_points, lsDicObstacle= find_obstacle_candidates(points,angle_y,point_threshold=point_threshold,ground_threshold=ground_threshold)
+        ground_z_center, cropped_points, lsDicObstacle= find_obstacle_candidates(points,angle_y,crop_y_low=crop_y_low,crop_y_high=crop_y_high,point_threshold=point_threshold_current,ground_threshold=ground_threshold_current,ground_distance_limit=ground_distance_limit)
         returnObstanceData = {}
         if lsDicObstacle:
             first_item = next(iter(lsDicObstacle[0].items()))
