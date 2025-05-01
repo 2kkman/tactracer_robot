@@ -1434,9 +1434,9 @@ while not rospy.is_shutdown():
                       return485data[MonitoringField.ALM_NM.name] = alarm_name
                     
                   #이 부분은 개발기에서 마무리하고 테스트하자.
-                  if isTrue(isESTOP):
-                    return485data[MonitoringField.ALM_NM.name] = AlarmCodeList.ESTOP_ERROR.name
-                    return485data[MonitoringField.ALM_CD.name] = AlarmCodeList.ESTOP_ERROR.value
+                #   if isTrue(isESTOP):
+                #     return485data[MonitoringField.ALM_NM.name] = AlarmCodeList.ESTOP_ERROR.name
+                #     return485data[MonitoringField.ALM_CD.name] = AlarmCodeList.ESTOP_ERROR.value
                     
                   dicSIStatus = {}
                   for key, value in return485data.items():
