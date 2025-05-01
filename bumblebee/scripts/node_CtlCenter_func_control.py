@@ -382,6 +382,8 @@ def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPo
             timeEst -= node_CtlCenter_globals.SERVING_ARM_EXPAND_CONSTANT
     
     rpm_ServeTeleTarget = min( DEFAULT_RPM_SLOW,calculate_targetRPM_fromtime(pulse_MovePulseAbs/PULSES_PER_ROUND, timeEst))
+    rpm_ServeTeleTarget = max( DEFAULT_RPM_SLOWER,rpm_ServeTeleTarget)
+    
     estTimeSrvTele = calculate_rpm_time(pulse_MovePulseAbs/PULSES_PER_ROUND, rpm_ServeTeleTarget)    
     timeSec_ExtendServe = estTimeSrvTele
     dicReturnSrvTele = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, pulseTarget,rpm_ServeTeleTarget,ACC_ST,DECC_ST)

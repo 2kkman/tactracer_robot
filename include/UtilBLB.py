@@ -2102,6 +2102,8 @@ class MotorCmdField(Enum):
     WPN_OFF = auto()  # POT NOT 활성화 설정
     WP_ON = auto()  #`P 정방향에 반응
     WN_ON = auto() #`0x409:0x26,0x40B:0x0`N 역방향에 반응
+    WE_ON = auto() # 양방향에 반응 (POT를 ESTOP으로)
+    WE_OFF = auto() # 정지 트리거 모두 해제
     
 
 
@@ -3043,6 +3045,12 @@ def getMotorWP_ONDic(mbid = ModbusID.MOTOR_H.value):
 
 def getMotorWPN_OFFDic(mbid = ModbusID.MOTOR_H.value):
     return getMotorDefaultDic(mbid, MotorCmdField.WPN_OFF.name)
+
+def getMotorWE_ONDic(mbid = ModbusID.MOTOR_H.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WE_ON.name)
+
+def getMotorWE_OFFDic(mbid = ModbusID.MOTOR_H.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WE_OFF.name)
 
 def getMotorStopString(mbid,decc=EMERGENCY_DECC):
     sCmd = (

@@ -16670,3 +16670,1306 @@
 2025-04-30 10:10:44,441 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
 2025-04-30 10:10:53,992 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:100,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
 2025-04-30 10:11:03,655 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 10:23:04,450 - INFO - MBID:10,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,453 - INFO - MBID:10,CMD:WLIMIT,POT:1750000,NOT:-1750000 from callbackCmd - initMotor
+2025-04-30 10:23:04,464 - INFO - MBID:27,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,479 - INFO - MBID:6,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,480 - INFO - MBID:6,CMD:WLIMIT,POT:1300000,NOT:-1300000 from callbackCmd - initMotor
+2025-04-30 10:23:04,490 - INFO - MBID:11,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,491 - INFO - MBID:11,CMD:WLIMIT,POT:345000,NOT:-345000 from callbackCmd - initMotor
+2025-04-30 10:23:04,499 - INFO - MBID:9,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,499 - INFO - MBID:9,CMD:WLIMIT,POT:780000,NOT:-780000 from callbackCmd - initMotor
+2025-04-30 10:23:04,507 - INFO - MBID:31,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,516 - INFO - MBID:15,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,523 - INFO - MBID:13,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:23:04,524 - INFO - MBID:13,CMD:WLIMIT,POT:2450000,NOT:-2450000 from callbackCmd - initMotor
+2025-04-30 10:23:04,616 - INFO - MBID:10,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,620 - INFO - MBID:27,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,625 - INFO - MBID:6,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,633 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,638 - INFO - MBID:9,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,644 - INFO - MBID:31,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,651 - INFO - MBID:15,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:04,656 - INFO - MBID:13,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:05,903 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:23:05,917 - INFO - MBID:11,CMD:WLOC,POS:-200000 from callbackCmd - initWLoc
+2025-04-30 10:28:34,813 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,821 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,828 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,834 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,838 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,843 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,851 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:34,856 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,474 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:35,739 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,754 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,767 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,780 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,789 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,798 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,803 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:35,807 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,531 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,537 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,542 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,551 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,557 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,565 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,571 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:37,579 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,580 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:38,723 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,738 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,743 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,752 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,759 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,766 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,771 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:38,775 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:42,467 - INFO - [{"MBID": "15", "CMD": "WN_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:28:44,916 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:45,589 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,602 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,608 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,616 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,623 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,637 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,649 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:45,654 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:46,092 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "34353", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:46,231 - INFO - [{"MBID": "15", "CMD": "WP_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:28:47,369 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "44369", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:48,632 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "54385", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:49,886 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "64403", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:51,157 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,165 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,172 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,178 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,186 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,191 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,197 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:51,204 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:55,427 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:28:55,527 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,535 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,542 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,547 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,554 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,559 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,569 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,575 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:55,992 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,006 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,017 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,025 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,035 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,042 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,049 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,055 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:28:56,725 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,738 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,745 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,753 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,758 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,767 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,773 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:56,779 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,892 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,903 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,911 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,919 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,928 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,939 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,948 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:28:58,958 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,074 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:29:01,344 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,365 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,376 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,384 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,392 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,401 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,408 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,413 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:29:01,806 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,812 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,820 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,826 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,835 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,843 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,850 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:29:01,859 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:30:47,828 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:30:48,012 - INFO - [{"MBID": "15", "CMD": "WN_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:31:07,256 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:31:16,028 - INFO - [{"MBID": "15", "CMD": "WP_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:34:38,404 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:40,261 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:42,792 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,642 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,648 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,714 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,714 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,717 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,718 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,731 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,746 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,767 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,781 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,797 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,800 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,824 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,832 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,858 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,866 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,882 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,894 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,895 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,941 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,942 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,969 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,970 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,979 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:53,999 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,009 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,020 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,039 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,062 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,082 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,115 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,115 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,117 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,124 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,157 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,198 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,252 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,292 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,293 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,309 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,309 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,324 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,401 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,401 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,423 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:34:54,669 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:34:55,577 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "981439", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:47,026 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,041 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,061 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,078 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,092 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,109 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,122 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:47,138 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,894 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:48,903 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,934 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,948 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,964 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,979 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:48,999 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:49,027 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:49,042 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:49,468 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "983096", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:50,775 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "993122", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:52,861 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:52,998 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,019 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,035 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,049 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,064 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,077 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,105 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:53,125 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,247 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,275 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,294 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,324 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,345 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,361 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,387 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:55,405 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,136 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,165 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,192 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,214 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,242 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,272 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,294 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:57,313 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:58,517 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:58,866 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:58,910 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:58,930 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:58,950 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:58,989 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:59,011 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:59,031 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:59,056 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:35:59,383 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "991827", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:59,478 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "991833", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:35:59,590 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,633 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,672 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,693 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,713 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,732 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,772 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:35:59,796 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,395 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,414 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,445 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,483 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,503 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,530 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,565 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,587 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,917 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,942 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,959 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:00,981 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:01,001 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:01,020 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:01,040 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:01,060 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:02,907 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:36:03,245 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,277 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,301 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,319 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,358 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,417 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,447 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,476 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:03,866 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:03,894 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:03,913 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:03,931 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:03,956 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:03,979 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:04,001 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:04,021 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:43,884 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:36:44,964 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,003 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,044 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,066 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,088 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,118 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,146 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,173 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:45,588 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,608 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,630 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,649 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,671 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,692 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,713 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:45,734 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:46,728 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:36:47,273 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,310 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,334 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,355 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,390 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,419 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,443 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,470 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:47,907 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:47,933 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:47,962 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:47,985 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:48,007 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:48,035 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:48,059 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:48,082 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:48,657 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,681 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,700 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,728 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,752 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,776 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,803 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:48,826 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,536 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,556 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,578 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,599 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,630 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,652 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,672 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:49,691 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,242 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,262 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,285 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,304 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,338 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,364 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,390 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:51,417 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,191 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:36:52,651 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,697 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,729 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,751 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,772 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,793 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,843 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:52,872 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:53,264 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,287 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,311 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,338 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,380 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,405 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,431 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:53,457 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 10:36:54,308 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,336 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,367 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,392 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,414 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,435 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,471 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:54,495 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,320 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,355 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,381 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,405 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,443 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,475 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,497 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:56,520 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,564 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:36:57,808 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,851 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,884 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,905 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,951 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,975 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:57,999 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:36:58,023 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,205 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,227 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,252 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,373 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,409 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,452 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,476 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:02,507 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:03,600 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:37:04,003 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,067 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,098 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,128 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,161 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,183 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,207 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:04,228 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:31,691 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:37:40,515 - INFO - [{"MBID": "15", "CMD": "WN_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:37:42,695 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-10016", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:37:43,967 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-20034", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:37:45,266 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-30057", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:37:45,925 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,001 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,030 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,114 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,184 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,228 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,302 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,314 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,346 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,409 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,443 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,456 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,524 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,561 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,618 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,658 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,659 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,659 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,659 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,663 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,665 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,672 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,672 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,677 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,679 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,681 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,684 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,687 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,689 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,689 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,692 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,693 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,699 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,701 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,705 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,709 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,711 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,713 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,713 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:37:46,717 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,211 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,367 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,487 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,610 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,692 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:55,857 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:56,011 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:56,102 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 10:38:56,310 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:39:01,680 - INFO - MBID:10,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:01,790 - INFO - MBID:27,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:01,967 - INFO - MBID:6,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,187 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,347 - INFO - MBID:9,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,517 - INFO - MBID:31,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,676 - INFO - MBID:15,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,798 - INFO - MBID:13,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:39:02,962 - INFO - MBID:10,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,099 - INFO - MBID:27,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,237 - INFO - MBID:6,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,353 - INFO - MBID:11,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,474 - INFO - MBID:9,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,616 - INFO - MBID:31,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,727 - INFO - MBID:15,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:03,878 - INFO - MBID:13,CMD:WALM_C, from callbackCmd - alarmClear
+2025-04-30 10:39:05,119 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "12825", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:39:05,558 - INFO - [{"MBID": "15", "CMD": "WP_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:41:57,418 - INFO - MBID:10,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,423 - INFO - MBID:10,CMD:WLIMIT,POT:1750000,NOT:-1750000 from callbackCmd - initMotor
+2025-04-30 10:41:57,440 - INFO - MBID:27,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,454 - INFO - MBID:6,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,456 - INFO - MBID:6,CMD:WLIMIT,POT:1300000,NOT:-1300000 from callbackCmd - initMotor
+2025-04-30 10:41:57,468 - INFO - MBID:11,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,470 - INFO - MBID:11,CMD:WLIMIT,POT:345000,NOT:-345000 from callbackCmd - initMotor
+2025-04-30 10:41:57,479 - INFO - MBID:9,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,480 - INFO - MBID:9,CMD:WLIMIT,POT:780000,NOT:-780000 from callbackCmd - initMotor
+2025-04-30 10:41:57,489 - INFO - MBID:31,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,498 - INFO - MBID:15,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,508 - INFO - MBID:13,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 10:41:57,509 - INFO - MBID:13,CMD:WLIMIT,POT:2450000,NOT:-2450000 from callbackCmd - initMotor
+2025-04-30 10:41:57,599 - INFO - MBID:10,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,608 - INFO - MBID:27,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,612 - INFO - MBID:6,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,617 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,625 - INFO - MBID:9,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,629 - INFO - MBID:31,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,635 - INFO - MBID:15,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:57,641 - INFO - MBID:13,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:58,877 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 10:41:58,891 - INFO - MBID:11,CMD:WLOC,POS:-200000 from callbackCmd - initWLoc
+2025-04-30 10:44:35,217 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:44:43,946 - INFO - [{"MBID": "15", "CMD": "WP_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:44:51,068 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:44:59,841 - INFO - [{"MBID": "15", "CMD": "WN_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:45:45,939 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:45:54,721 - INFO - [{"MBID": "15", "CMD": "WP_ON"}] from callbackCmd - SendCMD
+2025-04-30 10:46:09,915 - INFO - [{"MBID": "15", "CMD": "WPN_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 10:46:18,682 - INFO - [{"MBID": "15", "CMD": "WN_ON"}] from callbackCmd - SendCMD
+2025-04-30 12:38:15,411 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "353630", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:40:04,134 - INFO - MBID:10,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:04,239 - INFO - MBID:10,CMD:WLIMIT,POT:1750000,NOT:-1750000 from callbackCmd - initMotor
+2025-04-30 12:40:04,433 - INFO - MBID:27,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:04,654 - INFO - MBID:6,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:04,804 - INFO - MBID:6,CMD:WLIMIT,POT:1300000,NOT:-1300000 from callbackCmd - initMotor
+2025-04-30 12:40:05,058 - INFO - MBID:11,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:05,253 - INFO - MBID:11,CMD:WLIMIT,POT:345000,NOT:-345000 from callbackCmd - initMotor
+2025-04-30 12:40:05,528 - INFO - MBID:9,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:05,678 - INFO - MBID:9,CMD:WLIMIT,POT:780000,NOT:-780000 from callbackCmd - initMotor
+2025-04-30 12:40:05,974 - INFO - MBID:31,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:06,247 - INFO - MBID:15,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:06,531 - INFO - MBID:13,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 12:40:06,646 - INFO - MBID:13,CMD:WLIMIT,POT:2450000,NOT:-2450000 from callbackCmd - initMotor
+2025-04-30 12:40:08,446 - INFO - MBID:10,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:08,553 - INFO - MBID:27,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:08,688 - INFO - MBID:6,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:08,855 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:08,978 - INFO - MBID:9,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:09,130 - INFO - MBID:31,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:09,268 - INFO - MBID:15,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:09,454 - INFO - MBID:13,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 12:40:31,312 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "572830", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:41:38,695 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:41:49,028 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "110709", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:41:49,450 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 12:43:18,433 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:43:30,780 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "850523", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:43:31,308 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 12:51:22,192 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:51:34,234 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "122948", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:51:34,858 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 12:51:43,498 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "83922", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:51:47,908 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "110669", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:51:51,473 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "75185", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:58:42,587 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 12:58:50,958 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 12:58:52,613 - INFO - [{"MBID": "15", "CMD": "WLOC", "POS": "975000"}] from callbackCmd - SendCMD
+2025-04-30 13:00:30,286 - INFO - MBID:15,CMD:WZERO, from callbackCmd - _invoke_callback
+2025-04-30 13:00:34,898 - INFO - MBID:15,CMD:WZERO, from callbackCmd - _invoke_callback
+2025-04-30 13:08:29,914 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:08:38,714 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:08:40,891 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-10033", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:08:41,681 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "0"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:10:37,197 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "353630", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:10:54,504 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "572830", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:11:08,062 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:11:13,016 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:11:14,773 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:16:55,020 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}] from callbackCmd - SendCMD
+2025-04-30 13:17:57,619 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:-200000,SPD:1000,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:18:14,583 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:1000,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:18:31,801 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:-400000,SPD:1000,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:19:16,137 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:1000,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:19:21,861 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "10015", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:19:23,143 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "20030", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:19:24,414 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "30041", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:19:25,715 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "40063", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:19:27,038 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,059 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,072 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,084 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,097 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,110 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,123 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:19:27,137 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:20:35,200 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:100,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:20:36,387 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 13:21:00,162 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:100,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:31:14,012 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:31:22,823 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:31:24,998 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "985002", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:31:25,563 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:31:50,110 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "1125000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:32:06,096 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "825000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:18,227 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-185820", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:29,446 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-195826", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:30,704 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-205837", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:31,974 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-215840", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:33,276 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-225846", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:34:34,558 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,580 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,600 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,614 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,632 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,650 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,667 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:34:34,685 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:35:13,632 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "825000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:35:43,939 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-185820", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:36:50,056 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-387671", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:36:59,595 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "1125000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:37:05,737 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-638825", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:37:28,572 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1443593", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:01,739 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1592959", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:03,922 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:38:05,593 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:06,243 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1602993", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:07,499 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1613013", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:08,779 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1623029", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:10,074 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1633044", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:38:11,369 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,389 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,407 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,424 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,441 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,458 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,483 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:38:11,500 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:41:57,207 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1443593", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:41:58,826 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:13,606 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1592959", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:15,805 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:47:17,419 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:18,108 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1603006", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:19,386 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1613024", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:20,652 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1623042", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:21,932 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1633054", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:47:23,220 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,243 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,261 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,275 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,292 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,309 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,325 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:47:23,340 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:01,164 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1592959", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:01,388 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:49:02,990 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:03,571 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1582942", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:04,169 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:04,901 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1572927", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:06,282 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1562910", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:07,571 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1552903", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:08,863 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,884 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,898 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,911 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,927 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,946 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,959 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:08,972 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:49:46,202 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:-40000000,SPD:200,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:49:47,701 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:49:54,914 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:200,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:50:15,519 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:50:29,359 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,373 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,395 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,414 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,432 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,465 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,486 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,506 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,847 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,871 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,886 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,904 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,925 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,944 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,967 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:50:29,986 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:51:56,842 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:40000000,SPD:200,ACC:3000,DECC:3000 from callbackCmd - _invoke_callback
+2025-04-30 13:52:27,718 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,738 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,756 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,776 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,794 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,807 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,828 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:27,849 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 13:52:49,402 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 13:52:49,597 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 13:52:51,138 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 14:57:32,486 - INFO - MBID:10,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,526 - INFO - MBID:10,CMD:WLIMIT,POT:1750000,NOT:-1750000 from callbackCmd - initMotor
+2025-04-30 14:57:32,565 - INFO - MBID:27,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,592 - INFO - MBID:6,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,611 - INFO - MBID:6,CMD:WLIMIT,POT:1300000,NOT:-1300000 from callbackCmd - initMotor
+2025-04-30 14:57:32,638 - INFO - MBID:11,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,655 - INFO - MBID:11,CMD:WLIMIT,POT:345000,NOT:-345000 from callbackCmd - initMotor
+2025-04-30 14:57:32,680 - INFO - MBID:9,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,692 - INFO - MBID:9,CMD:WLIMIT,POT:780000,NOT:-780000 from callbackCmd - initMotor
+2025-04-30 14:57:32,723 - INFO - MBID:31,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,749 - INFO - MBID:15,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,787 - INFO - MBID:13,CMD:WINIT from callbackCmd - initMotor
+2025-04-30 14:57:32,820 - INFO - MBID:13,CMD:WLIMIT,POT:2450000,NOT:-2450000 from callbackCmd - initMotor
+2025-04-30 14:57:32,886 - INFO - MBID:10,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,898 - INFO - MBID:27,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,911 - INFO - MBID:6,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,926 - INFO - MBID:11,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,943 - INFO - MBID:9,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,961 - INFO - MBID:31,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,976 - INFO - MBID:15,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 14:57:32,988 - INFO - MBID:13,CMD:WSTOP,DECC:50 from callbackCmd - stopMotor
+2025-04-30 15:00:38,756 - INFO - V12:0
+2025-04-30 15:00:40,644 - INFO - [{"MBID": "15", "CMD": "WLOC", "POS": "0"}] from callbackCmd - SendCMD
+2025-04-30 15:00:40,897 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:02:49,024 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:-975000,SPD:1200,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
+2025-04-30 15:02:58,767 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-985027", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:03:00,087 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-995041", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:03:01,366 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1005056", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:03:01,932 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,023 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,146 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,173 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1010488", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:03:02,332 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,441 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,568 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,699 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:02,745 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,782 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,803 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,826 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,850 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,868 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,887 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:02,900 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 15:03:03,007 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,110 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,264 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,414 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,599 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,782 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:03,951 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:04,107 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:04,280 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:04,440 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:03:04,613 - INFO - MBID:15,CMD:WSTOP, from callbackCmd - _invoke_callback
+2025-04-30 15:04:14,245 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:0,SPD:50,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
+2025-04-30 15:04:46,232 - INFO - MBID:15,CMD:WZERO, from callbackCmd - _invoke_callback
+2025-04-30 15:06:45,995 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:06:57,322 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 15:06:59,052 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 15:07:09,603 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:07:20,939 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 15:07:22,928 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "0"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 15:12:05,640 - INFO - V12:0
+2025-04-30 15:12:09,833 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:12:57,246 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "572830", "SPD": "2000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:13:13,518 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -43333, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 9.2}] from callbackCmd - SendCMD
+2025-04-30 15:13:15,723 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:13:24,925 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "103818", "SPD": "166", "ACC": "1800", "DECC": "3000", "TIME": 7.0}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "1121622", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 5.0}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "801158", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 5.0}] from callbackCmd - SendCMD
+2025-04-30 15:13:33,697 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 150429, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:15:25,344 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "890000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:15:32,794 - INFO - V12:0
+2025-04-30 15:15:32,809 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:16:23,012 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:16:30,510 - INFO - V12:0
+2025-04-30 15:16:31,038 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:16:35,220 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "166", "ACC": "1800", "DECC": "3000", "TIME": 14.2}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 5.0}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 4.8}] from callbackCmd - SendCMD
+2025-04-30 15:16:47,021 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -325000, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 11.6}] from callbackCmd - SendCMD
+2025-04-30 15:16:54,748 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "353630", "SPD": "2000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:17:00,481 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -613889, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 11.8}] from callbackCmd - SendCMD
+2025-04-30 15:17:07,721 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:17:12,814 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "12000", "SPD": "72", "ACC": "1800", "DECC": "3000", "TIME": 4.8}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "121622", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "86872", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 2.9}] from callbackCmd - SendCMD
+2025-04-30 15:17:15,168 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": -131915, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.4}] from callbackCmd - SendCMD
+2025-04-30 15:17:19,604 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "880000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:17:27,029 - INFO - V12:0
+2025-04-30 15:18:15,120 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:18:22,533 - INFO - V12:0
+2025-04-30 15:18:23,030 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.4}] from callbackCmd - SendCMD
+2025-04-30 15:18:26,950 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "71", "ACC": "1800", "DECC": "3000", "TIME": 20.9}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.4}] from callbackCmd - SendCMD
+2025-04-30 15:18:45,295 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -50556, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 17.2}] from callbackCmd - SendCMD
+2025-04-30 15:18:57,962 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:19:03,054 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "4000", "SPD": "24", "ACC": "1800", "DECC": "3000", "TIME": 4.8}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "40541", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 2.2}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "28957", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 3.1}] from callbackCmd - SendCMD
+2025-04-30 15:19:04,882 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 138858, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:21:39,203 - INFO - V12:0
+2025-04-30 15:21:44,569 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:27:54,110 - INFO - V12:0
+2025-04-30 15:28:00,564 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:28:16,849 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:28:21,822 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 15.6}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 2.2}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.7}] from callbackCmd - SendCMD
+2025-04-30 15:28:35,560 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": 36111, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:28:39,536 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:28:45,724 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "12000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 5.4}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "121622", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "86872", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 2.9}] from callbackCmd - SendCMD
+2025-04-30 15:28:49,244 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": -108772, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.6}] from callbackCmd - SendCMD
+2025-04-30 15:28:54,561 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "880000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:29:02,193 - INFO - V12:0
+2025-04-30 15:29:02,514 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:31:05,498 - INFO - V12:0
+2025-04-30 15:31:11,241 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:31:17,326 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:31:24,975 - INFO - V12:0
+2025-04-30 15:31:25,229 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:31:27,120 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.6}] from callbackCmd - SendCMD
+2025-04-30 15:31:31,907 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 16.2}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.4}] from callbackCmd - SendCMD
+2025-04-30 15:31:46,382 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -50556, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:31:51,282 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:31:57,505 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "13333", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 5.4}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "135135", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.8}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "96525", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 2.8}] from callbackCmd - SendCMD
+2025-04-30 15:32:01,108 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 138858, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:34:46,402 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "880000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:34:54,106 - INFO - V12:0
+2025-04-30 15:34:54,372 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:35:54,473 - INFO - V12:0
+2025-04-30 15:36:00,043 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:36:08,578 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:36:16,219 - INFO - V12:0
+2025-04-30 15:36:17,773 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:36:22,867 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 16.2}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.8}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.4}] from callbackCmd - SendCMD
+2025-04-30 15:36:37,277 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": 36111, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:36:42,092 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:36:48,159 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "12000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 5.4}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "121622", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "86872", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 2.9}] from callbackCmd - SendCMD
+2025-04-30 15:36:52,281 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": -178201, "SPD": "500", "ACC": "800", "DECC": "3000", "TIME": 5.0}] from callbackCmd - SendCMD
+2025-04-30 15:36:58,057 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "880000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:36:59,785 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "1", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:37:01,143 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:37:07,000 - INFO - V12:0
+2025-04-30 15:38:58,903 - INFO - V12:0
+2025-04-30 15:39:04,415 - INFO - [{"MBID": "15", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "6", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "13", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "27", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "10", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "9", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "11", "CMD": "WSTOP", "DECC": "50"}, {"MBID": "31", "CMD": "WSTOP", "DECC": "50"}] from callbackCmd - SendCMD
+2025-04-30 15:39:35,323 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:39:42,945 - INFO - V12:0
+2025-04-30 15:39:44,483 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:39:50,078 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "100", "ACC": "1800", "DECC": "3000", "TIME": 16.2}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 1.9}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.4}] from callbackCmd - SendCMD
+2025-04-30 15:40:04,605 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -50556, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:40:09,399 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "1800", "DECC": "3000"}] from callbackCmd - SendCMD
+2025-04-30 15:40:15,439 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "23333", "SPD": "139", "ACC": "1800", "DECC": "3000", "TIME": 4.8}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "236486", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 2.1}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "168918", "SPD": "1380", "ACC": "900", "DECC": "1500", "TIME": 2.5}] from callbackCmd - SendCMD
+2025-04-30 15:40:19,572 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 138858, "SPD": "500", "ACC": "5000", "DECC": "3000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:40:25,335 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "880000", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:40:33,062 - INFO - V12:0
+2025-04-30 15:40:33,273 - INFO - [{"MBID": "6", "CMD": "WSPD", "SPD": "800", "ACC": "800", "DECC": "800"}] from callbackCmd - SendCMD
+2025-04-30 15:40:42,711 - INFO - [{"MBID": "6", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "800", "ACC": "1000", "DECC": "1000", "TIME": 8.1}] from callbackCmd - SendCMD
+2025-04-30 15:40:50,393 - INFO - V12:0
+2025-04-30 15:40:51,862 - INFO - [{"MBID": "31", "CMD": "WMOVE", "MODE": "1", "POS": 0, "SPD": "500", "ACC": "3000", "DECC": "5000", "TIME": 8.2}] from callbackCmd - SendCMD
+2025-04-30 15:40:56,740 - INFO - [{"MBID": "11", "CMD": "WMOVE", "MODE": "1", "POS": "-200000", "SPD": "139", "ACC": "1800", "DECC": "3000", "TIME": 13.0}, {"MBID": "13", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1800", "ACC": "300", "DECC": "1500", "TIME": 2.1}, {"MBID": "10", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1380", "ACC": "600", "DECC": "1500", "TIME": 2.1}] from callbackCmd - SendCMD
+2025-04-30 15:41:08,332 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": -325000, "SPD": "300", "ACC": "3000", "DECC": "5000", "TIME": 11.4}] from callbackCmd - SendCMD
+2025-04-30 15:41:16,798 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "2000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:41:24,225 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "185232", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:41:26,702 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 15:41:36,770 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "104054", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 15:41:43,079 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "146399", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 16:48:54,238 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 16:48:56,384 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 16:48:58,587 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-10033", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 16:48:59,394 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "0"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 16:58:41,530 - INFO - MBID:27,CMD:WMOVE,MODE:1,POS:0,SPD:300,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
+2025-04-30 19:10:14,171 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:10:21,950 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:10:25,807 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:10:27,711 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:10:53,203 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": "324900", "SPD": "300", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:29,622 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1592959", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:35,488 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:49,390 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:11:51,006 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:51,794 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1602972", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:52,437 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:53,135 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1612995", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:54,406 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-1623022", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:11:55,686 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,719 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,737 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,760 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,779 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,798 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,819 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:11:55,840 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:19:47,769 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "600000", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:19:49,114 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:20:05,689 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:20:06,302 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:00,526 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-408259", "SPD": "550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:00,666 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:00,713 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:03,291 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:23:11,695 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-418275", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:12,965 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-428284", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:14,236 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-438297", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:23:15,565 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,582 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,592 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,611 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,626 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,646 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,663 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:23:15,682 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:02,070 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:10,444 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:13,123 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:26:15,504 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "984998", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:16,818 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "995010", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:18,095 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "1005022", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:19,372 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,391 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,407 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,422 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,441 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,460 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,471 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:19,495 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:32,598 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-408259", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:37,666 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:38,357 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:26:46,258 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-418275", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:47,541 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-428283", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:48,815 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-438299", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:26:50,074 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,088 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,103 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,121 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,143 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,164 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,179 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:26:50,202 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:28:57,219 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "600000", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:29:07,976 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:29:08,518 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:29:31,370 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:29:59,279 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:500000,SPD:150,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:29:59,382 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:29:59,421 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:30:07,541 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,565 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,580 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,596 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,609 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,630 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,651 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:07,670 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:24,931 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:975000,SPD:150,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
+2025-04-30 19:30:30,844 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,867 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,882 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,901 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,919 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,935 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,950 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:30:30,972 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:31:55,316 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-408259", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:32:00,169 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:32:00,901 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:32:08,733 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-418269", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:32:10,002 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-428276", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:32:11,290 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-438283", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:32:12,569 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,656 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,671 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,686 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,704 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,723 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,742 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:32:12,764 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:57,888 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:-408259,SPD:150,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:33:59,432 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,458 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,484 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,508 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,537 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,565 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,591 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:33:59,622 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:53,027 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:34:54,458 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,484 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,500 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,519 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,541 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,556 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,575 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:34:54,587 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:35:04,876 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:03,413 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:05,663 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:08,146 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:08,212 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:10,178 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:12,146 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:12,263 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:14,658 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:17,044 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:18,955 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:20,854 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:20,946 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:22,946 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:24,536 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:26,509 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:-10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:50,956 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:52,822 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:53,779 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:54,909 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:57,043 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:58,263 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:59,142 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:37:59,996 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:00,621 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:01,286 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:02,141 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:02,828 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:04,782 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:06,055 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:08,458 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:10,508 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:12,526 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:14,416 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:16,366 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:19,380 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:20,750 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:21,846 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:23,148 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:23,681 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:24,572 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:25,498 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:26,477 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:27,559 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:28,472 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:29,397 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:30,317 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:31,355 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:32,385 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:33,416 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:50,294 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:51,102 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:52,053 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:52,995 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:53,978 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:54,713 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:55,640 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:56,374 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:38:57,153 - INFO - MBID:15,CMD:WMOVE,MODE:65,POS:10000,SPD:50,ACC:1000,DECC:1000 from callbackCmd - _invoke_callback
+2025-04-30 19:40:08,315 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:40:15,473 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:40:18,058 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:40:20,445 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "985006", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:40:21,743 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "995028", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:40:23,028 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "1005041", "SPD": "100", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:40:24,330 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,348 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,377 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,406 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,428 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,448 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,468 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:40:24,492 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:50:53,782 - INFO - MBID:15,CMD:WMOVE,MODE:1,POS:975000,SPD:150,ACC:3000,DECC:5000 from callbackCmd - _invoke_callback
+2025-04-30 19:52:17,260 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:17,842 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,869 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,896 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,911 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,927 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,944 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,965 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:17,983 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:18,397 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,419 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,438 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,452 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,466 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,487 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,504 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:18,518 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:19,511 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,539 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,557 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,582 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,610 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,630 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,657 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:19,679 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,113 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,141 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,157 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,172 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,190 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,212 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,229 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:21,248 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,312 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:22,712 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,756 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,785 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,803 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,834 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,855 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,875 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:22,897 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,332 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,378 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,407 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,436 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,461 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,487 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,503 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,528 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:23,815 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,842 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,867 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,898 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,924 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,948 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,972 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:23,995 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:24,755 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:25,148 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,209 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,226 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,247 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,262 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,291 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,311 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,336 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,862 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,892 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,908 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,923 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,941 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,956 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,972 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:25,992 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:26,686 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,710 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,725 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,741 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,757 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,774 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,791 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:26,806 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:27,256 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,277 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,300 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,315 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,339 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,358 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,388 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:27,404 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,367 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,385 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,400 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,415 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,429 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,447 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,465 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:28,481 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,521 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,537 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,551 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,566 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,582 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,599 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,615 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:29,638 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,119 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:30,489 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,510 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,532 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,561 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,580 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,603 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,623 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:30,639 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:31,028 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,044 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,059 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,080 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,098 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,117 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,132 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:31,147 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:32,299 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,315 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,331 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,347 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,361 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,378 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,396 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:32,422 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,489 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,511 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,536 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,562 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,579 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,607 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,625 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:33,644 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,757 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,778 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,796 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,838 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,867 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,884 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,899 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:34,914 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:35,514 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:36,153 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,188 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,218 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,233 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,253 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,269 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,283 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,310 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:36,704 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,722 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,741 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,772 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,794 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,811 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,837 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:36,859 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:38,482 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:38,998 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,014 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,059 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,088 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,106 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,135 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,152 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,168 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:39,494 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,520 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,539 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,561 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,583 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,602 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,621 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,637 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:39,888 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:40,411 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,452 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,469 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,494 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,520 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,538 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,553 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,569 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:40,931 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:40,950 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:40,969 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:40,989 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:41,014 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:41,028 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:41,043 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:41,058 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:41,700 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,723 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,739 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,759 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,777 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,792 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,817 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:41,851 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,076 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,089 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,109 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,122 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,140 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,163 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,180 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:43,196 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,038 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,067 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,090 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,106 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,127 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,142 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,161 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:44,175 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,394 - INFO - [{"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "-50000000", "SPD": "300", "ACC": "3000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:52:46,820 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,868 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,891 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,911 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,929 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,943 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,963 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:46,984 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:47,328 - INFO - MBID:10,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,349 - INFO - MBID:27,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,364 - INFO - MBID:6,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,384 - INFO - MBID:11,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,403 - INFO - MBID:9,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,421 - INFO - MBID:31,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,437 - INFO - MBID:15,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:47,451 - INFO - MBID:13,CMD:WSTOP,DECC:5000 from callbackCmd - stopMotor
+2025-04-30 19:52:48,441 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,464 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,479 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,501 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,521 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,564 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,585 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:48,604 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:49,944 - INFO - MBID:10,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:49,972 - INFO - MBID:27,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:49,986 - INFO - MBID:6,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:50,007 - INFO - MBID:11,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:50,027 - INFO - MBID:9,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:50,045 - INFO - MBID:31,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:50,061 - INFO - MBID:15,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:52:50,080 - INFO - MBID:13,CMD:WSTOP,DECC:800 from callbackCmd - stopMotor
+2025-04-30 19:56:03,875 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:56:08,728 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:56:12,686 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:56:14,547 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "0"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:58:07,668 - INFO - [{"MBID": "27", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "300", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:58:21,848 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "975000", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:58:28,053 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "500", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 19:58:30,627 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 19:58:32,569 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "975000"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 20:00:31,020 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WMOVE", "MODE": "1", "POS": "0", "SPD": "1550", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 20:00:35,961 - INFO - [{"MBID": "15", "CMD": "WSPD", "SPD": "1000", "ACC": "5000", "DECC": "5000"}] from callbackCmd - SendCMD
+2025-04-30 20:00:39,906 - INFO - [{"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD
+2025-04-30 20:00:41,885 - INFO - [{"MBID": "15", "CMD": "WE_OFF"}, {"MBID": "15", "CMD": "WLOC", "POS": "0"}, {"MBID": "15", "CMD": "WE_ON"}] from callbackCmd - SendCMD

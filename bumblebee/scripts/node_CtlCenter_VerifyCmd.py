@@ -606,7 +606,8 @@ def RunListBlbMotorsEx(listBLB):
                     rpmSrv = round((DEFAULT_RPM_SLOW/2)) if onScan else DEFAULT_RPM_SLOW
                     dicMoveTeleSrv = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,0, rpmSrv,ACC_ST,DECC_ST)                    
                     node_CtlCenter_globals.dicTargetPos.clear()
-                    if onScan and iPOS > cur_pos_srv:
+                    if iPOS > cur_pos_srv:
+                    #if onScan and iPOS > cur_pos_srv:
                         TiltArucoScan()
                         CamControl(True)
                         

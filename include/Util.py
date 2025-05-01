@@ -443,12 +443,52 @@ ref_data = """[{"MARKER_VALUE":9,"DIFF_X":1017.92,"DIFF_Y":1246.92,"X":0.0625937
 
 # result = compute_movement_and_rotation(ref_data, cur_data)
 # print(result)
-
 def is_between(A, B, C):
+    """
+    함수 설명:
+    주어진 값 C가 A와 B 사이에 있는지를 판단합니다.
+    A와 B의 크기 관계와 상관없이, C가 그 사이 범위에 포함되는지 확인합니다.
+    
+    예시:
+        is_between(3, 7, 5) => True   (5는 3과 7 사이)
+        is_between(7, 3, 5) => True   (역순이어도 5는 그 사이)
+        is_between(3, 7, 8) => False  (8은 범위 밖)
+    
+    매개변수:
+        A (숫자): 범위의 한 쪽 끝
+        B (숫자): 범위의 다른 쪽 끝
+        C (숫자): 검사 대상 값
+    
+    반환값:
+        bool: C가 A와 B 사이에 있으면 True, 그렇지 않으면 False
+    """
     return min(A, B) <= C <= max(A, B)
 
+
 def is_within_range(A, B, C):
-    return abs((A) - (B)) <= C
+    """
+    함수 설명:
+    A와 B의 절대값 차이가 C 이하인지를 판단합니다.
+    즉, A와 B가 C 범위 이내에 있는지를 확인합니다.
+    예를 들어 A와 B가 서로 가까운 위치에 있는지 확인할 때 유용합니다.
+    
+    예시:
+        is_within_range(5, 8, 3) => True   (|5 - 8| = 3 ≤ 3)
+        is_within_range(-5, 5, 10) => False (|5 - 5| = 0 ≤ 10 → True 이지만 절대값 기준의 의미 고려)
+        is_within_range(-5, 5, 5) => True   (|-5| = 5, |5| = 5 → |5 - 5| = 0 ≤ 5)
+    
+    주의:
+        A와 B의 '절대값 차이'를 기준으로 하므로 방향성은 무시되고 크기만 비교됩니다.
+    
+    매개변수:
+        A (숫자): 첫 번째 값
+        B (숫자): 두 번째 값
+        C (숫자): 허용 거리 범위 (음수일 수 없다고 가정)
+    
+    반환값:
+        bool: A와 B의 절대값 차이가 C 이하이면 True, 그렇지 않으면 False
+    """
+    return abs(abs(A) - abs(B)) <= C
 
 def df_to_dict_int_values(df: pd.DataFrame, key_col, value_col):
     return dict(zip(df[key_col], df[value_col].astype(int)))
