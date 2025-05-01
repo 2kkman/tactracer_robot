@@ -3,7 +3,6 @@
 # from node_CtlCenter_import import *
 # from tactracer_robot.bumblebee.scripts.node_CtlCenter_func_logic import *
 #node_CtlCenter_globals.listBLB = GetLiftControlUp()
-# CamControl(True)
 
 from node_CtlCenter_VerifyCmd import *
 node_CtlCenter_globals.listBLB.clear()
@@ -120,6 +119,7 @@ class CtlCenter():
 AppendTableHistory(GetTableTarget())
 ReloadSvrTaskList()
 LightWelcome(False)
+CamControl(False)
 #API_call_http(BLB_ANDROID_IP,BLB_ANDROID_PORT,"control",f'vol=70')
 #API_call(BLB_ANDROID_IP,BLB_ANDROID_PORT,"","control",f'vol=70')
 if __name__ == "__main__":
@@ -129,6 +129,7 @@ if __name__ == "__main__":
     rospy.init_node(node_name, anonymous=False)
     CtlCenter()
     rospy.loginfo(f"{node_name} Started")     
+    #runFromLaunch = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
     bReturn_ANDROID,strResult_ANDROID=API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'svrip={IP_MASTER}')
     if not bReturn_ANDROID:
       rospy.loginfo(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
@@ -152,7 +153,7 @@ if __name__ == "__main__":
       bReturn_RFID,strResult_RFID = RFIDControl(False)
       if not bReturn_RFID:
         sErrRFID = f"RFID 통신에러:{node_CtlCenter_globals.BLB_RFID_IP}:{HTTP_COMMON_PORT}"
-        TTSAndroid(sErrRFID,True,1)
+        TTSAndroid(sErrRFID,1)
         rospy.loginfo(sErrRFID)
       else:
         rospy.loginfo(f"RFID 통신성공:{bReturn_RFID}")
@@ -195,7 +196,7 @@ if __name__ == "__main__":
         rospy.loginfo(f'Wait {waitCnt}s for modbus_IF')
         time.sleep(1)
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
-    
+    cmdpos_H, curpos_H = GetPosServo(ModbusID.MOTOR_H)
     if not isRealMachine:
         fieldvalue = f'q={BLD_PROFILE_CMD.WLOC_NOT.value}'
         print(API_call_http(GetMasterIP(), HTTP_COMMON_PORT, 'CMD_DEVICE', fieldvalue))
@@ -205,7 +206,7 @@ if __name__ == "__main__":
     if isTrue(DI_POT):
       dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, 0)
       SendCMD_Device([dicLoc])
-      TTSAndroid('현재 충전소에 있습니다.',True,1)
+      TTSAndroid('현재 충전소에 있습니다.',1)
       SetCurrentNode(node_KITCHEN_STATION)
     else:
       #RFID로 위치 확인 isRealMachine 일때만
@@ -225,9 +226,11 @@ if __name__ == "__main__":
           # else:
           #     break
       if len(node_CtlCenter_globals.dicEPC_last) == 0:
-        sErrRFID = f"RFID 위치에러"
-        TTSAndroid(sErrRFID,True,1)
-        rospy.loginfo(sErrRFID)
+        dicCurNodeInfo=GetCurrentNodeDicFromPulsePos(node_CtlCenter_globals.dfEPCTotal,curpos_H)
+        if dicCurNodeInfo:
+          node_current = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+          SetCurrentNode(node_current)
+          TTSAndroid(f'{node_current} 노드가 현재 위치 입니다',1)
       else:
         bReturn_RFID,strResult_RFID = RFIDControl(False)
         time.sleep(MODBUS_EXCEPTION_DELAY)
@@ -243,7 +246,7 @@ if __name__ == "__main__":
         #cur_pos=GetEPC_Loc_Master(sEPCCurrent)
         cur_pos=GetNodePos_fromEPC(sEPCCurrent)
         iLoc = try_parse_int(cur_pos,MIN_INT)
-        TTSAndroid('RFID 위치감지 성공.',True,1)
+        TTSAndroid('RFID 위치감지 성공.',1)
         if iLoc != MIN_INT:
           sCUR_POS = iLoc
           dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, sCUR_POS)
@@ -290,7 +293,7 @@ if __name__ == "__main__":
     #모터 위치 정보를 로드하여 반영한다.
     #LoadCurrentPos()
     if IsEnableSvrPath():
-      TiltDetectingMonitor()
+      TiltServFinish()
 #    print(GetDicRotateMotorTray(270))        
     #print(GetStrArmExtendMain(0,0,0))
     #print(GetDicRotateMotorTray(90))        
@@ -448,3 +451,5 @@ if __name__ == "__main__":
             #rospy.signal_shutdown(e)
         # rate.sleep()
     rospy.spin()
+
+rospy.loginfo(os.path.splitext(os.path.basename(__file__))[0])

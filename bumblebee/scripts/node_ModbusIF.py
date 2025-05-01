@@ -1546,7 +1546,7 @@ while not rospy.is_shutdown():
                                   SendAlarmHTTP(e,False)
                               lastpos = dic_485_lastpos_started.get(modbusID)
                               lasttarget = dic_485_lastpos_target.get(modbusID)                          
-                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{meanOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}"
+                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{meanOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}{sDivFieldColon}{cur_pos}{sDivFieldColon}{flagSPD}{sDivFieldColon}{flagNOT}{sDivFieldColon}{flagPOT}"
                               rospy.loginfo(ackMsg)
                               pub_flag.publish(ackMsg)
               # else:

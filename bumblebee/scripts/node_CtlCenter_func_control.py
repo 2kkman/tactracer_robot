@@ -735,18 +735,6 @@ def GetCustomFileControl(strProfileName: str):
     return listBLBTmp
 
 
-def CamControl(enable):
-    onScan = isScanTableMode(GetTableTarget())
-    if onScan:
-        return
-    ttsMsg = 1 if enable else 0
-    log_all_frames(f"Trying to start Marker Scan : {enable}")
-    return API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'tag={ttsMsg}')
-    #rospy.loginfo(f"Trying to start Marker Scan : {enable}")
-    camSet = service_setbool_client(ServiceBLB.MarkerScan.value, enable, SetBool)
-    rospy.loginfo(f"Start Marker Scan Result : {camSet}")
-    return camSet
-
 def TTSItx(ttsMsg,isQueueing = True, ttsInterval = 1):
     return TTSCommon(ttsMsg,isQueueing,ttsInterval,UbuntuEnv.ITX.name)
         
@@ -888,15 +876,34 @@ def Tilting_old(tiltStatus : TRAY_TILT_STATUS):
     # SetCameraMode(cm)
     
 
-def TiltTrayCenter():
-    Tilting(TRAY_TILT_STATUS.TiltTrayCenter)
+#라
+def TiltTableObstacleScan():
+    Tilting(TRAY_TILT_STATUS.TiltTableObstacleScan)
 
-def TiltDown(cropProfile=LidarCropProfile.CHECK_GROUND):
-    SetCameraMode(CameraMode.WIDE_FHD)
+#아르코마커 수평탐색
+def TiltArucoScan(cropProfile=LidarCropProfile.CHECK_GROUND):
+    SetCameraMode(CameraMode.WIDE_LOW)
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltDown)
     #Tilting(TRAY_TILT_STATUS.TiltFace)
 
+#주행모드.
+def TiltFace(cropProfile = LidarCropProfile.MOTOR_H):
+    SetCameraMode(CameraMode.WIDE_LOW)
+    SetLidarCrop(cropProfile)
+    Tilting(TRAY_TILT_STATUS.TiltFace)
+    ClearDistanceBox()
+
+#서빙완료시
+def TiltServFinish(cropProfile = LidarCropProfile.MOTOR_V):
+  log_all_frames()
+  lsResult = calculate_triangle_sides(0.55, 90, 30)
+  SetLidarCrop(cropProfile)
+  dicSet = { LIDAR_CROP_PARAMS.range_max_x.name : round(max(lsResult),3)} 
+  Tilting(TRAY_TILT_STATUS.TiltMax)
+  SetDynamicConfigROS(dicSet)
+
+#20250427 - 1호기에서는 쓰이지 않음
 def TiltDetectingMonitor(cropProfile = LidarCropProfile.MOTOR_V):
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltDetectingMonitor)
@@ -904,23 +911,10 @@ def TiltDetectingMonitor(cropProfile = LidarCropProfile.MOTOR_V):
     lsResult = calculate_triangle_sides(0.55, 90, 30)
     dicSet = { LIDAR_CROP_PARAMS.range_max_x.name : round(max(lsResult),3)}
     SetDynamicConfigROS(dicSet)
-
-def TiltFace(cropProfile = LidarCropProfile.MOTOR_H):
-    SetCameraMode(CameraMode.WIDE_LOW)
-    SetLidarCrop(cropProfile)
-    Tilting(TRAY_TILT_STATUS.TiltFace)
-    ClearDistanceBox()
-
-def TiltMaxUp(cropProfile = LidarCropProfile.MOTOR_V):
-  log_all_frames()
-  lsResult = calculate_triangle_sides(0.55, 90, 30)
-  SetLidarCrop(cropProfile)
-  dicSet = { LIDAR_CROP_PARAMS.range_max_x.name : round(max(lsResult),3)} 
-  Tilting(TRAY_TILT_STATUS.TiltMaxUp)
-  SetDynamicConfigROS(dicSet)
-
+#사용하지 않음
 def TiltDiagonal():
     Tilting(TRAY_TILT_STATUS.TiltDiagonal)    
+
 
 def DoorStop():
     SendCMDArd(f"O:0,10")
@@ -936,7 +930,8 @@ def DoorOpen(doorIdx=4):
         #SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
         
         #V캘리 하는 동안만 주석처리
-        TiltMaxUp()
+        #TiltServFinish()
+
         return True
     else:
         SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAYDOOR_SAFETY.value)
@@ -1607,3 +1602,5 @@ def calculate_robot_translation2(dicAruco):
     print(f'마커각도:{angle:.1f},마커각마진:{cur_angle_360-angle:.1f},현재위치각:{curDistanceSrvTele,curAngle_540},타겟위치각:{distanceFinal,angle_degrees_final}')
     return []
     return lsMotorOperationNew
+
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

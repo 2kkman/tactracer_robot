@@ -75,8 +75,13 @@ import cv2
 import numpy as np
 import requests
 from datetime import datetime
+save_dir_download = "/root/Downloads"
+machine_running_csv_filename = 'IsCleanTable.csv'
+machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_csv_filename)
+def getDateTime():
+  return datetime.now()
 
-def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir="/root/Downloads", timeout=5):
+def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5):
     """
     MJPEG 스트림에서 1프레임을 캡처해서 저장하는 함수
     """
@@ -89,7 +94,7 @@ def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir="/root/
     except Exception as e:
         print(traceback.format_exc())
         print(f"Failed to connect to stream: {e}")
-        return False
+        return None
 
     bytes_data = b''
     for chunk in stream.iter_content(chunk_size=1024):
@@ -103,15 +108,50 @@ def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir="/root/
 
             # 저장
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            save_path = os.path.join(save_dir, f"captured_{timestamp}.jpg")
+            file_name_save = f"captured_{timestamp}.jpg"
+            save_path = os.path.join(save_dir,file_name_save )
             cv2.imwrite(save_path, img)
             print(f"Captured and saved: {save_path}")
 
             stream.close()
-            return True
+            return file_name_save
 
     print("Failed to capture frame")
-    return False
+    return None
+# import csv
+# from datetime import datetime
+
+def save_image_with_lidar_data(filename, descendable_distance, tilt_deg, obstacle_thresh=0.4,
+                                save_dir=save_dir_download, csv_path=machine_running_csv_filepath):
+    """
+    이미지 저장 + 라이다 데이터 + 라벨 기록 CSV
+    """
+    os.makedirs(save_dir, exist_ok=True)
+
+    # # 이미지 파일명 생성
+    #timestamp = getDateTime().strftime("%Y%m%d_%H%M%S_%f")
+    # filename = f"captured_{timestamp}.jpg"
+    #filepath = os.path.join(save_dir, filename)
+
+    # # 저장
+    # cv2.imwrite(filepath, img)
+
+    # 라벨 판단
+    obstacle = 1 if descendable_distance < obstacle_thresh else 0
+
+    # CSV에 기록
+    header = ['timestamp', 'filename', 'tilt_deg', 'descendable_distance', 'obstacle']
+    row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), filename, tilt_deg, round(descendable_distance, 4), obstacle]
+
+    write_header = not os.path.exists(csv_path)
+
+    with open(csv_path, 'a', newline='') as f:
+        writer = csv.writer(f)
+        if write_header:
+            writer.writerow(header)
+        writer.writerow(row)
+
+    print(f"[✔] 저장 완료: {filename} (obstacle={obstacle})")
 
 def estimate_rotation_center(marker_coords_by_angle):
     """
@@ -192,9 +232,12 @@ def calculate_robot_movement( target_x, target_y, current_length,current_angle=N
     #return target_distance, target_angle_deg, length_change, angle_change
     return length_change, angle_change
 
+ref_x = 0.03
+ref_y = 0.48
+
 # 마커 좌표: 회전각도 → (x, y)
 marker_coords_goldsample = {
-    0: (0.03, 0.48),
+    0: (ref_x, ref_y),
     90: (0.13, 0.51),
     180: (0.17, 0.41),
     270: (0.06, 0.37)
@@ -362,7 +405,7 @@ def compute_distance_and_rotation_from_dict(reference: dict, current: dict, mirr
 #Y
 ref_dict = {
     "MARKER_VALUE": 2, "DIFF_X": 1017.92, "DIFF_Y": 1246.92,
-    "X": 0.03, "Y": 0.48, "Z": 0.624784,
+    "X": ref_x, "Y": ref_y, "Z": 0.624784,
     "ANGLE": 179.74, "CAM_ID": 2,
     "cx1": 1059.45, "cy1": 1206.35, "cx2": 974.972, "cy2": 1204.24,
     "cx3": 975.387, "cy3": 1288.48, "cx4": 1059.62, "cy4": 1288.36
@@ -405,7 +448,7 @@ def is_between(A, B, C):
     return min(A, B) <= C <= max(A, B)
 
 def is_within_range(A, B, C):
-    return abs(abs(A) - abs(B)) <= C
+    return abs((A) - (B)) <= C
 
 def df_to_dict_int_values(df: pd.DataFrame, key_col, value_col):
     return dict(zip(df[key_col], df[value_col].astype(int)))
@@ -476,9 +519,37 @@ def insert_row_to_csv(strFileEPC_total, strSplitter, new_row):
     dfNew.to_csv(strFileEPC_total, sep=strSplitter, index=False)    
     return dfNew
 
-# 사용 예시
-# dicEPCNodeInfo = {TableInfo.NODE_ID.name: lastNode, MotorWMOVEParams.POS.name: finalPos, MAPFIELD.EPC.name: sEPC}
-# df = insert_row_to_csv('path/to/file.csv', ',', lastNode, finalPos, sEPC)
+def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0):
+    try:
+        # DataFrame 복사 및 diff 계산
+        df = dfTemp.copy()
+        
+        if 'POS' not in df.columns:
+            return []
+        
+        df['diff'] = (df['POS'] - pos_target).abs()
+
+        # 방향 조건에 따른 필터링
+        if signedSpd > 0:
+            df = df[df['POS'] < pos_target]
+        elif signedSpd < 0:
+            df = df[df['POS'] > pos_target]
+
+        # 가까운 값 정렬 및 추출
+        nearest_rows = df.nsmallest(nearPoints, 'diff')
+        result = nearest_rows.to_dict(orient='records')
+        
+        return result
+    except Exception:
+        return []
+
+
+def GetCurrentNodeDicFromPulsePos(dfTemp, pos_target : int):
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+    if lsResult:
+        return lsResult[0]
+    else:
+        return {}
 
 def find_key_by_nested_value(d, target_value):
     for key, value_list in d.items():
@@ -865,9 +936,6 @@ def log_all_frames(logmsg='',max_frames=3):
         returnMsg=f'{logmsg}:{log_message}'
     rospy.loginfo(returnMsg)
     return returnMsg
-
-def getDateTime():
-  return datetime.now()
 
 def control_system_sound(mute: bool):
     """
@@ -2368,3 +2436,4 @@ def ConvertRealToArucoSize(realDistance):
     aruco_value = (realDistance / 32) * 58
     return (aruco_value)
 CAMERA_DISTANCE_FROM_CENTER = ConvertRealToArucoSize(0.32)
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())

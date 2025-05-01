@@ -129,3 +129,32 @@ This typically means that you attempted to use functionality that needed
 an active HTTP request. Consult the documentation on testing for
 information about how to avoid this problem.
 :callbackRFID:service_charge:logSSE_error
+2025-04-28 10:37:56,605 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 870, in service_jog
+    distanceDiff = abs(distancePulse-(cur_posH))
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+:dispatch_request:service_jog:logSSE_error
+2025-04-28 16:27:23,787 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 884, in service_jog
+    distanceDiff = abs(distancePulse-(cur_posH))
+TypeError: unsupported operand type(s) for -: 'str' and 'int'
+:dispatch_request:service_jog:logSSE_error
+2025-04-29 14:57:31,722 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 915, in service_jog
+    F#         last_epc_df = dfScan.groupby("NODE_ID", as_index=False).last()[["NODE_ID", "EPC"]]
+NameError: name 'F' is not defined
+:dispatch_request:service_jog:logSSE_error
+2025-04-29 16:43:01,074 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 1014, in service_jog
+    SendCMD_Device(listReturnTmp)
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 247, in SendCMD_Device
+    if cmdTmp == SendCMD_Device.last_cmd_msg:
+AttributeError: 'function' object has no attribute 'last_cmd_msg'
+:dispatch_request:service_jog:logSSE_error
+2025-04-29 16:43:54,802 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 1014, in service_jog
+    SendCMD_Device(listReturnTmp)
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 247, in SendCMD_Device
+    if cmdTmp == SendCMD_Device.last_cmd_msg:
+AttributeError: 'function' object has no attribute 'last_cmd_msg'
+:dispatch_request:service_jog:logSSE_error
