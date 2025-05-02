@@ -7,6 +7,10 @@ def CamControl(enable):
     # onScan = isScanTableMode(GetTableTarget())
     # if onScan:
     #     return
+    tagscan = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.TAGSCAN.name,0)
+    isDetectingTag = isTrue(tagscan)
+    if isDetectingTag == enable:
+      return False, f'cam status:{enable}'
     ttsMsg = 1 if enable else 0
     log_all_frames(f"Trying to start Marker Scan : {enable}")
     return API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'tag={ttsMsg}')
@@ -402,8 +406,11 @@ def ReloadSvrTaskList():
 
 def GetLocNodeID(nodeID):
     strnodeID = round(try_parse_int(nodeID))
-    lsReturn = node_CtlCenter_globals.node_location[strnodeID]
-    return lsReturn[0],lsReturn[1]
+    try:
+      lsReturn = node_CtlCenter_globals.node_location[strnodeID]
+      return lsReturn[0],lsReturn[1]
+    except:
+      return 0,0
 
 def GetRangeV(value=None, column_input="", column_output=None, df = node_CtlCenter_globals.dfDistanceV):
     return GetRange(value, column_input, column_output, df)
@@ -598,11 +605,11 @@ def SetWaitConfirmFlag(flag_bool, reason):
           dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.workname.name, table_targetNew, True)
           trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)
           tasktype = dicTaskInfo.get(APIBLB_FIELDS_TASK.tasktype.name)
-          trayRackID = RackID.from_name_or_value(trayrack,True)
-          trayidx = trayRackID.value
-          tray_weight = int(GetRackIDStatus(trayidx))
           
           if trayrack is not None and tasktype == str(APIBLB_TASKTYPE.ServingTask.value):
+            trayRackID = RackID.from_name_or_value(trayrack,True)
+            trayidx = trayRackID.value
+            tray_weight = int(GetRackIDStatus(trayidx))
             if tray_weight > WEIGHT_OCCUPIED:
               STATUS_TASK = APIBLB_STATUS_TASK.NONE 
         except Exception as e:

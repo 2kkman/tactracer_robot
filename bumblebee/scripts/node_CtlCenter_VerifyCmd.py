@@ -36,6 +36,8 @@ def RunListBlbMotorsEx(listBLB):
     #현재 뻗은 암 길이 / 메인회전각도 / 트레이각도
     cmd_posH, cur_posH = GetPosServo(ModbusID.MOTOR_H)
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)  
+    DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)  
+    DI_POT_360,DI_NOT_360,DI_HOME_360,SI_POT_360 = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)  
     cur_pos_mm = pulseH_to_distance(cur_posH)
     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
     #dicInfo_local = listBLB[0]
@@ -239,14 +241,19 @@ def RunListBlbMotorsEx(listBLB):
 
             #rospy.loginfo('CheckPoint')
             node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_H.value)] = iTargetPulse
+            diffH_pulse = abs(cur_posH - iTargetPulse)
             node_CtlCenter_globals.lastSendDic_H = dicInfo_local
             dicRotateDirection = getMainRotateDicByDirection(dicInfo_local)
             rospy.loginfo('CheckPoint')
             if CheckMotorOrderValid(dicInfo_local):
                 rospy.loginfo('CheckPoint')
-                if CheckMotorOrderValid(dicRotateDirection):
+                if CheckMotorOrderValid(dicRotateDirection) and diffH_pulse > MOVE_H_SAMPLE_PULSE/3:
                     rospy.loginfo('CheckPoint')
-                    listBLB.insert(0,[dicRotateDirection])
+                    target540_pos = dicRotateDirection.get(MotorWMOVEParams.POS.name,MIN_INT)
+                    lsDicRotateDirection = [dicRotateDirection]
+                    if target540_pos == 0 and not isTrue(DI_HOME_540):
+                        lsDicRotateDirection.insert(0,getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
+                    listBLB.insert(0,lsDicRotateDirection)
                     return APIBLB_ACTION_REPLY.E108                
                 # if CheckMotorOrderValid(dicServExpand):
                 #     listBLB.insert(0,[dicServExpand])
@@ -309,13 +316,19 @@ def RunListBlbMotorsEx(listBLB):
             #print(dicInfo_local)
             dfReceived = pd.DataFrame(filtered_data) 
             #정수형 데이터는 int 로 변환한다
-            dfReceived[MotorWMOVEParams.POS.name] = dfReceived[MotorWMOVEParams.POS.name].astype(int)
-            dfReceived[MotorWMOVEParams.MBID.name] = dfReceived[MotorWMOVEParams.MBID.name].astype(int)
-            lsLiftDown= dfReceived[(dfReceived[MotorWMOVEParams.POS.name] > 0) & (dfReceived[MotorWMOVEParams.MBID.name] == ModbusID.MOTOR_V.value)].tail(1).to_dict(orient='records')
-            lsExpandArm= dfReceived[(dfReceived[MotorWMOVEParams.POS.name] > 0) & (dfReceived[MotorWMOVEParams.MBID.name] == ModbusID.TELE_SERV_MAIN.value)].tail(1).to_dict(orient='records')
-            if len(lsLiftDown) > 0 or len(lsExpandArm) > 0:
-                if GetWaitConfirmFlag():
-                    return
+            try:
+                dfReceived[MotorWMOVEParams.POS.name] = dfReceived[MotorWMOVEParams.POS.name].astype(int)
+                dfReceived[MotorWMOVEParams.MBID.name] = dfReceived[MotorWMOVEParams.MBID.name].astype(int)
+                lsLiftDown= dfReceived[(dfReceived[MotorWMOVEParams.POS.name] > 0) & (dfReceived[MotorWMOVEParams.MBID.name] == ModbusID.MOTOR_V.value)].tail(1).to_dict(orient='records')
+                lsExpandArm= dfReceived[(dfReceived[MotorWMOVEParams.POS.name] > 0) & (dfReceived[MotorWMOVEParams.MBID.name] == ModbusID.TELE_SERV_MAIN.value)].tail(1).to_dict(orient='records')
+                if len(lsLiftDown) > 0 or len(lsExpandArm) > 0:
+                    if GetWaitConfirmFlag():
+                        return
+            except Exception as e:
+                SendCMD_Device(dicInfo_local)
+                listBLB.pop(0)
+                
+            
         
         # 루프를 돌면서 원소를 직접 수정할 수 있게 한다.
         valuesInlist = len(dicInfo_local)
@@ -325,9 +338,12 @@ def RunListBlbMotorsEx(listBLB):
             if sMBID == None:
                 print(dicArray)
                 continue
+            if sPOS is None:
+                print(dicArray)
+                continue
             iMBID = int(sMBID)
             sMBIDInstance = ModbusID.from_value(iMBID)
-            sPOS = dicArray[MotorWMOVEParams.POS.name]
+            sPOS = dicArray.get(MotorWMOVEParams.POS.name)
             iPOS = int(sPOS)
             sSPD = dicArray[MotorWMOVEParams.SPD.name]
             iSPD = int(sSPD)
@@ -436,7 +452,7 @@ def RunListBlbMotorsEx(listBLB):
             
             #리프팅 모터 제어정보 사전 점검
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
-                if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan:    #하강전 라이다 스캔 결과 확인후 내려간다.
+                if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan and isRealMachine:    #하강전 라이다 스캔 결과 확인후 내려간다.
                     imgPath = capture_frame_from_mjpeg()
                     lsObstacleInfo = get_obstacle_data(1)
                     descendable_distance = node_CtlCenter_globals.DefaultGndDistance

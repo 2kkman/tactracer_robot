@@ -27,48 +27,48 @@ def getLoadWeight():
       return 0,0,0
   
 
-def StartCaliTray():
-  listCtl = []
-  runningMotors = len(getRunningMotorsBLB())
-  statusCurrent = node_CtlCenter_globals.robot.get_current_state()
-  curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
-  if runningMotors == 0 and statusCurrent == Robot_Status.idle:
-    if curDistanceSrvTele <= 110:
-      sMsg = f'서빙암이격거리가 짧습니다. 현재이격:{curDistanceSrvTele}mm'
-      TTSAndroid(sMsg)
-      rospy.loginfo(sMsg)
-      #listCtl.extend(GetStrArmExtendMain(110,0,True))
-      return False
-    pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-    cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value, False, pot_cur-not_cur, 200, ACC_DECC_LONG, ACC_DECC_LONG)
-    node_CtlCenter_globals.robot.trigger_start_calibration_tray()
-    listCtl.append(cmdCaliStart)
-    SendCMD_Device(listCtl)
-    return True
-  else:
-    rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name},서빙암이격거리:{curDistanceSrvTele}')
-    return False
+# def StartCaliTray():
+#   listCtl = []
+#   runningMotors = len(getRunningMotorsBLB())
+#   statusCurrent = node_CtlCenter_globals.robot.get_current_state()
+#   curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
+#   if runningMotors == 0 and statusCurrent == Robot_Status.idle:
+#     if curDistanceSrvTele <= 110:
+#       sMsg = f'서빙암이격거리가 짧습니다. 현재이격:{curDistanceSrvTele}mm'
+#       TTSAndroid(sMsg)
+#       rospy.loginfo(sMsg)
+#       #listCtl.extend(GetStrArmExtendMain(110,0,True))
+#       return False
+#     pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
+#     cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value, False, pot_cur-not_cur, 200, ACC_DECC_LONG, ACC_DECC_LONG)
+#     node_CtlCenter_globals.robot.trigger_start_calibration_tray()
+#     listCtl.append(cmdCaliStart)
+#     SendCMD_Device(listCtl)
+#     return True
+#   else:
+#     rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name},서빙암이격거리:{curDistanceSrvTele}')
+#     return False
   
-def StartCaliMainRotate():
-    listCtl = []
-    runningMotors = len(getRunningMotorsBLB())
-    statusCurrent = node_CtlCenter_globals.robot.get_current_state()
-    bIsAllMotorFolded = isReadyToMoveH_and_540()
-    if not bIsAllMotorFolded:
-        sMsg = f'암과 트레이를 완전히 접어주세요'
-        TTSAndroid(sMsg)
-        #listCtl.extend(GetLiftControl(True))
-        return False
+# def StartCaliMainRotate():
+#     listCtl = []
+#     runningMotors = len(getRunningMotorsBLB())
+#     statusCurrent = node_CtlCenter_globals.robot.get_current_state()
+#     bIsAllMotorFolded = isReadyToMoveH_and_540()
+#     if not bIsAllMotorFolded:
+#         sMsg = f'암과 트레이를 완전히 접어주세요'
+#         TTSAndroid(sMsg)
+#         #listCtl.extend(GetLiftControl(True))
+#         return False
   
-    if runningMotors == 0 and statusCurrent == Robot_Status.idle:
-        pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-        cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -(pot_cur-not_cur), MAINROTATE_RPM_CALI, ACC_DECC_LONG, ACC_DECC_LONG)
-        SendCMD_Device([cmdCaliStart])
-        node_CtlCenter_globals.robot.trigger_start_calibration_mainRotate()
-        return True
-    else:
-        rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name}')
-    return False
+#     if runningMotors == 0 and statusCurrent == Robot_Status.idle:
+#         pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
+#         cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -(pot_cur-not_cur), MAINROTATE_RPM_CALI, ACC_DECC_LONG, ACC_DECC_LONG)
+#         SendCMD_Device([cmdCaliStart])
+#         node_CtlCenter_globals.robot.trigger_start_calibration_mainRotate()
+#         return True
+#     else:
+#         rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name}')
+#     return False
   
 def CheckMotorOrderValid(dictMotor:dict):
     mbid = dictMotor.get(MotorWMOVEParams.MBID.name, None)
@@ -666,11 +666,16 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
     pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
     listBLBTmp = []
     if isUp:    #수축-리프트업
+        dicCali360 = getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value)
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, DECC_360_UP)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsLiftUp = GetListLiftUp()
         #lsLiftUp.append(dicRotate360)
+        isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
         listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
+        if not isTrue(isHome):
+            listBLBTmp.append([dicCali360]) #트레이를 돌리고
+            dicRotate360 = GetDicRotateMotorTray(-roundPulse,SPD_360,ACC_360_UP, ACC_DECC_LONG)
         listBLBTmp.append([dicRotate360]) #트레이를 돌리고
         listBLBTmp.append(lsArmControl) #밸런스암 수축
     else:   #전개-리프트다운
@@ -779,7 +784,7 @@ def SendCMDArd(cmdStr):
     #isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
     bReturn,strResult=SendInfoHTTP(cmdStr.replace(sDivFieldColon,sDivSemiCol))
     logger_ard.info(cmdStr)
-    print(bReturn,strResult)
+    rospy.loginfo(strResult)
     if isRealMachine:
         resultArd = service_setbool_client(ServiceBLB.CMDARD_QBI.value, cmdStr, Kill)
     else:
@@ -832,7 +837,8 @@ def Tilting(tiltStatus : TRAY_TILT_STATUS):
     # maxGYRO = 45
     # targetServo = mapRange(tiltStatus.value, minGYRO,maxGYRO,0,180)
     # SendCMDArd(f"S:10,{round(targetServo)}")
-    print(TiltingARD(tiltStatus))
+    bresult, bResultStr = TiltingARD(tiltStatus)
+    rospy.loginfo(bResultStr)
     ClearDistanceV()
     node_CtlCenter_globals.tiltStatus = tiltStatus
     UpdateLidarDistanceBoxTimeStamp()
@@ -953,6 +959,9 @@ def TrayOpen(spd=10):
 
 #@rate_limited(3)  # 실행 제한 시간 설정
 def LightTrayCell(traySector=0,blinkTimeMs=1000,colorCode = 0):
+    if not hasattr(LightTrayCell, "last_cmd_time"):
+        LightTrayCell.last_cmd_msg = ''
+    
     #ledColor0,blink0,ledColor1,blink1  = GetLedStatus()
     dicLED = GetLedStatus()[traySector]
     curLedTime = int(dicLED.get(LED_STATUS.BLINK_TIME.name))
@@ -960,8 +969,11 @@ def LightTrayCell(traySector=0,blinkTimeMs=1000,colorCode = 0):
     if curLedTime == blinkTimeMs and curLedColor == colorCode:
         return
     sCmd = f"L:{colorCode}{sDivItemComma}{traySector}{sDivItemComma}{blinkTimeMs}"
+    if LightTrayCell.last_cmd_msg == sCmd:
+        return
     log_all_frames(sCmd)
     SendCMDArd(sCmd)
+    LightTrayCell.last_cmd_msg = sCmd
 
 
 def GetpulseBalanceCalculated():

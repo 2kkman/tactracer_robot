@@ -230,7 +230,7 @@ if __name__ == "__main__":
         if dicCurNodeInfo:
           node_current = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
           SetCurrentNode(node_current)
-          TTSAndroid(f'{node_current} 노드가 현재 위치 입니다',1)
+          TTSAndroid(f'{node_current}번 노드가 현재 위치 입니다',1)
       else:
         bReturn_RFID,strResult_RFID = RFIDControl(False)
         time.sleep(MODBUS_EXCEPTION_DELAY)

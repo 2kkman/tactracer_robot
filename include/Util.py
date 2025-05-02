@@ -1382,7 +1382,7 @@ def getStr_FromFile(filename):
     return data
 
 
-def getDic_FromFile(filename, spliter):
+def getDic_FromFile(filename, spliter=sDivTab):
     file_list = getLines_FromFile(filename)
     dicReturn = {}
     if len(file_list) == 1 and is_json(file_list[0]):

@@ -130,8 +130,8 @@ DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIE
 ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
 DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
 
-dicServExpand = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 345000, DEFAULT_RPM_SLOW, ACC_ST,DECC_ST)
-dicServFold = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, -200000, DEFAULT_RPM_SLOW,ACC_ST,DECC_ST)    
+dicServExpand = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 545000, DEFAULT_RPM_SLOW, ACC_ST,DECC_ST)
+dicServFold = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 0, DEFAULT_RPM_SLOW,ACC_ST,DECC_ST)    
 dicBackHome = getMotorMoveDic(ModbusID.MOTOR_H.value, True, 0, 2000,3000,3000)    
 dicCaliHome = getMotorMoveDic(ModbusID.MOTOR_H.value, False, -200001, 200,3000,3000)    
 # NODE_KITCHEN_EPC = "E2009A3030033AF000000821"

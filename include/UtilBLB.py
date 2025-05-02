@@ -61,7 +61,8 @@ strFileTableNode = f"{dirPath}/DF_EPC_TABLE_TEMP.txt"
 strFileTableNodeEx = f"{dirPath}/DF_EPC_TABLE.txt"
 strFileShortCut = f"{dirPath}/SHORTCUT.txt"
 strFileShortCutTemp = f"{dirPath}/SHORTCUT_Temp.txt"
-machineName = 'ITX' if get_hostname().find(UbuntuEnv.ITX.name) >= 0 else 'DEV'
+#machineName = 'ITX' if get_hostname().find(UbuntuEnv.ITX.name) >= 0 else 'DEV'
+machineName = 'ITX' if get_hostname().find(UbuntuEnv.QBI.name) < 0 else 'QBI'
 filePath_IPSetup = f"{dirPath}/IPSetup_{machineName}.txt"
 try:
     with open(filePath_IPSetup, "r") as f:
@@ -183,13 +184,19 @@ IP_MASTER = GetMasterIP()
 isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 
 # 상수 정의
-STROKE_MAX = 345000
-STROKE_MM = 1700
-STROKE_MIN = -200000
+#STROKE_MAX = 545000
+STROKE_MAX = 320000
+STROKE_MM = 1300
+STROKE_MIN = 0
 
 SERVING_ANGLE_MAX = 649800
 MARKER_ANGLE_MAX = 833146
 ANGLE_FULL = 360
+dirPath2 = getConfigPath(UbuntuEnv.ITX.name)
+filePath_modbusconfig = f"{dirPath2}/ModbusConfig_{machineName}.txt"
+filePath_Torqueconfig = f"{dirPath2}/ModbusTORQUE_{machineName}.txt"
+filePath_CaliPotConfig = f"{dirPath2}/ModbusCaliPot_{machineName}.txt"
+filePath_CaliNotConfig = f"{dirPath2}/ModbusCaliNot_{machineName}.txt"
 
 class DataKey(Enum):
     SSID = auto()
@@ -496,6 +503,11 @@ class EndPoints(Enum):
     control = auto()  # KEEP_ALIVE 메세지 발행 토픽
     ARD = auto()  # 아두이노 제어
     CONTROL = auto()  # 테이블 탐색 정보 저장
+
+class JogControl(Enum):
+    CONTROL_3ARMS = auto()  #서빙텔레+밸런싱암2개 3축 제어
+    CONTROL_2ARMS_ANGLE = auto()  #밸런싱암2개 2축 제어
+    SPD_RATE = auto()  #암전개 RPM 배속 조정
 
 class OBSTACLE_INFO(Enum):
     LASTSEEN = auto()
@@ -1855,7 +1867,7 @@ class BLD_PROFILE_CMD(Enum):
     MOVE_MOTOR_H = 18
     SAVE_POS = 19
     CALI_TRAY = 20
-    CALI_MAINROTATE = 21
+    GET_TABLEMAP = 21
     SRV_EXPAND = 22
     SRV_FOLD = 23
     BACK_HOME = 24
@@ -2104,6 +2116,8 @@ class MotorCmdField(Enum):
     WN_ON = auto() #`0x409:0x26,0x40B:0x0`N 역방향에 반응
     WE_ON = auto() # 양방향에 반응 (POT를 ESTOP으로)
     WE_OFF = auto() # 정지 트리거 모두 해제
+    WHOMESTOP_ON = auto()
+    WHOMESTOP_OFF = auto()
     
 
 
@@ -3051,6 +3065,12 @@ def getMotorWE_ONDic(mbid = ModbusID.MOTOR_H.value):
 
 def getMotorWE_OFFDic(mbid = ModbusID.MOTOR_H.value):
     return getMotorDefaultDic(mbid, MotorCmdField.WE_OFF.name)
+
+def getMotorWHOME_ONDic(mbid = ModbusID.ROTATE_MAIN_540.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WHOMESTOP_ON.name)
+
+def getMotorWHOME_OFFDic(mbid = ModbusID.ROTATE_MAIN_540.value):
+    return getMotorDefaultDic(mbid, MotorCmdField.WHOMESTOP_OFF.name)
 
 def getMotorStopString(mbid,decc=EMERGENCY_DECC):
     sCmd = (
@@ -5394,8 +5414,9 @@ def service_setbool_client_common(serviceName, enable, serviceType):
             return bResult
 
         responseResult = setbool_proxy(enable)
-        log_all_frames(enable,2)
-        return responseResult
+        log_all_frames(str(responseResult),2)
+        #print(responseResult)
+        return True
     except Exception as e:
         rospy.loginfo(e)
         return False  
@@ -5645,7 +5666,7 @@ def GetRange(value=None, column_input="", column_output=None, df = pd.DataFrame(
 #     strokeTargePulse = round(GetRange(strokeKey,DISTANCE_V.distanceLD.name,DISTANCE_V.pulseV.name,dfDistanceArm)) + not_pos
 #     #print(minArmLD,minArmPulse,strokeTargePulse)
 #     return strokeTargePulse
-def GetTargetLengthMMServingArm(strokeTargetPulse, not_pos=-200000):
+def GetTargetLengthMMServingArm(strokeTargetPulse, not_pos=0):
     dfDistanceArm = pd.read_csv(strFileDistanceArm, delimiter=sDivTab)
     strokeTargetPulse = strokeTargetPulse - not_pos
     strokeTargeLen = GetRange(strokeTargetPulse,DISTANCE_V.pulseV.name,DISTANCE_V.distanceLD.name,dfDistanceArm)
@@ -5654,7 +5675,7 @@ def GetTargetLengthMMServingArm(strokeTargetPulse, not_pos=-200000):
 # print(GetTargetLengthMMServingArm(250000))
 
 #print(MoveH_MotorRFID(350000,500,7) ) 
-def GetTargetPulseServingArm(strokeTargetMM, not_pos=-200000):
+def GetTargetPulseServingArm(strokeTargetMM, not_pos=0):
     dfDistanceArm = pd.read_csv(strFileDistanceArm, delimiter=sDivTab)
     strokeTargePulse = round(GetRange(strokeTargetMM,DISTANCE_V.distanceLD.name,DISTANCE_V.pulseV.name,dfDistanceArm)) + not_pos
     return strokeTargePulse
@@ -5671,7 +5692,7 @@ def GetTargetPulseBalanceArm(strokeSrvTargetMM):
     dfDistanceArm = pd.read_csv(strFileDistanceBal, delimiter=sDivTab)
     strokeTargePulse = round(GetRange(strokeSrvTargetMM,DISTANCE_V.distanceLD.name,DISTANCE_V.pulseV.name,dfDistanceArm))
     return strokeTargePulse
-print(GetTargetPulseBalanceArm(1250))
+#print(f'1250 미리를 뻗기 위한 밸런스 펄스 : {GetTargetPulseBalanceArm(1250)})
 
 
 # def GetTargetLengthServingArm(strokeTargetPulse, not_pos=0):

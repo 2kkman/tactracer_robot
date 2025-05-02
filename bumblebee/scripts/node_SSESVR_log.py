@@ -88,6 +88,11 @@ startPos = 0
 endnode= 0
 epcTotalView = pd.DataFrame()
 dfNodeInfo = pd.read_csv(strFileEPC_total, sep=sDivTab)
+dicPotInfo = getDic_FromFile(filePath_CaliPotConfig)
+pot_telesrv = dicPotInfo.get(str(ModbusID.TELE_SERV_MAIN.value))
+pot_arm1 = dicPotInfo.get(str(ModbusID.BAL_ARM1.value))
+pot_arm2 = dicPotInfo.get(str(ModbusID.BAL_ARM2.value))
+
 #epcTarget = None
 lastNode = None
 lastRSSI = None
@@ -98,7 +103,114 @@ isRetry = False
 lastcalledAck = DATETIME_OLD
 dicLastMotor15 = {}
 dicPulsePos = {}
+topicName_ServoPrefix = 'MB_'
+topicName_MotorH = f'{topicName_ServoPrefix}{ModbusID.MOTOR_H.value}'
+topicName_ServArm = f'{topicName_ServoPrefix}{ModbusID.TELE_SERV_MAIN.value}'
+topicName_BAL1 = f'{topicName_ServoPrefix}{ModbusID.BAL_ARM1.value}'
+topicName_BAL2 = f'{topicName_ServoPrefix}{ModbusID.BAL_ARM2.value}'
+topicName_LiftV = f'{topicName_ServoPrefix}{ModbusID.MOTOR_V.value}'
+topicName_RotateTray = f'{topicName_ServoPrefix}{ModbusID.ROTATE_SERVE_360.value}'
+topicName_RotateMain = f'{topicName_ServoPrefix}{ModbusID.ROTATE_MAIN_540.value}'
 
+lsServoTopics = [topicName_MotorH,topicName_ServArm,topicName_BAL1,topicName_BAL2,topicName_LiftV,topicName_RotateTray,topicName_RotateMain]
+#암 속도 조절.
+adjustrate = SPEED_RATE_ARM
+
+#6번 리프트 모터
+ACC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
+ACC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+DECC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+SPD_LIFT = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.SPD.name)
+
+#10번 2관절 모터
+SPD_EXTEND_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+ACC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+ACC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
+DECC_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+
+#11번 서빙 텔레스코픽 모터
+ACC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+DECC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+
+#13번 1관절 모터
+SPD_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+ACC_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+DECC_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+
+#15번 주행 모터
+ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,SPEED_RATE_H)
+DECC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CW.name,SPEED_RATE_H)
+SPD_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.SPD.name,SPEED_RATE_H)
+
+#27번 메인회전 모터
+SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SPD.name)
+ACC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+
+#9번 밸런싱 텔레스코픽 모터
+SPD_BALTELE = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+ACC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+DECC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+
+#31번 트레이 모터
+SPD_360 =  getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.SPD.name)
+ACC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
+DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+
+def GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition=False, spd_rate = 1.0):
+    if bUseCurrentPosition:
+        cur_arm1 = int(dicMotorPos[topicName_BAL1])
+        cur_arm2 =int(dicMotorPos[topicName_BAL2])
+    else:
+        cur_arm1=0
+        cur_arm2=0
+
+    stroke_arm1_signed = targetPulse_arm1 - cur_arm1
+    stroke_arm1_abs = abs(stroke_arm1_signed)
+    targetPulse_arm2 = min(round(mapRange(targetPulse_arm1,0,pot_arm1,0,pot_arm2)),pot_arm2)
+    stroke_arm2_signed = targetPulse_arm2 - cur_arm2
+    stroke_arm2_abs = abs(stroke_arm2_signed)
+    #서빙암 스트로크 RPM
+    rpm_arm1 = round(SPD_ARM1 * spd_rate)
+    round1CountAbs = round(stroke_arm1_abs/roundPulse)
+    round2CountAbs = round(stroke_arm2_abs/roundPulse)
+    rpm_time_arm1 = calculate_rpm_time(round1CountAbs, rpm_arm1)
+    rpm_arm2 = calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1)
+    isExpand = stroke_arm1_signed > 0
+    accArm2 = ACC_ARM2_EXTEND if isExpand else ACC_ARM2_FOLD
+    dicArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value,True,targetPulse_arm1,rpm_arm1,ACC_ARM1,DECC_ARM1)
+    dicArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value,True,targetPulse_arm2,rpm_arm2,accArm2,DECC_ARM2)
+    return [dicArm1,dicArm2], rpm_time_arm1
+
+def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd_rate = 1.0):
+    #bUseCurrentPosition 에 따라 RPM 이 달라진다.
+    # True 인 경우 현재 포지션 기준으로 RPM 계산.
+    # False 인 경우 풀스트로크 기준으로 RPM 계산.
+    # STROKE_MAX 상수를 활용하여 밸런스 암 RPM 을 계산하자.
+    # lsArm = []
+    # currentWeightTotal = 0
+    if bUseCurrentPosition:
+        cur_serv = int(dicMotorPos[topicName_ServArm])
+    else:
+        cur_serv = 0
+        
+    targetPulse_serv = GetTargetPulseServingArm(distanceServingTeleTotal, 0)
+    stroke_servArm_signed = targetPulse_serv - cur_serv
+    stroke_servArm_abs = abs(stroke_servArm_signed)
+    targetPulse_arm1 = min(round(mapRange(targetPulse_serv,0,STROKE_MAX,0,pot_arm1)),pot_arm1)
+    #서빙암 스트로크 RPM
+    lsBal, rpm_time_arm1= GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition,spd_rate)
+    servArmCountAbs = round(stroke_servArm_abs/roundPulse)    
+    rpm_servArm = calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1)
+    # 원본 값 보정
+    #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
+    #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
+    dicSrvArm = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,targetPulse_serv,rpm_servArm,ACC_ST,DECC_ST)
+    lsBal.append(dicSrvArm)
+    return lsBal
 
 def getRFIDInvStatus():
     global shared_data    
@@ -122,6 +234,7 @@ def getRFIDInvStatus():
 #         rospy.loginfo(message)
 #         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 #     return False
+
 def getChargerPlugStatus():
     global shared_data    
     dicBLB_Status = shared_data.get(TopicName.SMARTPLUG_INFO.name)
@@ -133,11 +246,11 @@ def GetCurrentNode():
     return try_parse_int(dicBLB_Status.get(BLB_STATUS.NODE_CURRENT.name))
 
 def GetMotorHPos():
-    cur_pos = try_parse_int(dicMotorPos.get('MB_15'))
+    cur_pos = try_parse_int(dicMotorPos.get(topicName_MotorH))
     return cur_pos
 
 def GetMotorH_SI_POT():
-    cur_pos = try_parse_int(shared_data.get('MB_15'),{})
+    cur_pos = try_parse_int(shared_data.get(topicName_MotorH),{})
     si_pot = cur_pos.get(sSI_POT,"")
     return si_pot
 
@@ -187,7 +300,7 @@ def rfidInstanceDefault():
     isScan = False
     isRetry = False
     lastcalledAck =DATETIME_OLD
-    callbackACK.retryCount = 100            
+    callbackACK.retryCount = 100
 
 def SavePos():
     resultArd = service_setbool_client_common(ServiceBLB.CMD_SAVE.value, "enable", Kill)        
@@ -214,7 +327,8 @@ def SendCMDESTOP(enable,isAlarm=True):
     if isAlarm:
         PublishStateMessage(BLD_PROFILE_CMD.ESTOP.name)
     resultArd = service_setbool_client_common(ServiceBLB.CMD_ESTOP.value, enable, Kill)        
-    API_CROSS_stop()
+    if isRealMachine:
+        API_CROSS_stop()
     # try:
     #     dicBLB_STATUS= shared_data.get(TopicName.BLB_STATUS.name)
     #     lastSeenBLBCMD = dicBLB_STATUS.get(MonitoringField.LASTSEEN.name)
@@ -259,10 +373,11 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=5):
             SendCMD_Device.last_cmd_msg = cmdTmp
         else:
             return False
-    #log_all_frames(sendbuf)        
+    #log_all_frames(sendbuf)
+    rfidInstanceDefault()
     return service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
 
-
+lsRotateMotors = [str(ModbusID.ROTATE_MAIN_540.value), str(ModbusID.ROTATE_SERVE_360.value)]
 def callbackACK(recvData):
     #global epcTarget
     global lastNode
@@ -297,18 +412,16 @@ def callbackACK(recvData):
         ovr_ave = -1
         last_started_pos = MIN_INT
         last_targeted_pos = MIN_INT
-        isNot = 0
+        isHome = 0
         isPot = 0
         last_spd = 0
         mbid_tmp = lsResult[2]  # 모드버스 ID
-        flag = lsResult[1]  # 0 이면 미완료, 1 이면 완료
+        flagFinished = lsResult[1]  # 0 이면 미완료, 1 이면 완료
         stopped_pos=GetMotorHPos()
         if not hasattr(callbackACK, "retryCount"):
                 callbackACK.retryCount = maxRetryCount
-        if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
-            return
         
-        if not isTrue(flag):
+        if not isTrue(flagFinished):
             #callbackACK.retryCount = 0
             return
         
@@ -323,9 +436,19 @@ def callbackACK(recvData):
             last_targeted_pos = int(lsResult[8])  # 운행 종료 목표 지점
             stopped_pos = int(lsResult[9])  # 현재 지점
             last_spd = int(lsResult[10])  # 정지시점 속도 및 방향
-            isNot = lsResult[11]  # NOT에 걸려서 멈췄으면 1
+            isHome = lsResult[11]  # HOME에 걸려서 멈췄으면 1
             isPot = lsResult[12]  # POT에 걸려서 멈췄으면 1
             
+        # 회전모터 (27,31) 자동 상시 캘리브레이션.
+        # 회전모터가 홈센서에 걸려서 멈췄을 경우 0 으로 위치값을 초기화 한다
+        if isTrue(flagFinished) and isTrue(isHome):
+            if mbid_tmp in lsRotateMotors:
+                lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
+                SendCMD_Device(lsCmdCaliHome)
+        
+        if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
+            return
+        
         # if not isTimeExceeded(lastcalledAck, 200):
         #     return
         # last_inv = dfEPCTotal.iloc[-1][sInv_Key] if not dfEPCTotal.empty else None
@@ -411,7 +534,7 @@ def callbackACK(recvData):
         #diff_pos_abs = abs(diff_pos)
         
         findNodePulse = -findNodeTryPulse if diff_pos < 0 else findNodeTryPulse
-        if callbackACK.retryCount < maxRetryCount:
+        if callbackACK.retryCount < maxRetryCount and isRealMachine:
         #if diff_pos_abs > roundPulse and :
             callbackACK.retryCount += 1
             finalPos = stopped_pos + findNodePulse
@@ -724,7 +847,7 @@ def callback_factory(topic_name):
             if topic_name == TopicName.RFID.name:
                 callbackRFID(recvDataMap)
             
-            if topic_name == 'MB_15':
+            if topic_name == topicName_MotorH:
                 callbackMB_15(recvDataMap)
             
             if topic_name == TopicName.ACK.name:
@@ -1066,9 +1189,29 @@ def service_cmd():
         crossplug = request.args.get(SMARTPLUG_INFO.SET_CROSSPLUG.name, None)
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
+        spd_rate = try_parse_float(request.args.get(JogControl.SPD_RATE.name, None),1.0)
+        controlArm3 = try_parse_int(request.args.get(JogControl.CONTROL_3ARMS.name, None),MIN_INT)
+        controlArm2 = try_parse_int(request.args.get(JogControl.CONTROL_2ARMS_ANGLE.name, None),MIN_INT)
         qNumber = request.args.get('q', MIN_INT)
         recvData = request.args.get('data')
         topicData = request.args.get('topicname')
+        
+        if controlArm3 != MIN_INT:
+            lsCmd = GetControlInfoArms(controlArm3,True,spd_rate)
+            print(lsCmd)
+            bResult=SendCMD_Device(lsCmd)
+            reponseCode = 200 if bResult else 400
+            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {f"{bResult}": json.dumps(lsCmd, sort_keys=True)}, 200
+        
+        if controlArm2 != MIN_INT:
+            target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
+            lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
+            print(lsCmd)
+            bResult=SendCMD_Device(lsCmd)
+            reponseCode = 200 if bResult else 400
+            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {bResult:rpm_time}, 200
         
         if lightplug is not None:
             plug_enable = isTrue(lightplug)
@@ -1162,6 +1305,11 @@ def service_cmd():
             elif qNumber == BLD_PROFILE_CMD.SAVE_POS.value:
                 SavePos()
                 return {f"{reqargs}": dicMotorPos}, 200
+            elif qNumber == BLD_PROFILE_CMD.GET_TABLEMAP.value:
+                dfTableInfo = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+                lsdfTable=dfTableInfo.to_dict(orient='records')
+                data_out = json.dumps(lsdfTable) 
+                return data_out,200
         else:
             recvDataTmp = getDic_strArr(recvData.upper(), sDivFieldColon, sDivItemComma)
             PROFILE = recvDataTmp.get(BLB_CMD_CUSTOM.PROFILE.name)
@@ -1288,18 +1436,23 @@ def update_data():
 
 @socketio.on("connect")
 def handle_connect():
-    """클라이언트가 접속하면 현재 데이터 전송"""
-    print("✅ 클라이언트가 WebSocket에 연결됨")
-    for topic_name, data in shared_data.items():
-        if data:
-            socketio.emit(f"update_{topic_name}", data)
+    try:
+        """클라이언트가 접속하면 현재 데이터 전송"""
+        print("✅ 클라이언트가 WebSocket에 연결됨")
+        lsKeys = list(shared_data.keys())
+        for topic_name in lsKeys:
+            data = shared_data.get(topic_name)  # get은 thread-safe
+            if data:
+                socketio.emit(f"update_{topic_name}", data)
+    except:
+        pass
 
 if __name__ == "__main__":
     try:
         loaded_data2 = load_csv_to_dict(csvPathalarm, sort_ascending=False)
         #data_out2 = json.dumps(loaded_data2)
         shared_data[TopicName.HISTORY_ALARM.name] = loaded_data2
-        threading.Thread(target=update_data, daemon=True).start()
+        threading.Thread(target=update_data, daemon=True).start()        
         socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True,allow_unsafe_werkzeug=True)
     except rospy.ROSInterruptException:
         pass

@@ -91,7 +91,7 @@ dicSICode[34] = 'ESTOP'
 dicSICode[37] = 'POT'
 dicSICode[38] = 'NOT'
 dicSI_TotalStatus = {}
-
+pollrate_min = 300
 CMD_Queue = deque()  # 모드버스 통신 동기화를 위한 Write 버퍼
 # publish_topic_goal  : str = 'CMD' #테스트용 변수
 # publish_topic_name = 'MB'
@@ -101,7 +101,8 @@ rospy.init_node(nodeName, anonymous=False)  # 485 이름의 노드 생성
 fastModbus = isTrue(rospy.get_param("~fastModbus", default=True))
 testModbus = isTrue(rospy.get_param("~testMode", default=False))
 runFromLaunch = isTrue(rospy.get_param(f"~{ROS_PARAMS.startReal.name}", default=False))
-lsSlowDevices = ["1", "2"]
+lsSlowDevices = ["1"]
+lsNotMotor = ["80"]
 machineName = GetMachineStr()
 rospy.loginfo(f"testModbus:{testModbus},Modbus Fast:{fastModbus},Machine Name:{machineName}")
 # time.sleep(10)
@@ -367,11 +368,6 @@ RS485 MODBUS 범용 제어 패키지 - 최병진
 
 # getTxtPath 함수 만들자.
 # dirPath2 = getConfigPath()
-dirPath2 = getConfigPath(UbuntuEnv.ITX.name)
-filePath_modbusconfig = f"{dirPath2}/ModbusConfig_{machineName}.txt"
-filePath_Torqueconfig = f"{dirPath2}/ModbusTORQUE_{machineName}.txt"
-filePath_CaliPotConfig = f"{dirPath2}/ModbusCaliPot_{machineName}.txt"
-filePath_CaliNotConfig = f"{dirPath2}/ModbusCaliNot_{machineName}.txt"
 
 strLiftFilePath = f"{dirPath2}/LIFTDOWN.txt"
 
@@ -492,7 +488,7 @@ def Setup(mbidCur=None):
                 instrumentH.serial.baudrate = 115200  # Baud
                 instrumentH.serial.timeout = 0.1  # seconds
             else:
-                instrumentH.serial.baudrate = 9600  # Baud
+                instrumentH.serial.baudrate = 115200  # Baud
                 instrumentH.serial.timeout = 0.5  # seconds
 
             if dicSetupRequested.get(mbid, None) == None:
@@ -539,6 +535,8 @@ def Setup(mbidCur=None):
 
             bMotorOK = False
         #for iTryCheckModbus in range(1):
+            if mbid in lsSlowDevices:
+                continue
             try:
                 # 이 부분에 모터 초기화 통신 및 알람 푸쉬 루틴 구현
 
@@ -1083,7 +1081,7 @@ while not rospy.is_shutdown():
                       #     f"Ack Check : {int485id} - {dic_485ack}, {dicCurrentEncoder}"
                       # )
 
-                  if pollrate > 500:
+                  if pollrate > pollrate_min:
                       lastPublishedTime = dic_485pollRate.get(
                           poll_id, DATETIME_OLD
                       )
@@ -1148,7 +1146,7 @@ while not rospy.is_shutdown():
                       dic_485pollRate[poll_id] = getDateTime()
 
                       # BMS, NTP 인 경우는 그냥 넘어감
-                      if modbusID in lsSlowDevices:
+                      if modbusID in lsSlowDevices or modbusID in lsNotMotor:
                           dicMB_Exception_count[modbusID] = 0
                       # currentEnableStatus 이 -1 인 경우 - 연결자체가 안 된경우 (이럴땐 setup() 을 다시 해줘야 함)
                       elif currentEnableStatus == -1:
@@ -1364,6 +1362,11 @@ while not rospy.is_shutdown():
               if len(return485data) > 0:
                   # return485data[f'LASTSEEN_{modbusID}'] = getDateTime().timestamp()
                   return485data[MonitoringField.LASTSEEN.name] = getDateTime().timestamp()
+                  return485data[MotorWMOVEParams.MBID.name] = modbusID
+                  if modbusID in lsNotMotor:
+                      sendbuf = json.dumps(return485data)
+                      dic_topics[modbusID].publish(sendbuf)
+                      continue
                   dicCaliPotInfo = dicCaliPotEncoder.get(modbusID, {})
                   not_pos_mbid = dicCaliNotLoad.get(modbusID,0)
                   caliPosCurrent = dicCaliPotInfo.get(MOTOR_CALI_STATUS.D_CALI_COMPLETED, -1)
@@ -1372,8 +1375,6 @@ while not rospy.is_shutdown():
                       return485data[MonitoringField.POT_POS.name] = caliPosCurrent
                   else:
                       return485data[MonitoringField.POT_POS.name] = return485data[MonitoringField.NOT_POS.name] = caliPosCurrent                    
-                      
-                  return485data[MotorWMOVEParams.MBID.name] = modbusID
                   NoValue = -1
                   isCCW = dic_485Inverted.get(modbusID, NoValue)
                 #   autogain = dic_485AutoGain.get(modbusID, NoValue)
@@ -1463,6 +1464,7 @@ while not rospy.is_shutdown():
                   motorModel = dicConfigTmp.get(modbusID, "")
                   flagPOT = return485data.get(f"{MonitoringField.DI_POT.name}", None)
                   flagNOT = return485data.get(f"{MonitoringField.DI_NOT.name}", None)
+                  flagHOME = return485data.get(f"{MonitoringField.DI_HOME.name}", None)
                   flagSPD = return485data.get(f"{MonitoringField.CUR_SPD.name}", None)
                   flagPOS = return485data.get(f"{MonitoringField.CUR_POS.name}", None)
                   if isTrue(flagNOT):
@@ -1546,7 +1548,7 @@ while not rospy.is_shutdown():
                                   SendAlarmHTTP(e,False)
                               lastpos = dic_485_lastpos_started.get(modbusID)
                               lasttarget = dic_485_lastpos_target.get(modbusID)                          
-                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{meanOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}{sDivFieldColon}{cur_pos}{sDivFieldColon}{flagSPD}{sDivFieldColon}{flagNOT}{sDivFieldColon}{flagPOT}"
+                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{meanOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}{sDivFieldColon}{cur_pos}{sDivFieldColon}{flagSPD}{sDivFieldColon}{flagHOME}{sDivFieldColon}{flagPOT}"
                               rospy.loginfo(ackMsg)
                               pub_flag.publish(ackMsg)
               # else:
