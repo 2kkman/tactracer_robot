@@ -1,501 +1,357 @@
 timestamp	value
-2025:04:30 15:37:07.811	aprilTagOn parsing; false
-2025:04:30 15:38:58.806	V12;0
-2025:04:30 15:38:59.283	aprilTagOn parsing; false
-2025:04:30 15:38:59.973	svrIP Changed ; 172.30.1.6
-2025:04:30 15:39:03.807	2;_run_code;<module>;SetCurrentNodeE2009A3030033AF000000043
-2025:04:30 15:39:04.050	TTS OK ; 10,10,2 노드가 현재 위치 입니다
-2025:04:30 15:39:04.162	모터명령어;_run_code;<module>;StopAllMotors;SendCMD_Device
-2025:04:30 15:39:04.332	"[{""MBID""; ""15"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""6"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""27"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""9"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""11"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}, {""MBID""; ""31"", ""CMD""; ""WSTOP"", ""DECC""; ""50""}] from callbackCmd - SendCMD"
-2025:04:30 15:39:31.874	1;_invoke_callback;callbackBLB_CMD;AppendTableList
-2025:04:30 15:39:32.116	1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:30 15:39:32.525	aprilTagOn parsing; false
-2025:04:30 15:39:32.979	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
-2025:04:30 15:39:35.047	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:39:35.214	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:30 15:39:42.682	SHAKE_MBID;6,평균;3.922,최소;1.01,최대;15.14
-2025:04:30 15:39:42.844	V12;0
-2025:04:30 15:39:43.555	aprilTagOn parsing; false
-2025:04:30 15:39:43.764	MBID;31,현재펄스;-178183,최단회전 펄스 선택;0,833146,-833146 = (0)
-2025:04:30 15:39:44.271	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:39:44.418	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:30 15:39:48.598	SHAKE_MBID;31,평균;2.076,최소;0.63,최대;3.03
-2025:04:30 15:39:49.867	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:39:50.005	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""100"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 16.2}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 1.9}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 2.4}] from callbackCmd - SendCMD"
-2025:04:30 15:39:51.739	SHAKE_MBID;10,평균;0.48,최소;0.34,최대;0.62
-2025:04:30 15:39:51.977	SHAKE_MBID;13,평균;0.473,최소;0.34,최대;0.62
-2025:04:30 15:40:02.959	SHAKE_MBID;11,평균;0.43,최소;0.13,최대;1.04
-2025:04:30 15:40:03.911	MBID;27,현재펄스;36103,최단회전 펄스 선택;599444,1249444,-50556 = (-50556)
-2025:04:30 15:40:04.384	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:04.535	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -50556, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.2}] from callbackCmd - SendCMD"
-2025:04:30 15:40:07.533	SHAKE_MBID;27,평균;2.456,최소;1.03,최대;3.58
-2025:04:30 15:40:08.464	Camera settings updated; 2,640,480
-2025:04:30 15:40:08.942	aprilTagOn parsing; true
-2025:04:30 15:40:09.140	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:09.333	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""1800"", ""DECC""; ""3000""}] from callbackCmd - SendCMD"
-2025:04:30 15:40:14.109	SHAKE_MBID;11,평균;9.294,최소;1.05,최대;26.01
-2025:04:30 15:40:15.218	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:15.359	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""23333"", ""SPD""; ""139"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 4.8}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""236486"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 2.1}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""168918"", ""SPD""; ""1380"", ""ACC""; ""900"", ""DECC""; ""1500"", ""TIME""; 2.5}] from callbackCmd - SendCMD"
-2025:04:30 15:40:16.885	SHAKE_MBID;11,평균;1.364,최소;1.28,최대;1.41
-2025:04:30 15:40:17.832	SHAKE_MBID;10,평균;1.281,최소;0.97,최대;1.41
-2025:04:30 15:40:18.000	SHAKE_MBID;13,평균;1.267,최소;0.97,최대;1.41
-2025:04:30 15:40:18.859	MBID;31,현재펄스;0,최단회전 펄스 선택;138858,972004,-694288 = (138858)
-2025:04:30 15:40:19.348	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:19.507	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 138858, ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.2}] from callbackCmd - SendCMD"
-2025:04:30 15:40:23.198	SHAKE_MBID;31,평균;8.147,최소;0.59,최대;24.43
-2025:04:30 15:40:24.609	aprilTagOn parsing; false
-2025:04:30 15:40:25.070	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:25.255	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""880000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:30 15:40:32.692	SHAKE_MBID;6,평균;4.139,최소;1.09,최대;10.87
-2025:04:30 15:40:32.879	모터명령어;_run_code;<module>;MotorBalanceControlEx;SendCMD_Device
-2025:04:30 15:40:33.197	"[{""MBID""; ""6"", ""CMD""; ""WSPD"", ""SPD""; ""800"", ""ACC""; ""800"", ""DECC""; ""800""}] from callbackCmd - SendCMD"
-2025:04:30 15:40:33.447	aprilTagOn parsing; false
-2025:04:30 15:40:40.031	TTS OK ; 10,10,H1 시작.
-2025:04:30 15:40:40.340	H1;_invoke_callback;callbackBLB_CMD;HomeCall;InsertTableList;SetTableTarget
-2025:04:30 15:40:40.536	54004; Home Called
-2025:04:30 15:40:40.624	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
-2025:04:30 15:40:41.035	aprilTagOn parsing; false
-2025:04:30 15:40:42.491	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:42.634	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
-2025:04:30 15:40:50.069	SHAKE_MBID;6,평균;2.503,최소;0.11,최대;11.64
-2025:04:30 15:40:50.306	V12;0
-2025:04:30 15:40:50.946	aprilTagOn parsing; false
-2025:04:30 15:40:51.137	MBID;31,현재펄스;138862,최단회전 펄스 선택;0,833146,-833146 = (0)
-2025:04:30 15:40:51.672	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:51.795	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; 0, ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.2}] from callbackCmd - SendCMD"
-2025:04:30 15:40:55.476	SHAKE_MBID;31,평균;2.628,최소;0.25,최대;4.58
-2025:04:30 15:40:56.520	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:40:56.671	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-200000"", ""SPD""; ""139"", ""ACC""; ""1800"", ""DECC""; ""3000"", ""TIME""; 13.0}, {""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1800"", ""ACC""; ""300"", ""DECC""; ""1500"", ""TIME""; 2.1}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1380"", ""ACC""; ""600"", ""DECC""; ""1500"", ""TIME""; 2.1}] from callbackCmd - SendCMD"
-2025:04:30 15:40:59.043	SHAKE_MBID;10,평균;1.215,최소;1.12,최대;1.26
-2025:04:30 15:40:59.326	SHAKE_MBID;13,평균;1.207,최소;1.12,최대;1.26
-2025:04:30 15:41:06.654	SHAKE_MBID;11,평균;1.318,최소;0.45,최대;2.48
-2025:04:30 15:41:07.619	MBID;27,현재펄스;-50560,최단회전 펄스 선택;325000,975000,-325000 = (-325000)
-2025:04:30 15:41:08.062	모터명령어;_run_code;<module>;RunListBlbMotorsEx;SendCMD_Device
-2025:04:30 15:41:08.249	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; -325000, ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.4}] from callbackCmd - SendCMD"
-2025:04:30 15:41:14.988	SHAKE_MBID;27,평균;1.446,최소;0.41,최대;3.36
-2025:04:30 15:41:15.930	Camera settings updated; 2,640,480
-2025:04:30 15:41:16.237	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;MoveH_MotorRFID
-2025:04:30 15:41:16.665	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 15:41:23.469	SHAKE_MBID;15,평균;21.225,최소;0.61,최대;78.56
-2025:04:30 15:41:23.851	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,E2009A3030033AF000000811
-2025:04:30 15:41:23.887	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""185232"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 15:41:26.570	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 15:41:35.996	SHAKE_MBID;15,평균;0.421,최소;0.13,최대;0.81
-2025:04:30 15:41:36.426	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""104054"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 15:41:42.265	SHAKE_MBID;15,평균;0.306,최소;0.12,최대;0.52
-2025:04:30 15:41:42.802	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,E2009A3030033AF000000811
-2025:04:30 16:48:54.218	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 16:48:56.365	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 16:48:58.570	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-10033"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 16:48:59.375	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}, {""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:10:14.143	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:10:21.930	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:10:25.789	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:10:27.692	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""975000""}, {""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:10:53.179	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""324900"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:29.607	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-1592959"", ""SPD""; ""550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:35.470	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:49.371	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:50.990	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:51.775	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-1602972"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:52.419	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:53.117	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-1612995"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:54.389	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-1623022"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:11:55.666	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.686	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.719	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.737	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.760	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.780	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.799	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:55.819	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:11:56.349	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:30 19:19:47.752	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""600000"", ""SPD""; ""550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:19:49.103	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:20:05.674	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:20:06.279	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:00.502	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-408259"", ""SPD""; ""550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:00.650	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:00.696	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:03.273	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:11.675	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-418275"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:12.943	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-428284"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:14.218	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-438297"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:23:15.545	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.565	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.582	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.592	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.611	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.626	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.646	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.663	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:23:15.977	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:30 19:26:02.043	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:10.428	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:13.107	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:15.484	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""984998"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:16.796	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""995010"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:18.078	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1005022"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:19.356	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.373	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.391	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.407	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.422	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.441	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.460	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:19.472	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:32.575	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-408259"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:37.643	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:38.339	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:46.239	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-418275"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:47.520	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-428283"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:48.795	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-438299"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:26:50.057	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.074	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.089	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.103	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.121	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.143	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.164	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:26:50.180	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:28:57.197	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""600000"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:29:07.957	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:29:08.503	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:29:31.350	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:29:59.252	MBID;15,CMD;WMOVE,MODE;65,POS;500000,SPD;150,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
-2025:04:30 19:29:59.364	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:29:59.407	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:30:07.521	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.541	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.565	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.580	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.596	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.609	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.630	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:07.651	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:24.894	MBID;15,CMD;WMOVE,MODE;1,POS;975000,SPD;150,ACC;3000,DECC;5000 from callbackCmd - _invoke_callback
-2025:04:30 19:30:30.827	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.845	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.867	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.882	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.901	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.919	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.935	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:30:30.951	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:31:55.289	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-408259"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:00.154	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:00.878	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:08.717	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-418269"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:09.984	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-428276"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:11.273	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-438283"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:32:12.554	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.569	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.656	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.671	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.687	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.705	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.723	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:32:12.742	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:57.834	MBID;15,CMD;WMOVE,MODE;1,POS;-408259,SPD;150,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
-2025:04:30 19:33:59.412	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.432	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.458	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.484	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.509	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.537	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.566	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:33:59.591	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:52.991	MBID;15,CMD;WMOVE,MODE;65,POS;10000,SPD;50,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
-2025:04:30 19:34:54.442	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.459	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.484	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.500	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.520	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.541	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.556	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:34:54.575	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:08.278	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:15.455	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:18.037	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:20.423	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""985006"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:21.724	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""995028"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:23.008	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1005041"", ""SPD""; ""100"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:40:24.315	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.330	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.349	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.377	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.406	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.429	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.448	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:24.468	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:40:25.064	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:30 19:52:17.238	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:17.817	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.843	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.870	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.896	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.911	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.927	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.944	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:17.965	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:18.378	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.398	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.419	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.438	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.452	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.466	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.487	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.504	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:18.935	TTS OK ; 10,10,알람이 발생하였습니다.
-2025:04:30 19:52:19.482	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.512	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.540	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.557	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.583	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.611	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.630	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:19.657	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.086	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.113	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.141	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.157	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.172	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.190	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.212	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:21.229	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.281	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:22.698	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.712	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.756	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.786	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.803	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.835	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.855	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:22.876	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.294	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.332	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.379	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.407	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.437	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.462	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.488	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.503	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:23.788	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.815	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.842	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.868	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.898	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.924	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.948	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:23.973	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:24.738	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:25.108	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.149	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.210	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.227	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.247	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.263	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.292	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.311	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.841	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.862	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.892	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.908	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.923	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.941	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.957	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:25.972	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:26.667	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.687	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.711	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.725	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.741	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.757	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.774	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:26.791	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:27.236	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.257	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.277	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.300	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.315	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.339	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.358	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:27.388	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.353	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.367	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.385	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.400	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.415	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.429	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.448	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:28.465	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.477	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.521	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.537	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.551	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.566	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.582	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.599	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:29.615	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.096	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:30.469	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.489	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.510	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.532	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.562	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.581	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.603	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:30.624	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:31.012	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.028	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.044	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.059	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.080	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.098	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.117	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:31.133	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:32.229	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.299	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.315	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.331	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.347	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.361	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.379	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:32.396	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.461	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.489	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.511	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.536	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.562	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.579	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.607	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:33.625	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.734	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.757	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.779	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.796	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.840	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.867	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.885	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:34.899	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:35.493	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:36.128	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.153	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.188	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.218	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.233	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.253	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.269	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.283	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:36.686	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.704	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.722	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.741	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.773	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.794	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.811	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:36.838	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:38.451	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:38.981	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:38.998	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.014	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.059	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.088	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.106	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.135	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.152	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:39.475	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.494	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.520	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.539	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.561	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.583	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.603	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.621	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:39.865	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:40.383	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.411	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.452	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.469	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.494	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.520	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.538	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.553	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:40.913	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:40.931	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:40.950	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:40.969	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:40.989	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:41.014	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:41.029	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:41.043	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:41.664	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.700	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.724	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.739	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.760	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.777	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.793	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:41.817	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.054	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.077	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.089	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.109	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.123	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.140	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.163	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:43.180	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.021	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.038	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.067	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.091	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.106	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.127	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.142	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:44.161	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.369	"[{""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-50000000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:52:46.784	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.820	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.869	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.891	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.911	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.929	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.943	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:46.963	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:47.318	MBID;10,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.328	MBID;27,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.349	MBID;6,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.364	MBID;11,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.385	MBID;9,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.404	MBID;31,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.421	MBID;15,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:47.437	MBID;13,CMD;WSTOP,DECC;5000 from callbackCmd - stopMotor
-2025:04:30 19:52:48.418	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.441	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.464	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.480	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.501	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.521	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.564	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:48.585	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:49.922	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:49.944	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:49.972	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:49.987	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:50.008	MBID;9,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:50.027	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:50.045	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:52:50.061	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
-2025:04:30 19:56:03.851	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:56:08.716	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:56:12.670	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:56:14.529	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}, {""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:58:07.645	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:58:21.826	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:58:28.037	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 19:58:30.612	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 19:58:32.550	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""975000""}, {""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 20:00:30.998	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1550"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 20:00:35.944	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
-2025:04:30 20:00:39.891	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
-2025:04:30 20:00:41.869	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF""}, {""MBID""; ""15"", ""CMD""; ""WLOC"", ""POS""; ""0""}, {""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:03 14:03:50.048	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:03:50.461	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:03:52.290	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:03:52.458	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.477	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.499	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.518	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.536	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.556	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.578	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.611	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.630	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.647	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.665	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.684	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.702	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:03:52.720	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:04:25.420	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:30.008	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:30.998	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:31.417	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:31.590	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:31.985	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:32.501	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:34.256	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:34.891	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:36.665	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:36.990	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:41.510	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:41.986	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:42.752	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:43.214	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:43.698	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:44.134	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:44.657	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:45.202	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:45.678	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:46.210	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:46.657	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:47.960	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:49.237	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:49.970	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:50.513	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:51.336	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:52.152	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:53.088	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:53.763	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:54.524	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:04:54.967	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:05:21.073	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:05:35.255	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1442"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:06:27.473	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:03.440	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:03.842	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:04.822	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:06.088	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:23.055	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:23.544	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:24.241	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:24.480	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:48.664	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:49.960	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:51.099	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:51.294	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:51.985	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:54.649	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:55.897	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:09:58.964	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:00.881	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:02.404	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:04.641	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:06.049	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:08.062	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:09.458	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:10.977	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:12.077	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:12.910	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:13.007	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:13.847	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:15.065	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:16.160	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:17.378	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:17.939	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:19.549	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:21.306	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:22.609	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:27.341	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:28.987	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:30.646	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:31.242	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:32.014	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:32.533	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:36.986	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:38.151	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:39.241	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:39.796	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:40.399	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:41.265	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:47.435	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:10:48.151	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:18.527	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:19.029	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:19.554	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:20.436	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:20.819	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:11:26.101	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:12:28.522	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:12:37.988	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:43.775	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:44.532	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:45.708	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.725	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.744	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.760	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.782	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.795	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:45.812	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:15:46.088	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:49.704	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:51.297	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:52.382	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:55.725	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:57.213	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:57.688	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:58.481	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:15:58.758	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:02.529	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:05.834	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:10.028	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:17.742	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:18.143	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:20.463	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:16:21.017	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:27.400	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:27.527	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:28.700	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:28.828	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:29.668	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:30.772	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:30.888	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:30.903	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:30.989	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:30.994	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.055	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.094	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.156	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.185	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.261	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.290	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.359	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.398	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.456	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.482	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.566	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.569	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.668	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.671	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.763	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.769	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.891	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:31.973	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.079	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.086	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.156	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.184	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.257	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.287	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.354	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.383	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.484	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.487	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.555	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.574	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.607	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:32.639	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:33.910	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:38.222	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:39.676	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:41.266	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:41.719	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:42.570	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:42.875	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:45.341	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:46.335	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:47.058	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:47.398	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:47.907	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:48.853	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:49.328	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:49.997	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:50.723	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:51.387	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:52.036	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:52.475	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:53.091	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:53.524	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:53.993	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:54.439	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:54.971	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:55.268	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:55.751	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1000"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:55.856	"[{""MBID""; ""13"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:56.757	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+2025:05:03 14:18:58.104	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:02.521	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:02.687	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:03.202	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:03.521	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:03.998	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:04.235	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:04.748	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:05.107	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:05.395	MBID;10,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:19:05.408	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:03 14:19:05.485	MBID;10,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:19:05.505	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:03 14:19:05.624	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:05.840	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:06.380	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:06.474	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:30.405	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""915000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""880000"", ""SPD""; ""1434"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:39.344	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1434"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:19:56.047	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1442"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:20:13.346	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:20:24.245	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1442"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:20:39.245	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:08.614	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:08.828	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:10.352	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:10.655	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:11.413	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:13.505	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:13.832	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:14.712	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""1400""}] from callbackCmd - SendCMD"
+2025:05:03 14:21:14.995	"[{""MBID""; ""10"", ""CMD""; ""WSTOP"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:22:00.616	MBID;10,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.635	MBID;10,CMD;WLIMIT,POT;1695000,NOT;-1695000 from callbackCmd - initMotor
+2025:05:03 14:22:00.660	MBID;27,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.686	MBID;6,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.700	MBID;6,CMD;WLIMIT,POT;1300000,NOT;-1300000 from callbackCmd - initMotor
+2025:05:03 14:22:00.737	MBID;11,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.755	MBID;11,CMD;WLIMIT,POT;545000,NOT;-545000 from callbackCmd - initMotor
+2025:05:03 14:22:00.778	MBID;31,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.805	MBID;15,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.830	MBID;13,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:22:00.845	MBID;13,CMD;WLIMIT,POT;1830000,NOT;-1830000 from callbackCmd - initMotor
+2025:05:03 14:22:00.952	MBID;10,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:00.967	MBID;27,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:00.981	MBID;6,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:00.997	MBID;11,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:01.010	MBID;31,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:01.022	MBID;15,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:01.036	MBID;13,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:22:06.747	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1385"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:22:17.465	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:22:32.734	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:22:43.940	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:22:54.543	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:23:05.321	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:23:18.638	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:23:50.066	MBID;10,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.087	MBID;10,CMD;WLIMIT,POT;1695000,NOT;-1695000 from callbackCmd - initMotor
+2025:05:03 14:23:50.116	MBID;27,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.147	MBID;6,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.170	MBID;6,CMD;WLIMIT,POT;1300000,NOT;-1300000 from callbackCmd - initMotor
+2025:05:03 14:23:50.197	MBID;11,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.211	MBID;11,CMD;WLIMIT,POT;545000,NOT;-545000 from callbackCmd - initMotor
+2025:05:03 14:23:50.238	MBID;31,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.262	MBID;15,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.285	MBID;13,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:23:50.303	MBID;13,CMD;WLIMIT,POT;1830000,NOT;-1830000 from callbackCmd - initMotor
+2025:05:03 14:23:50.416	MBID;10,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.430	MBID;27,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.444	MBID;6,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.463	MBID;11,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.479	MBID;31,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.495	MBID;15,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:50.509	MBID;13,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:23:53.041	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:24:17.035	MBID;10,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.057	MBID;10,CMD;WLIMIT,POT;1695000,NOT;-1695000 from callbackCmd - initMotor
+2025:05:03 14:24:17.078	MBID;27,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.101	MBID;6,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.116	MBID;6,CMD;WLIMIT,POT;1300000,NOT;-1300000 from callbackCmd - initMotor
+2025:05:03 14:24:17.143	MBID;11,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.168	MBID;11,CMD;WLIMIT,POT;545000,NOT;-545000 from callbackCmd - initMotor
+2025:05:03 14:24:17.194	MBID;31,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.218	MBID;15,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.243	MBID;13,CMD;WINIT from callbackCmd - initMotor
+2025:05:03 14:24:17.263	MBID;13,CMD;WLIMIT,POT;1830000,NOT;-1830000 from callbackCmd - initMotor
+2025:05:03 14:24:17.376	MBID;10,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.390	MBID;27,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.406	MBID;6,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.422	MBID;11,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.435	MBID;31,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.449	MBID;15,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:17.466	MBID;13,CMD;WSTOP,DECC;50 from callbackCmd - stopMotor
+2025:05:03 14:24:21.943	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:24:32.108	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1760000"", ""SPD""; ""1442"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:26:12.603	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""3500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:26:20.173	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.193	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.268	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.286	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.301	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.315	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.338	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.505	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.520	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.540	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.555	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.574	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.594	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.609	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.655	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.674	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.687	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.707	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.725	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.741	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:26:20.762	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:27:28.124	MBID;13,CMD;WMOVE,MODE;1,POS;0,SPD;300,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
+2025:05:03 14:27:41.595	MBID;10,CMD;WMOVE,MODE;1,POS;0,SPD;300,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
+2025:05:03 14:27:53.925	MBID;13,CMD;WMOVE,MODE;65,POS;-10000,SPD;30,ACC;1000,DECC;1000 from callbackCmd - _invoke_callback
+2025:05:03 14:28:31.111	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1385"", ""ACC""; ""1500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:28:49.604	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:29:41.963	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.002	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.081	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.117	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.163	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.208	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.242	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:03 14:29:42.905	An error occurred; HTTPSConnectionPool(host='172.30.1.8', port=6001); Max retries exceeded with url; /control?tts=10,10,알람이 발생하였습니다. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb4b833c3a0>; Failed to establish a new connection; [Errno 111] Connection refused'))
+2025:05:03 14:29:50.045	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""500"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:30:20.645	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:31:03.122	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1385"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:31:36.756	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:31:50.159	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""800"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:43:36.159	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:43:52.287	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""2500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""1200"", ""DECC""; ""2500""}] from callbackCmd - SendCMD"
+2025:05:03 14:45:25.070	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:45:41.478	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""1200"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:45:52.040	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""915000"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""847500"", ""SPD""; ""1401"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:46:00.100	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1385"", ""ACC""; ""1200"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:46:07.646	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:46:52.148	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""1200"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:47:09.232	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:47:20.565	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""1200"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:49:31.027	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"
+2025:05:03 14:50:51.556	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:51:19.456	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1830000"", ""SPD""; ""1500"", ""ACC""; ""1500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1695000"", ""SPD""; ""1393"", ""ACC""; ""1200"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+2025:05:03 14:54:55.500	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1500"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1393"", ""ACC""; ""1000"", ""DECC""; ""1500""}] from callbackCmd - SendCMD"
+"D""""; """"300"""", """"ACC""""; """"1000"""", """"DECC""""; """"1000""""}] from callbackCmd - SendCMD"""	
+	"[{""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""1000000000"", ""SPD""; ""1200"", ""ACC""; ""1000"", ""DECC""; ""10000""}] from callbackCmd - SendCMD"
+	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""65"", ""POS""; ""-1000000000"", ""SPD""; ""300"", ""ACC""; ""1000"", ""DECC""; ""1000""}] from callbackCmd - SendCMD"

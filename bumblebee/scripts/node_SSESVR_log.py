@@ -132,10 +132,11 @@ DECC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC
 SPD_LIFT = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.SPD.name)
 
 #10번 2관절 모터
-SPD_EXTEND_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+SPD_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
 ACC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
 ACC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
-DECC_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+DECC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+DECC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
 
 #11번 서빙 텔레스코픽 모터
 ACC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
@@ -143,8 +144,10 @@ DECC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC
 
 #13번 1관절 모터
 SPD_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
-ACC_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-DECC_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+ACC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+ACC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
+DECC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+DECC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
 
 #15번 주행 모터
 ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,SPEED_RATE_H)
@@ -201,9 +204,17 @@ def GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition=False, spd_rate 
     rpm_time_arm1 = calculate_rpm_time(round1CountAbs, rpm_arm1)
     rpm_arm2 = calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1)
     isExpand = stroke_arm1_signed > 0
-    accArm2 = ACC_ARM2_EXTEND if isExpand else ACC_ARM2_FOLD
-    dicArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value,True,targetPulse_arm1,rpm_arm1,ACC_ARM1,DECC_ARM1)
-    dicArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value,True,targetPulse_arm2,rpm_arm2,accArm2,DECC_ARM2)
+    accArm2 = ACC_ARM2_FOLD
+    deccArm2 = DECC_ARM2_FOLD
+    accArm1 = ACC_ARM1_FOLD
+    deccArm1 = DECC_ARM1_FOLD
+    if isExpand:
+        accArm2 = ACC_ARM2_EXTEND
+        deccArm2 = DECC_ARM2_EXTEND
+        accArm1 = ACC_ARM1_EXTEND
+        deccArm1 = DECC_ARM1_EXTEND        
+    dicArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value,True,targetPulse_arm1,rpm_arm1,accArm1,deccArm1)
+    dicArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value,True,targetPulse_arm2,rpm_arm2,accArm2,deccArm2)
     return [dicArm1,dicArm2], rpm_time_arm1
 
 def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd_rate = 1.0):

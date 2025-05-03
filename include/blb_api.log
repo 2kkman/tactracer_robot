@@ -158,3 +158,10 @@ AttributeError: 'function' object has no attribute 'last_cmd_msg'
     if cmdTmp == SendCMD_Device.last_cmd_msg:
 AttributeError: 'function' object has no attribute 'last_cmd_msg'
 :dispatch_request:service_jog:logSSE_error
+2025-05-03 14:29:42,601 - INFO - Traceback (most recent call last):
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 1283, in service_cmd
+    lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
+  File "/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py", line 186, in GetControlInfoBalances
+    cur_arm1 = int(dicMotorPos[topicName_BAL1])
+KeyError: 'MB_13'
+:dispatch_request:service_cmd:logSSE_error

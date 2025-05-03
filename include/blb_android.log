@@ -23396,3 +23396,9 @@
 2025-04-30 19:52:47,729 - INFO - RESPONSE: TTS OK : 10,10,알람이 발생하였습니다.
 2025-04-30 19:52:47,729 - INFO - ====================================================================================================
 
+2025-05-03 14:29:42,893 - INFO - ====================================================================================================
+2025-05-03 14:29:42,894 - INFO - URL: https://172.30.1.8:6001/control?tts=10,10,알람이 발생하였습니다.
+2025-05-03 14:29:42,894 - INFO - RESULT: False
+2025-05-03 14:29:42,894 - INFO - RESPONSE: An error occurred: HTTPSConnectionPool(host='172.30.1.8', port=6001): Max retries exceeded with url: /control?tts=10,10,%EC%95%8C%EB%9E%8C%EC%9D%B4%20%EB%B0%9C%EC%83%9D%ED%95%98%EC%98%80%EC%8A%B5%EB%8B%88%EB%8B%A4. (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb4b833c3a0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-05-03 14:29:42,894 - INFO - ====================================================================================================
+

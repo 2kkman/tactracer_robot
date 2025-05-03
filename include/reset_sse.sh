@@ -47,9 +47,9 @@ echo "모든 지정된 포트의 프로세스 종료 작업이 완료되었습�
 rosnode kill /BLB_RFID
 rosnode kill /ITX_and
 # HOSTNAME에 ITX 문자열이 포함되어 있는지 확인
-if [[ "$HOSTNAME" == *"ITX"* ]]; then
-    # ITX가 포함되어 있으면 아래 명령어 실행
-    roslaunch tta_blb BLB_RFID_ESP32.launch &
-fi
+# if [[ "$HOSTNAME" == *"ITX"* ]]; then
+#     # ITX가 포함되어 있으면 아래 명령어 실행
+#     roslaunch tta_blb BLB_RFID_ESP32.launch &
+# fi
 /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
 roslaunch tta_blb BLB_ANDROID.launch &

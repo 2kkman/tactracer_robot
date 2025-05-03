@@ -864,3 +864,10 @@ timestamp	value
 2025:04:30 19:52:39.743	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
 2025:04:30 19:52:41.179	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
 2025:04:30 19:52:47.557	노드 위치 계산 에러입니다.:callback:callbackACK:SendAlarmHTTP
+2025:05:03 14:29:42.607	"Traceback (most recent call last):
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 1283, in service_cmd
+    lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
+  File ""/root/catkin_ws/src/tactracer_robot/bumblebee/scripts/node_SSESVR_log.py"", line 186, in GetControlInfoBalances
+    cur_arm1 = int(dicMotorPos[topicName_BAL1])
+KeyError: 'MB_13'
+:service_cmd:logSSE_error:SendAlarmHTTP"
