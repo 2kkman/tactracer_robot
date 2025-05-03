@@ -1890,11 +1890,12 @@ class ModbusID(Enum):
     BAL_ARM1 = 13  # 밸런스 1관절 (2323)
     ROTATE_MAIN_540 = 27  # 메인회전540 (2323)
     BAL_ARM2 = 10  # 밸런스 2관절(2축) (6020)
-    TELE_BALANCE = 9  # 밸런싱 텔레스코픽(2313)
+    #TELE_BALANCE = 9  # 밸런싱 텔레스코픽(2313)
     TELE_SERV_MAIN = 11  # 서빙텔레스코픽(뻗는부분 메인) (6020)
     #TELE_SERV_INNER = 28  # 서빙텔레스코픽(뻗는부분 200mm 까지만) (1708)
     ROTATE_SERVE_360 = 31  # 트레이 자체미세회전360 (1706)
     # ROTATE_TESTER = 3
+    TOF = 80
     # NTC = 2
     # BMS = 1
     @classmethod

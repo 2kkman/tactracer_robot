@@ -1329,7 +1329,7 @@ def service_cmd():
                 SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',False)
                 return {f"{reqargs}": dicMotorPos}, 200
             elif qNumber == BLD_PROFILE_CMD.MOTORSTOP.value:
-                SendCMDESTOP(f'I{ACC_DECC_SMOOTH}')
+                SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',False)
                 return {f"{reqargs}": dicMotorPos}, 200
             elif qNumber == BLD_PROFILE_CMD.WLOC_NOT.value:
                 #개발기에서는 WLOC_NOT 받으면 모든 모터들 펄스를 0으로 초기화 한다.
