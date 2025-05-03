@@ -15,8 +15,12 @@ sPOS_Key = MonitoringField.CUR_POS.name
 sLAST_TARGET_POS = MonitoringField.LAST_TARGET_POS.name
 sST_CMD_FINISH = MonitoringField.ST_CMD_FINISH.name
 sSPD_Key = MonitoringField.CUR_SPD.name
+sSI_HOME =MonitoringField.SI_HOME.name
 sSI_POT =MonitoringField.SI_POT.name
 sDI_POT =MonitoringField.DI_POT.name
+sDI_NOT =MonitoringField.DI_NOT.name
+sDI_HOME =MonitoringField.DI_HOME.name
+sDI_ESTOP =MonitoringField.DI_ESTOP.name
 sInv_Key = RFID_RESULT.inventoryMode.name
 sALIVE_Key = RFID_RESULT.status.name
 # dicPOTNOT_ON = getMotorDefaultDic(ModbusID.MOTOR_H.value,True)
@@ -32,6 +36,8 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 shared_data = {topic.name: {} for topic in TopicName}
 maxAlarmHistory = 500
 maxRetryCount = 3
+cmdIntervalSec = 2
+
 rospy.init_node('node_API', anonymous=False)
 move_publisher = rospy.Publisher(TopicName.CMD_DEVICE.name, String, queue_size=10)
 tag_publisher = rospy.Publisher(TopicName.ARUCO_RESULT.name, String, queue_size=10)
@@ -44,7 +50,7 @@ pub_BLB_CMD = rospy.Publisher(TopicName.BLB_CMD.name, String, queue_size=1)
 pub_BLB_CROSS = rospy.Publisher(TopicName.CROSS_INFO.name, String, queue_size=1)
 pub_SMARTPLUG = rospy.Publisher(TopicName.SMARTPLUG_INFO.name, String, queue_size=1)
 pub_RECEIVE_MQTT = rospy.Publisher(TopicName.RECEIVE_MQTT.name, String, queue_size=1)
-pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
+#pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
 target_pulse_cw = 50000000
 ACC_DECC_MOTOR_H = 5000
 ACC_DECC_NORMAL = 3000
@@ -92,6 +98,8 @@ dicPotInfo = getDic_FromFile(filePath_CaliPotConfig)
 pot_telesrv = dicPotInfo.get(str(ModbusID.TELE_SERV_MAIN.value))
 pot_arm1 = dicPotInfo.get(str(ModbusID.BAL_ARM1.value))
 pot_arm2 = dicPotInfo.get(str(ModbusID.BAL_ARM2.value))
+pot_540 = dicPotInfo.get(str(ModbusID.ROTATE_MAIN_540.value))
+pot_360 = dicPotInfo.get(str(ModbusID.ROTATE_SERVE_360.value))
 
 #epcTarget = None
 lastNode = None
@@ -148,17 +156,30 @@ SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SP
 ACC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.ACC_CW.name)
 DECC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.DECC_CW.name)
 
-#9번 밸런싱 텔레스코픽 모터
-SPD_BALTELE = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
-ACC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-DECC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
-
 #31번 트레이 모터
 SPD_360 =  getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.SPD.name)
 ACC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CW.name)
 DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CW.name)
 ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
 DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+
+def GetRotateTrayPulseFromAngle(angleStr):
+  cur_360 = int(dicMotorPos[topicName_RotateTray])
+  angle = (360+strToRoundedInt(angleStr)) % 360
+  target_pulse_org = round(mapRange(angle,0,MAX_ANGLE_TRAY,0,pot_360) )
+  target_pulse_cw = target_pulse_org + pot_360
+  target_pulse_ccw = target_pulse_org - pot_360
+  arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
+  return find_closest_value(arr,cur_360)
+
+def GetRotateMainPulseFromAngle(angleStr):
+  cur_540 = int(dicMotorPos[topicName_RotateMain])
+  angle = (360 + strToRoundedInt(angleStr)) % 360
+  target_pulse_org = round(mapRange(angle,0,MAX_ANGLE_BLBBODY,0,pot_540))
+  target_pulse_cw = target_pulse_org + pot_540
+  target_pulse_ccw = target_pulse_org - pot_540
+  arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
+  return find_closest_value(arr,cur_540)
 
 def GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition=False, spd_rate = 1.0):
     if bUseCurrentPosition:
@@ -210,12 +231,12 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
     dicSrvArm = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,targetPulse_serv,rpm_servArm,ACC_ST,DECC_ST)
     lsBal.append(dicSrvArm)
-    return lsBal
+    return lsBal,rpm_time_arm1
 
-def getRFIDInvStatus():
-    global shared_data    
-    dicBLB_Status = shared_data.get(TopicName.RFID.name)
-    return isTrue(dicBLB_Status.get(RFID_RESULT.inventoryMode.name))
+# def getRFIDInvStatus():
+#     global shared_data    
+#     dicBLB_Status = shared_data.get(TopicName.RFID.name)
+#     return isTrue(dicBLB_Status.get(RFID_RESULT.inventoryMode.name))
 
 # def getRFIDInvStatus():
 #     global epcTotalView
@@ -254,9 +275,19 @@ def GetMotorH_SI_POT():
     si_pot = cur_pos.get(sSI_POT,"")
     return si_pot
 
-def GetMotorPot():
-    di_pot = try_parse_int(dicLastMotor15.get(sDI_POT))
-    return di_pot
+# def GetMotorPot():
+#     di_pot = try_parse_int(dicLastMotor15.get(sDI_POT))
+#     return di_pot
+
+def GetMotorSensor(topicName = topicName_MotorH):
+    curDicMotor = try_parse_int(shared_data.get(topicName),{})
+    si_pot = curDicMotor.get(sSI_POT,"")
+    si_home = curDicMotor.get(sSI_HOME,"")
+    di_pot = curDicMotor.get(sDI_POT,"")
+    di_not = curDicMotor.get(sDI_NOT,"")
+    di_home = curDicMotor.get(sDI_HOME,"")
+    di_estop = curDicMotor.get(sDI_ESTOP,"")
+    return di_pot,di_not,di_home,di_estop, si_pot,si_home
 
 def GetSpeicificEPCNodeInfo():
     local_epcnodeinfo = [GetNodeFromTable(HOME_CHARGE),GetNodeFromTable(HOME_TABLE)]
@@ -266,7 +297,7 @@ def GetSpeicificEPCNodeInfo():
 
 def handle_charge(loaded_data = {}):
         for k,v in ip_dict.items():
-            if 'PLUG' in k and 'IP' in k:
+            if 'PLUG' in k and 'IP' in k and isRealMachine:
                 info = get_tasmota_info(v)
                 if info is None:
                     continue
@@ -275,10 +306,13 @@ def handle_charge(loaded_data = {}):
                 for k2,v2 in info.items():
                     loaded_data[f'{kDevice}_{k2}'] = v2
                 state = get_tasmota_state(v)
+                if state is None:
+                   return False 
                 loaded_data[f'{kDevice}_STATE'] = state
         
         data_out = json.dumps(loaded_data)
-        pub_SMARTPLUG.publish(data_out)     
+        pub_SMARTPLUG.publish(data_out)
+        return True
            
 
 def rfidInstanceDefault():
@@ -327,7 +361,7 @@ def SendCMDESTOP(enable,isAlarm=True):
     if isAlarm:
         PublishStateMessage(BLD_PROFILE_CMD.ESTOP.name)
     resultArd = service_setbool_client_common(ServiceBLB.CMD_ESTOP.value, enable, Kill)        
-    if isRealMachine:
+    if isRealMachine and isAlarm:
         API_CROSS_stop()
     # try:
     #     dicBLB_STATUS= shared_data.get(TopicName.BLB_STATUS.name)
@@ -482,13 +516,13 @@ def callbackACK(recvData):
                 SendCMD_Device([dicWE_OFF,dicLoc,dicWE_ON])
                 #TTSAndroid('위치오차를 보정합니다',1)
                 
-            RFIDControl(False)
+            #RFIDControl(False)
             rfidInstanceDefault()
             return
         
         if curNode_type.find(notagstr) < 0 and curNodeID_fromPulse == endnode:
         #if (curNode_type == 'NONE' or len(curNode_type) == 24) and curNodeID_fromPulse == endnode:
-            RFIDControl(False)
+            #RFIDControl(False)
             rfidInstanceDefault()
             return
         
@@ -836,17 +870,14 @@ def callback_factory(topic_name):
         global lastAck
         try:
             recvData = msg.data
-
             if is_valid_python_dict_string(recvData):
                 recvDataMap = ast.literal_eval(recvData)
             elif is_json(recvData):
                 recvDataMap = json.loads(recvData)
             else:
                 recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
-
-            if topic_name == TopicName.RFID.name:
-                callbackRFID(recvDataMap)
-            
+            # if topic_name == TopicName.RFID.name:
+            #     callbackRFID(recvDataMap)
             if topic_name == topicName_MotorH:
                 callbackMB_15(recvDataMap)
             
@@ -1003,8 +1034,11 @@ def service_data2():
   
 @app.route('/CROSS', methods=['GET'])
 def service_ard2():
+    if not hasattr(service_ard2, "last_cmd_time"):
+        service_ard2.last_cmd_msg = 0
+
     try:
-        #rospy.loginfo(request.args)
+        now = time.time()
         loaded_data=immutable_multi_dict_to_dict(request.args)
         data_out = json.dumps(loaded_data)
         pub_BLB_CROSS.publish(data_out)
@@ -1013,6 +1047,14 @@ def service_ard2():
         isNOT = loaded_data.get(MonitoringField.DI_NOT.name, None)
         ipaddr = loaded_data.get(CALLBELL_FIELD.IP.name, None)
         devID = GetLastString(ipaddr, ".")
+        
+        if now - service_ard2.last_cmd_time > cmdIntervalSec:
+            bSmartPlugAlive = handle_charge()
+            if bSmartPlugAlive:
+                service_ard2.last_cmd_time = now
+            else:
+                service_ard2.last_cmd_time = now + 60
+
         if cur_pos is not None:
             cur_pos = int(cur_pos)
             status = -1
@@ -1157,9 +1199,9 @@ def service_jog():
         if getChargerPlugStatus():
             SetChargerPlug(False)
             time.sleep(MODBUS_EXCEPTION_DELAY)        
-        if not getRFIDInvStatus():
-            RFIDControl(True)
-            time.sleep(MODBUS_EXCEPTION_DELAY)
+        # if not getRFIDInvStatus():
+        #     RFIDControl(True)
+        #     time.sleep(MODBUS_EXCEPTION_DELAY)
         lastRSSI = None
         #startPos = try_parse_int(dicMotorPos.get('MB_15'),MIN_INT)
         startPos = GetMotorHPos()
@@ -1190,21 +1232,53 @@ def service_cmd():
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
         spd_rate = try_parse_float(request.args.get(JogControl.SPD_RATE.name, None),1.0)
+        control540 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_MAIN.name, None),MIN_INT)
+        control360 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_TRAY.name, None),MIN_INT)
         controlArm3 = try_parse_int(request.args.get(JogControl.CONTROL_3ARMS.name, None),MIN_INT)
         controlArm2 = try_parse_int(request.args.get(JogControl.CONTROL_2ARMS_ANGLE.name, None),MIN_INT)
         qNumber = request.args.get('q', MIN_INT)
         recvData = request.args.get('data')
         topicData = request.args.get('topicname')
         
-        if controlArm3 != MIN_INT:
-            lsCmd = GetControlInfoArms(controlArm3,True,spd_rate)
+        if control360 != MIN_INT:
+            targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
+            dic540 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
+            print(dic540)
+            lsCmd = [dic540]
+            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
+            if isTrue(di_home) and si_home == 'ESTOP':
+                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
+            elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
+                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
+            bResult=SendCMD_Device(lsCmd)
+            reponseCode = 200 if bResult else 400
+            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {bResult:reponseCode}, 200
+        
+        elif control540 != MIN_INT:            
+            targetPulse_serv = GetRotateMainPulseFromAngle(control540)
+            dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,SPD_540,ACC_540,DECC_540)
+            print(dic540)
+            lsCmd = [dic540]
+            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
+            if si_home == 'ESTOP':
+                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
+            elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
+                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
+            bResult=SendCMD_Device(lsCmd)
+            reponseCode = 200 if bResult else 400
+            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {bResult:reponseCode}, 200
+        
+        elif controlArm3 != MIN_INT:
+            lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
             print(lsCmd)
             bResult=SendCMD_Device(lsCmd)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {f"{bResult}": json.dumps(lsCmd, sort_keys=True)}, 200
+            return {bResult:rpm_time}, 200
         
-        if controlArm2 != MIN_INT:
+        elif controlArm2 != MIN_INT:
             target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
             lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
             print(lsCmd)
@@ -1213,7 +1287,7 @@ def service_cmd():
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:rpm_time}, 200
         
-        if lightplug is not None:
+        elif lightplug is not None:
             plug_enable = isTrue(lightplug)
             bResult = SetLightPlug(plug_enable)
             reponseCode = 200 if bResult else 400

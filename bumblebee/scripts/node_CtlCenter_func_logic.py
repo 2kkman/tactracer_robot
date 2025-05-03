@@ -1392,8 +1392,8 @@ def isInitMotorsAll():
     return motors+1 >= initMotors
 
 def isReadyToMoveH_and_540(modbusClass = None):
-    lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.TELE_BALANCE,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN]
-    #lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.TELE_BALANCE,ModbusID.MOTOR_V]
+    lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN, ModbusID.ROTATE_SERVE_360]
+    #lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.TELE_BALANCE,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN]
     if modbusClass is not None: #예외처리
       lsCheckList.append(modbusClass)
     return isReadyToMoveMotor(lsCheckList)

@@ -137,7 +137,7 @@ SPD_TRAY_MARKER_SCAN = 700
 MAX_ANGLE_BLBBODY = 360
 MAX_ANGLE_TRAY = 360
 SPEED_RATE_H = 1.0
-SPEED_RATE_ARM = 0.6
+SPEED_RATE_ARM = 1
 DEFAULT_RPM_MIN = 2
 DEFAULT_RPM_SLOW = 300
 DEFAULT_RPM_SLOWER = 100
@@ -169,9 +169,9 @@ STROKE_SERVE_TELE = 1035
 STROKE_SERV_DEFAULT = 560
 STROKE_INNER = 1
 STROKE_SERVE_TOTAL = STROKE_SERVE_TELE+STROKE_INNER
-STROKE_BAL_EXTEND = LENGTH_ARM1+LENGTH_ARM2
-STROKE_BAL_TELE = 500
-STROKE_BAL_TOTAL = STROKE_BAL_EXTEND+STROKE_BAL_TELE
+# STROKE_BAL_EXTEND = LENGTH_ARM1+LENGTH_ARM2
+# STROKE_BAL_TELE = 500
+# STROKE_BAL_TOTAL = STROKE_BAL_EXTEND+STROKE_BAL_TELE
 PULSES_PER_ROUND = 10000
 INNERSTEP_PULSE_TRAYMOVE = 110000
 WEIGHT_BALARM_GRAM = 50000
@@ -507,6 +507,8 @@ class EndPoints(Enum):
 class JogControl(Enum):
     CONTROL_3ARMS = auto()  #서빙텔레+밸런싱암2개 3축 제어
     CONTROL_2ARMS_ANGLE = auto()  #밸런싱암2개 2축 제어
+    CONTROL_ROTATE_MAIN = auto()  #메인회전
+    CONTROL_ROTATE_TRAY = auto()  #트레이회전
     SPD_RATE = auto()  #암전개 RPM 배속 조정
 
 class OBSTACLE_INFO(Enum):
@@ -1831,6 +1833,7 @@ class MonitoringField(Enum):
     INERTIA_RATIO = auto()
     AUTO_GAIN = auto()
     SI_POT = auto()
+    SI_HOME = auto()
 
 
 class MonitoringField_BMS(Enum):
@@ -1943,7 +1946,7 @@ def get_balanceArmPulse(weight, dicWeightBalData):
             return round(y1 + (weight - x1) * (y2 - y1) / (x2 - x1))
 
 #임시코드 나중에 31번 지우자
-list_ArmControlMotors = [str(ModbusID.BAL_ARM1.value),str(ModbusID.BAL_ARM2.value),str(ModbusID.TELE_BALANCE.value),str(ModbusID.TELE_SERV_MAIN.value),str(ModbusID.MOTOR_V.value),str(ModbusID.MOTOR_H.value),str(ModbusID.ROTATE_SERVE_360.value),str(ModbusID.ROTATE_MAIN_540.value)]
+list_ArmControlMotors = [str(ModbusID.BAL_ARM1.value),str(ModbusID.BAL_ARM2.value),str(ModbusID.TELE_SERV_MAIN.value),str(ModbusID.MOTOR_V.value),str(ModbusID.MOTOR_H.value),str(ModbusID.ROTATE_SERVE_360.value),str(ModbusID.ROTATE_MAIN_540.value)]
 
 def get_modbus_objects_from_topics(topics):
     modbus_objects = []
@@ -5525,11 +5528,32 @@ def RFIDPwr(enable : int):
             bReturn,strResult = API_call_http(BLB_RFID_IP,HTTP_COMMON_PORT,"rfid",f'pwr={enable}')
     return bReturn,strResult
 
-def MoveH_MotorRFID(POS,spd,endnode):
+def API_MoveH(POS,spd,endnode):
     msg = f"{MotorWMOVEParams.POS.name}={POS}&{MotorWMOVEParams.SPD.name}={spd}&endnode={endnode}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
     rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.JOG.name, msg)
+    return rs
+
+def API_MoveMainTray(target_angle:int,spd_rate=1.0):
+    msg = f"{JogControl.CONTROL_ROTATE_TRAY.name}={target_angle}&{JogControl.SPD_RATE.name}={spd_rate}"
+    rtMsg = log_all_frames(msg)
+    SendInfoHTTP(rtMsg)
+    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return rs
+
+def API_MoveMainRotate(target_angle:int,spd_rate=1.0):
+    msg = f"{JogControl.CONTROL_ROTATE_MAIN.name}={target_angle}&{JogControl.SPD_RATE.name}={spd_rate}"
+    rtMsg = log_all_frames(msg)
+    SendInfoHTTP(rtMsg)
+    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return rs
+
+def API_MoveArms(distance:int,spd_rate:float):
+    msg = f"{JogControl.CONTROL_3ARMS.name}={distance}&{JogControl.SPD_RATE.name}={spd_rate}"
+    rtMsg = log_all_frames(msg)
+    SendInfoHTTP(rtMsg)
+    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
     return rs
 
 def SetIMUInterval(time_ms):

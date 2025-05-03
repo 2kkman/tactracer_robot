@@ -11,9 +11,10 @@
   <group if="$(eval 'ITX' not in hostname)">
     <include file="$(find tta_blb)/launch/BLB_ard_ITX.launch" />
   </group>
-  <!-- ITX에서만 실행되어야 할 노드 -->
+  <!-- ITX에서만 실행되어야 할 노드 
+    <include file="$(find tta_blb)/launch/BLB_RFID_ESP32.launch" />  
+  -->
   <group if="$(eval 'ITX' in hostname)">
-    <include file="$(find tta_blb)/launch/BLB_RFID_ESP32.launch" />
     <include file="$(find tta_blb)/launch/BLB_MODBUS.launch" />
     <include file="$(find tta_blb)/launch/BLB_SD.launch" />
   </group>

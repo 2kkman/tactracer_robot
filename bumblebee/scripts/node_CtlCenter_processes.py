@@ -204,11 +204,12 @@ def GetDynamicMotorsInfo():
     recvDataMapH = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.MOTOR_H.value), None)
     recvDataMapLift = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.MOTOR_V.value), None)
     recvDataMapSrvTele = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.TELE_SERV_MAIN.value), None)
-    recvDataMapBalTele = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.TELE_BALANCE.value), None)
+    #recvDataMapBalTele = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.TELE_BALANCE.value), None)
     recvDataMapArm1 = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.BAL_ARM1.value), None)
     recvDataMapArm2 = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.BAL_ARM2.value), None)
     recvDataMapRotate540 = node_CtlCenter_globals.dic_485ex.get(str(ModbusID.ROTATE_MAIN_540.value), None)
-    return recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapBalTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540
+    #return recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapBalTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540
+    return recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540
 
 lastCamControl = getDateTime()
 # def ControlArco():
@@ -426,13 +427,13 @@ def KeepArmBalancing():
     pulseBalanceTotal = GetpulseBalanceCalculated()
     curBalPerResult = (curBalPulse / pulseBalanceTotal)*100 if pulseBalanceTotal > 0 else 0
     
-    if abs(curBalPerResult-100) > 1:
-        lsFixed,estTime = GetDicBalArmFixedPulse(pulseBalanceTotal, True)
-        lsFiltered = remove_dict_by_value(lsFixed, MotorWMOVEParams.SPD.name, DEFAULT_RPM_MIN)
-        rospy.loginfo(lsFiltered)
-        SendCMD_Device(lsFiltered)
-        UpdateLastBalanceTimeStamp()
-        TTSAndroid('중량이 변경되었습니다.',1000)
+    # if abs(curBalPerResult-100) > 1:
+    #     lsFixed,estTime = GetDicBalArmFixedPulse(pulseBalanceTotal, True)
+    #     lsFiltered = remove_dict_by_value(lsFixed, MotorWMOVEParams.SPD.name, DEFAULT_RPM_MIN)
+    #     rospy.loginfo(lsFiltered)
+    #     SendCMD_Device(lsFiltered)
+    #     UpdateLastBalanceTimeStamp()
+    #     TTSAndroid('중량이 변경되었습니다.',1000)
 
 def CheckMotorAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()
@@ -516,7 +517,8 @@ def MotorBalanceControlEx(bSkip):
     if not isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms):
         return
     #5축 제어 모터 정보가 제대로 들어왔는지 확인.
-    recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapBalTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540 = GetDynamicMotorsInfo()
+    #recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapBalTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540 = GetDynamicMotorsInfo()
+    recvDataMapH,recvDataMapLift,recvDataMapSrvTele,recvDataMapArm1,recvDataMapArm2,recvDataMapRotate540 = GetDynamicMotorsInfo()
     # if None in (recvDataMapRotate540,recvDataMapSrvInner, recvDataMapSrvTele,recvDataMapBalTele,recvDataMapArm1,recvDataMapArm2):
     #     return
     #토크 체크 : 나중에 테스트 하자
@@ -527,10 +529,10 @@ def MotorBalanceControlEx(bSkip):
     mbidstr_arm2 = str(ModbusID.BAL_ARM2.value)
     motorStatus_arm1 = getMotorStatus(ModbusID.BAL_ARM1)
     motorStatus_arm2 = getMotorStatus(ModbusID.BAL_ARM2)
-    motorStatus_teleBalance = getMotorStatus(ModbusID.TELE_BALANCE)
+    #motorStatus_teleBalance = getMotorStatus(ModbusID.TELE_BALANCE)
     #motorStatus_SrvInner = getMotorStatus(ModbusID.TELE_SERV_INNER)
     
-    isFinishedMotor_teleBalance = not isActivatedMotor(ModbusID.TELE_BALANCE.value)
+    #isFinishedMotor_teleBalance = not isActivatedMotor(ModbusID.TELE_BALANCE.value)
     # isFinishedMotorArm1 = not isActivatedMotor(ModbusID.BAL_ARM1.value)
     # isFinishedMotorArm2 = not isActivatedMotor(ModbusID.BAL_ARM2.value)    
 
@@ -539,7 +541,7 @@ def MotorBalanceControlEx(bSkip):
     DI_POT_arm1,DI_NOT_arm1,DI_HOME_arm1,SI_POT_arm1 = GetPotNotHomeStatus(ModbusID.BAL_ARM1)
     DI_POT_arm2,DI_NOT_arm2,DI_HOME_arm2,SI_POT_arm2 = GetPotNotHomeStatus(ModbusID.BAL_ARM2)
     pot_cur_SrvTele,not_cur_SrvTele ,cmdpos_SrvTele,cur_pos_SrvTele =GetPotNotCurPosServo(ModbusID.TELE_SERV_MAIN)
-    pot_cur_BalTele,not_cur_BalTele ,cmdpos_BalTele,cur_pos_BalTele =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
+    #pot_cur_BalTele,not_cur_BalTele ,cmdpos_BalTele,cur_pos_BalTele =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
     #pot_cur_SrvInner,not_cur_SrvInner ,cmdpos_SrvInner,cur_pos_SrvInner =GetPotNotCurPosServo(ModbusID.TELE_SERV_INNER)    
     
     pot_cur_540,not_cur_540 ,cmdpos_540,cur_pos_540 =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
@@ -569,7 +571,7 @@ def MotorBalanceControlEx(bSkip):
         rospy.loginfo(f'현재위치:{cur_srvX},{cur_srvY}, 메인각도:{cur_angle_540}')
 
     spd_cur_540 = int(recvDataMapRotate540.get(str(MonitoringField.CUR_SPD.name), MIN_INT))
-    spd_cur_balTele = int(recvDataMapBalTele.get(str(MonitoringField.CUR_SPD.name), MIN_INT))
+    #spd_cur_balTele = int(recvDataMapBalTele.get(str(MonitoringField.CUR_SPD.name), MIN_INT))
     spd_cur_arm1 = int(recvDataMapArm1.get(str(MonitoringField.CUR_SPD.name), MIN_INT))
     spd_cur_arm2 = int(recvDataMapArm2.get(str(MonitoringField.CUR_SPD.name), MIN_INT))
     spd_cur_srvTele = int(recvDataMapSrvTele.get(str(MonitoringField.CUR_SPD.name), 0))
@@ -579,7 +581,7 @@ def MotorBalanceControlEx(bSkip):
     targetPOS_arm2 = node_CtlCenter_globals.dicTargetPos.get(str(ModbusID.BAL_ARM2.value),MIN_INT)
     targetPOS_arm1 = node_CtlCenter_globals.dicTargetPos.get(str(ModbusID.BAL_ARM1.value),MIN_INT)
     targetPOS_srv = node_CtlCenter_globals.dicTargetPos.get(str(ModbusID.TELE_SERV_MAIN.value),MIN_INT)
-    targetPOS_balTele = node_CtlCenter_globals.dicTargetPos.get(str(ModbusID.TELE_BALANCE.value),MIN_INT)
+    #targetPOS_balTele = node_CtlCenter_globals.dicTargetPos.get(str(ModbusID.TELE_BALANCE.value),MIN_INT)
     isArm1ReachedToTarget = True if abs(int(targetPOS_arm1) - cur_pos_arm1) < roundPulse else False
     
     #isArm2ReachedToTarget = True if abs(targetPOS_arm2 - cur_pos_arm2) < roundPulse else False
@@ -971,99 +973,99 @@ def MotorBalanceControlEx(bSkip):
     #isPendingArm2 = motorStatus_arm2 == STATUS_MOTOR.PENDING_CCW or motorStatus_arm2 == STATUS_MOTOR.PENDING_CW
     #isPendingArm1 = motorStatus_arm1 == STATUS_MOTOR.PENDING_CCW or motorStatus_arm1 == STATUS_MOTOR.PENDING_CW
     isTimeOK = isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
-    if isActivatedMotor(ModbusID.ROTATE_SERVE_360.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_tray:
-        DI_POT_tray,DI_NOT_tray,DI_HOME_tray,SI_POT_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
-        #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
-        if DI_HOME_tray:
-            #StopMotor(ModbusID.ROTATE_SERVE_360.value, DECC_540)
-            StopMotor(ModbusID.ROTATE_SERVE_360.value, 500)
-            node_CtlCenter_globals.robot.trigger_complete_calibration_tray()
-            time.sleep(1)
-            dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_SERVE_360.value, 0)
-            cmdpos_360,cur_pos_360 =GetPosServo(ModbusID.ROTATE_SERVE_360)
-            rospy.loginfo(f"Tray Cali OK at pulse :{cur_pos_360}")            
-            SendCMD_Device([dicLoc]) 
+    # if isActivatedMotor(ModbusID.ROTATE_SERVE_360.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_tray:
+    #     DI_POT_tray,DI_NOT_tray,DI_HOME_tray,SI_POT_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
+    #     #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
+    #     if DI_HOME_tray:
+    #         #StopMotor(ModbusID.ROTATE_SERVE_360.value, DECC_540)
+    #         StopMotor(ModbusID.ROTATE_SERVE_360.value, 500)
+    #         node_CtlCenter_globals.robot.trigger_complete_calibration_tray()
+    #         time.sleep(1)
+    #         dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_SERVE_360.value, 0)
+    #         cmdpos_360,cur_pos_360 =GetPosServo(ModbusID.ROTATE_SERVE_360)
+    #         rospy.loginfo(f"Tray Cali OK at pulse :{cur_pos_360}")            
+    #         SendCMD_Device([dicLoc]) 
             
-    if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_mainRotate:
-        DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
-        #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
-        if DI_HOME_540:
-            StopMotor(ModbusID.ROTATE_MAIN_540.value, 800)
-            node_CtlCenter_globals.robot.trigger_complete_calibration_mainRotate()
-            time.sleep(1)
-            cmd_540,pos_540 =GetPosServo(ModbusID.ROTATE_MAIN_540)
-            rospy.loginfo(f"Main Rotate Cali OK at pulse :{pos_540}")
-            # dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
+    # if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_mainRotate:
+    #     DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
+    #     #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
+    #     if DI_HOME_540:
+    #         StopMotor(ModbusID.ROTATE_MAIN_540.value, 800)
+    #         node_CtlCenter_globals.robot.trigger_complete_calibration_mainRotate()
+    #         time.sleep(1)
+    #         cmd_540,pos_540 =GetPosServo(ModbusID.ROTATE_MAIN_540)
+    #         rospy.loginfo(f"Main Rotate Cali OK at pulse :{pos_540}")
+    #         # dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
             # SendCMD_Device([dicLoc]) 
             
-    if (
-        isFinishedMotor_teleBalance
-        and isFinishedMotorArm1
-        and isFinishedMotorArm2
-        and targetPOS_arm1 != MIN_INT
-        and isTimeOK
-        and isArm1Expanded
-        and not isArm1ReachedToTarget
-        and spd_cur_srvTele < -10
-    ):  #밸런싱암 폴딩 완료 이후 밸런싱암 폴딩 로직
-        lsArmSpdChange =[]
-        targetRPM_arm2 = SPD_EXTEND_ARM2
-        targetRPM_arm1 = SPD_ARM1
-        cmdSpdChange1 = getMotorMoveDic(ModbusID.BAL_ARM1.value, True,targetPOS_arm1, abs(targetRPM_arm1), ACC_ARM1, DECC_ARM1)
-        # node_CtlCenter_globals.dicTargetRPM[str(
-        #     ModbusID.BAL_ARM1.value)] = str(abs(targetRPM_arm1))
-        newTime=GetTimeFromRPM(ModbusID.BAL_ARM1, targetPOS_arm1,targetRPM_arm1)
-        if abs(cur_pos_BalTele) > roundPulse or newTime <= 0:
-            StopEmergency(ALM_error.ARM_BALANCING_ERROR.value)
-            SendInfoHTTP(f'{ALM_error.ARM_BALANCING_ERROR.value},cur_pos_BalTele:{cur_pos_BalTele},newTime={newTime}')
-            return        
-        newRpmArm2 = GetRPMFromTime(ModbusID.BAL_ARM2,targetPOS_arm2,newTime )
-        newTimeTeleMain = newTime+1.0
-        newRPMSrvArm = GetRPMFromTime(ModbusID.TELE_SERV_MAIN,targetPOS_srv, newTimeTeleMain)
-        cmdSpdChange2 = getMotorMoveDic(ModbusID.BAL_ARM2.value, True, targetPOS_arm2, abs(newRpmArm2), ACC_ARM2_FOLD, DECC_ARM2)
-        # node_CtlCenter_globals.dicTargetRPM[str(
-        #     ModbusID.BAL_ARM2.value)] = str(abs(targetRPM_arm2))
-        cmdSpdSrvArm = getMotorSpeedDic(ModbusID.TELE_SERV_MAIN.value, True, abs(newRPMSrvArm), ACC_ST, DECC_ST)
-        # node_CtlCenter_globals.dicTargetRPM[str(
-        #     ModbusID.TELE_SERV_MAIN.value)] = str(abs(targetRPM_arm2))
-        #node_CtlCenter_globals.lastSpdArm1TimeStamp = getDateTime()
-        sMsg = f"Spd Change Time Stamp:{GetLastBalanceTimeStamp()}, newRPM:{newRPMSrvArm},newTime:{newTimeTeleMain}"
-        rospy.loginfo(sMsg)
-        SendInfoHTTP(sMsg)
-        lsArmSpdChange.append(cmdSpdSrvArm)
-        lsArmSpdChange.append(cmdSpdChange1)
-        lsArmSpdChange.append(cmdSpdChange2)
-        SendCMD_Device(lsArmSpdChange)
-        UpdateLastBalanceTimeStamp()
-        PrintCurrentPos()
-        return
+    # if (
+    #     isFinishedMotor_teleBalance
+    #     and isFinishedMotorArm1
+    #     and isFinishedMotorArm2
+    #     and targetPOS_arm1 != MIN_INT
+    #     and isTimeOK
+    #     and isArm1Expanded
+    #     and not isArm1ReachedToTarget
+    #     and spd_cur_srvTele < -10
+    # ):  #밸런싱암 폴딩 완료 이후 밸런싱암 폴딩 로직
+    #     lsArmSpdChange =[]
+    #     targetRPM_arm2 = SPD_EXTEND_ARM2
+    #     targetRPM_arm1 = SPD_ARM1
+    #     cmdSpdChange1 = getMotorMoveDic(ModbusID.BAL_ARM1.value, True,targetPOS_arm1, abs(targetRPM_arm1), ACC_ARM1, DECC_ARM1)
+    #     # node_CtlCenter_globals.dicTargetRPM[str(
+    #     #     ModbusID.BAL_ARM1.value)] = str(abs(targetRPM_arm1))
+    #     newTime=GetTimeFromRPM(ModbusID.BAL_ARM1, targetPOS_arm1,targetRPM_arm1)
+    #     if abs(cur_pos_BalTele) > roundPulse or newTime <= 0:
+    #         StopEmergency(ALM_error.ARM_BALANCING_ERROR.value)
+    #         SendInfoHTTP(f'{ALM_error.ARM_BALANCING_ERROR.value},cur_pos_BalTele:{cur_pos_BalTele},newTime={newTime}')
+    #         return        
+    #     newRpmArm2 = GetRPMFromTime(ModbusID.BAL_ARM2,targetPOS_arm2,newTime )
+    #     newTimeTeleMain = newTime+1.0
+    #     newRPMSrvArm = GetRPMFromTime(ModbusID.TELE_SERV_MAIN,targetPOS_srv, newTimeTeleMain)
+    #     cmdSpdChange2 = getMotorMoveDic(ModbusID.BAL_ARM2.value, True, targetPOS_arm2, abs(newRpmArm2), ACC_ARM2_FOLD, DECC_ARM2)
+    #     # node_CtlCenter_globals.dicTargetRPM[str(
+    #     #     ModbusID.BAL_ARM2.value)] = str(abs(targetRPM_arm2))
+    #     cmdSpdSrvArm = getMotorSpeedDic(ModbusID.TELE_SERV_MAIN.value, True, abs(newRPMSrvArm), ACC_ST, DECC_ST)
+    #     # node_CtlCenter_globals.dicTargetRPM[str(
+    #     #     ModbusID.TELE_SERV_MAIN.value)] = str(abs(targetRPM_arm2))
+    #     #node_CtlCenter_globals.lastSpdArm1TimeStamp = getDateTime()
+    #     sMsg = f"Spd Change Time Stamp:{GetLastBalanceTimeStamp()}, newRPM:{newRPMSrvArm},newTime:{newTimeTeleMain}"
+    #     rospy.loginfo(sMsg)
+    #     SendInfoHTTP(sMsg)
+    #     lsArmSpdChange.append(cmdSpdSrvArm)
+    #     lsArmSpdChange.append(cmdSpdChange1)
+    #     lsArmSpdChange.append(cmdSpdChange2)
+    #     SendCMD_Device(lsArmSpdChange)
+    #     UpdateLastBalanceTimeStamp()
+    #     PrintCurrentPos()
+    #     return
 
-    # 전개중 - 밸런싱암 전개 완료 후 정지 상태의 밸런싱 텔레스코프 전개.
-    if (
-        isArm2Expanded
-        and isArm1Expanded
-        and targetPOS_balTele != MIN_INT
-        and isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
-        and isFinishedMotor_teleBalance
-        #and not isArm1ReachedToTarget
-        and spd_cur_srvTele > 10
-    ):
-        # if not isArm1Expanded or not isArm2Expanded:
-        #     StopEmergency(ALM_error.ARM_BALANCING_ERROR.value)
-        #     return
+    # # 전개중 - 밸런싱암 전개 완료 후 정지 상태의 밸런싱 텔레스코프 전개.
+    # if (
+    #     isArm2Expanded
+    #     and isArm1Expanded
+    #     and targetPOS_balTele != MIN_INT
+    #     and isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
+    #     and isFinishedMotor_teleBalance
+    #     #and not isArm1ReachedToTarget
+    #     and spd_cur_srvTele > 10
+    # ):
+    #     # if not isArm1Expanded or not isArm2Expanded:
+    #     #     StopEmergency(ALM_error.ARM_BALANCING_ERROR.value)
+    #     #     return
         
-        targetRPM_telBal = SPD_BALTELE
-        newTimeBalTele=GetTimeFromRPM(ModbusID.TELE_BALANCE, targetPOS_balTele,targetRPM_telBal)
-        newRpmSrv_Arm = GetRPMFromTime(ModbusID.TELE_SERV_MAIN,targetPOS_srv,newTimeBalTele )
-        #cmdSpdChangeBal = getMotorSpeedDic(ModbusID.TELE_BALANCE.value,True,targetRPM_telBal,DEFAULT_ACC,DEFAULT_DECC)
-        cmdSpdChangeBal = getMotorMoveDic(ModbusID.TELE_BALANCE.value,True,targetPOS_balTele, targetRPM_telBal,ACC_BT,DECC_BT)
-        cmdSpdChangeSrv = getMotorSpeedDic(ModbusID.TELE_SERV_MAIN.value,True,round(newRpmSrv_Arm * 0.7),ACC_ST,DECC_ST)
-        SendCMD_Device([cmdSpdChangeBal,cmdSpdChangeSrv])
-        UpdateLastBalanceTimeStamp()
-        sMsg = f"밸런싱암전개 목표시간2:{newTimeBalTele:.1f},서빙암 변경RPM:{newRpmSrv_Arm}"
-        SendInfoHTTP(sMsg)
-        rospy.loginfo(sMsg)
-        return
+    #     targetRPM_telBal = SPD_BALTELE
+    #     newTimeBalTele=GetTimeFromRPM(ModbusID.TELE_BALANCE, targetPOS_balTele,targetRPM_telBal)
+    #     newRpmSrv_Arm = GetRPMFromTime(ModbusID.TELE_SERV_MAIN,targetPOS_srv,newTimeBalTele )
+    #     #cmdSpdChangeBal = getMotorSpeedDic(ModbusID.TELE_BALANCE.value,True,targetRPM_telBal,DEFAULT_ACC,DEFAULT_DECC)
+    #     cmdSpdChangeBal = getMotorMoveDic(ModbusID.TELE_BALANCE.value,True,targetPOS_balTele, targetRPM_telBal,ACC_BT,DECC_BT)
+    #     cmdSpdChangeSrv = getMotorSpeedDic(ModbusID.TELE_SERV_MAIN.value,True,round(newRpmSrv_Arm * 0.7),ACC_ST,DECC_ST)
+    #     SendCMD_Device([cmdSpdChangeBal,cmdSpdChangeSrv])
+    #     UpdateLastBalanceTimeStamp()
+    #     sMsg = f"밸런싱암전개 목표시간2:{newTimeBalTele:.1f},서빙암 변경RPM:{newRpmSrv_Arm}"
+    #     SendInfoHTTP(sMsg)
+    #     rospy.loginfo(sMsg)
+    #     return
 
 def GetScanPath():
     lsTableInfo = []

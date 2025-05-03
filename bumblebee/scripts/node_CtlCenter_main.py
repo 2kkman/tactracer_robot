@@ -150,17 +150,17 @@ if __name__ == "__main__":
       else:
         rospy.loginfo(f"분기기 통신성공:{strResult_CROSS}")
 
-      bReturn_RFID,strResult_RFID = RFIDControl(False)
-      if not bReturn_RFID:
-        sErrRFID = f"RFID 통신에러:{node_CtlCenter_globals.BLB_RFID_IP}:{HTTP_COMMON_PORT}"
-        TTSAndroid(sErrRFID,1)
-        rospy.loginfo(sErrRFID)
-      else:
-        rospy.loginfo(f"RFID 통신성공:{bReturn_RFID}")
-        time.sleep(MODBUS_EXCEPTION_DELAY)
-        bReturn_RFID,strResult_RFID = RFIDPwr(2000)
-        time.sleep(MODBUS_EXCEPTION_DELAY)
-        bReturn_RFID,strResult_RFID = RFIDControl(True)
+      # bReturn_RFID,strResult_RFID = RFIDControl(False)
+      # if not bReturn_RFID:
+      #   sErrRFID = f"RFID 통신에러:{node_CtlCenter_globals.BLB_RFID_IP}:{HTTP_COMMON_PORT}"
+      #   TTSAndroid(sErrRFID,1)
+      #   rospy.loginfo(sErrRFID)
+      # else:
+      #   rospy.loginfo(f"RFID 통신성공:{bReturn_RFID}")
+      #   time.sleep(MODBUS_EXCEPTION_DELAY)
+      #   bReturn_RFID,strResult_RFID = RFIDPwr(2000)
+      #   time.sleep(MODBUS_EXCEPTION_DELAY)
+      #   bReturn_RFID,strResult_RFID = RFIDControl(True)
 
 
        #프리징 되는 경우 체크
@@ -208,49 +208,49 @@ if __name__ == "__main__":
       SendCMD_Device([dicLoc])
       TTSAndroid('현재 충전소에 있습니다.',1)
       SetCurrentNode(node_KITCHEN_STATION)
-    else:
-      #RFID로 위치 확인 isRealMachine 일때만
-      #RFID_DF 에 값이 들어올때까지 기다릴것.
-      for i in range(0, 3):
-          try:
-            sEPC = node_CtlCenter_globals.dicEPC_last.get(RFID_RESULT.EPC.name)
-            #sEPC = node_CtlCenter_globals.dicEPC_last.get(TableInfo.NODE_ID.name)
-            if sEPC is None:
-              raise ValueError(f"RFID 데이터가 없습니다.")
-            else:
-              break
-          except Exception as e:  
-            time.sleep(1)
-          # if node_CtlCenter_globals.dfEPCView.empty:
-          #     time.sleep(1)
-          # else:
-          #     break
-      if len(node_CtlCenter_globals.dicEPC_last) == 0:
-        dicCurNodeInfo=GetCurrentNodeDicFromPulsePos(node_CtlCenter_globals.dfEPCTotal,curpos_H)
-        if dicCurNodeInfo:
-          node_current = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
-          SetCurrentNode(node_current)
-          TTSAndroid(f'{node_current}번 노드가 현재 위치 입니다',1)
-      else:
-        bReturn_RFID,strResult_RFID = RFIDControl(False)
-        time.sleep(MODBUS_EXCEPTION_DELAY)
-        bReturn_RFID,strResult_RFID = RFIDPwr(1000)
-        dicEPCView = node_CtlCenter_globals.dicEPC_last
-        ts_current = dicEPCView[RFID_RESULT.TIMESTAMP.name]
-        sEPCCurrent = dicEPCView[MAPFIELD.EPC.name]
-        dicEPCPos = GetEPC_Pos_Info(sEPCCurrent)
-        node_current = dicEPCPos.get(TableInfo.NODE_ID.name)
-        ts_passed = (getDateTime() - datetime.fromtimestamp(ts_current)).total_seconds()
-        #if ts_passed <= 1:
-        SetCurrentNode(node_current)
-        #cur_pos=GetEPC_Loc_Master(sEPCCurrent)
-        cur_pos=GetNodePos_fromEPC(sEPCCurrent)
-        iLoc = try_parse_int(cur_pos,MIN_INT)
-        TTSAndroid('RFID 위치감지 성공.',1)
-        if iLoc != MIN_INT:
-          sCUR_POS = iLoc
-          dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, sCUR_POS)
-          SendCMD_Device([dicLoc])
+    # else:
+    #   #RFID로 위치 확인 isRealMachine 일때만
+    #   #RFID_DF 에 값이 들어올때까지 기다릴것.
+    #   for i in range(0, 3):
+    #       try:
+    #         sEPC = node_CtlCenter_globals.dicEPC_last.get(RFID_RESULT.EPC.name)
+    #         #sEPC = node_CtlCenter_globals.dicEPC_last.get(TableInfo.NODE_ID.name)
+    #         if sEPC is None:
+    #           raise ValueError(f"RFID 데이터가 없습니다.")
+    #         else:
+    #           break
+    #       except Exception as e:  
+    #         time.sleep(1)
+    #       # if node_CtlCenter_globals.dfEPCView.empty:
+    #       #     time.sleep(1)
+    #       # else:
+    #       #     break
+    #   if len(node_CtlCenter_globals.dicEPC_last) == 0:
+    #     dicCurNodeInfo=GetCurrentNodeDicFromPulsePos(node_CtlCenter_globals.dfEPCTotal,curpos_H)
+    #     if dicCurNodeInfo:
+    #       node_current = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+    #       SetCurrentNode(node_current)
+    #       TTSAndroid(f'{node_current}번 노드가 현재 위치 입니다',1)
+    #   else:
+    #     bReturn_RFID,strResult_RFID = RFIDControl(False)
+    #     time.sleep(MODBUS_EXCEPTION_DELAY)
+    #     bReturn_RFID,strResult_RFID = RFIDPwr(1000)
+    #     dicEPCView = node_CtlCenter_globals.dicEPC_last
+    #     ts_current = dicEPCView[RFID_RESULT.TIMESTAMP.name]
+    #     sEPCCurrent = dicEPCView[MAPFIELD.EPC.name]
+    #     dicEPCPos = GetEPC_Pos_Info(sEPCCurrent)
+    #     node_current = dicEPCPos.get(TableInfo.NODE_ID.name)
+    #     ts_passed = (getDateTime() - datetime.fromtimestamp(ts_current)).total_seconds()
+    #     #if ts_passed <= 1:
+    #     SetCurrentNode(node_current)
+    #     #cur_pos=GetEPC_Loc_Master(sEPCCurrent)
+    #     cur_pos=GetNodePos_fromEPC(sEPCCurrent)
+    #     iLoc = try_parse_int(cur_pos,MIN_INT)
+    #     TTSAndroid('RFID 위치감지 성공.',1)
+    #     if iLoc != MIN_INT:
+    #       sCUR_POS = iLoc
+    #       dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, sCUR_POS)
+    #       SendCMD_Device([dicLoc])
         
         # #전체 DF 를 확인할 것
         # #dicEPCStatus=GetEPCDict(TableInfo.NODE_ID,RFID_RESULT.TIMESTAMP.name)
@@ -304,7 +304,7 @@ if __name__ == "__main__":
     #TODO : 모든 모터 정지
     if isRealMachine:
       StopAllMotors()
-      RFIDControl(False)
+      #RFIDControl(False)
     curNode = GetCurrentNode()
     cmdpos_H, curpos_H = GetPosServo(ModbusID.MOTOR_H)
     #node_CtlCenter_globals.dicPOS_ABS[str(curNode)] = curpos_H

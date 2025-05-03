@@ -2199,7 +2199,10 @@ def get_closest_value(data_dict, target_key):
 
     # 가장 가까운 key에 해당하는 value를 반환
     return data_dict[closest_key]
-  
+
+def find_closest_value(arr, target):
+    return min(arr, key=lambda x: (abs(x - target), x))
+
 def safe_read_json(json_str):
   try:
     #   # json_str 이 None 이거나 유효하지 않으면 빈 DataFrame 반환

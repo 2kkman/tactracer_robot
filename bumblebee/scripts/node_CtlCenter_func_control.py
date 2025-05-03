@@ -317,7 +317,9 @@ def GetCurrentPosDistanceAngle():
 
 def GetArmStatus():
     pot_cur_arm1,not_cur_arm1 ,cmdpos_arm1,cur_pos_arm1 =GetPotNotCurPosServo(ModbusID.BAL_ARM1)
-    pot_cur_telebal,not_cur_telebal ,cmd_pos_telebal,cur_pos_telebal =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)  
+    #pot_cur_telebal,not_cur_telebal ,cmd_pos_telebal,cur_pos_telebal =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)  
+    cur_pos_telebal=0
+    pot_cur_telebal=0
     curDistanceSrvMilimeter =GetSerArmDistance()
     curPercentageSrvMilimeter = (100 * curDistanceSrvMilimeter) / STROKE_SERVE_TOTAL
     curBalancePulse = cur_pos_arm1+cur_pos_telebal
@@ -514,88 +516,88 @@ def GetTuningArms(relative_pulse_arm1):
 #     #print(f'밸런싱:{listReturn},밸런싱 운행시간 총합:{estTotal:.1f},2관절운행시간:{estArm2Time:.1f},밸런싱텔레소요시간:{estTime_TeleBal:.1f}')
 #     return listReturn, max(estTotal,1)
 
-def GetDicBalArmFixedPulse(pulseBalanceTotal,bUseCurrentPosition = True):
-    """
-    밸런스 암이 움직여야 하는 거리를 받아 소요시간과 명령어 세트를 리턴
-    밸런스암의 속도에 따라 
-    """
-    listReturn = []
-    dicReturnArm1 = {}
-    dicReturnArm2 = {}
-    dicReturnTeleBal = {}
-    rpm_Arm1 = -1
-    rpm_Arm2 = -1
-    rpm_TeleBal = -1
-    distanceArm1 = 0
-    distanceArm2 = 0
-    distanceBalanceTele = 0
+# def GetDicBalArmFixedPulse(pulseBalanceTotal,bUseCurrentPosition = True):
+#     """
+#     밸런스 암이 움직여야 하는 거리를 받아 소요시간과 명령어 세트를 리턴
+#     밸런스암의 속도에 따라 
+#     """
+#     listReturn = []
+#     dicReturnArm1 = {}
+#     dicReturnArm2 = {}
+#     dicReturnTeleBal = {}
+#     rpm_Arm1 = -1
+#     rpm_Arm2 = -1
+#     rpm_TeleBal = -1
+#     distanceArm1 = 0
+#     distanceArm2 = 0
+#     distanceBalanceTele = 0
     
-    potpos_tele,notpos_tele, cmdpos_tele,curpos_tele = GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
-    potpos_arm1,notpos_arm1, cmdpos_arm1,curpos_arm1 = GetPotNotCurPosServo(ModbusID.BAL_ARM1)
-    potpos_arm2,notpos_arm2 ,cmdpos_arm2,curpos_arm2 =GetPotNotCurPosServo(ModbusID.BAL_ARM2)
-    if not bUseCurrentPosition:
-      curpos_tele = notpos_tele
-      curpos_arm1 = notpos_arm1
-      curpos_arm2 = notpos_arm2
+#     potpos_tele,notpos_tele, cmdpos_tele,curpos_tele = GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
+#     potpos_arm1,notpos_arm1, cmdpos_arm1,curpos_arm1 = GetPotNotCurPosServo(ModbusID.BAL_ARM1)
+#     potpos_arm2,notpos_arm2 ,cmdpos_arm2,curpos_arm2 =GetPotNotCurPosServo(ModbusID.BAL_ARM2)
+#     if not bUseCurrentPosition:
+#       curpos_tele = notpos_tele
+#       curpos_arm1 = notpos_arm1
+#       curpos_arm2 = notpos_arm2
       
-    pulse_arm1Target = 0
-    pulse_arm2Target = 0
-    pulse_BalTeleTarget = 0
+#     pulse_arm1Target = 0
+#     pulse_arm2Target = 0
+#     pulse_BalTeleTarget = 0
     
-    if pulseBalanceTotal > potpos_arm1:
-      pulse_arm1Target = potpos_arm1
-      pulse_BalTeleTarget = pulseBalanceTotal - potpos_arm1
-      pot_tb,not_tb=GetPotNotServo(ModbusID.TELE_BALANCE)
-      if pot_tb < pulse_BalTeleTarget:
-        pulse_BalTeleTarget = pot_tb
-    else:
-      pulse_arm1Target = pulseBalanceTotal
+#     if pulseBalanceTotal > potpos_arm1:
+#       pulse_arm1Target = potpos_arm1
+#       pulse_BalTeleTarget = pulseBalanceTotal - potpos_arm1
+#       pot_tb,not_tb=GetPotNotServo(ModbusID.TELE_BALANCE)
+#       if pot_tb < pulse_BalTeleTarget:
+#         pulse_BalTeleTarget = pot_tb
+#     else:
+#       pulse_arm1Target = pulseBalanceTotal
     
-    pulse_arm2Target = GetArm2PosFromArm1Pos(pulse_arm1Target)    
-    pulse_TeleMoveAbs = abs(pulse_BalTeleTarget-curpos_tele)
-    pulse_Arm1Move =  abs(pulse_arm1Target-curpos_arm1)
-    pulse_Arm2Move =  abs(pulse_arm2Target-curpos_arm2)
+#     pulse_arm2Target = GetArm2PosFromArm1Pos(pulse_arm1Target)    
+#     pulse_TeleMoveAbs = abs(pulse_BalTeleTarget-curpos_tele)
+#     pulse_Arm1Move =  abs(pulse_arm1Target-curpos_arm1)
+#     pulse_Arm2Move =  abs(pulse_arm2Target-curpos_arm2)
     
-    rpm_TeleBal = SPD_BALTELE
-    estTime_TeleBal = max(0,calculate_rpm_time(pulse_TeleMoveAbs/PULSES_PER_ROUND, rpm_TeleBal))
-    estArm1Time = max(0,calculate_rpm_time(pulse_Arm1Move/PULSES_PER_ROUND, SPD_ARM1))
-    rpm_Arm1 = rpm_Arm2 = DEFAULT_RPM_NORMAL
-    if estArm1Time > 0:
-        rpm_Arm1 = rpm_Arm2 = calculate_targetRPM_fromtime(pulse_Arm2Move/PULSES_PER_ROUND, estArm1Time)
+#     rpm_TeleBal = SPD_BALTELE
+#     estTime_TeleBal = max(0,calculate_rpm_time(pulse_TeleMoveAbs/PULSES_PER_ROUND, rpm_TeleBal))
+#     estArm1Time = max(0,calculate_rpm_time(pulse_Arm1Move/PULSES_PER_ROUND, SPD_ARM1))
+#     rpm_Arm1 = rpm_Arm2 = DEFAULT_RPM_NORMAL
+#     if estArm1Time > 0:
+#         rpm_Arm1 = rpm_Arm2 = calculate_targetRPM_fromtime(pulse_Arm2Move/PULSES_PER_ROUND, estArm1Time)
     
-    #밸런싱암이 전개하는 경우 - 텔레스코픽이 나중에 움직인다. 즉 rpm_TeleBal = 1
-    pulse_togo_arm2 = pulse_arm2Target-curpos_arm2
-    pulse_togo_arm2_abs = abs(pulse_togo_arm2) 
-    if pulse_togo_arm2 > 0:
-        rpm_TeleBal = DEFAULT_RPM_MIN
+#     #밸런싱암이 전개하는 경우 - 텔레스코픽이 나중에 움직인다. 즉 rpm_TeleBal = 1
+#     pulse_togo_arm2 = pulse_arm2Target-curpos_arm2
+#     pulse_togo_arm2_abs = abs(pulse_togo_arm2) 
+#     if pulse_togo_arm2 > 0:
+#         rpm_TeleBal = DEFAULT_RPM_MIN
     
-    if pulse_togo_arm2 > 0:
-        rpm_TeleBal = DEFAULT_RPM_MIN
-    acc_arm2 = ACC_ARM2_EXTEND
-    #수축인경우
-    if pulse_TeleMoveAbs > PULSES_PER_ROUND and pulse_BalTeleTarget == 0:
-        rpm_Arm1 = rpm_Arm2 = DEFAULT_RPM_MIN
-    else:   #전개인 경우
-        rpm_Arm1 = SPD_ARM1
-        if pulse_arm1Target-curpos_arm1 > 0:
-          rpm_Arm2 = SPD_EXTEND_ARM2
-        else:
-          rpm_Arm2 = SPD_EXTEND_ARM2
-          acc_arm2 = ACC_ARM2_FOLD
+#     if pulse_togo_arm2 > 0:
+#         rpm_TeleBal = DEFAULT_RPM_MIN
+#     acc_arm2 = ACC_ARM2_EXTEND
+#     #수축인경우
+#     if pulse_TeleMoveAbs > PULSES_PER_ROUND and pulse_BalTeleTarget == 0:
+#         rpm_Arm1 = rpm_Arm2 = DEFAULT_RPM_MIN
+#     else:   #전개인 경우
+#         rpm_Arm1 = SPD_ARM1
+#         if pulse_arm1Target-curpos_arm1 > 0:
+#           rpm_Arm2 = SPD_EXTEND_ARM2
+#         else:
+#           rpm_Arm2 = SPD_EXTEND_ARM2
+#           acc_arm2 = ACC_ARM2_FOLD
              
-    if pulse_Arm1Move > 0:
-        dicReturnArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value, True, pulse_arm1Target,rpm_Arm1,ACC_ARM1,DECC_ARM1)
-        listReturn.append(dicReturnArm1)
-    if pulse_Arm2Move > 0:
-        dicReturnArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value, True, pulse_arm2Target,rpm_Arm2,acc_arm2,DECC_ARM2)
-        listReturn.append(dicReturnArm2)
-    if pulse_TeleMoveAbs > 0:
-        if len(listReturn) == 0:
-            rpm_TeleBal = SPD_BALTELE
-        dicReturnTeleBal = getMotorMoveDic(ModbusID.TELE_BALANCE.value, True, pulse_BalTeleTarget,rpm_TeleBal,ACC_BT,DECC_BT)            
-        listReturn.append(dicReturnTeleBal)
-    estTotal = estTime_TeleBal + estArm1Time
-    return listReturn, max(estTotal,1)
+#     if pulse_Arm1Move > 0:
+#         dicReturnArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value, True, pulse_arm1Target,rpm_Arm1,ACC_ARM1,DECC_ARM1)
+#         listReturn.append(dicReturnArm1)
+#     if pulse_Arm2Move > 0:
+#         dicReturnArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value, True, pulse_arm2Target,rpm_Arm2,acc_arm2,DECC_ARM2)
+#         listReturn.append(dicReturnArm2)
+#     if pulse_TeleMoveAbs > 0:
+#         if len(listReturn) == 0:
+#             rpm_TeleBal = SPD_BALTELE
+#         dicReturnTeleBal = getMotorMoveDic(ModbusID.TELE_BALANCE.value, True, pulse_BalTeleTarget,rpm_TeleBal,ACC_BT,DECC_BT)            
+#         listReturn.append(dicReturnTeleBal)
+#     estTotal = estTime_TeleBal + estArm1Time
+#     return listReturn, max(estTotal,1)
 
 def GetStrArmExtendMain(distanceServingTotal, angle_degrees, bUseCurrentPosition = False):
     lsArm = []
@@ -612,8 +614,8 @@ def GetStrArmExtendMain(distanceServingTotal, angle_degrees, bUseCurrentPosition
     currentWeightTotal = 0
     #currentWeightTotal = getLoadWeight()
     
-    #if distanceServingTeleTotal <= stroke_srv_default:
-    if distanceServingTeleTotal < 0 and (abs(cur_pos_srv-not_telesrv) < roundPulse or not bUseCurrentPosition):
+    if True:
+    #if distanceServingTeleTotal < 0 and (abs(cur_pos_srv-not_telesrv) < roundPulse or not bUseCurrentPosition):
         #서빙암이 수축하는 경우
         targetPulse = GetTargetPulseServingArm(distanceServingTotal, not_telesrv)
         #targetPulse = round(mapRange(distanceServingTeleTotal,-stroke_srv_default, 0, not_telesrv, 0))
@@ -622,32 +624,32 @@ def GetStrArmExtendMain(distanceServingTotal, angle_degrees, bUseCurrentPosition
         timeRet = calculate_rpm_time(diffRPM, DEFAULT_RPM_SLOW)
         return lsRet
     
-    if distanceServingTeleTotal < 0:
-        distanceServingTeleTotal = 0
+    # if distanceServingTeleTotal < 0:
+    #     distanceServingTeleTotal = 0
     
     
-    lenWeightData = len(node_CtlCenter_globals.dicWeightBal)
-    if distanceServingTeleTotal > STROKE_SERVE_TOTAL:
-        distanceServingTeleTotal = STROKE_SERVE_TOTAL
+    # lenWeightData = len(node_CtlCenter_globals.dicWeightBal)
+    # if distanceServingTeleTotal > STROKE_SERVE_TOTAL:
+    #     distanceServingTeleTotal = STROKE_SERVE_TOTAL
     
-    #pulseBalanceTotal = 1관절 + 밸런스텔레스코픽펄스의 합계
-    pulseBalanceTotal = get_balanceArmPulse(currentWeightTotal, node_CtlCenter_globals.dicWeightBal) if lenWeightData >=2 else -1
-    #pulseBalanceToGo=GetTargetPulseBalanceArm(distanceServingTotal)
-    pulseBalanceToGo = round(mapRange(distanceServingTeleTotal, 0,STROKE_SERVE_TOTAL, 0,pulseBalanceTotal))
-    #lsBalArm,timeEst1 = GetDicBalArmFixedRPM(distanceBalanceTotal,bUseCurrentPosition)
-    #lsBalArm,timeEst1 = [], 0
-    #if pulseBalanceToGo > 0:
-    #stroke_balance_length = CalculateLengthFromPulse(ModbusID.TELE_SERV_MAIN, node_CtlCenter_globals.SERVING_ARM_EXPAND_PULSE)
-    lsBalArm,timeEst1 = GetDicBalArmFixedPulse(pulseBalanceToGo,bUseCurrentPosition)
-    # if distanceServingTeleTotal > stroke_balance_length:
-    #     lsArm, timeEst2 = GetDicServingArmRealTime(distanceServingTeleTotal-stroke_balance_length,timeEst1,bUseCurrentPosition)
-    # else:
-    lsArm, timeEst2 = GetDicServingArmRealTime(distanceServingTotal,timeEst1,bUseCurrentPosition)
-    timeEst = max(timeEst2,timeEst1)
-    rospy.loginfo(f'시간:{timeEst:.1f},각도:{angle_degrees:.1f},밸런싱:{WEIGHT_BALARM_GRAM}g:{pulseBalanceTotal},서빙:{WEIGHT_SERVARM_GRAM}g:{distanceServingTeleTotal:.1f}mm')
-    if len(lsBalArm) > 0:
-        lsArm.extend(lsBalArm)
-    return lsArm
+    # #pulseBalanceTotal = 1관절 + 밸런스텔레스코픽펄스의 합계
+    # pulseBalanceTotal = get_balanceArmPulse(currentWeightTotal, node_CtlCenter_globals.dicWeightBal) if lenWeightData >=2 else -1
+    # #pulseBalanceToGo=GetTargetPulseBalanceArm(distanceServingTotal)
+    # pulseBalanceToGo = round(mapRange(distanceServingTeleTotal, 0,STROKE_SERVE_TOTAL, 0,pulseBalanceTotal))
+    # #lsBalArm,timeEst1 = GetDicBalArmFixedRPM(distanceBalanceTotal,bUseCurrentPosition)
+    # #lsBalArm,timeEst1 = [], 0
+    # #if pulseBalanceToGo > 0:
+    # #stroke_balance_length = CalculateLengthFromPulse(ModbusID.TELE_SERV_MAIN, node_CtlCenter_globals.SERVING_ARM_EXPAND_PULSE)
+    # lsBalArm,timeEst1 = GetDicBalArmFixedPulse(pulseBalanceToGo,bUseCurrentPosition)
+    # # if distanceServingTeleTotal > stroke_balance_length:
+    # #     lsArm, timeEst2 = GetDicServingArmRealTime(distanceServingTeleTotal-stroke_balance_length,timeEst1,bUseCurrentPosition)
+    # # else:
+    # lsArm, timeEst2 = GetDicServingArmRealTime(distanceServingTotal,timeEst1,bUseCurrentPosition)
+    # timeEst = max(timeEst2,timeEst1)
+    # rospy.loginfo(f'시간:{timeEst:.1f},각도:{angle_degrees:.1f},밸런싱:{WEIGHT_BALARM_GRAM}g:{pulseBalanceTotal},서빙:{WEIGHT_SERVARM_GRAM}g:{distanceServingTeleTotal:.1f}mm')
+    # if len(lsBalArm) > 0:
+    #     lsArm.extend(lsBalArm)
+    # return lsArm
 # lsa =GetStrArmExtendMain(1250,0,False)
 # print(lsa)
     
@@ -666,16 +668,16 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
     pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
     listBLBTmp = []
     if isUp:    #수축-리프트업
-        dicCali360 = getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value)
+        # dicCali360 = getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value)
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, DECC_360_UP)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsLiftUp = GetListLiftUp()
         #lsLiftUp.append(dicRotate360)
         isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
         listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
-        if not isTrue(isHome):
-            listBLBTmp.append([dicCali360]) #트레이를 돌리고
-            dicRotate360 = GetDicRotateMotorTray(-roundPulse,SPD_360,ACC_360_UP, ACC_DECC_LONG)
+        # if not isTrue(isHome):
+        #     listBLBTmp.append([dicCali360]) #트레이를 돌리고
+        dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, ACC_DECC_LONG)
         listBLBTmp.append([dicRotate360]) #트레이를 돌리고
         listBLBTmp.append(lsArmControl) #밸런스암 수축
     else:   #전개-리프트다운

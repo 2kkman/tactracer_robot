@@ -144,8 +144,9 @@ def BLB_CMD_Profile(PROFILE):
                 rospy.loginfo(f'No record to save. Discarded.')                        
         elif paramInt1 == BLD_PROFILE_CMD.balDataRecord.value:
             cmdpos_arm1, curpos_arm1 = GetPosServo(ModbusID.BAL_ARM1)
-            cmdpos_tele, curpos_tele = GetPosServo(ModbusID.TELE_BALANCE)
-            total_balPos = curpos_tele+curpos_arm1
+            #cmdpos_tele, curpos_tele = GetPosServo(ModbusID.TELE_BALANCE)
+            #total_balPos = curpos_tele+curpos_arm1
+            total_balPos = curpos_arm1
             currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
             if currentWeightTotal < 0:
                 rospy.loginfo(f'트레이 무게 데이터가 수신되지 않았습니다.')  
@@ -198,8 +199,8 @@ def BLB_CMD_Profile(PROFILE):
             #서빙 텔레스코픽 트레이 최소화
             lsModbusRequests.extend(GetLiftControl(True))
             lsModbusRequests.append(getListedDic(dicServFold))
-        elif paramInt1 == BLD_PROFILE_CMD.GET_TABLEMAP.value:
-            callResult = StartCaliMainRotate()
+        # elif paramInt1 == BLD_PROFILE_CMD.GET_TABLEMAP.value:
+        #     callResult = StartCaliMainRotate()
         #     rospy.loginfo(f'메인회전 캘리브레이션 요청결과 : {callResult}')
         elif paramInt1 == BLD_PROFILE_CMD.MOVE_MOTOR_H.value:
             if isReadyToMoveH_and_540():

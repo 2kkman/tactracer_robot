@@ -53,7 +53,7 @@ def callbackAck(data,topic_name='' ):
         data: "1707275205.265836:1:30:120,90"
     """
     try:
-        shaking_protection = [ModbusID.MOTOR_V, ModbusID.TELE_BALANCE, ModbusID.TELE_SERV_MAIN ]
+        shaking_protection = [ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN ]
         recvData = data.data
         logmsg = f"{recvData} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name} : {node_CtlCenter_globals.activated_motors}"
         #log_all_frames(recvData)
@@ -1467,8 +1467,8 @@ def callback_detect_3D(data):
 # TopicName과 Callback 함수를 정의한 사전
 node_CtlCenter_globals.dictTopicToSubscribe = {
     #TopicName.CROSS_INFO.name: callbackCROSS,
-    TopicName.RFID.name: callbackRFID,
-    TopicName.RFID_DF.name: callbackRFID_DF,
+    # TopicName.RFID.name: callbackRFID,
+    # TopicName.RFID_DF.name: callbackRFID_DF,
     TopicName.ARD_CARRIER.name: callbackARD_CARRIER,
     TopicName.ANDROID.name: callbackARD_CARRIER,
     TopicName.ACK.name: callbackAck,

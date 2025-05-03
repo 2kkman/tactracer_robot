@@ -118,10 +118,10 @@ SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SP
 ACC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.ACC_CW.name)
 DECC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.DECC_CW.name)
 
-#9번 밸런싱 텔레스코픽 모터
-SPD_BALTELE = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
-ACC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-DECC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+# #9번 밸런싱 텔레스코픽 모터
+# SPD_BALTELE = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+# ACC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+# DECC_BT = getSpeedTableInfo(ModbusID.TELE_BALANCE.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
 
 #31번 트레이 모터
 SPD_360 =  getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.SPD.name)
