@@ -202,7 +202,7 @@ def GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition=False, spd_rate 
     round1CountAbs = round(stroke_arm1_abs/roundPulse)
     round2CountAbs = round(stroke_arm2_abs/roundPulse)
     rpm_time_arm1 = calculate_rpm_time(round1CountAbs, rpm_arm1)
-    rpm_arm2 = calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1)
+    rpm_arm2 = max(calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
     isExpand = stroke_arm1_signed > 0
     accArm2 = ACC_ARM2_FOLD
     deccArm2 = DECC_ARM2_FOLD
@@ -236,7 +236,7 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
     #서빙암 스트로크 RPM
     lsBal, rpm_time_arm1= GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition,spd_rate)
     servArmCountAbs = round(stroke_servArm_abs/roundPulse)    
-    rpm_servArm = calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1)
+    rpm_servArm = max(calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
     # 원본 값 보정
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
