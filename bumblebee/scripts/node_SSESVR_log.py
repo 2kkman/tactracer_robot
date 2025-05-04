@@ -1378,7 +1378,7 @@ def service_jog():
         return {str(e): dicMotorPos }, 500
 
 @app.route(f'/{ServiceBLB.CMD_DEVICE.name}', methods=['GET'])
-def service_cmd():
+def service_cmd_device():
     listReturn = []
     try:
         reqargs = request.args.to_dict()

@@ -5424,7 +5424,7 @@ def service_setbool_client_common(serviceName, enable, serviceType):
             return bResult
 
         responseResult = setbool_proxy(enable)
-        log_all_frames(str(responseResult),2)
+        log_all_frames(str(enable),3)
         #print(responseResult)
         return True
     except Exception as e:
