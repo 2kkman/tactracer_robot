@@ -119,6 +119,7 @@ topicName_BAL2 = f'{topicName_ServoPrefix}{ModbusID.BAL_ARM2.value}'
 topicName_LiftV = f'{topicName_ServoPrefix}{ModbusID.MOTOR_V.value}'
 topicName_RotateTray = f'{topicName_ServoPrefix}{ModbusID.ROTATE_SERVE_360.value}'
 topicName_RotateMain = f'{topicName_ServoPrefix}{ModbusID.ROTATE_MAIN_540.value}'
+topicName_TOF = f'{topicName_ServoPrefix}{ModbusID.TOF.value}'
 
 lsServoTopics = [topicName_MotorH,topicName_ServArm,topicName_BAL1,topicName_BAL2,topicName_LiftV,topicName_RotateTray,topicName_RotateMain]
 #암 속도 조절.
@@ -165,6 +166,45 @@ ACC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIEL
 DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CW.name)
 ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
 DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+
+def GetDoorStatus():
+    global shared_data    
+    dicARD_CARRIER = shared_data.get(TopicName.ARD_CARRIER.name)
+    doorStatusClose1 = dicARD_CARRIER.get(
+        CARRIER_STATUS.I_DOOR_1_BOTTOM.name, -1
+    )
+    doorStatusOpen1 = dicARD_CARRIER.get(
+        CARRIER_STATUS.I_DOOR_1_TOP.name, -2
+    )
+    doorStatusClose2 = dicARD_CARRIER.get(
+        CARRIER_STATUS.I_DOOR_2_BOTTOM.name, -1
+    )
+    doorStatusOpen2 = dicARD_CARRIER.get(
+        CARRIER_STATUS.I_DOOR_2_TOP.name, -2
+    )
+    isOpen1 = isTrue(doorStatusOpen1)
+    isClose1 = isTrue(doorStatusClose1)
+    isOpen2 = isTrue(doorStatusOpen2)
+    isClose2 = isTrue(doorStatusClose2)
+    resultReturn = TRAYDOOR_STATUS.MOVING
+    resultArray = [isClose1,isClose2]
+    if (isOpen1 and isClose1) or (isOpen2 and isClose2):
+        resultReturn = TRAYDOOR_STATUS.DOORALARM
+    elif isOpen1 or isOpen2:
+        resultReturn= TRAYDOOR_STATUS.OPENED
+    elif isClose1 and isClose2:
+        resultReturn= TRAYDOOR_STATUS.CLOSED
+    # else:
+    #     return TRAYDOOR_STATUS.MOVING
+    return resultReturn,resultArray
+
+def GetRotateMainAngleFromPulse(target_pulse):
+  angle = mapRange(target_pulse,0,pot_540,0,MAX_ANGLE_TRAY)
+  return round(angle)
+
+def GetRotateTrayAngleFromPulse(target_pulse):
+  angle = mapRange(target_pulse,0,pot_360,0,MAX_ANGLE_TRAY)
+  return round(angle)
 
 def GetRotateTrayPulseFromAngle(angleStr):
   cur_360 = int(dicMotorPos[topicName_RotateTray])
@@ -277,12 +317,97 @@ def GetCurrentNode():
     dicBLB_Status = shared_data.get(TopicName.BLB_STATUS.name)
     return try_parse_int(dicBLB_Status.get(BLB_STATUS.NODE_CURRENT.name))
 
-def GetMotorHPos():
-    cur_pos = try_parse_int(dicMotorPos.get(topicName_MotorH))
+def GetMotorPos(topicName):
+    cur_pos = try_parse_int(dicMotorPos.get(topicName))
     return cur_pos
 
+def GetMotorHPos():
+    return GetMotorPos(topicName_MotorH)
+
+def GetAllMotorPos():
+    pos_BAL1 = GetMotorPos(topicName_BAL1)
+    pos_BAL2 = GetMotorPos(topicName_BAL2)
+    pos_LiftV = GetMotorPos(topicName_LiftV)
+    pos_540 = GetMotorPos(topicName_RotateMain)
+    pos_360 = GetMotorPos(topicName_RotateTray)
+    pos_ServArm = GetMotorPos(topicName_ServArm)
+    pos_MotorH = GetMotorHPos()
+    return pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH
+
+def CheckSafetyMotorMove(listReturnTmp):
+    #현재 모터 위치 정보를 모은다.
+    #회전모터 계열은 각도 정보를 받아온다.
+    '''
+    0. SSE 를 타고 가는 모든 명령어에 대해 필터링 - 현재 포지션은 dicPos 에서 확인, 필터는 SendCmd_Device 호출전에 수행.
+    1. 27은 모두 0 일때 움직일 수 있으며 20rpm 이하일때는 11,13과 10이 벌어져있어도 가능.
+    2. 31은 TOF 거리가 200 이상 나와야 회전 가능.
+    3. 주행은 27이 0도, 180도 일때만 이동 가능.
+    4. 도어는 150000펄스 이후에 가능.    
+    '''
+    global shared_data    
+    #dicBLB_Status = shared_data.get(TopicName.SMARTPLUG_INFO.name)
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    dic_tof = shared_data.get(topicName_TOF,{})
+    lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
+    distance_tof = dic_tof.get(SeqMapField.DISTANCE.name,-1)
+    angle540=GetRotateMainAngleFromPulse(pos_540)
+    angle360=GetRotateTrayAngleFromPulse(pos_360)
+    isTrayOrigin = True if angle360 == 0 else False
+    isLiftOrigin = True if pos_LiftV < roundPulse else False
+    bSafetyFalseArms = any(val > roundPulse for val in lsCheckArms)
+    df = pd.DataFrame(listReturnTmp)
+    #print(listReturnTmp)
+    ls6 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.MOTOR_V.value)].to_dict(orient="records")
+    ls11 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.TELE_SERV_MAIN.value)].to_dict(orient="records")
+    ls31 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.ROTATE_SERVE_360.value)].to_dict(orient="records")
+    ls27 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.ROTATE_MAIN_540.value)].to_dict(orient="records")
+    ls15 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.MOTOR_H.value)].to_dict(orient="records")
+    strCheckResult = AlarmCodeList.OK.name
+    bSafety = True
+    doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
+    
+    if len(ls6) > 0:
+        dic6 = ls6[0]
+        target_pos6 = try_parse_int(dic6.get(MotorWMOVEParams.POS.name),MIN_INT)        
+        isUp = target_pos6 < pos_LiftV
+        if isUp and target_pos6 < roundPulse * 10 and doorStatus == TRAYDOOR_STATUS.OPENED:
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_DOOR_LIFT.value
+    if len(ls11) > 0:
+        # 암 전개 수축시에는 6번 31번이 원점이어야 함.
+        if not isTrayOrigin or not isLiftOrigin:
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_ARM.value
+    if len(ls31) > 0:
+        #31은 TOF 거리가 200 이상 나와야 회전 가능. - 알람코드로 리턴하자.
+        #일단 TOF 에서 10만 펄스로 변경함-_-
+        #if distance_tof < 200:
+        if pos_ServArm < roundPulse*10:
+            bSafety = False
+            strCheckResult = ALM_User.TRAY360_SAFETY.value
+    if len(ls15) > 0:
+        #주행은 27이 0도, 180도 일때만 이동 가능. + 모든암이 접혀져있어야 함.
+        if not (angle540 == 180 or angle540 == 0):
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_MOTORH_2.value
+        elif bSafetyFalseArms or not isLiftOrigin or not isTrayOrigin:
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_MOTORH_ROTATEMAIN.value
+            
+    if len(ls27) > 0:
+        dic27 = ls27[0]
+        spd_27 = try_parse_int(dic27.get(MotorWMOVEParams.SPD.name),MIN_INT)
+        #27은 모두 0 일때 움직일 수 있으며 20rpm 이하일때는 11,13과 10이 벌어져있어도 가능.
+        if not isLiftOrigin:
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_MOTORH_ROTATEMAIN.value
+        elif spd_27 >= MAINROTATE_RPM_SLOWEST and bSafetyFalseArms:
+            bSafety = False
+            strCheckResult = ALM_User.SAFETY_MOTORH_ROTATEMAIN.value
+    return bSafety,strCheckResult
+
 def GetMotorH_SI_POT():
-    cur_pos = try_parse_int(shared_data.get(topicName_MotorH),{})
+    cur_pos = shared_data.get(topicName_MotorH,{})
     si_pot = cur_pos.get(sSI_POT,"")
     return si_pot
 
@@ -291,7 +416,7 @@ def GetMotorH_SI_POT():
 #     return di_pot
 
 def GetMotorSensor(topicName = topicName_MotorH):
-    curDicMotor = try_parse_int(shared_data.get(topicName),{})
+    curDicMotor = shared_data.get(topicName,{})
     si_pot = curDicMotor.get(sSI_POT,"")
     si_home = curDicMotor.get(sSI_HOME,"")
     di_pot = curDicMotor.get(sDI_POT,"")
@@ -390,17 +515,30 @@ def SendCMDESTOP(enable,isAlarm=True):
     time.sleep(MODBUS_WRITE_DELAY)        
     return resultArd
 
-def SendCMDArd(enable):
-    #isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
-    if isRealMachine:
-        resultArd = service_setbool_client_common(ServiceBLB.CMDARD_QBI.value, enable, Kill)
+def SendCMDArd(sCmdArd,isSafetyCheck=True):
+    resultArd=True
+    strMsg = AlarmCodeList.OK.name
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    splitTmp = sCmdArd.split(sDivFieldColon)
+    if len(splitTmp) > 1:
+        sCmd = splitTmp[0]
+        sParam = splitTmp[1]
+        if sCmd == 'O' and sParam.startswith('2') and pos_LiftV < roundPulse*10:
+            resultArd = False
+            strMsg = ALM_User.SAFETY_TRAYDOOR.value
+        elif isRealMachine:
+            resultArd = service_setbool_client_common(ServiceBLB.CMDARD_QBI.value, sCmdArd, Kill)
+        else:
+            sCmdArd = replace_string(sCmdArd)
+            resultArd = service_setbool_client_common(ServiceBLB.CMDARD_ITX.value, sCmdArd, Kill)        
     else:
-        enable = replace_string(enable)
-        resultArd = service_setbool_client_common(ServiceBLB.CMDARD_ITX.value, enable, Kill)        
+        resultArd = False
+        strMsg = ALM_User.CMD_FORMAT_INVALID.value
+    rospy.loginfo(sCmdArd)
     time.sleep(MODBUS_WRITE_DELAY)        
-    return resultArd
+    return resultArd,strMsg
 
-def SendCMD_Device(sendbuf, cmdIntervalSec=5):
+def SendCMD_Device(sendbuf, cmdIntervalSec=5,isCheckSafety=True):
     if not hasattr(SendCMD_Device, "last_cmd_time"):
         SendCMD_Device.last_cmd_time = 0
     if not hasattr(SendCMD_Device, "last_cmd_msg"):
@@ -409,18 +547,23 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=5):
     cmdTmp = sendbuf
     if isinstance(sendbuf, list):
         if len(sendbuf) > 0:
+            if isCheckSafety:
+                bResultSafety,strMsg=CheckSafetyMotorMove(sendbuf)
+                if not bResultSafety:
+                    return False,strMsg
             cmdTmp = json.dumps(sendbuf)
             if cmdTmp == SendCMD_Device.last_cmd_msg:
                 # 같은 메시지면 쿨타임 검사
                 if now - SendCMD_Device.last_cmd_time < cmdIntervalSec:
-                    return False    
+                    return False,ALM_User.CMD_INTERVAL_DUPLICATED.value
             SendCMD_Device.last_cmd_time = now
             SendCMD_Device.last_cmd_msg = cmdTmp
         else:
-            return False
+            return False,ALM_User.ABNORMAL_CMD_DATA
     #log_all_frames(sendbuf)
     rfidInstanceDefault()
-    return service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
+    bExecuteResult = service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
+    return bExecuteResult, AlarmCodeList.OK.name
 
 lsRotateMotors = [str(ModbusID.ROTATE_MAIN_540.value), str(ModbusID.ROTATE_SERVE_360.value)]
 def callbackACK(recvData):
@@ -489,7 +632,7 @@ def callbackACK(recvData):
         if isTrue(flagFinished) and isTrue(isHome):
             if mbid_tmp in lsRotateMotors:
                 lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
-                SendCMD_Device(lsCmdCaliHome)
+                bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
         
         if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
             return
@@ -708,7 +851,7 @@ def callbackMB_15(recvDataMap):
         #             rospy.loginfo('#목적지가 분기기이고,충전소에서 출발하는 경우는 POT 활성')
         # else:   #그 외에는 움직이는 방향에 따라 좌우됨.
         #그외에는 모두 댐핑이며 추후 구현.
-#목적지까지 10만 펄스 이내가 아니면 리턴.
+        #목적지까지 10만 펄스 이내가 아니면 리턴.
         if not is_within_range(target_pos,sPOS, roundPulse*8):
             return
         if endNode_type.find(notagstr) < 0:
@@ -732,148 +875,148 @@ def callbackMB_15(recvDataMap):
         rospy.loginfo(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
-def callbackRFID(recvDataMap):
-    #global epcTarget
-    global lastNode
-    global lastRSSI
-    global lastPos
-    global endnode
-    global isScan
-    global epcTotalView
-    global dfNodeInfo
-    needSave = False
-    #RFID 부분은 없앰
-    #현재 들어온 포지션으로 노드 계산
-    #계산된 노드가 목표노드와 인접한 노드인지 확인
-    #목표노드가 상대노드(도그근처에 가상으로 만든 노드)면 TARGET_POS 를 현재 포지션과 인접한 노드 마스터 정보의
-    #포지션과 비교하여 엔코더 오차 보정하여 보정명령어 송출.
-    #진짜 노드인 경우는 감속
-    try:
-        sEPC = recvDataMap.get(sEPCKey)
-        sRSSI = abs(try_parse_int(recvDataMap.get(sRSSIKey,0)))
-        sPOS = try_parse_int(recvDataMap.get(sPOS_Key))
-        sSPD = (try_parse_int(recvDataMap.get(sSPD_Key)))
-        sInv = recvDataMap.get(sInv_Key,notagstr)
-        sSPDAbs = abs(sSPD)
-        epcnodeinfo = GetEPCNodeInfoDic()
-        curNode = epcnodeinfo.get(sEPC)
-        if sEPC is None:
-            if isScan:
-                return
-            sEPC = sInv
-            sRSSI = 0
-            sSPDAbs = 0
-            recvDataMap[sEPCKey] = notagstr
-        else:
-            recvDataMap[sInv_Key] = 'on'
-        if sRSSI > RSSI_FILTER:
-            return
+# def callbackRFID(recvDataMap):
+#     #global epcTarget
+#     global lastNode
+#     global lastRSSI
+#     global lastPos
+#     global endnode
+#     global isScan
+#     global epcTotalView
+#     global dfNodeInfo
+#     needSave = False
+#     #RFID 부분은 없앰
+#     #현재 들어온 포지션으로 노드 계산
+#     #계산된 노드가 목표노드와 인접한 노드인지 확인
+#     #목표노드가 상대노드(도그근처에 가상으로 만든 노드)면 TARGET_POS 를 현재 포지션과 인접한 노드 마스터 정보의
+#     #포지션과 비교하여 엔코더 오차 보정하여 보정명령어 송출.
+#     #진짜 노드인 경우는 감속
+#     try:
+#         sEPC = recvDataMap.get(sEPCKey)
+#         sRSSI = abs(try_parse_int(recvDataMap.get(sRSSIKey,0)))
+#         sPOS = try_parse_int(recvDataMap.get(sPOS_Key))
+#         sSPD = (try_parse_int(recvDataMap.get(sSPD_Key)))
+#         sInv = recvDataMap.get(sInv_Key,notagstr)
+#         sSPDAbs = abs(sSPD)
+#         epcnodeinfo = GetEPCNodeInfoDic()
+#         curNode = epcnodeinfo.get(sEPC)
+#         if sEPC is None:
+#             if isScan:
+#                 return
+#             sEPC = sInv
+#             sRSSI = 0
+#             sSPDAbs = 0
+#             recvDataMap[sEPCKey] = notagstr
+#         else:
+#             recvDataMap[sInv_Key] = 'on'
+#         if sRSSI > RSSI_FILTER:
+#             return
 
-        if recvDataMap.get(sALIVE_Key) is not None:
-            #스마트 플러그값 폴링
-            handle_charge()
-            return
+#         if recvDataMap.get(sALIVE_Key) is not None:
+#             #스마트 플러그값 폴링
+#             handle_charge()
+#             return
         
-        #dfEPCTotal = pd.read_csv(strFileEPC_total, sep=sDivTab)        
-        if isScan:
-            dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
-            epcnodeinfo2 = df_to_dict_int_values(dfScan, MAPFIELD.EPC.name, TableInfo.NODE_ID.name)
-            result = get_missing_or_next(list(epcnodeinfo2.values()))
-            if epcnodeinfo2.get(sEPC) is not None:
-                result=epcnodeinfo2.get(sEPC)
+#         #dfEPCTotal = pd.read_csv(strFileEPC_total, sep=sDivTab)        
+#         if isScan:
+#             dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
+#             epcnodeinfo2 = df_to_dict_int_values(dfScan, MAPFIELD.EPC.name, TableInfo.NODE_ID.name)
+#             result = get_missing_or_next(list(epcnodeinfo2.values()))
+#             if epcnodeinfo2.get(sEPC) is not None:
+#                 result=epcnodeinfo2.get(sEPC)
             
-            #기준이 되는 노드는 업데이트 하지 않는다.
-            if result in NODES_SPECIAL:
-                return
+#             #기준이 되는 노드는 업데이트 하지 않는다.
+#             if result in NODES_SPECIAL:
+#                 return
             
-            dicEPCNodeInfo = {TableInfo.NODE_ID.name : int(result) ,MotorWMOVEParams.POS.name : sPOS,MAPFIELD.EPC.name: sEPC}
-            dfScan = insert_or_update_row_to_csv(strFileEPC_scan, sDivTab, dicEPCNodeInfo,MotorWMOVEParams.POS.name)
-            print(dfScan)
-            # df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
-            # pub_RFID_DF.publish(df_json)
-            return                    
+#             dicEPCNodeInfo = {TableInfo.NODE_ID.name : int(result) ,MotorWMOVEParams.POS.name : sPOS,MAPFIELD.EPC.name: sEPC}
+#             dfScan = insert_or_update_row_to_csv(strFileEPC_scan, sDivTab, dicEPCNodeInfo,MotorWMOVEParams.POS.name)
+#             print(dfScan)
+#             # df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
+#             # pub_RFID_DF.publish(df_json)
+#             return                    
         
-        if sRSSI != 0:
-            epc_column = MAPFIELD.EPC.name  # 예: 'EPC'
+#         if sRSSI != 0:
+#             epc_column = MAPFIELD.EPC.name  # 예: 'EPC'
 
-            if epc_column in epcTotalView.columns:
-                filtered_df = epcTotalView[epcTotalView[epc_column] == str(sEPC)]
-                if not filtered_df.empty:
-                    result_dict = filtered_df.tail(1).to_dict(orient='records')[0]
-                else:
-                    result_dict = {}
-            else:
-                result_dict = {}  # EPC 컬럼 자체가 없음
+#             if epc_column in epcTotalView.columns:
+#                 filtered_df = epcTotalView[epcTotalView[epc_column] == str(sEPC)]
+#                 if not filtered_df.empty:
+#                     result_dict = filtered_df.tail(1).to_dict(orient='records')[0]
+#                 else:
+#                     result_dict = {}
+#             else:
+#                 result_dict = {}  # EPC 컬럼 자체가 없음
 
-            #df = insert_or_update_row_to_df(epcTotalView, recvDataMap, MonitoringField.CUR_POS.name)
-            df = insert_or_update_row_to_df(epcTotalView, recvDataMap, sEPCKey)
-            df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
-            pub_RFID_DF.publish(df_json)
+#             #df = insert_or_update_row_to_df(epcTotalView, recvDataMap, MonitoringField.CUR_POS.name)
+#             df = insert_or_update_row_to_df(epcTotalView, recvDataMap, sEPCKey)
+#             df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
+#             pub_RFID_DF.publish(df_json)
             
-            long_values = df[df[sEPCKey].astype(str).str.len() >= 6][sEPCKey].tolist()
-            if len(long_values) > 1:   
-                epcTotalView.drop(epcTotalView.index, inplace=True)
+#             long_values = df[df[sEPCKey].astype(str).str.len() >= 6][sEPCKey].tolist()
+#             if len(long_values) > 1:   
+#                 epcTotalView.drop(epcTotalView.index, inplace=True)
 
-            # if not is_equal(result_dict.get(MAPFIELD.EPC.name), sEPC):
-            #     epcTotalView.drop(epcTotalView.index, inplace=True)
+#             # if not is_equal(result_dict.get(MAPFIELD.EPC.name), sEPC):
+#             #     epcTotalView.drop(epcTotalView.index, inplace=True)
         
-            if curNode is None:
-                result = get_missing_or_next(list(epcnodeinfo.values()))
-                epcnodeinfo[sEPC] = curNode = endNode = result
-                #curNode = endNode = result
-                #epcTarget = sEPC
-                endNode = curNode
-                saveDic_ToFile(epcnodeinfo,strFileEPC_node, sDivTab,True)
-                rospy.loginfo(f'New EPC : {sEPC},Node:{curNode}, POS:{sPOS}')                
-                needSave = True
-            recvDataMap[TableInfo.NODE_ID.name] = curNode
-        elif sSPDAbs == 0 and not isScan:
-            df = insert_or_update_row_to_df(epcTotalView, recvDataMap, MAPFIELD.EPC.name)
-            df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
-            pub_RFID_DF.publish(df_json)
-            return        
-        if isScan:
-        #if epcTarget is None or isScan:
-            return
+#             if curNode is None:
+#                 result = get_missing_or_next(list(epcnodeinfo.values()))
+#                 epcnodeinfo[sEPC] = curNode = endNode = result
+#                 #curNode = endNode = result
+#                 #epcTarget = sEPC
+#                 endNode = curNode
+#                 saveDic_ToFile(epcnodeinfo,strFileEPC_node, sDivTab,True)
+#                 rospy.loginfo(f'New EPC : {sEPC},Node:{curNode}, POS:{sPOS}')                
+#                 needSave = True
+#             recvDataMap[TableInfo.NODE_ID.name] = curNode
+#         elif sSPDAbs == 0 and not isScan:
+#             df = insert_or_update_row_to_df(epcTotalView, recvDataMap, MAPFIELD.EPC.name)
+#             df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
+#             pub_RFID_DF.publish(df_json)
+#             return        
+#         if isScan:
+#         #if epcTarget is None or isScan:
+#             return
         
-        # lastNode = curNode        
-        # endNode = epcnodeinfo.get(epcTarget)
-        # if curNode == endNode:
-        #     if lastRSSI is None:
-        #         lastRSSI = sRSSI
-        #         lastPos = sPOS
-        #         rospy.loginfo(f'lastRSSI init : {lastRSSI},POS:{lastPos},SPD:{sSPD}')
-        #         return
+#         # lastNode = curNode        
+#         # endNode = epcnodeinfo.get(epcTarget)
+#         # if curNode == endNode:
+#         #     if lastRSSI is None:
+#         #         lastRSSI = sRSSI
+#         #         lastPos = sPOS
+#         #         rospy.loginfo(f'lastRSSI init : {lastRSSI},POS:{lastPos},SPD:{sSPD}')
+#         #         return
             
-        #     if sRSSI <= lastRSSI:
-        #         lastRSSI = sRSSI
-        #         lastPos = sPOS
-        #         rospy.loginfo(f'lastRSSI updated : {lastRSSI},POS:{lastPos},SPD:{sSPD}')
-        #         return
+#         #     if sRSSI <= lastRSSI:
+#         #         lastRSSI = sRSSI
+#         #         lastPos = sPOS
+#         #         rospy.loginfo(f'lastRSSI updated : {lastRSSI},POS:{lastPos},SPD:{sSPD}')
+#         #         return
             
-        #     if sSPD > 0:
-        #         finalPos = lastPos+(sSPD*10*3)            
-        #     else:
-        #         finalPos = lastPos+(sSPD*10*4)            
+#         #     if sSPD > 0:
+#         #         finalPos = lastPos+(sSPD*10*3)            
+#         #     else:
+#         #         finalPos = lastPos+(sSPD*10*4)            
             
-        #     dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,sSPDAbs,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
-        #     dicEPCNodeInfo = {TableInfo.NODE_ID.name : lastNode,MotorWMOVEParams.POS.name : finalPos,MAPFIELD.EPC.name: sEPC}
-        #     # if needSave:
-        #     #     #df = insert_row_to_csv(strFileEPC_total, sDivTab, dicEPCNodeInfo)
-        #     #     df = insert_or_update_row_to_csv(strFileEPC_total, sDivTab, dicEPCNodeInfo, MAPFIELD.EPC.name)            
-        #     #     print(df)
-        #     #SendCMDESTOP(f'I{sSPD}')
-        #     SendCMD_Device([dicJOG])
-        #     epcTarget = None
-        #     lastRSSI = None
-        #     lastPos = None
-        #     time.sleep(MODBUS_EXCEPTION_DELAY)
-        #     RFIDControl(False)
-        #     log_all_frames(f"Stop at {endNode},RFID:{sEPC},RSSI:{sRSSI},finalPos:{finalPos},SPD:{sSPD}")
-    except Exception as e:
-        message = traceback.format_exc()
-        rospy.loginfo(message)
-        SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
+#         #     dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,sSPDAbs,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
+#         #     dicEPCNodeInfo = {TableInfo.NODE_ID.name : lastNode,MotorWMOVEParams.POS.name : finalPos,MAPFIELD.EPC.name: sEPC}
+#         #     # if needSave:
+#         #     #     #df = insert_row_to_csv(strFileEPC_total, sDivTab, dicEPCNodeInfo)
+#         #     #     df = insert_or_update_row_to_csv(strFileEPC_total, sDivTab, dicEPCNodeInfo, MAPFIELD.EPC.name)            
+#         #     #     print(df)
+#         #     #SendCMDESTOP(f'I{sSPD}')
+#         #     SendCMD_Device([dicJOG])
+#         #     epcTarget = None
+#         #     lastRSSI = None
+#         #     lastPos = None
+#         #     time.sleep(MODBUS_EXCEPTION_DELAY)
+#         #     RFIDControl(False)
+#         #     log_all_frames(f"Stop at {endNode},RFID:{sEPC},RSSI:{sRSSI},finalPos:{finalPos},SPD:{sSPD}")
+#     except Exception as e:
+#         message = traceback.format_exc()
+#         rospy.loginfo(message)
+#         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
 def callback_factory(topic_name):
     def callback(msg):
@@ -987,26 +1130,29 @@ def control_data():
 
 @app.route(f'/{EndPoints.ARD.name}', methods=['GET'])
 def service_ard():
+    bResult = True
+    bStrMsg = AlarmCodeList.OK.name
     try:
         tmpHalf = request.args.get('q', None)
         tiltAngle = try_parse_int(request.args.get('tilt', None),MIN_INT)
         if tiltAngle != MIN_INT:   
             ardmsg = round(mapRange(tiltAngle, minGYRO,maxGYRO,0,180))
             if tiltAngle != MIN_INT:
-                SendCMDArd(f'S:10,{ardmsg}')
+                bResult,bStrMsg=SendCMDArd(f'S:10,{ardmsg}')
         elif tmpHalf is None:
-            return {"error": "No data received"}, 400
+            bResult = False
+            bStrMsg = ALM_User.CMD_ISNULL.value
         else:
-            SendCMDArd(tmpHalf)
+            bResult,bStrMsg=SendCMDArd(tmpHalf)
     except Exception as e:
+        bResult = False
+        bStrMsg = str(traceback.format_exc())
         logSSE_error(traceback.format_exc())
-        rospy.logerr(f"데이터 처리 오류: {e}")
-        return {"error": str(e)}, 500
-  
-    return {"message": f"{request.method},{request.args}"}, 200  
+        return {bResult:bStrMsg}, 500
+    return {bResult:bStrMsg}, 200
   
 @app.route('/DATA2', methods=['GET'])
-def service_data():
+def service_data2():
     resultData = ''
     try:
         topic_name = request.args.get('topicname', None)        
@@ -1025,7 +1171,7 @@ def service_data():
     return jsonify(resultData), 200
   
 @app.route('/DATA1', methods=['GET'])
-def service_data2():
+def service_dataExport():
     resultData = ''
     try:
         topic_name = request.args.get('topicname', None)        
@@ -1044,9 +1190,9 @@ def service_data2():
     return (resultData), 200
   
 @app.route('/CROSS', methods=['GET'])
-def service_ard2():
-    if not hasattr(service_ard2, "last_cmd_time"):
-        service_ard2.last_cmd_msg = 0
+def service_cross():
+    if not hasattr(service_cross, "last_cmd_time"):
+        service_cross.last_cmd_msg = 0
 
     try:
         now = time.time()
@@ -1059,12 +1205,12 @@ def service_ard2():
         ipaddr = loaded_data.get(CALLBELL_FIELD.IP.name, None)
         devID = GetLastString(ipaddr, ".")
         
-        if now - service_ard2.last_cmd_time > cmdIntervalSec:
+        if now - service_cross.last_cmd_time > cmdIntervalSec:
             bSmartPlugAlive = handle_charge()
             if bSmartPlugAlive:
-                service_ard2.last_cmd_time = now
+                service_cross.last_cmd_time = now
             else:
-                service_ard2.last_cmd_time = now + 60
+                service_cross.last_cmd_time = now + 60
 
         if cur_pos is not None:
             cur_pos = int(cur_pos)
@@ -1249,85 +1395,106 @@ def service_cmd():
         controlArm2 = try_parse_int(request.args.get(JogControl.CONTROL_2ARMS_ANGLE.name, None),MIN_INT)
         qNumber = request.args.get('q', MIN_INT)
         recvData = request.args.get('data')
+        recvDF = request.args.get('DF')
         topicData = request.args.get('topicname')
+        bResult = True
+        bExecuteMsg = AlarmCodeList.OK.name
         
+        if recvDF is not None:
+            # URL 디코딩 및 JSON 파싱
+            decoded = urllib.parse.unquote(recvDF)
+            records = json.loads(decoded)
+            df = pd.DataFrame(records)
+            lsCmd=(df.to_dict(orient='records'))
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+            reponseCode = 200 if bResult else 400
+            return {bResult:bExecuteMsg}, 200
         if control360 != MIN_INT:
             targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
             dic540 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
-            print(dic540)
+            #print(dic540)
             lsCmd = [dic540]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
             if isTrue(di_home) and si_home == 'ESTOP':
                 lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
             elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
                 lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
-            bResult=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:reponseCode}, 200
+            return {bResult:bExecuteMsg}, 200
         
         elif control540 != MIN_INT:            
             targetPulse_serv = GetRotateMainPulseFromAngle(control540)
             dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,SPD_540,ACC_540,DECC_540)
-            print(dic540)
+            #print(dic540)
             lsCmd = [dic540]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
             if si_home == 'ESTOP':
                 lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
             elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
                 lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
-            bResult=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:reponseCode}, 200
+            return {bResult:bExecuteMsg}, 200
         
         elif controlArm3 != MIN_INT:
-            lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
-            print(lsCmd)
-            bResult=SendCMD_Device(lsCmd)
-            reponseCode = 200 if bResult else 400
-            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:rpm_time}, 200
+            targetPulse_serv = GetTargetPulseServingArm(controlArm3, 0)
+            limit_arm1_mm = GetTargetLengthMMServingArm(pot_telesrv)
+            #서빙암 요청길이가 물리적 최대길이를 넘어가면 실행하지 않는다.
+            if targetPulse_serv > pot_telesrv:
+                return {False:f'{ALM_User.OUT_OF_SERVING_RANGE.value} over {limit_arm1_mm}mm'}, 202
+            else:
+                lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
+                #print(lsCmd)
+                bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+                reponseCode = 200 if bResult else 400
+                #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {bResult:bExecuteMsg}, 200
         
         elif controlArm2 != MIN_INT:
             target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
             lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
-            print(lsCmd)
-            bResult=SendCMD_Device(lsCmd)
+            #print(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:rpm_time}, 200
+            return {bResult:bExecuteMsg}, 200
         
         elif lightplug is not None:
             plug_enable = isTrue(lightplug)
             bResult = SetLightPlug(plug_enable)
             reponseCode = 200 if bResult else 400
-            return {f'Set SetLightPlug to {plug_enable} -> Result': bResult}, reponseCode
+            #return {f'Set SetLightPlug to {plug_enable} -> Result': bResult}, reponseCode
+            return {bResult:plug_enable}, reponseCode
         
         elif chargeplug is not None:
             plug_enable = isTrue(chargeplug)
             bResult = SetChargerPlug(plug_enable)
             reponseCode = 200 if bResult else 400
-            return {f'Set SetChargePlug to {plug_enable} -> Result': bResult}, reponseCode
+            #return {f'Set SetChargePlug to {plug_enable} -> Result': bResult}, reponseCode
+            return {bResult:plug_enable}, reponseCode
         
         elif crossplug is not None:
             plug_enable = isTrue(crossplug)
             bResult = SetCrossPlug(plug_enable)
             reponseCode = 200 if bResult else 400
-            return {f'Set SetCrossPlug to {plug_enable} -> Result ': bResult}, reponseCode
+            #return {f'Set SetCrossPlug to {plug_enable} -> Result ': bResult}, reponseCode
+            return {bResult:plug_enable}, reponseCode
         
         if topicData is not None:
             responseData = shared_data.get(topicData)
             if topic_name == TopicName.JOB_DF.name:
                 print(type(responseData))
             if responseData is None:
-                return {f"Topic not found({topicData})": posMsg}, 400    
+                return {False:posMsg}, 400
             else:
                 return {f"{reqargs}": json.dumps(responseData, sort_keys=True)}, 200
         
         if qNumber == MIN_INT and recvData is None:
             #return {"error": "No data received"}, 400
-            return {"No data received": posMsg}, 400
+            return {False: posMsg}, 400
         if recvData is None:
             cmdNumber=try_parse_int(qNumber,MIN_INT)
             if cmdNumber == MIN_INT:
@@ -1403,21 +1570,21 @@ def service_cmd():
             else:
                 cmdProfile= PROFILE.replace(sDivEmart,sDivItemComma)
                 pub_BLB_CMD.publish(recvData.upper())
-                return {f"Not defined code {qNumber}": dicMotorPos}, 202
+                return {False: f'Not defined code {qNumber}'}, 202
         if len(listReturn) > 0:
-            SendCMD_Device(listReturn)
+            bResult,bExecuteMsg=SendCMD_Device(listReturn)
         else:
             data_out = f'PROFILE{sDivFieldColon}{qNumber}'
             #data_out = json.dumps(reqargs) 
             pub_BLB_CMD.publish(data_out)
-            return {f"Not defined code {qNumber}": dicMotorPos}, 202
+            return {False: f'Not defined code {qNumber}'}, 202
     except Exception as e:
         SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',False)
         rospy.logerr(f"Invalid data:{reqargs},{e}")
         logSSE_error(traceback.format_exc())
-        return {str(e): dicMotorPos }, 500
+        return {False:str(e)}, 500
   
-    return {f"{reqargs}": dicMotorPos}, 200
+    return {bResult: bExecuteMsg}, 200
   
 @app.route(f'/{EndPoints.info.name}', methods=['GET', 'POST'])
 @app.route(f'/{EndPoints.alarm.name}', methods=['GET', 'POST'])

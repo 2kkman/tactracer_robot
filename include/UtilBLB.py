@@ -510,6 +510,7 @@ class JogControl(Enum):
     CONTROL_ROTATE_MAIN = auto()  #메인회전
     CONTROL_ROTATE_TRAY = auto()  #트레이회전
     SPD_RATE = auto()  #암전개 RPM 배속 조정
+    data = auto()   #일반적인 command 로 명령
 
 class OBSTACLE_INFO(Enum):
     LASTSEEN = auto()
@@ -2241,11 +2242,16 @@ class TRAY_TILT_STATUS(Enum):
     TiltDiagonal = -45   #테이블 스캔모드 (Angle_Y : -45)
     TiltTableObstacleScan = 30
 
+def API_ARD(msg):
+    bResult, bStrMsg = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, msg)  
+    rospy.loginfo(f'{msg}->{bStrMsg}')
+    return bResult, bStrMsg
+
 def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
     targetServo = mapRange(tiltStatus.value, minGYRO,maxGYRO,0,180)
     params = f"S:{smoothdelay},{round(targetServo)}"
     msg = f"q={params}"
-    return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, msg)  
+    return API_ARD(msg)  
 
 def SaveTableInfo(curTableInt):
     msg = f"{TableInfo.TABLE_ID.name}={curTableInt}"
@@ -5533,29 +5539,38 @@ def API_MoveH(POS,spd,endnode):
     msg = f"{MotorWMOVEParams.POS.name}={POS}&{MotorWMOVEParams.SPD.name}={spd}&endnode={endnode}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
-    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.JOG.name, msg)
-    return rs
+    bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.JOG.name, msg)
+    return bReturn,strResult
 
 def API_MoveMainTray(target_angle:int,spd_rate=1.0):
     msg = f"{JogControl.CONTROL_ROTATE_TRAY.name}={target_angle}&{JogControl.SPD_RATE.name}={spd_rate}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
-    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
-    return rs
+    bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return bReturn,strResult
 
 def API_MoveMainRotate(target_angle:int,spd_rate=1.0):
     msg = f"{JogControl.CONTROL_ROTATE_MAIN.name}={target_angle}&{JogControl.SPD_RATE.name}={spd_rate}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
-    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
-    return rs
+    bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return bReturn,strResult
+
+def API_SendCMD_Device(sendbuf:list):
+    df = pd.DataFrame(sendbuf)
+    # DataFrame을 JSON 문자열로 변환
+    json_str = df.to_json(orient='records')  # 예: [{"id":1,"name":"Alice"},{"id":2,"name":"Bob"}]
+    encoded_data = urllib.parse.quote(json_str)            
+    msg = f'DF={encoded_data}'
+    bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return bReturn,strResult
 
 def API_MoveArms(distance:int,spd_rate:float):
     msg = f"{JogControl.CONTROL_3ARMS.name}={distance}&{JogControl.SPD_RATE.name}={spd_rate}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
-    rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
-    return rs
+    bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
+    return bReturn,strResult
 
 def SetIMUInterval(time_ms):
     calStr = time_ms

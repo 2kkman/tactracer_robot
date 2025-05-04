@@ -702,7 +702,7 @@ def alarmClear(mbidAll=None):
 def stopAllMotors(decc=EMERGENCY_DECC,resetPulse=False):
   log_all_frames()
   for modbusIDTmp in dic_485poll.keys():  # 장치ID 별로 엑세스
-    if modbusIDTmp in lsSlowDevices:
+    if modbusIDTmp in lsNotMotor:
         continue
     #int485id = int(modbusIDTmp)
     #lsAckList = dic_485ack.get(int485id, None)
@@ -1072,6 +1072,13 @@ while not rospy.is_shutdown():
                   # 현재 모터가 동작중 상태플래그
                   bOnMoving = False
                   lsAckList = dic_485ack.get(int485id, None)
+                  
+                  #서빙텔레스코프가 동작할때는 TOF센서 감지빈도를 최대화 한다
+                  if int485id == ModbusID.TOF.value:
+                    lsAck11 = dic_485ack.get(ModbusID.TELE_SERV_MAIN.value, None)
+                    if lsAck11 != None and len(lsAck11) > 0:
+                        pollrate = 10
+                        
                   if lsAckList != None and len(lsAckList) > 0:
                       bOnMoving = True
                       #if pollrate < 5000:

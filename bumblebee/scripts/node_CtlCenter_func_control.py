@@ -784,6 +784,7 @@ def TTSCommon(ttsMsg,isQueueing = True, ttsInterval = 1, machineName=UbuntuEnv.Q
   
 def SendCMDArd(cmdStr):
     #isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
+    return API_ARD(cmdStr)
     bReturn,strResult=SendInfoHTTP(cmdStr.replace(sDivFieldColon,sDivSemiCol))
     logger_ard.info(cmdStr)
     rospy.loginfo(strResult)
@@ -796,20 +797,23 @@ def SendCMDArd(cmdStr):
     return resultArd
 
 def SendCMD_Device(sendbuf):
-    cmdTmp = sendbuf
+    #cmdTmp = sendbuf
     if isinstance(sendbuf, list):
         if len(sendbuf) > 0:
-            dictTmp = sendbuf[0]
-            if isinstance(dictTmp, dict):
-                if dictTmp.get('MBID') == '11':
-                    print(dictTmp)
+            return API_SendCMD_Device(sendbuf)
+            # dictTmp = sendbuf[0]
+            # if isinstance(dictTmp, dict):
+            #     if dictTmp.get('MBID') == '11':
+            #         print(dictTmp)
 
-            cmdTmp = json.dumps(sendbuf)
+            # cmdTmp = json.dumps(sendbuf)
         else:
             return False
-    sMsg = log_all_frames('모터명령어',4)
-    SendInfoHTTP(sMsg)
-    return service_setbool_client(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
+    else:
+        return False
+    # sMsg = log_all_frames('모터명령어',4)
+    # SendInfoHTTP(sMsg)
+    # return service_setbool_client(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
 
 def LightWelcome(isOn):
     OnOff = 1 if isOn else 0
@@ -944,7 +948,7 @@ def DoorOpen(doorIdx=4):
 
         return True
     else:
-        SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAYDOOR_SAFETY.value)
+        SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.SAFETY_TRAYDOOR.value)
         return False
 
 def DoorClose(doorIdx=4):
