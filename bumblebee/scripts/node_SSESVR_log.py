@@ -363,11 +363,14 @@ def CheckSafetyMotorMove(listReturnTmp):
     bSafetyFalseArms = any(val > roundPulse for val in lsCheckArms)
     df = pd.DataFrame(listReturnTmp)
     #print(listReturnTmp)
-    ls6 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.MOTOR_V.value)].to_dict(orient="records")
-    ls11 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.TELE_SERV_MAIN.value)].to_dict(orient="records")
-    ls31 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.ROTATE_SERVE_360.value)].to_dict(orient="records")
-    ls27 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.ROTATE_MAIN_540.value)].to_dict(orient="records")
-    ls15 = df.loc[df[MotorWMOVEParams.MBID.name] == str(ModbusID.MOTOR_H.value)].to_dict(orient="records")
+    wmoveStr = MotorCmdField.WMOVE.name
+    cmdStr = MotorWMOVEParams.CMD.name
+    mbidStr = MotorWMOVEParams.MBID.name
+    ls6 = df.loc[(df[mbidStr] == str(ModbusID.MOTOR_V.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
+    ls11 = df.loc[(df[mbidStr] == str(ModbusID.TELE_SERV_MAIN.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
+    ls31 = df.loc[(df[mbidStr] == str(ModbusID.ROTATE_SERVE_360.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
+    ls27 = df.loc[(df[mbidStr] == str(ModbusID.ROTATE_MAIN_540.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
+    ls15 = df.loc[(df[mbidStr] == str(ModbusID.MOTOR_H.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     strCheckResult = AlarmCodeList.OK.name
     bSafety = True
     doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
@@ -559,16 +562,21 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=5,isCheckSafety=True):
             if isCheckSafety:
                 bResultSafety,strMsg=CheckSafetyMotorMove(sendbuf)
                 if not bResultSafety:
+                    rospy.loginfo(strMsg)
                     return False,strMsg
             cmdTmp = json.dumps(sendbuf)
             if cmdTmp == SendCMD_Device.last_cmd_msg:
                 # 같은 메시지면 쿨타임 검사
                 if now - SendCMD_Device.last_cmd_time < cmdIntervalSec:
-                    return False,ALM_User.CMD_INTERVAL_DUPLICATED.value
+                    strMsg = ALM_User.CMD_INTERVAL_DUPLICATED.value
+                    rospy.loginfo(strMsg)
+                    return False,strMsg
             SendCMD_Device.last_cmd_time = now
             SendCMD_Device.last_cmd_msg = cmdTmp
         else:
-            return False,ALM_User.ABNORMAL_CMD_DATA
+            strMsg = ALM_User.ABNORMAL_CMD_DATA
+            rospy.loginfo(strMsg)
+            return False,strMsg
     #log_all_frames(sendbuf)
     rfidInstanceDefault()
     bExecuteResult = service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
@@ -1405,6 +1413,7 @@ def service_cmd_device():
         param1 = MIN_INT
         param2 = MIN_INT
         posMsg = json.dumps(dicMotorPos, sort_keys=True)
+        rospy.loginfo(reqargs)
         crossplug = request.args.get(SMARTPLUG_INFO.SET_CROSSPLUG.name, None)
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
