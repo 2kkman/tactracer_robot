@@ -2258,8 +2258,8 @@ def API_ARD(msg):
 def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
     targetServo = mapRange(tiltStatus.value, minGYRO,maxGYRO,0,180)
     params = f"S:{smoothdelay},{round(targetServo)}"
-    msg = f"q={params}"
-    return API_ARD(msg)  
+    #msg = f"{params}"
+    return API_ARD(params)  
 
 def SaveTableInfo(curTableInt):
     msg = f"{TableInfo.TABLE_ID.name}={curTableInt}"
