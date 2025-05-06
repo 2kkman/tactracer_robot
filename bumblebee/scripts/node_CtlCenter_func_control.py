@@ -808,17 +808,29 @@ def SendCMD_Device(sendbuf):
 
             # cmdTmp = json.dumps(sendbuf)
         else:
-            return False
+            return False, ALM_User.ABNORMAL_CMD_DATA.value
     else:
-        return False
+        return False, ALM_User.ABNORMAL_CMD_DATA2.value
+    
+def SendCMD_DeviceService(sendbuf):
+    #cmdTmp = sendbuf
+    if isinstance(sendbuf, list):
+        if len(sendbuf) > 0:
+            cmdTmp = json.dumps(sendbuf)
+        else:
+            return False, ALM_User.ABNORMAL_CMD_DATA.value
+    else:
+        return False, ALM_User.ABNORMAL_CMD_DATA2.value
     # sMsg = log_all_frames('모터명령어',4)
     # SendInfoHTTP(sMsg)
-    # return service_setbool_client(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
+    return True, service_setbool_client(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
 
 def LightWelcome(isOn):
     OnOff = 1 if isOn else 0
-    sCmd = f"V12:{OnOff}"
-    SendCMDArd(sCmd)
+    isLightOn = try_parse_int(node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.O_V12_NC.name))
+    if OnOff != isLightOn:        
+        sCmd = f"V12:{OnOff}"
+        SendCMDArd(sCmd)
 
 def SaveCurrentPos():
   dicPos = {}
@@ -1000,10 +1012,8 @@ def StopAllMotors(decc = EMERGENCY_DECC):
     lsModbusRequests = []
     for id in ModbusID:
       sendInit = getMotorStopDic(id.value, decc)
-      #sendInit = getMotorSimpleCmdDic(id.value, MotorCmdField.WSTOP)
       lsModbusRequests.append(sendInit)
-      #rospy.loginfo(f"Trying to stop Motor {id.name}:{id.value}")
-    SendCMD_Device(lsModbusRequests)
+    SendCMD_DeviceService(lsModbusRequests)
 
 def getBLBStatus() -> BLB_STATUS_FIELD:
     #1- "Ideal"
@@ -1492,7 +1502,7 @@ def CancelJob():
     SetWaitConfirmFlag(False,AlarmCodeList.OK)    
     return APIBLB_ACTION_REPLY.R101
   
-def StopEmergency(strAlarmMsg = '-1:알람발생!', isStopMotor = True):
+def StopEmergency(strAlarmMsg = '-1:알람발생!', isStopMotor = True, isSSEAlive=True):
     node_CtlCenter_globals.listBLB.clear()
     node_CtlCenter_globals.dicTargetPos.clear()
     node_CtlCenter_globals.dicTargetPosFeedBack.clear()
@@ -1505,14 +1515,15 @@ def StopEmergency(strAlarmMsg = '-1:알람발생!', isStopMotor = True):
     #alarmMsg = f'{key}={value}'
     SetWaitConfirmFlag(True, {key:value})
     #node_CtlCenter_globals.listTable.clear()
-    if isStopMotor:
-        StopAllMotors(ACC_DECC_SMOOTH)
-    DoorStop()
     logmsg = f"{strAlarmMsg}:{sys._getframe(1).f_code.co_name}:{getCurrentTime()}"
     SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,logmsg)
-    API_SendAlarm(ALM_User.USER_ESTOP)
-    SendAlarmHTTP(value,True,node_CtlCenter_globals.BLB_ANDROID_IP)
-    SetPauseState()
+    if isStopMotor:
+        StopAllMotors(ACC_DECC_SMOOTH)
+    if isSSEAlive:
+        DoorStop()
+        API_SendAlarm(ALM_User.USER_ESTOP)
+        SendAlarmHTTP(value,True,node_CtlCenter_globals.BLB_ANDROID_IP)
+        #SetPauseState()
     
 def GetNewRotateArmList(dicAruco, ignoreArm=False):
     lsMotorOperationNew = []

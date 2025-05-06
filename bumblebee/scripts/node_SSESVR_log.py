@@ -224,7 +224,8 @@ def GetRotateMainPulseFromAngle(angleStr):
   arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
   return find_closest_value(arr,cur_540)
 
-def GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition=False, spd_rate = 1.0):
+def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.0):
+    targetPulse_arm1=mapRange(target_angle,0,90,0,pot_arm1)    
     if bUseCurrentPosition:
         cur_arm1 = int(dicMotorPos[topicName_BAL1])
         cur_arm2 =int(dicMotorPos[topicName_BAL2])
@@ -268,14 +269,19 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
         cur_serv = int(dicMotorPos[topicName_ServArm])
     else:
         cur_serv = 0
-        
+    
+    #서빙암 타겟 펄스    
     targetPulse_serv = GetTargetPulseServingArm(distanceServingTeleTotal, 0)
+    targetAngle_arm1 = calculate_weight_angle(distanceServingTeleTotal,1300,500,90)
+    
+    #현재 위치에서 서빙암이 뻗어야 할 스트로크 계산
     stroke_servArm_signed = targetPulse_serv - cur_serv
     stroke_servArm_abs = abs(stroke_servArm_signed)
-    targetPulse_arm1 = min(round(mapRange(targetPulse_serv,0,STROKE_MAX,0,pot_arm1)),pot_arm1)
+    #target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
+    #targetPulse_arm1 = min(round(mapRange(targetPulse_serv,0,STROKE_MAX,0,pot_arm1)),pot_arm1)
     #서빙암 스트로크 RPM
-    lsBal, rpm_time_arm1= GetControlInfoBalances(targetPulse_arm1,bUseCurrentPosition,spd_rate)
-    servArmCountAbs = round(stroke_servArm_abs/roundPulse)    
+    lsBal, rpm_time_arm1= GetControlInfoBalances(targetAngle_arm1,bUseCurrentPosition,spd_rate)
+    servArmCountAbs = round(stroke_servArm_abs/roundPulse)
     rpm_servArm = max(calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
     # 원본 값 보정
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
@@ -367,6 +373,7 @@ def CheckSafetyMotorMove(listReturnTmp):
     doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
     
     if len(ls6) > 0:
+        #도어가 열린 상태에서는 상승하지 않는다
         dic6 = ls6[0]
         target_pos6 = try_parse_int(dic6.get(MotorWMOVEParams.POS.name),MIN_INT)        
         isUp = target_pos6 < pos_LiftV
@@ -523,6 +530,8 @@ def SendCMDArd(sCmdArd,isSafetyCheck=True):
     if len(splitTmp) > 1:
         sCmd = splitTmp[0]
         sParam = splitTmp[1]
+        #트레이 세이프티 - 도어(O명령) 상승시(2-상승) 리프트 모터 거리가 10만펄스 이상 확보되지 않으면 
+        #도어를 열지 않는다
         if sCmd == 'O' and sParam.startswith('2') and pos_LiftV < roundPulse*10:
             resultArd = False
             strMsg = ALM_User.SAFETY_TRAYDOOR.value
@@ -534,7 +543,7 @@ def SendCMDArd(sCmdArd,isSafetyCheck=True):
     else:
         resultArd = False
         strMsg = ALM_User.CMD_FORMAT_INVALID.value
-    rospy.loginfo(sCmdArd)
+    #rospy.loginfo(sCmdArd)
     time.sleep(MODBUS_WRITE_DELAY)        
     return resultArd,strMsg
 
@@ -565,7 +574,6 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=5,isCheckSafety=True):
     bExecuteResult = service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
     return bExecuteResult, AlarmCodeList.OK.name
 
-lsRotateMotors = [str(ModbusID.ROTATE_MAIN_540.value), str(ModbusID.ROTATE_SERVE_360.value)]
 def callbackACK(recvData):
     #global epcTarget
     global lastNode
@@ -604,6 +612,7 @@ def callbackACK(recvData):
         isPot = 0
         last_spd = 0
         mbid_tmp = lsResult[2]  # 모드버스 ID
+        mbid_instance = ModbusID.from_value(mbid_tmp)
         flagFinished = lsResult[1]  # 0 이면 미완료, 1 이면 완료
         stopped_pos=GetMotorHPos()
         if not hasattr(callbackACK, "retryCount"):
@@ -614,25 +623,35 @@ def callbackACK(recvData):
             return
         
         #lastcalledAck = getDateTime()
-        if len(lsResult) >= 13:
+        if len(lsResult) > 14:
             #print(lsResult)
-            torque_max = lsResult[3]  # 최대토크
-            torque_ave = lsResult[4]  # 평균토크
-            ovr_max = lsResult[5]  # 최대오버로드
-            ovr_ave = lsResult[6]  # 평균오버로드
+            torque_max = lsResult[3]  # 정방향 최대토크
+            torque_mean = lsResult[4]  # 평균토크
+            torque_min = lsResult[5]  # 역방향 최대토크
+            ovr_max = lsResult[6]  # 최대오버로드
             last_started_pos = int(lsResult[7])  # 운행 시작 지점
             last_targeted_pos = int(lsResult[8])  # 운행 종료 목표 지점
             stopped_pos = int(lsResult[9])  # 현재 지점
             last_spd = int(lsResult[10])  # 정지시점 속도 및 방향
             isHome = lsResult[11]  # HOME에 걸려서 멈췄으면 1
             isPot = lsResult[12]  # POT에 걸려서 멈췄으면 1
+            isNot = lsResult[13]  # NOT에 걸려서 멈췄으면 1
+            isESTOP = lsResult[14]  # ESTOP에 걸려서 멈췄으면 1
             
-        # 회전모터 (27,31) 자동 상시 캘리브레이션.
-        # 회전모터가 홈센서에 걸려서 멈췄을 경우 0 으로 위치값을 초기화 한다
-        if isTrue(flagFinished) and isTrue(isHome):
-            if mbid_tmp in lsRotateMotors:
+        if isTrue(flagFinished):
+            # 회전모터 (27,31) 자동 상시 캘리브레이션.
+            # 회전모터가 홈센서에 걸려서 멈췄을 경우 0 으로 위치값을 초기화 한다            
+            if mbid_instance in lsRotateMotors and isTrue(isHome):
                 lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
                 bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
+                rospy.loginfo(f'Cali {mbid_tmp} Result:{bSafetyCheck},{strMsg}')
+            #POT 예정 펄스보다 5바퀴 이상 차이나면 모든 모터를 중지하고 알람을 날린다
+            elif mbid_instance in lsReleaseMotors:
+                if isTrue(isPot) or isTrue(isNot):
+                    diffPos = abs(last_targeted_pos - stopped_pos)
+                    if diffPos > roundPulse*5:
+                        SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',True)
+                        rospy.loginfo(f'ESTOP triggered at {mbid_tmp} too much diff pos {diffPos}')
         
         if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
             return
@@ -857,7 +876,7 @@ def callbackMB_15(recvDataMap):
         if endNode_type.find(notagstr) < 0:
             return
         rospy.loginfo(f'#엔코더오차:{curNodePosMaster-sPOS},현재속도:{sSPD_signed},현재위치:{sPOS},목표위치:{target_pos},모드:{si_pot},노드속성:{endNode_type}')
-        if si_pot != "ESTOP" and abs(sSPD_signed) > 10:
+        if si_pot != BLD_PROFILE_CMD.ESTOP.name and abs(sSPD_signed) > 10:
             listReturnTmp.append(dicWE_ON)
             rospy.loginfo('ESTOP Enabled')
         # if si_pot != "POT" and sSPD_signed > 0 and abs(sSPD_signed) > 10:
@@ -1051,6 +1070,7 @@ def callback_factory(topic_name):
                     shared_data[topic_name] = recvDataMap
                     if MonitoringField.ALM_NM.name in recvDataMap:
                         dicMotorPos[topic_name] = recvDataMap.get(MonitoringField.CUR_POS.name, MIN_INT)
+                        dicMotorPos[f'{topic_name}_SPD'] = recvDataMap.get(MonitoringField.CUR_SPD.name, MIN_INT)
                         dicMotorPos[f'{topic_name}_STATE'] = recvDataMap[MonitoringField.ALM_NM.name]
                         pub_motorPos.publish(json.dumps(dicMotorPos, sort_keys=True))
             else:
@@ -1180,7 +1200,7 @@ def service_dataExport():
         resultData = shared_data.get(topic_name, None)
         if resultData is None:
             return {"error": "wrong topicname."}, 400
-        resultData = json.dumps(resultData, ensure_ascii=False)
+        #resultData = json.dumps(resultData, ensure_ascii=False)
 
     except Exception as e:
         logSSE_error(traceback.format_exc())
@@ -1388,6 +1408,8 @@ def service_cmd_device():
         crossplug = request.args.get(SMARTPLUG_INFO.SET_CROSSPLUG.name, None)
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
+        filter_rate = try_parse_float(request.args.get(JogControl.FILTER_RATE.name, None),3.0)
+        checkSafety = isTrue(request.args.get(JogControl.SAFETY.name, 1))
         spd_rate = try_parse_float(request.args.get(JogControl.SPD_RATE.name, None),1.0)
         control540 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_MAIN.name, None),MIN_INT)
         control360 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_TRAY.name, None),MIN_INT)
@@ -1406,7 +1428,7 @@ def service_cmd_device():
             records = json.loads(decoded)
             df = pd.DataFrame(records)
             lsCmd=(df.to_dict(orient='records'))
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             return {bResult:bExecuteMsg}, 200
         if control360 != MIN_INT:
@@ -1415,11 +1437,11 @@ def service_cmd_device():
             #print(dic540)
             lsCmd = [dic540]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
-            if isTrue(di_home) and si_home == 'ESTOP':
+            if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
                 lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
-            elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
+            elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
                 lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:bExecuteMsg}, 200
@@ -1430,17 +1452,19 @@ def service_cmd_device():
             #print(dic540)
             lsCmd = [dic540]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
-            if si_home == 'ESTOP':
+            if si_home == BLD_PROFILE_CMD.ESTOP.name:
                 lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
-            elif control360 == 0 and not isTrue(di_home) and si_home != 'ESTOP':
+            elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
                 lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:bExecuteMsg}, 200
         
         elif controlArm3 != MIN_INT:
+            #controlArm3 값은 길이로 넘어온다.
             targetPulse_serv = GetTargetPulseServingArm(controlArm3, 0)
+            #POT기반한 서빙가능한 최대길이 계산
             limit_arm1_mm = GetTargetLengthMMServingArm(pot_telesrv)
             #서빙암 요청길이가 물리적 최대길이를 넘어가면 실행하지 않는다.
             if targetPulse_serv > pot_telesrv:
@@ -1448,16 +1472,16 @@ def service_cmd_device():
             else:
                 lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
                 #print(lsCmd)
-                bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+                bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
                 reponseCode = 200 if bResult else 400
                 #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:bExecuteMsg}, 200
         
         elif controlArm2 != MIN_INT:
-            target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
-            lsCmd,rpm_time = GetControlInfoBalances(target_pulse,True, spd_rate)
+            #controlArm2 은 0~90 사이 각도로 넘어온다.
+            lsCmd,rpm_time = GetControlInfoBalances(controlArm2,True, spd_rate)
             #print(lsCmd)
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd)
+            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:bExecuteMsg}, 200
@@ -1539,13 +1563,6 @@ def service_cmd_device():
                     listReturn.append(dicMotorH)
                 else:
                     listReturn.append(dicBackHome)
-                    # 홈센서에 NOT 을 달아서 충전독 센서가 필요 없어짐
-                    # dicSmartPlug = shared_data.get(TopicName.SMARTPLUG_INFO.name)
-                    # chargeSensorinfo = dicSmartPlug.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
-                    # if isTrue(chargeSensorinfo):
-                    #     return {f"err: Jog Back is now allowed at Charging Station": dicMotorPos}, 400
-                    # else:
-                    #     listReturn.append(dicBackHome)
             elif qNumber == BLD_PROFILE_CMD.FOLD_ALL.value:
                 listReturn.extend(dicAllFold)
             elif qNumber == BLD_PROFILE_CMD.FOLD_ARM.value:
@@ -1557,11 +1574,13 @@ def service_cmd_device():
             elif qNumber == BLD_PROFILE_CMD.SAVE_POS.value:
                 SavePos()
                 return {f"{reqargs}": dicMotorPos}, 200
+            #BLB_TABLEVIEW.html 에서 수신하는 API
+            #이 API 결과값을 바탕으로 표시되는 테이블 색깔이 정해진다
             elif qNumber == BLD_PROFILE_CMD.GET_TABLEMAP.value:
                 dfTableInfo = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
                 lsdfTable=dfTableInfo.to_dict(orient='records')
-                data_out = json.dumps(lsdfTable) 
-                return data_out,200
+                #data_out = json.dumps(lsdfTable) 
+                return lsdfTable,200
         else:
             recvDataTmp = getDic_strArr(recvData.upper(), sDivFieldColon, sDivItemComma)
             PROFILE = recvDataTmp.get(BLB_CMD_CUSTOM.PROFILE.name)
@@ -1572,7 +1591,7 @@ def service_cmd_device():
                 pub_BLB_CMD.publish(recvData.upper())
                 return {False: f'Not defined code {qNumber}'}, 202
         if len(listReturn) > 0:
-            bResult,bExecuteMsg=SendCMD_Device(listReturn)
+            bResult,bExecuteMsg=SendCMD_Device(listReturn,filter_rate,checkSafety)
         else:
             data_out = f'PROFILE{sDivFieldColon}{qNumber}'
             #data_out = json.dumps(reqargs) 
@@ -1585,6 +1604,23 @@ def service_cmd_device():
         return {False:str(e)}, 500
   
     return {bResult: bExecuteMsg}, 200
+
+@app.route(f'/{EndPoints.alarm_table.name}', methods=['GET', 'POST'])
+def service_alarmTable():
+    bResult = False
+    bStrMsg = ""
+    try:
+        # dict 생성
+        alm_dict = {
+            val.value.split(sDivFieldColon)[0].strip(): val.value.split(sDivFieldColon)[1].strip()
+            for val in ALM_User
+        }
+        #data_out = json.dumps(alm_dict)
+        return alm_dict,200
+    except Exception as e:
+        rospy.logerr(f"❌ 데이터 처리 오류: {e}")
+        logSSE_error(traceback.format_exc())
+        return {"error": str(e)}, 500
   
 @app.route(f'/{EndPoints.info.name}', methods=['GET', 'POST'])
 @app.route(f'/{EndPoints.alarm.name}', methods=['GET', 'POST'])
@@ -1708,5 +1744,3 @@ if __name__ == "__main__":
         socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True,allow_unsafe_werkzeug=True)
     except rospy.ROSInterruptException:
         pass
-    
-    

@@ -55,10 +55,16 @@ def RunListBlbMotorsEx(listBLB):
         dicAruco = lsAruco[0]
         #lsDF = GetNewRotateArmList(dicAruco)
     
+    
     if isinstance(dicInfo_local, dict):  # 주행모드
-        bIsAllMotorFolded = isReadyToMoveH_and_540()
+        mbid = dicInfo_local.get(MotorWMOVEParams.MBID.name)
+        sPOS = dicInfo_local.get(MotorWMOVEParams.POS.name)            
+        sPOS_R = dicInfo_local.get(APIBLB_FIELDS_TASK.distance_total.name, MIN_INT)
+        sDir = dicInfo_local.get(SeqMapField.DIRECTION.name)
+        sPOS_R = dicInfo_local[SeqMapField.DISTANCE.name]         
         start_node = dicInfo_local.get(SeqMapField.START_NODE.name)
         end_node = dicInfo_local.get(SeqMapField.END_NODE.name)
+        bIsAllMotorFolded = isReadyToMoveH_and_540()
         if end_node == GetCurrentNode() or end_node == start_node:
             listBLB.pop(0)
             # UpdateLastCmdTimeStamp()
@@ -71,7 +77,7 @@ def RunListBlbMotorsEx(listBLB):
             listBLB[:] = lsLiftUp + lsBLBTmp            
             return APIBLB_ACTION_REPLY.E106
         else:
-            if sPOS == MIN_INT: #상대길이 경로
+            if sPOS is None:
                 donCare = -1
                 #서버에서 받아온 정보가 있는 경우
                 if dicInfo_local.get(APIBLB_FIELDS_TASK.detailcode_list.name) is None:
@@ -108,9 +114,6 @@ def RunListBlbMotorsEx(listBLB):
                 rospy.loginfo(f'현재Pulse:{cur_posH},펄스거리:{cur_pos_mm},현지점:{curX},{curY},중간노드좌표:{node_CtlCenter_globals.dicTargetPosFeedBack},남은테이블:{node_CtlCenter_globals.listTable}')
                 
                 iSpdH = round(SPD_MOVE_H*SPEED_RATE_H)
-                sPOS_R = dicInfo_local.get(APIBLB_FIELDS_TASK.distance_total.name, MIN_INT)
-                sDir = dicInfo_local.get(SeqMapField.DIRECTION.name)
-                sPOS_R = dicInfo_local[SeqMapField.DISTANCE.name] 
                 iPOS_R = try_parse_int(sPOS_R)
                 if iPOS_R == 0:
                   rospy.loginfo(dicInfo_local)
@@ -147,7 +150,7 @@ def RunListBlbMotorsEx(listBLB):
                     rospy.loginfo_throttle(20, message)       
                     return APIBLB_ACTION_REPLY.E107
                 #데모에서는 일단 이렇게
-                dicInfo_local = getMotorMoveDic(ModbusID.MOTOR_H.value, True, iTargetPulse, iSpdH, ACC_MOVE_H,deccH)
+                dicInfo_local = getMotorMoveDic(ModbusID.MOTOR_H.value, True, iTargetPulse, iSpdH, ACC_MOVE_H,DECC_MOVE_H)
                 SetWaitCrossFlag(False)
 
             node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_H.value)] = iTargetPulse
@@ -173,7 +176,7 @@ def RunListBlbMotorsEx(listBLB):
                 rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
                 bReturn,strResult=API_MoveH(pulseTarget,dicInfo_local.get(MotorWMOVEParams.SPD.name),endnode_current)
                 rospy.loginfo(f'{bReturn},{strResult}')
-                if not bResult:
+                if not bReturn:
                     node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
                     SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
                     return APIBLB_ACTION_REPLY.E110
@@ -189,9 +192,8 @@ def RunListBlbMotorsEx(listBLB):
         #cmd_pos11,cur_pos11=GetPosServo(ModbusID.TELE_SERV_MAIN)
         #현재 노드가 NONE 타입이 아니라면 반드시 마지막 H 모터의 
         #종료코드는 IsPOT == 1 이어야 위치결정이 완료된것임. 수정할것
-        # if GetRFIDInventoryStatus():
-        #     rospy.loginfo(f"RFID is on, suspend motor action : {dicInfo_local}")
-        #     return APIBLB_ACTION_REPLY.E104
+        #현재노드가 NONE 타입 이라면 한번에 멈출 예정.
+        #가장 인접한 노드에서 move 명령어를 한번 더 내보낸다.
         filtered_data = [item for item in dicInfo_local if item]
         if len(filtered_data) > 0:
             #print(dicInfo_local)
@@ -469,6 +471,8 @@ def RunListBlbMotorsEx(listBLB):
                         else:
                             infoMsg = '아르코마커가 인식되지 않았습니다.'
                             rospy.loginfo(infoMsg)
+        lsFinalCmd = []
+        lsFinalCmdEx = []        
         node_CtlCenter_globals.lock.acquire()
         node_CtlCenter_globals.dicTargetPos.clear()
         node_CtlCenter_globals.dicTargetPos.update(create_mbid_dict(dicInfo_local, MotorWMOVEParams.POS.name))
@@ -498,13 +502,23 @@ def RunListBlbMotorsEx(listBLB):
             rospy.loginfo(sMsg)
         elif len(listBLB) > 0:
             dfBackUp = listBLB.pop(0)
+            lsFinalCmd.extend(dfBackUp)
         else:
             sMsg = 'listBLB 스레드 점검필요'
             rospy.loginfo(sMsg)
+            bResult = False
             SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
 
-        lsFinalCmd = []
-        lsFinalCmdEx = []
+        if len(lsFinalCmd) ==0 and not bResult:
+            if isExceptionSSE(bStrMsg):
+                #SendAlarmHTTP(ALM_User.SSE_CONNETION_ERROR.value,True)    
+                StopEmergency(ALM_User.SSE_CONNETION_ERROR.value, True,False)
+                return APIBLB_ACTION_REPLY.E500
+            else:
+                SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
+                node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
+                return APIBLB_ACTION_REPLY.E104
+        
         # #isArmControl = False
         # for dicCtlTmp in dicInfo_local:
         #     sPos = dicCtlTmp.get(MotorWMOVEParams.POS.name, MIN_INT)
@@ -593,13 +607,13 @@ def RunListBlbMotorsEx(listBLB):
             #dicCtlTmp2[MotorWMOVEParams.TIME.name] = GetTimeFromRPM(mbidInstance, target_pulse, rotateRPM)            
             if CheckMotorOrderValid(dicCtlTmp2):                
                 dicCtlTmp2[MotorWMOVEParams.TIME.name] = GetRPMFromTimeAccDecc(dicCtlTmp2)
-                if mbid == str(ModbusID.TELE_SERV_MAIN.value):
-                    if (onScan or finalScan) and iPOS > cur_pos_srv:
-                    #if target_pulse != 0 and :
-                        #모니터 감지각으로 틸팅 변경
-                        #TiltDetectingMonitor()
-                        TiltArucoScan()
-                        CamControl(True)
+                # if mbid == str(ModbusID.TELE_SERV_MAIN.value):
+                #     if (onScan or finalScan) and iPOS > cur_pos_srv:
+                #     #if target_pulse != 0 and :
+                #         #모니터 감지각으로 틸팅 변경
+                #         #TiltDetectingMonitor()
+                #         TiltArucoScan()
+                #         CamControl(True)
                     # if dicInfo_local_org is not None and target_pulse == 0 and abs(node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE - cur_pos11) > roundPulse and node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE < cur_pos11:
                     #     dicMoveH = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,node_CtlCenter_globals.SERVING_ARM_BALANCE_PULSE, DEFAULT_RPM_SLOW,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
                     #     node_CtlCenter_globals.dicTargetPos.clear()

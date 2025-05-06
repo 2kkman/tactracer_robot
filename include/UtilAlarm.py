@@ -12,12 +12,35 @@ class AlarmCodeList(Enum):
     NOT_CONNECTED = 52000  # 디바이스 접속실패시
     DISPLAY_ERROR = 52998 #모니터 접속이 끊어졌을때
     ESTOP_ERROR = 54013 #ESTOP 센서가 감지되었을때
+
+class ALM_User(Enum):
+    USER_ESTOP = "54000: ESTOP By User"
+    SAFETY_DOOR_LIFT = "54019: DoorClose required before lift up"
+    TRAY360_SAFETY = "54007: Not enough space for tray rotate"
+    OUT_OF_SERVING_RANGE = "54028: Not able to serve the distance"
+    SAFETY_TRAYDOOR = "54006: Lift Down is required before DoorOpen"
+    SAFETY_ARM = "54017: tray and lift must be on the origin before Arm control."
+    SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before MotorH run."
+    SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
+    CMD_INTERVAL_DUPLICATED = "54023: MotorCmd duplicated."
+    ABNORMAL_CMD_DATA = "54022: abnormal Motor command data"
+    ABNORMAL_CMD_DATA2 = "54028: Motor command format must be array"
+    TRAY_WEIGHT_LIMIT = "54021: Too much load in the tray"
+    ROBOT_JUST_INITIALIZED = "52010: BLB is now just started."
+    MOTOR_TORQUE_INVALID = "54027: Motor torque check error"    
+    JOB_SUSPENDED = "54008: Job Suspended"
+    JOB_PAUSED = "54010: Job Paused"
+    JOB_CANCELED = "54011: Job Canceled"
+    JOB_HOMECALL = "54004: Home Called"
+    JOB_RESUMED = "54012: Job Resume"
+    CMD_FORMAT_INVALID = "50106: Motor cmd format invalid"    
+    CMD_ISNULL = "54070: Motor cmd is null"
+    SSE_CONNETION_ERROR = "52127: BLB service proceess died"
     
 class ALM_Fatal(Enum):
     BATTERY_TOO_LOW_SHUTDOWN = "50401: battery too low and shutdown"
     BATTERY_TEMPERATURE_TOO_HIGH = "50402: temperature of battery is too high"
     TRAYDOOR_ERROR = "50000: DOOR sensor signals must be exclusive."
-
     RESOURCE_EXHAUSTION = "50001: resource exhaustion"
     SW_ERROR = "50002: sw error"
     MAP_PARSE_ERROR = "50100: map parse error"
@@ -41,37 +64,20 @@ class ALM_Fatal(Enum):
 # if __name__ == "__main__":
 #     for alarm in AlarmCode:
 #         print(f"Alarm: {alarm.name}, Code and Message: {alarm.value}")
-class ALM_User(Enum):
-    USER_ESTOP = "54000: ESTOP By User"
-    SAFETY_DOOR_LIFT = "54019: DoorClose required before lift up"
-    TRAY360_SAFETY = "54007: Not enough space for tray rotate"
-    OUT_OF_SERVING_RANGE = "54028: Not able to serve the distance"
-    SAFETY_TRAYDOOR = "54006: Lift Down is required before DoorOpen"
-    SAFETY_ARM = "54017: tray and lift must be on the origin before Arm control."
-    SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before MotorH run."
-    SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
-    CMD_INTERVAL_DUPLICATED = "54023: MotorCmd duplicated."
-    ABNORMAL_CMD_DATA = "54022: abnormal CMD data"
-    TRAY_WEIGHT_LIMIT = "54021: Too much load in the tray"
-    ROBOT_JUST_INITIALIZED = "52010: BLB is now just started."
-    MOTOR_TORQUE_INVALID = "54027: Motor torque check error"    
-    JOB_SUSPENDED = "54008: Job Suspended"
-    JOB_PAUSED = "54010: Job Paused"
-    JOB_CANCELED = "54011: Job Canceled"
-    JOB_HOMECALL = "54004: Home Called"
-    JOB_RESUMED = "54012: Job Resume"
-    CMD_FORMAT_INVALID = "50106: Cmd format invalid"    
-    CMD_ISNULL = "54070: No cmd found"
 
+# # Example usage
+# if __name__ == "__main__":
+#     for alarm in UserAlarm:
+#         print(f"Alarm: {alarm.name}, Code and Message: {alarm.value}")
+
+class ALM_error(Enum):
     BATTERY_ERROR = "54001: battery error"
     MOTOR_OVERSPEED = "54003: motor overspeed"
-    
     #DRIVER_EMERGENCY_STOP = "54013: driver emergency stop"
     RS485_HARDWARE_ERROR = "54016: RS485 hardware error"
     REFLECTORS_MATCH_FAILED = "54020: reflectors match failed, please set right init pose"
     WHICH_DRIVER_EMERGENCY_STOP = "54025: which driver emergency stop"
     WHICH_DRIVER_ERROR_CODE = "54026: which driver have error code"
-    CHECK_DI_FALSE = "54028: checkDi is false"
     SERIAL_PORT_USED_MULTIPLE_TIMES = "54031: devName of serial port is used more than 1 times"
     CANNOT_CONNECT_WITH_CAMERA = "54051: cannot connect with camera"
     DETECT_TWO_TAG_SAME_ID = "54052: detect two tag with same ID"
@@ -110,13 +116,6 @@ class ALM_User(Enum):
     ODOMETER_UNRELIABLE = "55601: Odometer being unreliable because of wheel movements inconsistency"
     IO_WRITE_SPEED_HIGH = "55710: IO write speed higher than normal"
     GYRO_FLYING_AFTER_CALIBRATION = "57009: The gyro is flying in the 2 second after calibration. Integration"
-
-# # Example usage
-# if __name__ == "__main__":
-#     for alarm in UserAlarm:
-#         print(f"Alarm: {alarm.name}, Code and Message: {alarm.value}")
-
-class ALM_error(Enum):
     ARM_BALANCING_ERROR = "52039: Balancing Control Arm1 between Arm2 is Failed. Stopped emergency."
     MOTOR_CALIBRATE_REQUIRED = "52956: Some MOTORs are not CALIBRATED. Do CALIBRATE First." #모터 캘리브레이션 정보가 없을때
     MOTOR_COMM_ERROR = f"{AlarmCodeList.NOT_CONNECTED.value}: Not able to connect some motors" #모터 modbus 접속 실패
@@ -167,7 +166,6 @@ class ALM_error(Enum):
     UNRELEASED_DO = "52120: Don't set DO when movetask unreleased DO"
     ROBOT_FALL_DOWN = "52122: robot fall down"
     DSP_CHASSIS_MODBUS_IO_ERROR = "52123: DSPChassis modbus IO error"
-    PGV_CONNECTION_ERROR = "52127: PGV connection error"
     PGV_INFO_MISMATCHED_DEVICE_ID = "52128: PGV info with mismatched device id"
     WEIGHING_DEVICE_TIMEOUT = "52129: Weighing device connect timeout"
     MOTOR_GVDD_OVER_VOLTAGE = "52130: motor GVDD over voltage"
@@ -194,7 +192,6 @@ class ALM_error(Enum):
     CONTACT_DI_NO_GOODS_AGAIN = "52168: ContactDi doesn't detect Goods!"
     NOT_ENOUGH_3D_POINTCLOUD = "52169: No enough 3D pointCloud in current map, please check or not use 3DLocalization with Current Laser"
     MODEL_CONFIG_ERROR = "52195: model config error"
-    ROBOT_BLOCKED = "52200: robot is blocked"
     CHARGE_PROBLEM = "52202: is one of the following - can not open Recfile. - charge failed. Out of time: - openCharge is set. Out of waiting time: - charge timeout: - charge timeout: in rec stage. - can not open Recfile. - Read Charger in robot. model file"
     CHARGE_DEVICE_NOT_ENABLED = "52203: Charge device is not enabled!"
     CHARGER_SPOT_STATUS_ERROR = "52204: chargerspot status error"

@@ -462,12 +462,25 @@ def CheckMotorAlarms():
           SetWaitConfirmFlag(True, {key:value})
 
 def CheckETCActions():
+    lsCmdRelase = []
+    releasePulse = round(roundPulse/10)
+    for modbus in lsReleaseMotors:
+        DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(modbus)        
+        cmdpos, curpos = GetPosServo(modbus)
+        if DI_POT:
+            lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos-releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
+        elif DI_NOT:
+            lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
+    if len(lsCmdRelase) > 0:
+        SendCMD_Device(lsCmdRelase)
+
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
     node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
     #stateCharger = isChargerPlugOn()
     cur_node = GetCurrentNode()
     node_pos = GetNodePos_fromNode_ID(cur_node)
     cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
+    
     # if cur_node in node_CtlCenter_globals.StateInfo.keys():
     #     dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
     #     SendCMD_Device([dicLoc])

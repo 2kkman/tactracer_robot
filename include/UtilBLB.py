@@ -499,6 +499,7 @@ class LidarCropProfile(Enum):
 class EndPoints(Enum):
     JOG = auto()  # RFID조그 운전
     alarm = auto()  # 알람정보 수신
+    alarm_table = auto()  # 알람테이블
     info = auto()  # info 정보 수신 (디버그용)
     control = auto()  # KEEP_ALIVE 메세지 발행 토픽
     ARD = auto()  # 아두이노 제어
@@ -510,6 +511,8 @@ class JogControl(Enum):
     CONTROL_ROTATE_MAIN = auto()  #메인회전
     CONTROL_ROTATE_TRAY = auto()  #트레이회전
     SPD_RATE = auto()  #암전개 RPM 배속 조정
+    FILTER_RATE = auto()  #중복명령어 필터타이밍 조정
+    SAFETY = auto()
     data = auto()   #일반적인 command 로 명령
 
 class OBSTACLE_INFO(Enum):
@@ -1456,6 +1459,16 @@ def API_SetCurrentNode(nodeID=-1 ,taskid = 0):
   #fieldStr = f'taskid=1&current_station={nodeID}'
   return API_call(fieldValue=fieldValue)
 
+def isExceptionSSE(alarmMsg:str):
+    alarm_msg_split = alarmMsg.split(sDivFieldColon)
+    if len(alarm_msg_split) > 1:
+        return True
+    sAlarmCD = alarm_msg_split[0]
+    #sAlarmMSG = alarm_msg_split[1]
+    if try_parse_int(sAlarmCD) == 0:
+        return True
+    return False
+
 def API_SendAlarm(AlarmInstance):
   if type(AlarmInstance) == ALM_User:
     alarm_class = 'Info'
@@ -2124,8 +2137,6 @@ class MotorCmdField(Enum):
     WHOMESTOP_ON = auto()
     WHOMESTOP_OFF = auto()
     
-
-
 class MotorWMOVEParams(Enum):
     MBID = auto()
     CMD = auto()
@@ -2143,11 +2154,6 @@ class MotorCommandManager:
     def __init__(self, data):
         self.data = {item[MotorWMOVEParams.MBID.name]: item for item in data}
     
-    # def get(self, mbid, key):
-    #     """MBID와 키를 사용하여 값을 조회합니다."""
-    #     if mbid in self.data and key in self.data[mbid]:
-    #         return self.data[mbid][key]
-    #     return None
     def get(self, mbid, key):
         """MBID 또는 MBID 리스트와 키를 사용하여 값을 조회합니다."""
         if isinstance(mbid, list):  # MBID가 리스트일 경우
@@ -2243,8 +2249,10 @@ class TRAY_TILT_STATUS(Enum):
     TiltTableObstacleScan = 30
 
 def API_ARD(msg):
-    bResult, bStrMsg = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, msg)  
-    rospy.loginfo(f'{msg}->{bStrMsg}')
+    bResult, bStrMsg = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, f'q={msg}')  
+    cmdStr=log_all_frames(f'{msg}->{bStrMsg}')
+    logger_ard.info(cmdStr)
+    #rospy.loginfo(f'{msg}->{bStrMsg}')
     return bResult, bStrMsg
 
 def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
@@ -5795,6 +5803,10 @@ def compare_better_marker(dictOld, dictNew, dictSample = ref_dict):
     resultDiff2,diff_X2,diff_Y2= compare_dicts(dictNew, dictSample, CAM_LOCATION_MARGIN_OK)
     return abs(diff_X1) > abs(diff_X2)
 
+
+
+lsRotateMotors = [ModbusID.ROTATE_MAIN_540.value, ModbusID.ROTATE_SERVE_360.value]
+lsReleaseMotors = [ModbusID.MOTOR_V, ModbusID.BAL_ARM1,ModbusID.BAL_ARM2, ModbusID.TELE_SERV_MAIN]
 print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())    
 # df = pd.read_csv(strFileTableNodeEx, dtype={TableInfo.NODE_ID.name: int})
 # print(df)

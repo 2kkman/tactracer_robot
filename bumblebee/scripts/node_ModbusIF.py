@@ -234,7 +234,7 @@ def callbackCmd(data):
         if not testModbus:
           #rospy.loginfo(logmsg)
           SendInfoHTTP(logmsg)
-          logger_ard.info(logmsg)
+          logger_motor.info(logmsg)
           
         if is_json(recvData):
             # JSON 문자열을 파이썬 객체로 변환
@@ -1471,6 +1471,7 @@ while not rospy.is_shutdown():
                   motorModel = dicConfigTmp.get(modbusID, "")
                   flagPOT = return485data.get(f"{MonitoringField.DI_POT.name}", None)
                   flagNOT = return485data.get(f"{MonitoringField.DI_NOT.name}", None)
+                  flagESTOP = return485data.get(f"{MonitoringField.DI_ESTOP.name}", None)
                   flagHOME = return485data.get(f"{MonitoringField.DI_HOME.name}", None)
                   flagSPD = return485data.get(f"{MonitoringField.CUR_SPD.name}", None)
                   flagPOS = return485data.get(f"{MonitoringField.CUR_POS.name}", None)
@@ -1555,7 +1556,7 @@ while not rospy.is_shutdown():
                                   SendAlarmHTTP(e,False)
                               lastpos = dic_485_lastpos_started.get(modbusID)
                               lasttarget = dic_485_lastpos_target.get(modbusID)                          
-                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{meanOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}{sDivFieldColon}{cur_pos}{sDivFieldColon}{flagSPD}{sDivFieldColon}{flagHOME}{sDivFieldColon}{flagPOT}"
+                              ackMsg = f"{cmdID}{sDivFieldColon}{motorFlag}{sDivFieldColon}{modbusID}{sDivFieldColon}{maxTorque}{sDivFieldColon}{meanTorque}{sDivFieldColon}{minTorque}{sDivFieldColon}{maxOvr}{sDivFieldColon}{lastpos}{sDivFieldColon}{lasttarget}{sDivFieldColon}{cur_pos}{sDivFieldColon}{flagSPD}{sDivFieldColon}{flagHOME}{sDivFieldColon}{flagPOT}{sDivFieldColon}{flagNOT}{sDivFieldColon}{flagESTOP}"
                               rospy.loginfo(ackMsg)
                               pub_flag.publish(ackMsg)
               # else:

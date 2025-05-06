@@ -81,6 +81,20 @@ machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_cs
 def getDateTime():
   return datetime.now()
 
+def calculate_weight_angle(arm_length_mm, max_length=1300, trigger_distance=500, max_angle=90):
+    if arm_length_mm <= trigger_distance:
+        return 0
+    elif arm_length_mm >= max_length:
+        return (max_angle)
+    else:
+        ratio = (arm_length_mm - trigger_distance) / (max_length - trigger_distance)
+        return round(ratio * max_angle)
+
+# # 예시
+# length = 290
+# angle = calculate_weight_angle(length)
+# print(f"Arm length: {length} mm → Weight angle: {angle} degrees")
+
 def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5):
     """
     MJPEG 스트림에서 1프레임을 캡처해서 저장하는 함수
