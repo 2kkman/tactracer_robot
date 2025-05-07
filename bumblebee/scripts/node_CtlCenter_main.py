@@ -137,6 +137,9 @@ if __name__ == "__main__":
       rospy.loginfo(f"안드로이드 통신성공:{strResult_ANDROID}")
 
     if isRealMachine:
+      for p in psutil.process_iter(['name']):
+        if 'mpv' in p.info['name']:
+            p.cpu_percent(interval=None)      
       # dynamic_reconfigure 클라이언트 생성
       try:
         node_CtlCenter_globals.dynamic_reconfigure_client = Client(node_CtlCenter_globals.dynamic_reconfigure_clientName, timeout=1)
@@ -144,11 +147,11 @@ if __name__ == "__main__":
         rospy.loginfo(f"dynamic_reconfigure_client error : {e}")
       SetLidarCrop(LidarCropProfile.SERVING_ARM)      
       #bReturn_CROSS,strResult_CROSS=API_call_Android(BLB_CROSS_IP_DEFAULT,HTTP_COMMON_PORT,f'svrip={IP_MASTER}')
-      bReturn_CROSS,strResult_CROSS=API_call_http(BLB_CROSS_IP_DEFAULT, HTTP_COMMON_PORT, 'control', f'svrip={IP_MASTER}')
-      if not bReturn_CROSS:
-        rospy.loginfo(f"분기기 통신에러:{node_CtlCenter_globals.BLB_CROSS_IP_DEFAULT}:{HTTP_COMMON_PORT}")
-      else:
+      node_CtlCenter_globals.bReturn_CROSS,strResult_CROSS=API_call_http(BLB_CROSS_IP_DEFAULT, HTTP_COMMON_PORT, 'control', f'svrip={IP_MASTER}')
+      if node_CtlCenter_globals.bReturn_CROSS:
         rospy.loginfo(f"분기기 통신성공:{strResult_CROSS}")
+      else:
+        rospy.loginfo(f"분기기 통신에러:{node_CtlCenter_globals.BLB_CROSS_IP_DEFAULT}:{HTTP_COMMON_PORT}")        
 
       # bReturn_RFID,strResult_RFID = RFIDControl(False)
       # if not bReturn_RFID:

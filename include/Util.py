@@ -30,6 +30,7 @@ import sys
 import threading
 import time
 import traceback
+import psutil
 
 # Third-party imports
 from flask_socketio import *

@@ -3,7 +3,17 @@ from platform import node
 from node_CtlCenter_services import *
 #from tactracer_robot.bumblebee.scripts.node_ModbusIF import stopMotor
 last_execution_time = 0  # 마지막 실행 시간을 저장할 전역 변수
+def get_mpv_process_info():
+    mpv_procs = [p for p in psutil.process_iter(['name', 'cpu_percent', 'memory_percent']) if 'mpv' in p.info['name']]
+    
+    total_cpu = sum(p.info['cpu_percent'] for p in mpv_procs)
+    total_mem = sum(p.info['memory_percent'] for p in mpv_procs)
+    proc_count = len(mpv_procs)
 
+    print(f"mpv 프로세스 수: {proc_count}")
+    print(f"총 CPU 사용량: {total_cpu:.2f}%")
+    print(f"총 메모리 사용량: {total_mem:.2f}%")
+    
 def CheckActivateMotorTorque():
     global last_execution_time  # 전역 변수 사용
     current_time = time.time()  # 현재 시간 (초 단위)
@@ -300,12 +310,14 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
     lsCurTable,curNode = GetCurrentTableNode()
     #현재 H Pos(cur_pos), 회전모터별 앵글, 서빙길이, 밸런싱 길이. (오차율)
     curMovingTargetTable,curMovingTargetNode = GetCurrentTargetTable()
-    bAPI_Result, dicBatteryInfo = API_robot_battery_status()    
+    #bAPI_Result, dicBatteryInfo = API_robot_battery_status()    
+    dicBatteryInfo ={}
+    dicBatteryInfo.update(node_CtlCenter_globals.dic_BMS)
     #rospy.loginfodicBatteryInfo)
-    volt = dicBatteryInfo.get(APIBLB_FIELDS_STATUS.voltage.name,MIN_INT)
-    battery_level = dicBatteryInfo.get(APIBLB_FIELDS_STATUS.battery_level.name,MIN_INT)
-    ischarging = isTrue(dicBatteryInfo.get(APIBLB_FIELDS_STATUS.charging.name,MIN_INT))
-    watt = dicBatteryInfo.get(APIBLB_FIELDS_STATUS.watt.name,MIN_INT)
+    volt = dicBatteryInfo.get(MonitoringField_BMS.Voltage.name,MIN_INT)
+    battery_level = try_parse_float(dicBatteryInfo.get(MonitoringField_BMS.RSOC.name))
+    ischarging = dicBatteryInfo.get(MonitoringField_BMS.battery_status.name)
+    watt = dicBatteryInfo.get(MonitoringField_BMS.WATT.name,MIN_INT)
     #dicCurNode = getTableServingInfo(curTable)
     # node_ID = dicCurNode.get(TableInfo.NODE_ID.name, "")
     cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
@@ -394,9 +406,9 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
     틸트:{tilt_status_name},DOORLOCKED:{doorArray},현재 무게 :{r_total}g,현재테이블:{lsCurTable},현재노드:{curNode},현재H위치:{cur_pos_mm}mm,현재속도:{cur_rpm}rpm/{cur_spd}mm/s,다음테이블:{GetTableList()}
     틸팅각:{angle_y},서보각:{tilt_angle},LED:{ledInfo},작업상태:{node_CtlCenter_globals.robot.get_current_state().name}
     크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
-    현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%,밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
+    현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%({ischarging}),밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
     """
-    if bAPI_Result and battery_level < 15 and not ischarging:
+    if battery_level < 15 and ischarging.startswith('Dis'):
       TTSAndroid(TTSMessage.ALARM_BATTERY.value, 60)
     #서빙전개율:{curSrvPer}%,밸런싱암전개율:{curBalPer}%,정확도:{accuBalnceLength:.1f}%,
     #남은 서빙 시간 : {GetRPMFromTimeAccDecc(node_CtlCenter_globals.listBLB)}
@@ -464,6 +476,22 @@ def CheckMotorAlarms():
 def CheckETCActions():
     lsCmdRelase = []
     releasePulse = round(roundPulse/10)
+    if isRealMachine:
+        get_mpv_process_info()
+        DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+        node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
+        #stateCharger = isChargerPlugOn()
+        cur_node = GetCurrentNode()
+        node_pos = GetNodePos_fromNode_ID(cur_node)
+        cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
+
+        if cur_node == node_KITCHEN_STATION and isTrue(DI_POT):        
+            if abs(cur_pos - node_pos) > roundPulse/2:
+                dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
+                SendCMD_Device([dicLoc])
+            if not isActivatedMotor(ModbusID.MOTOR_H.value):
+                SetChargerPlug(True)
+    
     for modbus in lsReleaseMotors:
         DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(modbus)        
         cmdpos, curpos = GetPosServo(modbus)
@@ -473,26 +501,6 @@ def CheckETCActions():
             lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
     if len(lsCmdRelase) > 0:
         SendCMD_Device(lsCmdRelase)
-
-    DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
-    node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
-    #stateCharger = isChargerPlugOn()
-    cur_node = GetCurrentNode()
-    node_pos = GetNodePos_fromNode_ID(cur_node)
-    cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
-    
-    # if cur_node in node_CtlCenter_globals.StateInfo.keys():
-    #     dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
-    #     SendCMD_Device([dicLoc])
-    # el
-    #if isChargeSensorOn() and cur_node == node_KITCHEN_STATION:
-    if cur_node == node_KITCHEN_STATION and isTrue(DI_POT):        
-        if abs(cur_pos - node_pos) > roundPulse/2:
-            dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
-            SendCMD_Device([dicLoc])
-        if not isActivatedMotor(ModbusID.MOTOR_H.value):
-            SetChargerPlug(True)
-        
     
 def CheckETCAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()
@@ -898,12 +906,12 @@ def MotorBalanceControlEx(bSkip):
             
         if isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms):
             # 트레이 흔들림 감지시 제어
-            if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0:
+            if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0 and isRealMachine:
               dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, ALMOST_ZEROINT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
               SendCMD_Device([dicSpd])
               TTSAndroid(TTSMessage.SHAKE_TRAY_DETECTED.value)
               UpdateLastCmdTimeStamp()
-            elif abs(rpmLift) < 10 and move_level < 5:
+            elif abs(rpmLift) < 10 and move_level < 5 and isRealMachine:
               dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, SPD_LIFT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
               SendCMD_Device([dicSpd])
               #TTSAndroid(TTSMessage.SHAKE_TRAY_OK.value)
@@ -930,8 +938,6 @@ def MotorBalanceControlEx(bSkip):
                       #StopMotor(ModbusID.MOTOR_V.value)
                       SendCMD_Device([getMotorMoveDic(ModbusID.MOTOR_V.value,True,target_pulse,DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)])
                       UpdateLastBalanceTimeStamp()
-                      
-                      # 
                       # rospy.loginfo(f'트레이 세이프티 정지!:{lastLD_Raw}')
             
             #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현

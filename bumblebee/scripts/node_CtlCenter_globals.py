@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from node_CtlCenter_import import *
 bInitOK = False
+bReturn_CROSS = False
 #현재 위치한 노드ID
 node_current = node_KITCHEN_STATION
 node_seq = []
@@ -103,6 +104,7 @@ StateSet: Dict[int, int] = {}
 # lineArdData = []
 dic_485ex = {}  # 모터 모니터링 데이터
 dic_CROSSINFO = {}
+dic_BMS = {}
 dic_DF = {}  # 테이블 - DataFrame 지시정보
 activated_motors = []  # 현재 모니터링 중인 모터
 listBLB = []  # 경로 지시정보

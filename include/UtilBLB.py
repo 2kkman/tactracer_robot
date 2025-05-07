@@ -37,9 +37,9 @@ class IPList(Enum):
     BLB_CROSSPLUG_IP = '172.30.1.25'
     BLB_LIGHTPLUG_IP = '172.30.1.23'
     BLB_SVR_PORT = '4041'
-    
+
+include_path = GetUbutuParam(UbuntuEnv.SCR_DIR.name)        
 def getConfigPath(host=None) -> str:
-    include_path = GetUbutuParam(UbuntuEnv.SCR_DIR.name)
     if host is None:
         host = GetUbutuParam(UbuntuEnv.CONFIG.name)
     config_dir = "common"
@@ -1860,6 +1860,7 @@ class MonitoringField_BMS(Enum):
     Vmin = auto()  # 제일 낮은 셀 전압
     RSOC = auto()  # 배터리 잔량 퍼센티지
     WATT = auto() #소모전류와트
+    battery_status = auto() #충전상태
 
 class BLD_PROFILE_CMD(Enum):
     balDataRecord = -2  # 범블비밸런스데이터레코드 추가

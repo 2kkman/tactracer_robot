@@ -862,6 +862,29 @@ def callbackARD_CARRIER(data,topic_name=''):
         # SendFeedback(e)
 
 
+def callback_BMS(data,topic_name=''):
+    recvDatalist = []
+    try:
+        node_CtlCenter_globals.dicTopicCallbackTimeStamp[topic_name] = getDateTime()
+        recvData = data.data.replace("'", '"')
+        if is_valid_python_dict_string(recvData):
+            recvDataMap2 = ast.literal_eval(recvData)
+        elif is_json(recvData):
+            recvDataMap2 = json.loads(recvData)
+        else:
+            recvDataMap2 = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
+        
+        if isinstance(recvDataMap2,dict):
+            recvDatalist.append(recvDataMap2)
+            node_CtlCenter_globals.dic_BMS.update(recvDataMap2)
+        else:
+            recvDatalist.extend(recvDataMap2)
+    except Exception as e:
+        message = traceback.format_exc()
+        rospy.logdebug(message)
+        SendAlarmHTTP(e,True,node_CtlCenter_globals.BLB_ANDROID_IP)
+     
+
 def callback_CROSS_INFO(data,topic_name=''):
     """_summary_
         트레이에서 ARUCO_RESULT 토픽으로 JSON 메세지를 발행한걸 수신하여 관련 전역변수에 업데이트 한다.
@@ -1473,7 +1496,7 @@ node_CtlCenter_globals.dictTopicToSubscribe = {
     TopicName.ANDROID.name: callbackARD_CARRIER,
     TopicName.ACK.name: callbackAck,
     TopicName.BLB_CMD.name : callbackBLB_CMD,
-    TopicName.BMS.name : callbackModbus,
+    TopicName.BMS.name : callback_BMS,
     TopicName.RECEIVE_MQTT.name : callbackTopic2mqtt,
     TopicName.ARUCO_RESULT.name : callback_ARUCO_RESULT,
     TopicName.CROSS_INFO.name : callback_CROSS_INFO,

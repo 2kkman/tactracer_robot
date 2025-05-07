@@ -977,7 +977,7 @@ def TrayOpen(spd=10):
 
 #@rate_limited(3)  # 실행 제한 시간 설정
 def LightTrayCell(traySector=0,blinkTimeMs=1000,colorCode = 0):
-    if not hasattr(LightTrayCell, "last_cmd_time"):
+    if not hasattr(LightTrayCell, "last_cmd_msg"):
         LightTrayCell.last_cmd_msg = ''
     
     #ledColor0,blink0,ledColor1,blink1  = GetLedStatus()
@@ -1148,9 +1148,8 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
       #목적지가 충전소로 가는 경우에는 반드시 현재 RFID태그가 읽히고 있고 POT_15 ON 이어야 함.
       #분기기로 가는 경우에는 현재 정지상태인지만 체크하면 됨.
       #제정신일때 다시 정의하자.
-      if bSendJCCmd and isRealMachine:
+      if bSendJCCmd and isRealMachine and node_CtlCenter_globals.bReturn_CROSS:
         rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')
-          
         for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
           if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
             if isCrossStatus == 0:
@@ -1168,6 +1167,8 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
                 else:
                     if SI_POT == 'GPI':
                         API_CROSS_set(jc_id,isCrossStatus)
+      else:
+          rospy.loginfo(f'분기기 통신을 확인해주세요')
         
         # dicSendMqttTopic = {}
         # # mqttTopic = f'BLB/mcu_relay_CMD/set'
