@@ -15,8 +15,8 @@ param_ARD_show = False
 enableDummyArduino = False
 
 #샤누이사 서버랑 연동할때 True
-enableSvrPath = False
-#enableSvrPath = True
+#enableSvrPath = False
+enableSvrPath = True
 
 stateDic = {}
 dicTorqueAve = {}

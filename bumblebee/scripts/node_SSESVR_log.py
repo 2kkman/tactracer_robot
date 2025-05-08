@@ -23,6 +23,12 @@ sDI_HOME =MonitoringField.DI_HOME.name
 sDI_ESTOP =MonitoringField.DI_ESTOP.name
 sInv_Key = RFID_RESULT.inventoryMode.name
 sALIVE_Key = RFID_RESULT.status.name
+wmoveStr = MotorCmdField.WMOVE.name
+posStr = MotorWMOVEParams.POS.name
+cmdStr = MotorWMOVEParams.CMD.name
+mbidStr = MotorWMOVEParams.MBID.name
+
+
 # dicPOTNOT_ON = getMotorDefaultDic(ModbusID.MOTOR_H.value,True)
 # dicPOTNOT_OFF = getMotorDefaultDic(ModbusID.MOTOR_H.value,False)
 dicWE_ON = getMotorWE_ONDic()
@@ -200,11 +206,11 @@ def GetDoorStatus():
 
 def GetRotateMainAngleFromPulse(target_pulse):
   angle = mapRange(target_pulse,0,pot_540,0,MAX_ANGLE_TRAY)
-  return round(angle)
+  return round(angle)%MAX_ANGLE_TRAY
 
 def GetRotateTrayAngleFromPulse(target_pulse):
   angle = mapRange(target_pulse,0,pot_360,0,MAX_ANGLE_TRAY)
-  return round(angle)
+  return round(angle)%MAX_ANGLE_TRAY
 
 def GetRotateTrayPulseFromAngle(angleStr):
   cur_360 = int(dicMotorPos[topicName_RotateTray])
@@ -340,6 +346,18 @@ def GetAllMotorPos():
     pos_MotorH = GetMotorHPos()
     return pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH
 
+def GetAllMotorPosDic():
+    filtered_dict = {
+    k: v for k, v in dicMotorPos.items()
+    if isinstance(k, str) and k.count('_') == 1
+    }
+    dictPos = {}
+    for k,v in filtered_dict.items():
+        target_mbid = k.split('_')[1]
+        target_pos = try_parse_int(v)
+        dictPos[target_mbid] = target_pos    
+    return dictPos
+
 def CheckSafetyMotorMove(listReturnTmp):
     #현재 모터 위치 정보를 모은다.
     #회전모터 계열은 각도 정보를 받아온다.
@@ -351,38 +369,36 @@ def CheckSafetyMotorMove(listReturnTmp):
     4. 도어는 150000펄스 이후에 가능.    
     '''
     global shared_data    
+    strCheckResult = AlarmCodeList.OK.name
     #dicBLB_Status = shared_data.get(TopicName.SMARTPLUG_INFO.name)
     pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
     dic_tof = shared_data.get(topicName_TOF,{})
     lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
     distance_tof = dic_tof.get(SeqMapField.DISTANCE.name,-1)
-    angle540=GetRotateMainAngleFromPulse(pos_540)
-    angle360=GetRotateTrayAngleFromPulse(pos_360)
-    isTrayOrigin = True if angle360 == 0 else False
+    cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+    cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+    isTrayOrigin = True if cur_angle360 == 0 else False
     isLiftOrigin = True if pos_LiftV < roundPulse else False
     bSafetyFalseArms = any(val > roundPulse for val in lsCheckArms)
     df = pd.DataFrame(listReturnTmp)
     #print(listReturnTmp)
-    wmoveStr = MotorCmdField.WMOVE.name
-    cmdStr = MotorWMOVEParams.CMD.name
-    mbidStr = MotorWMOVEParams.MBID.name
     ls6 = df.loc[(df[mbidStr] == str(ModbusID.MOTOR_V.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     ls11 = df.loc[(df[mbidStr] == str(ModbusID.TELE_SERV_MAIN.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     ls31 = df.loc[(df[mbidStr] == str(ModbusID.ROTATE_SERVE_360.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     ls27 = df.loc[(df[mbidStr] == str(ModbusID.ROTATE_MAIN_540.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     ls15 = df.loc[(df[mbidStr] == str(ModbusID.MOTOR_H.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
-    strCheckResult = AlarmCodeList.OK.name
     bSafety = True
     doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
     
     if len(ls6) > 0:
         #도어가 열린 상태에서는 상승하지 않는다
         dic6 = ls6[0]
-        target_pos6 = try_parse_int(dic6.get(MotorWMOVEParams.POS.name),MIN_INT)        
-        isUp = target_pos6 < pos_LiftV
-        if isUp and target_pos6 < roundPulse * 10 and doorStatus == TRAYDOOR_STATUS.OPENED:
-            bSafety = False
-            strCheckResult = ALM_User.SAFETY_DOOR_LIFT.value
+        target_pos6 = try_parse_int(dic6.get(posStr),MIN_INT)        
+        if abs(target_pos6-pos_LiftV) > roundPulse/10:                
+            isUp = target_pos6 < pos_LiftV
+            if isUp and target_pos6 < roundPulse * 10 and doorStatus == TRAYDOOR_STATUS.OPENED:
+                bSafety = False
+                strCheckResult = ALM_User.SAFETY_DOOR_LIFT.value
     if len(ls11) > 0:
         # 암 전개 수축시에는 6번 31번이 원점이어야 함.
         if not isTrayOrigin or not isLiftOrigin:
@@ -392,12 +408,16 @@ def CheckSafetyMotorMove(listReturnTmp):
         #31은 TOF 거리가 200 이상 나와야 회전 가능. - 알람코드로 리턴하자.
         #일단 TOF 에서 10만 펄스로 변경함-_-
         #if distance_tof < 200:
-        if pos_ServArm < roundPulse*10:
+        dic31 = ls31[0]
+        target_pos31 = try_parse_int(dic31.get(posStr),MIN_INT)
+        target_angle360=GetRotateTrayAngleFromPulse(target_pos31)
+        
+        if pos_ServArm < roundPulse*10 and target_angle360 != cur_angle360:
             bSafety = False
             strCheckResult = ALM_User.TRAY360_SAFETY.value
     if len(ls15) > 0:
         #주행은 27이 0도, 180도 일때만 이동 가능. + 모든암이 접혀져있어야 함.
-        if not (angle540 == 180 or angle540 == 0):
+        if not (cur_angle540 == 180 or cur_angle540 == 0):
             bSafety = False
             strCheckResult = ALM_User.SAFETY_MOTORH_2.value
         elif bSafetyFalseArms or not isLiftOrigin or not isTrayOrigin:
@@ -550,14 +570,16 @@ def SendCMDArd(sCmdArd,isSafetyCheck=True):
     time.sleep(MODBUS_WRITE_DELAY)        
     return resultArd,strMsg
 
-def SendCMD_Device(sendbuf, cmdIntervalSec=5,isCheckSafety=True):
+def SendCMD_Device(sendbuf, cmdIntervalSec=0.01,isCheckSafety=True):
     if not hasattr(SendCMD_Device, "last_cmd_time"):
         SendCMD_Device.last_cmd_time = 0
     if not hasattr(SendCMD_Device, "last_cmd_msg"):
         SendCMD_Device.last_cmd_msg = None
     now = time.time()
     cmdTmp = sendbuf
-    if isinstance(sendbuf, list):
+    if isinstance(cmdTmp, list):
+        dictPos = GetAllMotorPosDic()
+        sendbuf = CheckMotorCmdValid(cmdTmp,dictPos)
         if len(sendbuf) > 0:
             if isCheckSafety:
                 bResultSafety,strMsg=CheckSafetyMotorMove(sendbuf)
@@ -574,9 +596,9 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=5,isCheckSafety=True):
             SendCMD_Device.last_cmd_time = now
             SendCMD_Device.last_cmd_msg = cmdTmp
         else:
-            strMsg = ALM_User.ABNORMAL_CMD_DATA
+            strMsg = ALM_User.ALREADY_FINISHED_CMD_POS.value
             rospy.loginfo(strMsg)
-            return False,strMsg
+            return True,strMsg
     #log_all_frames(sendbuf)
     rfidInstanceDefault()
     bExecuteResult = service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
@@ -829,7 +851,7 @@ def callbackMB_15(recvDataMap):
         
         curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
         curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
-        curNode_pos = int(dicCurNodeInfo.get(MotorWMOVEParams.POS.name))
+        curNode_pos = int(dicCurNodeInfo.get(posStr))
         lastNode = curNodeID_fromPulse
         endNodePos = GetNodePos_fromNode_ID(endnode)
         # lsEndNode = find_nearest_pos(dfNodeInfo,endNodePos,1,0)
@@ -1080,6 +1102,9 @@ def callback_factory(topic_name):
                         dicMotorPos[topic_name] = recvDataMap.get(MonitoringField.CUR_POS.name, MIN_INT)
                         dicMotorPos[f'{topic_name}_SPD'] = recvDataMap.get(MonitoringField.CUR_SPD.name, MIN_INT)
                         dicMotorPos[f'{topic_name}_STATE'] = recvDataMap[MonitoringField.ALM_NM.name]
+                        alarmCD = recvDataMap[MonitoringField.ALM_CD.name]
+                        if not is_equal(alarmCD, AlarmCodeList.OK.value):
+                            TTSAndroid('서보모터를 점검해주세요',10)
                         pub_motorPos.publish(json.dumps(dicMotorPos, sort_keys=True))
             else:
                 shared_data[topic_name] = recvDataMap  # 최초 생성
@@ -1292,7 +1317,7 @@ def service_jog():
         reqargs = request.args.to_dict()
         endnode_tmp = request.args.get(APIBLB_FIELDS_TASK.endnode.name)
         distance_tmp = request.args.get(APIBLB_FIELDS_TASK.distance.name)
-        pulse_tmp = request.args.get(MotorWMOVEParams.POS.name)
+        pulse_tmp = request.args.get(posStr)
         spd = try_parse_int(request.args.get(MotorWMOVEParams.SPD.name, DEFAULT_RPM_MID),-1)
         isAbsPos = True
         if spd < 0: 
@@ -1397,8 +1422,8 @@ def service_jog():
         rospy.loginfo(sMsg)
         time.sleep(MODBUS_EXCEPTION_DELAY*10)
         callbackACK.retryCount = 0
-        SendCMD_Device(listReturnTmp)
-        return {"OK": sMsg}, 200
+        bResult,bExecuteMsg=SendCMD_Device(listReturnTmp)
+        return {bResult: bExecuteMsg}, 200
     except Exception as e:
         SendCMDESTOP(f'I{ACC_DECC_SMOOTH}')
         rospy.logerr(f"Invalid data:{reqargs},{e}")
@@ -1430,7 +1455,7 @@ def service_cmd_device():
         topicData = request.args.get('topicname')
         bResult = True
         bExecuteMsg = AlarmCodeList.OK.name
-        
+        pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
         if recvDF is not None:
             # URL 디코딩 및 JSON 파싱
             decoded = urllib.parse.unquote(recvDF)
@@ -1441,6 +1466,9 @@ def service_cmd_device():
             reponseCode = 200 if bResult else 400
             return {bResult:bExecuteMsg}, 200
         if control360 != MIN_INT:
+            cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+            if control360 == cur_angle360:
+                return {bResult:bExecuteMsg}, 200            
             targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
             dic540 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
             #print(dic540)
@@ -1456,6 +1484,9 @@ def service_cmd_device():
             return {bResult:bExecuteMsg}, 200
         
         elif control540 != MIN_INT:            
+            cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+            if control540 == cur_angle540:
+                return {bResult:bExecuteMsg}, 200
             targetPulse_serv = GetRotateMainPulseFromAngle(control540)
             dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,SPD_540,ACC_540,DECC_540)
             #print(dic540)
@@ -1475,6 +1506,9 @@ def service_cmd_device():
             targetPulse_serv = GetTargetPulseServingArm(controlArm3, 0)
             #POT기반한 서빙가능한 최대길이 계산
             limit_arm1_mm = GetTargetLengthMMServingArm(pot_telesrv)
+            pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
+            if targetPulse_serv == pos_ServArm_mm:
+                return {bResult:bExecuteMsg}, 200
             #서빙암 요청길이가 물리적 최대길이를 넘어가면 실행하지 않는다.
             if targetPulse_serv > pot_telesrv:
                 return {False:f'{ALM_User.OUT_OF_SERVING_RANGE.value} over {limit_arm1_mm}mm'}, 202
@@ -1488,6 +1522,9 @@ def service_cmd_device():
         
         elif controlArm2 != MIN_INT:
             #controlArm2 은 0~90 사이 각도로 넘어온다.
+            currentAngle_arm1 =mapRange(pos_BAL1,0,pot_arm1,0,90)
+            if currentAngle_arm1 == controlArm2:
+                return {bResult:bExecuteMsg}, 200
             lsCmd,rpm_time = GetControlInfoBalances(controlArm2,True, spd_rate)
             #print(lsCmd)
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)

@@ -1,0 +1,501 @@
+timestamp	value
+2025:05:08 17:00:18.502	cur_posH=-185820,{-79437; 250508045955807, 26946; 250508045955813, 133329; 250508045955817}
+2025:05:08 17:00:18.514	{'2'; 0, '3'; 0, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T120'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 17:00:18.791	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""325000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.4}] from callbackCmd - SendCMD"
+2025:05:08 17:00:22.542	cur_posH=-185820,{-79437; 250508045955807, 26946; 250508045955813, 133329; 250508045955817}
+2025:05:08 17:00:22.555	{'2'; 0, '3'; 0, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T120'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 17:00:23.080	Camera settings updated; 2,640,480
+2025:05:08 17:00:23.204	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:00:23.373	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:27.828	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:00:30.537	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:33.122	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:35.636	cur_posH=974998,{677126; 250508045955821, 379254; 250508045955824, 209041; 250508045955828}
+2025:05:08 17:00:35.654	{'2'; 379254, '3'; 677126, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T120'; 0, '1'; 209041, 'H1'; 0}
+2025:05:08 17:00:35.675	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:00:36.242	Camera settings updated; 2,640,480
+2025:05:08 17:00:36.366	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:00:36.511	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:41.330	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:43.825	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:00:45.267	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 17:00:47.562	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:00:47.731	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:05:08 17:00:55.517	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 17:00:57.106	TTS OK ; 10,10,H1완료
+2025:05:08 17:00:57.227	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 17:00:57.245	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 17:00:57.266	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 17:00:57.306	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:00:57.358	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 17:18:32.394	119;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 17:18:32.420	119;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 17:18:33.102	119;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 17:18:33.126	119;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 17:18:33.427	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 17:18:33.682	TTS OK ; 10,10,119번 테이블 시작.
+2025:05:08 17:18:35.302	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 17:18:36.133	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 17:18:44.200	cur_posH=0,{170213; 250508051831548, 468085; 250508051831554, 765957; 250508051831557}
+2025:05:08 17:18:44.213	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, '17'; 0, '5'; 0, 'T119'; 0}
+2025:05:08 17:18:44.490	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""325000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:05:08 17:18:52.195	cur_posH=0,{170213; 250508051831548, 468085; 250508051831554, 765957; 250508051831557}
+2025:05:08 17:18:52.208	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, '17'; 0, '5'; 0, 'T119'; 0}
+2025:05:08 17:18:52.709	Camera settings updated; 2,640,480
+2025:05:08 17:18:52.777	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:18:52.909	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:18:59.043	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:19:00.170	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:19:01.647	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 17:19:04.192	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:19:04.244	cur_posH=974998,{868615; 250508051831560, 762232; 250508051831563, 655849; 250508051831566}
+2025:05:08 17:19:04.259	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 868615, '17'; 762232, '5'; 655849, 'T119'; 0}
+2025:05:08 17:19:04.744	Camera settings updated; 2,640,480
+2025:05:08 17:19:04.819	POS=-185820 SPD=2000 endnode=5;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:19:04.976	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:19:09.821	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:19:17.804	CONTROL_3ARMS=379 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 17:19:17.835	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""146792"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:19:27.230	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""416573"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 11.0}] from callbackCmd - SendCMD"
+2025:05:08 17:19:34.391	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 17:19:49.505	TTS OK ; 10,10,현금을 담아주세요.
+2025:05:08 17:19:54.780	TTS OK ; 10,10,55초 후 닫힙니다.
+2025:05:08 17:19:56.543	TTS OK ; 10,10,T119완료
+2025:05:08 17:19:56.899	114;receive_callback;_invoke_callback;callbackBLB_CMD;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 17:19:56.949	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 17:19:57.320	callbackBLB_CMD;SetWaitConfirmFlag;RemoveDF
+2025:05:08 17:19:57.679	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:05:08 17:19:57.706	54004; Home Called
+2025:05:08 17:19:57.743	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 17:19:58.099	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 17:19:58.402	TTS OK ; 10,10,충전소로 복귀합니다.
+2025:05:08 17:19:59.452	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""833146"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""3000"", ""TIME""; 9.5}] from callbackCmd - SendCMD"
+2025:05:08 17:20:06.009	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 17:20:06.317	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 17:20:14.506	"[{""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""100"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:24.331	cur_posH=-185820,{-79437; 250508051956506, 26946; 250508051956512, 133329; 250508051956515}
+2025:05:08 17:20:24.344	{'2'; 0, '3'; 0, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T119'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 17:20:24.796	Camera settings updated; 2,640,480
+2025:05:08 17:20:24.876	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:20:25.046	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:29.501	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:20:32.214	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:34.788	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:37.305	cur_posH=974999,{677127; 250508051956519, 379255; 250508051956523, 209042; 250508051956526}
+2025:05:08 17:20:37.328	{'2'; 379255, '3'; 677127, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T119'; 0, '1'; 209042, 'H1'; 0}
+2025:05:08 17:20:37.333	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 17:20:37.814	Camera settings updated; 2,640,480
+2025:05:08 17:20:37.940	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 17:20:38.104	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:42.987	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:45.492	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:20:46.935	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 17:20:49.188	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:20:49.378	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:05:08 17:20:57.141	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 17:20:58.713	TTS OK ; 10,10,H1완료
+2025:05:08 17:20:58.826	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 17:20:58.851	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 17:20:58.861	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:05:08 17:20:58.880	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 17:20:58.920	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 17:20:58.974	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:35:50.244	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:35:50.273	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:35:50.895	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:35:50.920	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:35:51.188	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:35:51.489	TTS OK ; 10,10,103번 테이블 시작.
+2025:05:08 18:35:51.857	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:35:59.349	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:35:59.908	cur_posH=0,{170213; 250508063549183, 468085; 250508063549190}
+2025:05:08 18:35:59.921	{'2'; 170213, '3'; 468085, 'T103'; 0}
+2025:05:08 18:36:00.193	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""325000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:05:08 18:36:07.872	cur_posH=0,{170213; 250508063549183, 468085; 250508063549190}
+2025:05:08 18:36:07.884	{'2'; 170213, '3'; 468085, 'T103'; 0}
+2025:05:08 18:36:08.359	Camera settings updated; 2,640,480
+2025:05:08 18:36:08.415	POS=572830 SPD=2000 endnode=3;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:36:08.573	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""572830"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:36:17.308	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""606667"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 11.6}] from callbackCmd - SendCMD"
+2025:05:08 18:36:24.201	CONTROL_3ARMS=892 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:36:24.232	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""894666"", ""SPD""; ""3000"", ""ACC""; ""1500"", ""DECC""; ""500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""820844"", ""SPD""; ""2764"", ""ACC""; ""1200"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""303818"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:36:29.812	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""983575"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:36:33.763	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:36:41.664	TTS OK ; 10,10,주문하신 음식이 나왔습니다.
+2025:05:08 18:36:47.309	TTS OK ; 10,10,55초 후 닫힙니다.
+2025:05:08 18:36:51.761	TTS OK ; 10,10,50초 후 닫힙니다.
+2025:05:08 18:36:53.621	TTS OK ; 10,10,T103완료
+2025:05:08 18:36:53.956	115;receive_callback;_invoke_callback;callbackBLB_CMD;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 18:36:54.115	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 18:36:54.431	callbackBLB_CMD;SetWaitConfirmFlag;RemoveDF
+2025:05:08 18:36:54.801	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:05:08 18:36:54.824	54004; Home Called
+2025:05:08 18:36:54.849	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:36:55.157	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:36:55.450	TTS OK ; 10,10,충전소로 복귀합니다.
+2025:05:08 18:36:55.830	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:37:03.497	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""833146"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""3000"", ""TIME""; 6.2}] from callbackCmd - SendCMD"
+2025:05:08 18:37:06.926	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:37:06.957	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""3000"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2764"", ""ACC""; ""1000"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:37:12.341	cur_posH=572830,{274958; 250508063653448, 104745; 250508063653454}
+2025:05:08 18:37:12.353	{'2'; 274958, '3'; 468085, 'T103'; 0, '1'; 104745, 'H1'; 0}
+2025:05:08 18:37:12.627	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 18.2}] from callbackCmd - SendCMD"
+2025:05:08 18:37:25.902	cur_posH=572830,{274958; 250508063653448, 104745; 250508063653454}
+2025:05:08 18:37:25.914	{'2'; 274958, '3'; 468085, 'T103'; 0, '1'; 104745, 'H1'; 0}
+2025:05:08 18:37:26.352	Camera settings updated; 2,640,480
+2025:05:08 18:37:26.411	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:37:26.558	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:37:32.251	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:37:32.757	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 18:37:35.063	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:37:35.733	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:37:37.337	TTS OK ; 10,10,H1완료
+2025:05:08 18:37:37.442	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 18:37:37.460	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 18:37:37.470	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:05:08 18:37:37.489	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 18:37:37.530	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:37:37.583	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:38:05.996	120;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:38:06.026	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:38:06.658	120;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:38:06.689	120;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:38:07.026	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:38:07.225	TTS OK ; 10,10,120번 테이블 시작.
+2025:05:08 18:38:08.839	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:38:09.666	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:38:17.715	cur_posH=0,{170213; 250508063804933, 468085; 250508063804940, 765957; 250508063804943}
+2025:05:08 18:38:17.729	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, '17'; 0, '5'; 0, 'T120'; 0}
+2025:05:08 18:38:18.010	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""325000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.6}] from callbackCmd - SendCMD"
+2025:05:08 18:38:25.686	cur_posH=0,{170213; 250508063804933, 468085; 250508063804940, 765957; 250508063804943}
+2025:05:08 18:38:25.699	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, '17'; 0, '5'; 0, 'T120'; 0}
+2025:05:08 18:38:26.168	Camera settings updated; 2,640,480
+2025:05:08 18:38:26.221	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:38:26.376	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:38:32.514	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:38:33.628	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:38:35.094	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 18:38:37.598	cur_posH=974998,{868615; 250508063804948, 762232; 250508063804952, 655849; 250508063804956}
+2025:05:08 18:38:37.616	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 868615, '17'; 762232, '5'; 655849, 'T120'; 0}
+2025:05:08 18:38:37.637	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:38:38.150	Camera settings updated; 2,640,480
+2025:05:08 18:38:38.223	POS=-185820 SPD=2000 endnode=5;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:38:38.379	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-185820"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:38:43.217	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:38:50.699	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""449583"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.4}] from callbackCmd - SendCMD"
+2025:05:08 18:38:54.503	CONTROL_3ARMS=946 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:38:54.537	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""1016666"", ""SPD""; ""3000"", ""ACC""; ""1500"", ""DECC""; ""500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""932778"", ""SPD""; ""2735"", ""ACC""; ""1200"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""313029"", ""SPD""; ""911"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:39:00.413	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""573945"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 9.1}] from callbackCmd - SendCMD"
+2025:05:08 18:39:05.691	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:39:13.581	TTS OK ; 10,10,주문하신 음식이 나왔습니다.
+2025:05:08 18:39:17.587	TTS OK ; 10,10,T120완료
+2025:05:08 18:39:17.991	116;receive_callback;_invoke_callback;callbackBLB_CMD;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 18:39:18.027	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 18:39:18.320	callbackBLB_CMD;SetWaitConfirmFlag;RemoveDF
+2025:05:08 18:39:18.751	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:05:08 18:39:18.772	54004; Home Called
+2025:05:08 18:39:18.803	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:39:19.146	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:39:19.379	TTS OK ; 10,10,충전소로 복귀합니다.
+2025:05:08 18:39:20.405	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""833146"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""3000"", ""TIME""; 7.6}] from callbackCmd - SendCMD"
+2025:05:08 18:39:25.118	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:39:25.420	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:39:33.603	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""3000"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2735"", ""ACC""; ""1000"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""911"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:39:39.699	cur_posH=-185820,{-79437; 250508063917394, 26946; 250508063917402, 133329; 250508063917406}
+2025:05:08 18:39:39.712	{'2'; 0, '3'; 0, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T120'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 18:39:39.990	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""325000"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 8.4}] from callbackCmd - SendCMD"
+2025:05:08 18:39:43.711	cur_posH=-185820,{-79437; 250508063917394, 26946; 250508063917402, 133329; 250508063917406}
+2025:05:08 18:39:43.725	{'2'; 0, '3'; 0, '10'; 133329, '4'; 26946, '17'; -79437, '5'; 655849, 'T120'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 18:39:44.169	Camera settings updated; 2,640,480
+2025:05:08 18:39:44.302	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:39:44.470	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:39:48.919	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:39:51.644	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:39:54.224	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 18:39:56.749	cur_posH=974999,{677127; 250508063917410, 379255; 250508063917413, 209042; 250508063917417}
+2025:05:08 18:39:56.771	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:39:57.224	Camera settings updated; 2,640,480
+2025:05:08 18:39:57.335	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:39:57.501	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:40:02.338	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:40:04.833	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:40:06.294	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 18:40:08.532	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:40:08.706	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 12.4}] from callbackCmd - SendCMD"
+2025:05:08 18:40:16.486	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:40:18.101	TTS OK ; 10,10,H1완료
+2025:05:08 18:40:18.207	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 18:40:18.233	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 18:40:18.245	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:05:08 18:40:18.265	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 18:40:18.310	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 18:40:18.366	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:41:59.635	119;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:41:59.662	119;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:42:00.300	119;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:42:00.326	119;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:42:00.633	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:42:00.942	TTS OK ; 10,10,119번 테이블 시작.
+2025:05:08 18:42:02.496	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:42:03.323	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 18:42:11.369	cur_posH=0,{170213; 250508064158564, 468085; 250508064158571, 765957; 250508064158574}
+2025:05:08 18:42:11.383	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, '17'; 0, '5'; 0, 'T119'; 0}
+2025:05:08 18:57:16.407	svrIP Changed ; 172.30.1.40
+2025:05:08 18:57:17.462	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.471	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.482	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.493	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.505	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.516	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.526	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.538	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.549	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.560	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.571	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.584	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:17.598	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:57:17.611	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:57:35.484	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:57:35.512	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:57:36.123	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:57:36.150	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:57:36.422	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:57:36.629	TTS OK ; 10,10,103번 테이블 시작.
+2025:05:08 18:57:36.686	cur_posH=0,{170213; 250508065734378, 468085; 250508065734385}
+2025:05:08 18:57:36.698	{'2'; 170213, '3'; 468085, 'T103'; 0}
+2025:05:08 18:58:14.387	svrIP Changed ; 172.30.1.40
+2025:05:08 18:58:15.518	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.551	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.589	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.612	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.631	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.656	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.689	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.715	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.746	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.768	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.782	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.796	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:15.808	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 18:58:15.819	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 18:58:28.397	102;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:58:28.424	102;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:58:29.044	102;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 18:58:29.071	102;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 18:58:29.380	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 18:58:29.593	TTS OK ; 10,10,102번 테이블 시작.
+2025:05:08 18:58:29.654	cur_posH=0,{170213; 250508065827289, 468085; 250508065827296, 765957; 250508065827300}
+2025:05:08 18:58:29.668	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, 'T102'; 0}
+2025:05:08 18:58:46.729	Camera settings updated; 2,640,480
+2025:05:08 18:58:46.791	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:58:46.932	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:58:53.085	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:58:54.207	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:58:55.673	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 18:58:58.176	cur_posH=974999,{868616; 250508065827303}
+2025:05:08 18:58:58.180	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 18:58:58.192	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 868616, 'T102'; 0}
+2025:05:08 18:59:22.633	Camera settings updated; 2,640,480
+2025:05:08 18:59:22.785	POS=845000 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 18:59:22.953	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""845000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:59:27.285	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""487500"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 15.8}] from callbackCmd - SendCMD"
+2025:05:08 18:59:38.581	Camera settings updated; 2,640,480
+2025:05:08 18:59:38.769	aprilTagOn parsing; true
+2025:05:08 18:59:38.920	CONTROL_3ARMS=892 SPD_RATE=0.3;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 18:59:38.953	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""894666"", ""SPD""; ""900"", ""ACC""; ""1500"", ""DECC""; ""500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""820844"", ""SPD""; ""829"", ""ACC""; ""1200"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""303818"", ""SPD""; ""303"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 18:59:46.419	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""150429"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""3000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:59:50.382	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 18:59:58.308	TTS OK ; 10,10,주문하신 음식이 나왔습니다.
+2025:05:08 19:00:04.270	TTS OK ; 10,10,55초 후 닫힙니다.
+2025:05:08 19:00:08.623	TTS OK ; 10,10,T102완료
+2025:05:08 19:00:09.021	119;receive_callback;_invoke_callback;callbackBLB_CMD;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 19:00:09.172	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 19:00:09.532	callbackBLB_CMD;SetWaitConfirmFlag;RemoveDF
+2025:05:08 19:00:09.900	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:05:08 19:00:09.927	54004; Home Called
+2025:05:08 19:00:09.959	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:00:10.303	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 19:00:10.533	TTS OK ; 10,10,충전소로 복귀합니다.
+2025:05:08 19:00:10.868	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 19:00:18.520	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""3000"", ""TIME""; 6.2}] from callbackCmd - SendCMD"
+2025:05:08 19:00:21.949	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:00:21.983	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""3000"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2764"", ""ACC""; ""1000"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:00:27.368	cur_posH=845000,{951383; 250508070008500}
+2025:05:08 19:00:27.381	{'2'; 0, '3'; 0, '10'; 951383, '4'; 868616, 'T102'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 19:00:43.272	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000"", ""TIME""; 15.8}] from callbackCmd - SendCMD"
+2025:05:08 19:00:54.200	cur_posH=845000,{951383; 250508070008500}
+2025:05:08 19:00:54.216	{'2'; 0, '3'; 0, '10'; 951383, '4'; 868616, 'T102'; 0, '1'; 0, 'H1'; 0}
+2025:05:08 19:00:58.565	Camera settings updated; 2,640,480
+2025:05:08 19:00:58.728	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:00:58.903	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:01:00.769	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 19:01:01.309	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 19:01:03.088	cur_posH=975003,{677131; 250508070008507, 379259; 250508070008511, 209046; 250508070008514}
+2025:05:08 19:01:03.104	{'2'; 379259, '3'; 677131, '10'; 951383, '4'; 868616, 'T102'; 0, '1'; 209046, 'H1'; 0}
+2025:05:08 19:01:03.111	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 19:01:03.521	Camera settings updated; 2,640,480
+2025:05:08 19:01:03.648	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:01:03.822	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:01:08.653	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""1000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:01:11.142	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:01:12.610	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 19:01:14.857	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:01:15.533	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:01:17.086	TTS OK ; 10,10,H1완료
+2025:05:08 19:01:17.219	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 19:01:17.238	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 19:01:17.250	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:05:08 19:01:17.270	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 19:01:17.312	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:01:17.368	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 19:19:35.459	svrIP Changed ; 172.30.1.40
+2025:05:08 19:19:36.609	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.620	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.636	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.652	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.672	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.690	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.709	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.731	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.745	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.764	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.794	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.806	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:19:36.820	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:19:36.834	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:26:50.203	102;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:26:50.245	102;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:26:50.873	102;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:26:50.910	102;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:26:51.233	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 19:26:51.489	TTS OK ; 10,10,102번 테이블 시작.
+2025:05:08 19:26:51.541	cur_posH=0,{170213; 250508072649063, 468085; 250508072649069, 765957; 250508072649072}
+2025:05:08 19:26:51.560	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 0, 'T102'; 0}
+2025:05:08 19:26:52.067	Camera settings updated; 2,640,480
+2025:05:08 19:26:52.540	POS=975000 SPD=2000 endnode=10;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:26:52.711	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""975000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:26:58.883	"[{""MBID""; ""15"", ""CMD""; ""WSPD"", ""SPD""; ""500"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:27:00.009	10;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,CROSS
+2025:05:08 19:27:01.480	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 19:27:03.989	cur_posH=974999,{868616; 250508072649076}
+2025:05:08 19:27:04.005	10;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,CROSS
+2025:05:08 19:27:04.012	{'2'; 170213, '3'; 468085, '10'; 765957, '4'; 868616, 'T102'; 0}
+2025:05:08 19:27:04.511	Camera settings updated; 2,640,480
+2025:05:08 19:27:04.653	POS=845000 SPD=2000 endnode=4;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:27:04.831	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""845000"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:27:49.519	svrIP Changed ; 172.30.1.40
+2025:05:08 19:27:50.772	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:50.892	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:50.943	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:50.971	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:50.995	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:51.019	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:51.043	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:51.067	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:51.091	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:51.115	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:51.139	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:51.167	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:51.185	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:27:51.205	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:27:56.345	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:27:56.390	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:27:57.018	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:27:57.054	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:27:57.347	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 19:27:57.615	TTS OK ; 10,10,103번 테이블 시작.
+2025:05:08 19:27:57.711	cur_posH=0,{170213; 250508072755210, 468085; 250508072755217}
+2025:05:08 19:27:57.733	{'2'; 170213, '3'; 468085, 'T103'; 0}
+2025:05:08 19:27:58.222	Camera settings updated; 2,640,480
+2025:05:08 19:27:58.450	POS=572830 SPD=2000 endnode=3;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:27:58.648	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""572830"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:28:29.999	CONTROL_ROTATE_MAIN=336 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainRotate
+2025:05:08 19:28:30.102	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-43333"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:28:32.255	CONTROL_3ARMS=892 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:28:32.325	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""894666"", ""SPD""; ""3000"", ""ACC""; ""1500"", ""DECC""; ""500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""820844"", ""SPD""; ""2764"", ""ACC""; ""1200"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""303818"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:28:37.898	CONTROL_ROTATE_TRAY=65 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainTray
+2025:05:08 19:28:37.953	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""150429"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:31:17.192	svrIP Changed ; 172.30.1.40
+2025:05:08 19:31:18.419	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.440	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.470	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.500	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.535	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.569	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.599	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.631	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.664	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.690	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.719	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.750	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:18.782	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:31:18.810	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:31:26.104	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:31:26.138	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:31:26.754	103;<module>;GenerateServingTableList;AppendTableList
+2025:05:08 19:31:26.795	103;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:31:27.080	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 19:31:27.327	TTS OK ; 10,10,103번 테이블 시작.
+2025:05:08 19:31:27.464	cur_posH=0,{170213; 250508073124942, 468085; 250508073124948}
+2025:05:08 19:31:27.482	{'2'; 170213, '3'; 468085, 'T103'; 0}
+2025:05:08 19:31:27.904	Camera settings updated; 2,640,480
+2025:05:08 19:31:27.998	POS=572830 SPD=2000 endnode=3;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:31:28.198	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""572830"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:31:36.851	CONTROL_ROTATE_MAIN=336 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainRotate
+2025:05:08 19:31:36.910	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""-43333"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:31:39.065	CONTROL_3ARMS=892 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:31:39.132	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""894666"", ""SPD""; ""3000"", ""ACC""; ""1500"", ""DECC""; ""500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""820844"", ""SPD""; ""2764"", ""ACC""; ""1200"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""303818"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:31:44.710	CONTROL_ROTATE_TRAY=65 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainTray
+2025:05:08 19:31:44.770	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""150429"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:31:48.749	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""890000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 19:31:56.864	TTS OK ; 10,10,주문하신 음식이 나왔습니다.
+2025:05:08 19:32:02.563	TTS OK ; 10,10,55초 후 닫힙니다.
+2025:05:08 19:32:03.935	TTS OK ; 10,10,T103완료
+2025:05:08 19:32:04.363	122;receive_callback;_invoke_callback;callbackBLB_CMD;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 19:32:04.596	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 19:32:04.904	callbackBLB_CMD;SetWaitConfirmFlag;RemoveDF
+2025:05:08 19:32:05.289	H1;<module>;GenerateServingTableList;HomeCall;InsertTableList;SetTableTarget
+2025:05:08 19:32:05.337	54004; Home Called
+2025:05:08 19:32:05.386	H1;_run_module_code;_run_code;<module>;GenerateServingTableList;SetTableTarget
+2025:05:08 19:32:05.746	start_serving;GenerateServingTableList;trigger_start_serving;trigger_event
+2025:05:08 19:32:05.914	TTS OK ; 10,10,충전소로 복귀합니다.
+2025:05:08 19:32:07.036	CONTROL_ROTATE_TRAY=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainTray
+2025:05:08 19:32:07.091	"[{""MBID""; ""31"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""500"", ""ACC""; ""3000"", ""DECC""; ""5000""}, {""MBID""; ""31"", ""CMD""; ""WHOMESTOP_ON"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}] from callbackCmd - SendCMD"
+2025:05:08 19:32:10.973	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:32:11.375	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 8.1}] from callbackCmd - SendCMD"
+2025:05:08 19:32:19.636	"[{""MBID""; ""13"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""3000"", ""ACC""; ""500"", ""DECC""; ""1500""}, {""MBID""; ""10"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2764"", ""ACC""; ""1000"", ""DECC""; ""1500""}, {""MBID""; ""11"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""1011"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:32:25.650	cur_posH=572830,{274958; 250508073203828, 104745; 250508073203835}
+2025:05:08 19:32:25.668	{'2'; 274958, '3'; 468085, 'T103'; 0, '1'; 104745, 'H1'; 0}
+2025:05:08 19:32:25.958	CONTROL_ROTATE_MAIN=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveMainRotate
+2025:05:08 19:32:26.021	"[{""MBID""; ""27"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""300"", ""ACC""; ""3000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:32:28.092	cur_posH=572830,{274958; 250508073203828, 104745; 250508073203835}
+2025:05:08 19:32:28.110	{'2'; 274958, '3'; 468085, 'T103'; 0, '1'; 104745, 'H1'; 0}
+2025:05:08 19:32:28.592	Camera settings updated; 2,640,480
+2025:05:08 19:32:28.799	POS=0 SPD=2000 endnode=1;<module>;RunListBlbMotorsEx;API_MoveH
+2025:05:08 19:32:29.015	"[{""MBID""; ""15"", ""CMD""; ""WE_OFF"", ""MODE""; NaN, ""POS""; NaN, ""SPD""; NaN, ""ACC""; NaN, ""DECC""; NaN}, {""MBID""; ""15"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""0"", ""SPD""; ""2000"", ""ACC""; ""5000"", ""DECC""; ""5000""}] from callbackCmd - SendCMD"
+2025:05:08 19:32:34.759	1;<module>;MotorBalanceControlEx;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:32:35.289	"[{""MBID""; ""15"", ""CMD""; ""WE_ON""}] from callbackCmd - SendCMD"
+2025:05:08 19:32:37.525	1;_invoke_callback;callbackAck;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:32:38.205	CONTROL_3ARMS=0 SPD_RATE=1;<module>;RunListBlbMotorsEx;API_MoveArms
+2025:05:08 19:32:39.717	TTS OK ; 10,10,H1완료
+2025:05:08 19:32:39.819	0;_run_code;<module>;RunListBlbMotorsEx;SetWaitConfirmFlag;SetTaskCompleted
+2025:05:08 19:32:39.845	complete_serving;SetTaskCompleted;trigger_complete_serving;trigger_event
+2025:05:08 19:32:39.867	필요한 열이 없습니다; ['taskid', 'taskrunok']
+2025:05:08 19:32:39.893	RunListBlbMotorsEx;SetWaitConfirmFlag;RemoveDF
+2025:05:08 19:32:39.942	1;RunListBlbMotorsEx;SetWaitConfirmFlag;SetCurrentNodeNOTAG,HOME
+2025:05:08 19:32:40.024	"[{""MBID""; ""6"", ""CMD""; ""WMOVE"", ""MODE""; ""1"", ""POS""; ""800000"", ""SPD""; ""800"", ""ACC""; ""1000"", ""DECC""; ""1000"", ""TIME""; 7.5}] from callbackCmd - SendCMD"
+2025:05:08 19:33:56.289	svrIP Changed ; 172.30.1.40
+2025:05:08 19:33:57.503	MBID;10,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.522	MBID;10,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.545	MBID;27,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.578	MBID;27,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.592	MBID;6,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.617	MBID;6,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.644	MBID;11,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.670	MBID;11,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.694	MBID;31,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.729	MBID;31,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.755	MBID;15,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.776	MBID;15,CMD;WLOC,POS;0 from callbackCmd - initWLoc
+2025:05:08 19:33:57.806	MBID;13,CMD;WSTOP,DECC;800 from callbackCmd - stopMotor
+2025:05:08 19:33:57.827	MBID;13,CMD;WLOC,POS;0 from callbackCmd - initWLoc

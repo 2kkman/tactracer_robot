@@ -70,7 +70,15 @@ def getLoadWeight():
 #         rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name}')
 #     return False
   
-def CheckMotorOrderValid(dictMotor:dict):
+def CheckMotorOrderValid(dictMotor):
+    # if isinstance(dictMotor,dict):
+    #     cmdTmp = [dictMotor]
+    # else:
+    #     cmdTmp = dictMotor
+        
+    # dictPos = GetAllMotorPosDic()
+    # sendbuf = CheckMotorCmdValid(cmdTmp,dictPos)
+    # return True if len(sendbuf) > 0 else False    
     mbid = dictMotor.get(MotorWMOVEParams.MBID.name, None)
     if mbid == None:
         return False
@@ -223,6 +231,24 @@ def getMainRotateDicByDirection(dicTagretTableInfoTmp : dict):
     target_pulse = int(dicNewRotateTmp[MotorWMOVEParams.POS.name])
     dicNewRotateTmp[MotorWMOVEParams.TIME.name] = GetTimeFromRPM(ModbusID.ROTATE_MAIN_540, target_pulse, SPD_540)
     return dicNewRotateTmp
+
+def getMainRotateDicByNode(endNode):
+    target_pulse = GetNodePos_fromNode_ID(endNode)
+    cmd_posH, cur_posH = GetPosServo(ModbusID.MOTOR_H)
+    curDistanceSrvTele, curAngle540,cur_angle_360  = GetCurrentPosDistanceAngle()
+    target_angle = curAngle540
+    diff_signed = target_pulse - cur_posH
+    diff_abs = abs(diff_signed)
+    #pot_cur540,not_cur540,cmdpos540,cur_pos540 =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
+    # 목표지점까지 거리가 40만 펄스 이내이고 현재 각도가 0도 혹은 180 도면 현재 메인회전 각도 그대로 리턴을 한다.
+    if curAngle540%180 == 0 and diff_abs < MOVE_H_SAMPLE_PULSE / 3:
+        target_angle = curAngle540
+    # 목표까지 정방향이면 0도, 역방향이면 180도
+    elif diff_abs > 0:
+        target_angle = 0
+    else:
+        target_angle = 180
+    return GetDicRotateMotorMain(target_angle)
 
 def GetRotateTrayAngleFromPulse(target_pulse):
   potRotate360, notRotate360, posRotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
@@ -665,6 +691,7 @@ def GetListLiftUp():
     return lsLiftUp
 
 def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
+    log_all_frames(isUp)
     pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
     listBLBTmp = []
     if isUp:    #수축-리프트업
@@ -808,7 +835,7 @@ def SendCMD_Device(sendbuf):
 
             # cmdTmp = json.dumps(sendbuf)
         else:
-            return False, ALM_User.ABNORMAL_CMD_DATA.value
+            return False, ALM_User.ALREADY_FINISHED_CMD_POS.value
     else:
         return False, ALM_User.ABNORMAL_CMD_DATA2.value
     
@@ -818,7 +845,7 @@ def SendCMD_DeviceService(sendbuf):
         if len(sendbuf) > 0:
             cmdTmp = json.dumps(sendbuf)
         else:
-            return False, ALM_User.ABNORMAL_CMD_DATA.value
+            return False, ALM_User.ALREADY_FINISHED_CMD_POS.value
     else:
         return False, ALM_User.ABNORMAL_CMD_DATA2.value
     # sMsg = log_all_frames('모터명령어',4)
@@ -949,19 +976,20 @@ def TrayStop():
     SendCMDArd(f"Y:0,10")
 
 def DoorOpen(doorIdx=4):
+    SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
     #SendInfoHTTP(log_all_frames(doorIdx))
-    if isLiftTrayDownFinished() or not isRealMachine:
-        #LightWelcome(False) 
+    # if isLiftTrayDownFinished() or not isRealMachine:
+    #     #LightWelcome(False) 
         
-        #SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
+    #     SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
         
-        #V캘리 하는 동안만 주석처리
-        #TiltServFinish()
+    #     #V캘리 하는 동안만 주석처리
+    #     #TiltServFinish()
 
-        return True
-    else:
-        SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.SAFETY_TRAYDOOR.value)
-        return False
+    #     return True
+    # else:
+    #     SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.SAFETY_TRAYDOOR.value)
+    #     return False
 
 def DoorClose(doorIdx=4):
     LightWelcome(False)
@@ -1020,6 +1048,7 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
     dic_SpdTable = {}
     dic_PosTable = {}
     doorStatus,doorArray = GetDoorStatus()
+    isDoorOpened = True if TRAYDOOR_STATUS.OPENED == doorStatus else False
     dictGlobal = node_CtlCenter_globals.dic_485ex.get(TopicName.BMS.name, {})
     curcadc = float(dictGlobal.get(MonitoringField_BMS.CurCadc.name, 1))
     charging = True if curcadc <= 0 else False
@@ -1041,9 +1070,9 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
     spd_TrayRotate = dic_SpdTable.get(ModbusID.ROTATE_SERVE_360.value)
     
     minSpd = 10
-    isDoorOpened = True if TRAYDOOR_STATUS.OPENED == doorStatus else False
+    
     #if isDoorOpened and curNode == node_KITCHEN_STATION:
-    if curNode == node_KITCHEN_STATION:        
+    if curNode == node_KITCHEN_STATION and isDoorOpened:        
         return BLB_STATUS_FIELD.READY
     elif isDoorOpened:
         return BLB_STATUS_FIELD.CONFIRM    
@@ -1078,6 +1107,8 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
             return BLB_STATUS_FIELD.N_A
 
 def SendStatus(blb_status: BLB_STATUS_FIELD):
+    doorStatus,doorArray = GetDoorStatus()
+    isDoorOpened = True if TRAYDOOR_STATUS.OPENED == doorStatus else False    
     cur_pos_cross = try_parse_int(GetCrossInfo(MonitoringField.CUR_POS.name), MIN_INT)
     DI_POT_15,DI_NOT_15,DI_ESTOP_15,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
     table_target = GetTableTarget()
@@ -1120,9 +1151,23 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
     curDistanceSrvTele, curAngle540,cur_angle_360  = GetCurrentPosDistanceAngle()
     dicStatusData[APIBLB_FIELDS_INFO.angle.name] = curAngle540
     curTargetTable,curTarNode = GetCurrentTargetTable()
+    tasktype = APIBLB_TASKTYPE.Parking
     dfReceived = GetDF(curTargetTable)
     if dfReceived is None:
-      dfReceived = pd.DataFrame()
+        dfReceived = pd.DataFrame()
+    else:
+        dicFirst = dfReceived.iloc[0]    
+        tasktype_current = int(dicFirst[APIBLB_FIELDS_TASK.tasktype.name])
+        tasktype = APIBLB_TASKTYPE.from_value(tasktype_current)
+        
+    state_cd = blb_status.value
+    state_nm = blb_status.name
+    if blb_status == BLB_STATUS_FIELD.CONFIRM and isDoorOpened:
+        state_nm = tasktype.name
+        state_cd = tasktype.value + 100
+    dicStatusData[BLB_STATUS.STATE_CD.name] = state_cd
+    dicStatusData[BLB_STATUS.STATE_NM.name] = state_nm
+    
     dicStatusData[APIBLB_FIELDS_STATUS.df.name] = dfReceived.to_json(orient='records')    
     dicStatusData[MonitoringField.LASTSEEN.name] = getDateTime().timestamp()
     sendbuf = json.dumps(dicStatusData)
@@ -1148,27 +1193,28 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
       #목적지가 충전소로 가는 경우에는 반드시 현재 RFID태그가 읽히고 있고 POT_15 ON 이어야 함.
       #분기기로 가는 경우에는 현재 정지상태인지만 체크하면 됨.
       #제정신일때 다시 정의하자.
-      if bSendJCCmd and isRealMachine and node_CtlCenter_globals.bReturn_CROSS:
-        rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')
-        for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
-          if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
-            if isCrossStatus == 0:
-                if curNode in NODES_SPECIAL and isTrue(DI_POT_15): #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
-                    API_CROSS_set(jc_id,isCrossStatus)
-                #     if isTrue(DI_POT_15):
-                #         API_CROSS_set(jc_id,isCrossStatus)
-                # else:   #세로 로 만들어야 할때 - 충전소에서 분기기로 진입시
-                #     if SI_POT == 'GPI':
-                #         API_CROSS_set(jc_id,isCrossStatus)
-            elif isCrossStatus == 1:    #가로로 만들어야 할때
-                if curNode == 10:   #분기기에 올라타 있는 상태 - 
-                    if isTrue(DI_POT_15):
-                        API_CROSS_set(jc_id,isCrossStatus)
-                else:
-                    if SI_POT == 'GPI':
-                        API_CROSS_set(jc_id,isCrossStatus)
-      else:
-          rospy.loginfo(f'분기기 통신을 확인해주세요')
+      if isRealMachine:
+        if bSendJCCmd and node_CtlCenter_globals.bReturn_CROSS:
+            rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')
+            for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
+                if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
+                    if isCrossStatus == 0:
+                        if curNode in NODES_SPECIAL and isTrue(DI_POT_15): #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
+                            API_CROSS_set(jc_id,isCrossStatus)
+                        #     if isTrue(DI_POT_15):
+                        #         API_CROSS_set(jc_id,isCrossStatus)
+                        # else:   #세로 로 만들어야 할때 - 충전소에서 분기기로 진입시
+                        #     if SI_POT == 'GPI':
+                        #         API_CROSS_set(jc_id,isCrossStatus)
+                    elif isCrossStatus == 1:    #가로로 만들어야 할때
+                        if curNode == 10:   #분기기에 올라타 있는 상태 - 
+                            if isTrue(DI_POT_15):
+                                API_CROSS_set(jc_id,isCrossStatus)
+                        else:
+                            if SI_POT == 'GPI':
+                                API_CROSS_set(jc_id,isCrossStatus)
+        else:
+            rospy.loginfo(f'분기기 통신을 확인해주세요')
         
         # dicSendMqttTopic = {}
         # # mqttTopic = f'BLB/mcu_relay_CMD/set'

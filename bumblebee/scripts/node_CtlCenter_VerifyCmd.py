@@ -30,6 +30,7 @@ def RunListBlbMotorsEx(listBLB):
     isTeachingServingDistance = True if targetServingDistance == StateBranchValue.ERROR.value else False
     pot_telesrv,not_telesrv,cmdpos_srv,cur_pos_srv =GetPotNotCurPosServo(ModbusID.TELE_SERV_MAIN)
     pot_6,not_6,cmdpos_6,cur_pos_6 =GetPotNotCurPosServo(ModbusID.MOTOR_V)
+    pot_31,not_31,cmdpos_31,cur_pos_31 =GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
     pot_13,not_13,cmdpos_13,cur_pos_13 =GetPotNotCurPosServo(ModbusID.BAL_ARM1)
     potRotate540_cmd, notRotate540_cur, posRotate540_cmd,posRotate540_cur= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)    
     potRotate540, notRotate540, poscmdRotate540,poscurRotate540= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
@@ -72,6 +73,7 @@ def RunListBlbMotorsEx(listBLB):
             return APIBLB_ACTION_REPLY.E108
 
         if not bIsAllMotorFolded:
+            DoorClose()
             lsLiftUp = GetLiftControl(True)
             lsBLBTmp = copy.deepcopy(listBLB)
             listBLB[:] = lsLiftUp + lsBLBTmp            
@@ -156,27 +158,31 @@ def RunListBlbMotorsEx(listBLB):
             node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_H.value)] = iTargetPulse
             diffH_pulse = abs(cur_posH - iTargetPulse)
             node_CtlCenter_globals.lastSendDic_H = dicInfo_local
-            dicRotateDirection = getMainRotateDicByDirection(dicInfo_local)
+            #dicRotateDirection = getMainRotateDicByDirection(dicInfo_local)
+            dicRotateDirection = getMainRotateDicByNode(end_node)
             rospy.loginfo('CheckPointH3')
             if CheckMotorOrderValid(dicInfo_local):
                 rospy.loginfo('CheckPointH4')
-                if CheckMotorOrderValid(dicRotateDirection) and diffH_pulse > MOVE_H_SAMPLE_PULSE/3:
-                    rospy.loginfo('CheckPointH5')
-                    target540_pos = dicRotateDirection.get(MotorWMOVEParams.POS.name,MIN_INT)
-                    lsDicRotateDirection = [dicRotateDirection]
-                    listBLB.insert(0,lsDicRotateDirection)
-                    return APIBLB_ACTION_REPLY.E108                
-                rospy.loginfo('CheckPointH6')
+                #if CheckMotorOrderValid(dicRotateDirection):
+                #curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
+                if CheckMotorOrderValid(dicRotateDirection):
+                    #if not ((curAngle_540 == 0 or curAngle_540 == 180) and diffH_pulse < MOVE_H_SAMPLE_PULSE/3):
+                        target540_pos = dicRotateDirection.get(MotorWMOVEParams.POS.name,MIN_INT)
+                        lsDicRotateDirection = [dicRotateDirection]
+                        listBLB.insert(0,lsDicRotateDirection)
+                        return APIBLB_ACTION_REPLY.E108
                 TiltFace()
                 if dicInfo_local_org.get(SeqMapField.END_NODE.name) is not None:
                   node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
                 rospy.loginfo(dicInfo_local)
                 endnode_current = dicInfo_local_org.get(SeqMapField.END_NODE.name)
                 pulseTarget= GetNodePos_fromNode_ID(endnode_current)
-                rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
+                rospy.loginfo('CheckPointH5')
                 bReturn,strResult=API_MoveH(pulseTarget,dicInfo_local.get(MotorWMOVEParams.SPD.name),endnode_current)
+                rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
+                bReturn,strResult=GetResultMessageFromJsonStr(strResult)
                 rospy.loginfo(f'{bReturn},{strResult}')
-                if not bReturn:
+                if not isTrue(bReturn):
                     node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
                     SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
                     return APIBLB_ACTION_REPLY.E110
@@ -215,6 +221,7 @@ def RunListBlbMotorsEx(listBLB):
         
         # 루프를 돌면서 원소를 직접 수정할 수 있게 한다.
         isArmControl = False
+        isLiftControl = False
         distance_target = 0
         isRotateMainControl = False
         isRotateTrayControl = False
@@ -236,17 +243,20 @@ def RunListBlbMotorsEx(listBLB):
             sSPD = dicArray[MotorWMOVEParams.SPD.name]
             iSPD = int(sSPD)
             iSPDSlow = round(iSPD /3)
-            
-            if iMBID == ModbusID.ROTATE_SERVE_360.value:
-                isRotateTrayControl = True
-                potRotate360_cmd, notRotate360_cur, posRotate360_cmd,posRotate360_cur= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-                distance_target = pulse_to_angle(iPOS, potRotate360_cmd, MAX_ANGLE_TRAY)%360
-                break
-            elif iMBID == ModbusID.ROTATE_MAIN_540.value:
-                isRotateMainControl = True
-                distance_target = pulse_to_angle(iPOS, potRotate540_cmd, MAX_ANGLE_BLBBODY)%360
-                break
-            elif iMBID == ModbusID.TELE_SERV_MAIN.value:
+            # if iMBID == ModbusID.MOTOR_V.value:
+            #     isLiftControl = True
+            #     break
+            # elif iMBID == ModbusID.ROTATE_SERVE_360.value:
+            #     isRotateTrayControl = True
+            #     potRotate360_cmd, notRotate360_cur, posRotate360_cmd,posRotate360_cur= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
+            #     distance_target = pulse_to_angle(iPOS, potRotate360_cmd, MAX_ANGLE_TRAY)%360
+            #     break
+            # elif iMBID == ModbusID.ROTATE_MAIN_540.value:
+            #     isRotateMainControl = True
+            #     distance_target = pulse_to_angle(iPOS, potRotate540_cmd, MAX_ANGLE_BLBBODY)%360
+            #     break
+            # el
+            if iMBID == ModbusID.TELE_SERV_MAIN.value:
                 isArmControl = True
                 distance_target = GetTargetLengthMMServingArm(iPOS,0)
                 if iPOS > cur_pos_srv and onScan:
@@ -291,6 +301,7 @@ def RunListBlbMotorsEx(listBLB):
                     # else:
                     #     lsLiftUp = GetLiftControl(True)
                     #     lsBLBTmp = copy.deepcopy(listBLB)
+                    DoorClose()
                     lsLiftUp = GetLiftControl(True)
                     lsBLBTmp = copy.deepcopy(listBLB)
                     listBLB[:] = lsLiftUp + listBLB
@@ -374,15 +385,15 @@ def RunListBlbMotorsEx(listBLB):
                     if isObstaclePresent:
                         return APIBLB_ACTION_REPLY.E111
 
-                # currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+                currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
 
-                # if currentWeightTotal >= WEIGHT_LOADCELL_LIMITGRAM*10000:
-                #     SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAY_WEIGHT_LIMIT.value)
-                #     SetWaitConfirmFlag(True,ALM_User.TRAY_WEIGHT_LIMIT)
-                #     return APIBLB_ACTION_REPLY.E109
-                # else:
-                #     if iPOS < roundPulse:
-                #         DoorClose()
+                if currentWeightTotal >= WEIGHT_LOADCELL_LIMITGRAM*10000:
+                    SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.TRAY_WEIGHT_LIMIT.value)
+                    SetWaitConfirmFlag(True,ALM_User.TRAY_WEIGHT_LIMIT)
+                    return APIBLB_ACTION_REPLY.E109
+                else:
+                    if iPOS < roundPulse:
+                        DoorClose()
                     if dicAruco:    #아르코마커가 인식되면 로그.
                         # #TODO : 아르코마커가 인식되었습니다TTS. + 음성 메세지 클래스 정의할 것.
                         # TTSAndroid(TTSMessage.ARUCO_FOUND_OK.value)                        
@@ -485,19 +496,28 @@ def RunListBlbMotorsEx(listBLB):
         dfBackUp = None
         bResult = True
         bStrMsg = AlarmCodeList.OK.name
-        if isArmControl:
+        if isLiftControl:
+            bResult, bStrMsg = API_SendCMD_Device(dicInfo_local)
+            #dfBackUp = listBLB.pop(0)
+            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            sMsg = f'리프트컨트롤:{bResult},{bStrMsg}'
+            rospy.loginfo(sMsg)
+        elif isArmControl:
             bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
-            dfBackUp = listBLB.pop(0)
+            #dfBackUp = listBLB.pop(0)
+            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'암컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateMainControl:
             bResult, bStrMsg = API_MoveMainRotate(distance_target, adjustrate)
-            dfBackUp = listBLB.pop(0)
+            #dfBackUp = listBLB.pop(0)
+            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'메인회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateTrayControl:
             bResult, bStrMsg = API_MoveMainTray(distance_target, adjustrate)
-            dfBackUp = listBLB.pop(0)
+            #dfBackUp = listBLB.pop(0)
+            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'트레이회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif len(listBLB) > 0:
@@ -509,16 +529,21 @@ def RunListBlbMotorsEx(listBLB):
             bResult = False
             SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
 
-        if len(lsFinalCmd) ==0 and not bResult:
+        if len(lsFinalCmd) ==0 and not isTrue(bResult):
             if isExceptionSSE(bStrMsg):
                 #SendAlarmHTTP(ALM_User.SSE_CONNETION_ERROR.value,True)    
                 StopEmergency(ALM_User.SSE_CONNETION_ERROR.value, True,False)
                 return APIBLB_ACTION_REPLY.E500
             else:
-                SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
-                node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
+                #SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
+                DoorClose()
+                lsLiftUp = GetLiftControl(True)
+                lsBLBTmp = copy.deepcopy(listBLB)
+                node_CtlCenter_globals.listBLB[:] = lsLiftUp + lsBLBTmp            
                 return APIBLB_ACTION_REPLY.E104
-        
+        if len(lsFinalCmd) ==0 and isTrue(bResult):
+            dfBackUp = listBLB.pop(0)
+            rospy.loginfo(dfBackUp)
         # #isArmControl = False
         # for dicCtlTmp in dicInfo_local:
         #     sPos = dicCtlTmp.get(MotorWMOVEParams.POS.name, MIN_INT)
@@ -701,7 +726,26 @@ def RunListBlbMotorsEx(listBLB):
             #     SendCMD_Device(lsFinalDF)
             # else:
             #     SendCMD_Device(lsFinalCmdEx)
-            SendCMD_Device(lsFinalCmdEx)
+            df_final = pd.DataFrame(lsFinalCmdEx)
+            unique_mbid = df_final[MotorWMOVEParams.MBID.name].unique().tolist()
+            if len(unique_mbid) == 1:
+                mbid_current = unique_mbid[0]
+                dicCurrent = lsFinalCmdEx[0]
+                iPos = int(dicCurrent[MotorWMOVEParams.POS.name])
+                if is_equal(mbid_current, ModbusID.ROTATE_MAIN_540.value):
+                    cur_angle_540 = pulse_to_angle(iPos, potRotate540_cmd, MAX_ANGLE_TRAY)%360
+                    bResult, bStrMsg = API_MoveMainRotate(cur_angle_540, adjustrate)
+                    sMsg = f'메인회전컨트롤:{bResult},{bStrMsg}'
+                    rospy.loginfo(sMsg)
+                elif is_equal(mbid_current, ModbusID.ROTATE_SERVE_360.value):
+                    cur_angle_360 = pulse_to_angle(iPos, pot_31, MAX_ANGLE_TRAY)%360
+                    bResult, bStrMsg = API_MoveMainTray(cur_angle_360, adjustrate)
+                    sMsg = f'트레이회전컨트롤:{bResult},{bStrMsg}'
+                    rospy.loginfo(sMsg)
+                else:
+                    SendCMD_Device(lsFinalCmdEx)
+            else:
+                SendCMD_Device(lsFinalCmdEx)                    
         UpdateLastCmdTimeStamp()
         UpdateLastBalanceTimeStamp()
         # if len(listBLB) == 0 and not isScanMode():

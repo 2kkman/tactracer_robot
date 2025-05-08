@@ -63,9 +63,13 @@ strFileShortCut = f"{dirPath}/SHORTCUT.txt"
 strFileShortCutTemp = f"{dirPath}/SHORTCUT_Temp.txt"
 #machineName = 'ITX' if get_hostname().find(UbuntuEnv.ITX.name) >= 0 else 'DEV'
 machineName = 'ITX' if get_hostname().find(UbuntuEnv.QBI.name) < 0 else 'QBI'
-filePath_IPSetup = f"{dirPath}/IPSetup_{machineName}.txt"
+filePath_IPSetup = f"{dirPath}/DIC_IPSetup_ITX.txt"
+filePath_IPSetupDev = f"{dirPath}/DIC_IPSetup_DEV.txt"
+isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
+filePath_IP = filePath_IPSetup if isRealMachine else filePath_IPSetupDev
+
 try:
-    with open(filePath_IPSetup, "r") as f:
+    with open(filePath_IP, "r") as f:
         ip_dict = json.load(f)
 except Exception as e:
     ip_dict = {item.name: item.value for item in IPList}
@@ -153,7 +157,7 @@ DEFAULT_SPD_BAL1EXT = 150
 DEFAULT_SPD_BAL2RETURN = 300
 DEFAULT_SPD_BAL1RETURN = 500
 ALARM_RPM_LIMIT = 100000 #현재 2관절 기준으로 1관절과 매칭하기 위한 RPM 속도가 이것보다 높은 경우 알람발생.
-DOOROPEN_PERCENT = 0.6
+DOOROPEN_PERCENT = 0.1
 TILT_TIMING = 50000
 ALMOST_ZEROINT = 1
 
@@ -181,7 +185,6 @@ RSSI_FILTER = 28
 
 IP_MASTER = GetMasterIP()
 #EPCNodeInfo = LoadJsonFile(strFileEPC_node)
-isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 
 # 상수 정의
 #STROKE_MAX = 545000
@@ -275,8 +278,8 @@ class APIBLB_STATUS(Enum):
     Wait = 15
     
 class BLB_STATUS_FIELD(Enum):
+    READY = 1  # 이동 명령어는 수신하였지만 UI입력 대기중
     Started = 2
-    N_A = auto()  #not determined
     ROTATING_MAIN = auto()  #14-MAIN ROTATION
     IDEAL = auto()  #1 - IDEAL
     CONFIRM = auto()  # 사용자의 터치를 기다리는 상태
@@ -284,7 +287,6 @@ class BLB_STATUS_FIELD(Enum):
     LIFTING_DOWN = auto()  # 도킹 다운 5- tray down
     LIFTING_UP = auto()  # 리프팅 업 8- tray up
     DOOR_MOVING = auto()  # 도어 움직이는중
-    READY = auto()  # 이동 명령어는 수신하였지만 UI입력 대기중
     WAITING = auto()  # 분기기 제어완료 대기중
     WAITING_CROSS = auto()  # 분기기 제어완료 대기중
     OBSTACLE_DETECTED = auto()  #장애물 감지
@@ -296,6 +298,7 @@ class BLB_STATUS_FIELD(Enum):
     TRAY_RACK_OPENED = auto()   #6-서빙이 완료된 후 멈춰 있는 상태 (문이 열린 상태)
     PAUSED = auto() #11-Paused
     CANCELLED = auto()  #10-Canceled
+    N_A = auto()  #not determined
 
 class CALLBELL_FIELD(Enum):
     BTN_RED = "I1"
@@ -366,6 +369,8 @@ class BLB_STATUS(Enum):  # 캐리어 상태 메세지
     NODE_CURRENT = auto()
     TABLE_CURRENT = auto()
     NODE_TARGET = auto()
+    STATE_CD = auto()
+    STATE_NM = auto()
     # @classmethod
     # def from_value(cls, value):
     #     # 만약 value가 문자열이라면 정수로 변환 시도
@@ -695,12 +700,25 @@ class APIBLB_FIELDS_NAVI(Enum):
     finalstation   = auto()
 
 class APIBLB_TASKTYPE(Enum):
-  HomeEmergencyCall = 0
-  Parking = 1
-  ServingTask=2
-  CashPay=3
-  CollectingEmptyPlattes=4
-  ReturnHomeAfteReachTask=5
+    HomeEmergencyCall = 0
+    Parking = 1
+    ServingTask=2
+    CashPay=3
+    CollectingEmptyPlattes=4
+    ReturnHomeAfteReachTask=5
+    @classmethod
+    def from_value(cls, value):
+        # 만약 value가 문자열이라면 정수로 변환 시도
+        if isinstance(value, str):
+            try:
+                value = int(value)
+            except ValueError:
+                raise ValueError(f"Invalid literal for int() with base 10: '{value}'")
+                
+        for member in cls:
+            if member.value == value:
+                return member
+        raise ValueError(f"No member found for value: {value}")
     
 class LightColor(Enum):
   OFF = 0
@@ -1462,11 +1480,10 @@ def API_SetCurrentNode(nodeID=-1 ,taskid = 0):
 def isExceptionSSE(alarmMsg:str):
     alarm_msg_split = alarmMsg.split(sDivFieldColon)
     if len(alarm_msg_split) > 1:
-        return True
-    sAlarmCD = alarm_msg_split[0]
-    #sAlarmMSG = alarm_msg_split[1]
-    if try_parse_int(sAlarmCD) == 0:
-        return True
+        sAlarmCD = alarm_msg_split[0]
+        #sAlarmMSG = alarm_msg_split[1]
+        if try_parse_int(sAlarmCD) == 0:
+            return True
     return False
 
 def API_SendAlarm(AlarmInstance):
@@ -5805,6 +5822,23 @@ def compare_better_marker(dictOld, dictNew, dictSample = ref_dict):
     return abs(diff_X1) > abs(diff_X2)
 
 
+def CheckMotorCmdValid(listDF,dictPos):
+    #현재 모터 위치 정보와 커맨드를 비교해서 이동거리가 1000 미만인 것들은 제거한다.
+    listReturnBackup = []
+    listReturnBackup.extend(listDF)
+    lsRemoveIndexes = []    
+    for dictTmp in listDF:
+        if dictTmp[MotorWMOVEParams.CMD.name] == MotorCmdField.WMOVE.name:
+            iPos = int(dictTmp[MotorWMOVEParams.POS.name])
+            mbid = dictTmp[MotorWMOVEParams.MBID.name]
+            curPos = dictPos[mbid]
+            if abs(iPos-curPos) < roundPulse/10:
+                lsRemoveIndexes.append(mbid)
+    
+    df = pd.DataFrame(listDF)
+    df_filtered2 = df[~df[MotorWMOVEParams.MBID.name].isin(lsRemoveIndexes)]
+    lsdfTable=df_filtered2.to_dict(orient='records')
+    return lsdfTable
 
 lsRotateMotors = [ModbusID.ROTATE_MAIN_540.value, ModbusID.ROTATE_SERVE_360.value]
 lsReleaseMotors = [ModbusID.MOTOR_V, ModbusID.BAL_ARM1,ModbusID.BAL_ARM2, ModbusID.TELE_SERV_MAIN]

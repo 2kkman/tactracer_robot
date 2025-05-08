@@ -31,6 +31,7 @@ import threading
 import time
 import traceback
 import psutil
+from skimage.metrics import structural_similarity as ssim
 
 # Third-party imports
 from flask_socketio import *
@@ -82,6 +83,49 @@ machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_cs
 def getDateTime():
   return datetime.now()
 
+def GetResultMessageFromJsonStr(data_str):
+    try:
+        data = json.loads(data_str)
+        if isinstance(data, dict) and len(data) == 1:
+            key = next(iter(data))
+            value = data[key]
+            print("Key:", key)
+            print("Value:", value)
+            return key,value
+        else:
+            print("Unexpected data format.")
+    except json.JSONDecodeError as e:
+        print("Invalid JSON:", e)    
+    return None,None
+
+def compare_images_region(img1, img2, x1,y1,x2,y2, method='ssim'):
+    """
+    img1, img2: 비교할 두 이미지 (numpy 배열, 동일한 크기)
+    pt1, pt2: 비교할 직사각형 영역의 좌상단과 우하단 (튜플, 예: (x1, y1), (x2, y2))
+    method: 'ssim' 또는 'mse' 선택
+    return: 유사도 값 (SSIM은 0~1, MSE는 0 이상)
+    """
+    # x1, y1 = pt1
+    # x2, y2 = pt2
+
+    # 영역 추출
+    crop1 = img1[y1:y2, x1:x2]
+    crop2 = img2[y1:y2, x1:x2]
+
+    # 그레이스케일 변환 (선택적)
+    if len(crop1.shape) == 3:
+        crop1 = cv2.cvtColor(crop1, cv2.COLOR_BGR2GRAY)
+        crop2 = cv2.cvtColor(crop2, cv2.COLOR_BGR2GRAY)
+
+    if method == 'ssim':
+        score, _ = ssim(crop1, crop2, full=True)
+        return score
+    elif method == 'mse':
+        err = np.mean((crop1.astype("float") - crop2.astype("float")) ** 2)
+        return err
+    else:
+        raise ValueError("method must be 'ssim' or 'mse'")
+    
 def calculate_weight_angle(arm_length_mm, max_length=1300, trigger_distance=500, max_angle=90):
     if arm_length_mm <= trigger_distance:
         return 0
@@ -1297,7 +1341,6 @@ def is_json(myjson):
         return False
     return True
 
-
 def get_hostname(ip=None):
     if ip is None:
       host = os.uname()[1]
@@ -1306,7 +1349,7 @@ def get_hostname(ip=None):
     else:
       slave_hostname = socket.gethostbyaddr(ip)[0]
       return slave_hostname
-
+  
 def isFileExist(filePath):
     file_path = Path(filePath)
     return file_path.is_file()

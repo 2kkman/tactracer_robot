@@ -408,7 +408,7 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
     크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
     현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%({ischarging}),밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
     """
-    if battery_level < 15 and ischarging.startswith('Dis'):
+    if isRealMachine and battery_level < 15 and ischarging.startswith('Dis'):
       TTSAndroid(TTSMessage.ALARM_BATTERY.value, 60)
     #서빙전개율:{curSrvPer}%,밸런싱암전개율:{curBalPer}%,정확도:{accuBalnceLength:.1f}%,
     #남은 서빙 시간 : {GetRPMFromTimeAccDecc(node_CtlCenter_globals.listBLB)}
@@ -954,8 +954,8 @@ def MotorBalanceControlEx(bSkip):
                         if dfReceived is None:
                             rospy.loginfo(f"dfReceived not found")
                             #추후 중량값 들어오고 있는 셀로 고치자.
-                            # if not isScanOn:
-                            #     DoorOpen()
+                            if not isScanOn:
+                                DoorOpen()
                             LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
                         else:
                             SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
@@ -1422,6 +1422,10 @@ def GenerateServingTableList():
                     #node_CtlCenter_globals.listBLB = lsLiftDown + node_CtlCenter_globals.listBLB
                 try:
                     node_CtlCenter_globals.robot.trigger_start_serving()
+                    if infoTABLE_ID == HOME_TABLE:
+                        TTSAndroid(f'충전소로 복귀합니다.')
+                    else:
+                        TTSAndroid(f'{infoTABLE_ID}번 테이블 시작.')
                 except:
                     pass
                 

@@ -23,7 +23,7 @@ class ALM_User(Enum):
     SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before MotorH run."
     SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
     CMD_INTERVAL_DUPLICATED = "54023: MotorCmd duplicated."
-    ABNORMAL_CMD_DATA = "54022: abnormal Motor command data"
+    ALREADY_FINISHED_CMD_POS = "54022: Motor Pos is already on the position"
     ABNORMAL_CMD_DATA2 = "54028: Motor command format must be array"
     TRAY_WEIGHT_LIMIT = "54021: Too much load in the tray"
     ROBOT_JUST_INITIALIZED = "52010: BLB is now just started."

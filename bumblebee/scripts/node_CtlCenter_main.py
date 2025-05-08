@@ -336,7 +336,7 @@ if __name__ == "__main__":
     locX,locY=GetLocNodeID(curNode)
     
     if not isRealMachine:
-      DoorOpen()
+      DoorClose()
     #locX,locY=GetLocXY()
     # if locX == 0:
     #   dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, distance_to_pulseH(locY))
@@ -408,7 +408,7 @@ if __name__ == "__main__":
                     if waitFlag:
                         for scheduled_time, message in list(node_CtlCenter_globals.dicTTS.items()):
                             if dtNow >= scheduled_time:
-                                TTSAndroid(message,True,1)
+                                TTSAndroid(message,1)
                                 #print(f"{current_time}: {message}")
                                 node_CtlCenter_globals.dicTTS.pop(scheduled_time, None)
                                 #del node_CtlCenter_globals.dicTTS[scheduled_time]

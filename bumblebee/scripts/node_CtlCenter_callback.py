@@ -381,19 +381,21 @@ def callbackAck(data,topic_name='' ):
                     #if not isScanOn:
                     DoorOpen()
                     targetTable =GetCurrentTargetTable()
+                    curNode = GetCurrentNode()
                     dicTagretTableInfo = getTableServingInfo(targetTable)
                     target_marker = dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name,-1)
                     if is_equal(targetTable,target_marker):
                         bReturn,strResult=SaveTableInfo(targetTable)
                         SendInfoHTTP(f'{targetTable} 번 테이블정보 저장 :{bReturn} - {strResult}')
                     
-                    if curTargetN != node_KITCHEN_STATION and curTargetN != node_CHARGING_STATION and isLiftTrayDown and IsEnableSvrPath():
+                    #if curTargetN != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
+                    if curNode != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
                         SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
                         nowTime = getDateTime()
                         # 경과 시간 리스트 (초 단위)
                         time_deltas = [5, 10, 15, 20, 25,30,35,40,45,50,55,60]
-                        time_deltas = [5, 60]
-                        time_deltas = [3, 6]
+                        # time_deltas = [5, 60]
+                        # time_deltas = [3, 6]
                         # 딕셔너리 생성
                         time_dict = {
                             (nowTime + timedelta(seconds=delta)): ("이제 곧 닫힙니다." if delta == time_deltas[-1] else f"{time_deltas[-1]-delta}초 후 닫힙니다.")

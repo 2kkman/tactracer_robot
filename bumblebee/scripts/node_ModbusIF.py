@@ -425,9 +425,10 @@ def LoadCaliData():
 
 
 LoadCaliData()
-
+isSetupNow = True
 
 def Setup(mbidCur=None):
+    global isSetupNow
     global dic_485ctl
     global dic_485cmd
     global dic_485poll
@@ -442,6 +443,7 @@ def Setup(mbidCur=None):
     global iTryCheckModbus
     #global dic_485TorQueLimitInfo
     # ModbusConfig.txt 를 읽어들인다.
+    isSetupNow = True
     dicConfigTmp = getDic_FromFile(filePath_modbusconfig, sDivEmart)
     for mbid, mbName in dicConfigTmp.items():
         if mbidCur is not None and not is_equal(mbidCur,mbid):
@@ -493,7 +495,6 @@ def Setup(mbidCur=None):
 
             if dicSetupRequested.get(mbid, None) == None:
                 dicSetupRequested[mbid] = False
-                dicMB_Exception_count[mbid] = 0
 
             instrumentH.clear_buffers_before_each_transaction = True
 
@@ -598,6 +599,9 @@ def Setup(mbidCur=None):
                 time.sleep(0.1)
             if bMotorOK:
                 LoadCurrentPos()
+                logMsgErr = f"Check MB({mbid}) OK"
+                dicMB_Exception_count[mbid] = 0
+                rospy.loginfo(logMsgErr)
             else:
                 dic_topics[mbid].publish(
                     f"{MonitoringField_EX.ALM_CD.name}{sDivFieldColon}{AlarmCodeList.NOT_CONNECTED.value}{sDivItemComma}{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}"
@@ -611,6 +615,7 @@ def Setup(mbidCur=None):
             rospy.loginfo(logmsg)
     rospy.loginfo(dic_485Inverted)
     #rospy.loginfo(dic_485POTInfo)    
+    isSetupNow = False
     return True
 
 
@@ -1036,7 +1041,7 @@ while not rospy.is_shutdown():
                 dic_485pollRate[poll_id] = DATETIME_OLD
     lsModifiedMbid.clear()
     
-    if not testModbus:
+    if not testModbus and not isSetupNow:
       # TODO : Polling Read Part
       try:
           print_time(2)
@@ -1152,15 +1157,19 @@ while not rospy.is_shutdown():
                       )
                       dic_485pollRate[poll_id] = getDateTime()
 
+                      mbiderr_cnt = try_parse_float(dicMB_Exception_count.get(modbusID), -1)
+                      if mbiderr_cnt > 10:
+                          Setup(modbusID)
                       # BMS, NTP 인 경우는 그냥 넘어감
-                      if modbusID in lsSlowDevices or modbusID in lsNotMotor:
+                      elif modbusID in lsSlowDevices or modbusID in lsNotMotor:
                           dicMB_Exception_count[modbusID] = 0
                       # currentEnableStatus 이 -1 인 경우 - 연결자체가 안 된경우 (이럴땐 setup() 을 다시 해줘야 함)
                       elif currentEnableStatus == -1:
-                          raise Exception("Modbus Timeout")
+                          raise Exception("Modbus timeout")
                       # currentEnableStatus 가 0 인 경우 - 통신은 되는데 초기화가 안 된경우 (초기화만 해주면 됨)
                       elif currentEnableStatus == 0 and currentAlarmCode == 0:
-                          initMotor()
+                          #initMotor()
+                          Setup(modbusID)
                           dicMB_Exception_count[modbusID] = 0
                       # currentEnableStatus 가 1 이면 정상
                       elif currentEnableStatus == 1:
@@ -1344,10 +1353,9 @@ while not rospy.is_shutdown():
                   except Exception as e:
                       # exception_read_count += 3
                       dicMB_Exception_count[modbusID] += 3
-                      rospy.loginfo(traceback.format_exc())
-                      # rospy.loginfo(
-                      #     f"{dicConfigTmp[modbusID]}:{poll_id}-{e} : Count:{dicMB_Exception_count[modbusID]}"
-                      # )
+                      #rospy.loginfo(traceback.format_exc()){addr:04X}
+                      rospy.loginfo(f"{dicConfigTmp[modbusID]}:{poll_id}-{e} : Count:{dicMB_Exception_count[modbusID]}")
+                      #rospy.loginfo(f"{dicConfigTmp[modbusID]}:{int(poll_id):04X}-{e} : Count:{dicMB_Exception_count[modbusID]}")
                       if dicMB_Exception_count[modbusID] >= 10:
                           if len(dic_485ack) == 0:
                               # if exception_read_count >= 10:

@@ -663,7 +663,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
             SetCurrentNode(nodeReturn)
         node_CtlCenter_globals.lock.release()
       else:
-        TTSAndroid('테이블 값이 없습니다')
+        TTSAndroid(f'{table_target}번 테이블 값이 없습니다')
         SendInfoHTTP(sMsg)
     node_CtlCenter_globals.flag_WaitConfirm =flag_bool
         
@@ -693,7 +693,6 @@ def SetTorqueData(mbid, tMax,tAve, oMax,oAve):
 
 def GetCurrentTargetTable():
   table_target = GetTableTarget()
-  
   node_target=GetNodeFromTable(table_target)
   return table_target,node_target
   # if len(node_CtlCenter_globals.lsHistory_motorH) > 0:
@@ -990,7 +989,6 @@ def InsertTableList(tableTarget_local,idx=0):
       rospy.loginfo(log_all_frames(tableTarget_local))
     #node_CtlCenter_globals.table_target = tableTarget_local
     table_target_tts = tableTarget_local if try_parse_int(tableTarget_local, MIN_INT) == MIN_INT else f'T{tableTarget_local}'
-    TTSAndroid(f'{table_target_tts} 시작.')
     SetTableTarget(GetTablelist(0))
     
 def AppendTableList(tableTarget_local):
@@ -1126,6 +1124,21 @@ def GetDestPoint(target_pulse, mbid:ModbusID):
         return pot_pos+PULSE_POTNOT_MARGIN
     return target_pulse
 
+def GetAllMotorPosDic():
+    dictPos = {}
+    lsMbid = node_CtlCenter_globals.dic_485ex.keys()
+    try:
+      for mbid in lsMbid:
+          dictModbus = node_CtlCenter_globals.dic_485ex[mbid]
+          cur_cd = dictModbus.get(MonitoringField.CUR_POS.name, MIN_INT)
+          if cur_cd == MIN_INT:
+            continue
+          dictPos[mbid]=int(cur_cd)
+    except:
+      pass
+    
+    return dictPos
+  
 def GetPosServo(mbid:ModbusID):
   cmd_pos = GetItemsFromModbusTable(mbid,MonitoringField.CMD_POS)
   cur_pos = GetItemsFromModbusTable(mbid,MonitoringField.CUR_POS)
@@ -1392,11 +1405,14 @@ def isInitMotorsAll():
     return motors+1 >= initMotors
 
 def isReadyToMoveH_and_540(modbusClass = None):
-    lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN, ModbusID.ROTATE_SERVE_360]
+    lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN]
+    potRotate360_cmd, notRotate360_cur, posRotate360_cmd,posRotate360_cur= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
+    cur_angle_360 = pulse_to_angle(posRotate360_cur, potRotate360_cmd, MAX_ANGLE_TRAY)%360
+    #lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN, ModbusID.ROTATE_SERVE_360]
     #lsCheckList = [ModbusID.BAL_ARM1,ModbusID.BAL_ARM2,ModbusID.TELE_BALANCE,ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN]
     if modbusClass is not None: #예외처리
       lsCheckList.append(modbusClass)
-    return isReadyToMoveMotor(lsCheckList)
+    return isReadyToMoveMotor(lsCheckList) and cur_angle_360 == 0
     try:
         for mbid, dicTmp in node_CtlCenter_globals.dic_485ex.items():
             mbid_instance = ModbusID.from_value(mbid)
