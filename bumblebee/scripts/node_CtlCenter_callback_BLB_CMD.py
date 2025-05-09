@@ -192,9 +192,12 @@ def BLB_CMD_Profile(PROFILE):
             SaveCurrentPos()
         elif paramInt1 == BLD_PROFILE_CMD.SCANTABLE.value:
             TiltDetectingMonitor()
-        # elif paramInt1 == BLD_PROFILE_CMD.CALI_TRAY.value:
-        #     callResult = StartCaliTray()
-        #     rospy.loginfo(f'트레이 캘리브레이션 요청결과 : {callResult}')
+        elif paramInt1 == BLD_PROFILE_CMD.CALI_TRAY.value:
+            callResult = StartCaliTray()
+            rospy.loginfo(f'트레이 회전 캘리브레이션 요청결과 : {callResult}')
+        elif paramInt1 == BLD_PROFILE_CMD.CALI_MAIN.value:
+            callResult = StartCaliMainRotate()
+            rospy.loginfo(f'메인회전 캘리브레이션 요청결과 : {callResult}')
         elif paramInt1 == BLD_PROFILE_CMD.TrayHome.value:
             #서빙 텔레스코픽 트레이 최소화
             lsModbusRequests.extend(GetLiftControl(True))

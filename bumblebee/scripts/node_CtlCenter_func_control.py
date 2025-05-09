@@ -27,48 +27,48 @@ def getLoadWeight():
       return 0,0,0
   
 
-# def StartCaliTray():
-#   listCtl = []
-#   runningMotors = len(getRunningMotorsBLB())
-#   statusCurrent = node_CtlCenter_globals.robot.get_current_state()
-#   curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
-#   if runningMotors == 0 and statusCurrent == Robot_Status.idle:
-#     if curDistanceSrvTele <= 110:
-#       sMsg = f'서빙암이격거리가 짧습니다. 현재이격:{curDistanceSrvTele}mm'
-#       TTSAndroid(sMsg)
-#       rospy.loginfo(sMsg)
-#       #listCtl.extend(GetStrArmExtendMain(110,0,True))
-#       return False
-#     pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-#     cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value, False, pot_cur-not_cur, 200, ACC_DECC_LONG, ACC_DECC_LONG)
-#     node_CtlCenter_globals.robot.trigger_start_calibration_tray()
-#     listCtl.append(cmdCaliStart)
-#     SendCMD_Device(listCtl)
-#     return True
-#   else:
-#     rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name},서빙암이격거리:{curDistanceSrvTele}')
-#     return False
+def StartCaliTray():
+  listCtl = []
+  runningMotors = len(getRunningMotorsBLB())
+  statusCurrent = node_CtlCenter_globals.robot.get_current_state()
+  curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
+  if runningMotors == 0 and statusCurrent == Robot_Status.idle:
+    if curDistanceSrvTele <= 110:
+      sMsg = f'서빙암이격거리가 짧습니다. 현재이격:{curDistanceSrvTele}mm'
+      TTSAndroid(sMsg)
+      rospy.loginfo(sMsg)
+      #listCtl.extend(GetStrArmExtendMain(110,0,True))
+      return False
+    pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
+    cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value, False, pot_cur-not_cur, 200, ACC_DECC_LONG, ACC_DECC_LONG)
+    node_CtlCenter_globals.robot.trigger_start_calibration_tray()
+    listCtl.append(cmdCaliStart)
+    SendCMD_DeviceService(listCtl)
+    return True
+  else:
+    rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name},서빙암이격거리:{curDistanceSrvTele}')
+    return False
   
-# def StartCaliMainRotate():
-#     listCtl = []
-#     runningMotors = len(getRunningMotorsBLB())
-#     statusCurrent = node_CtlCenter_globals.robot.get_current_state()
-#     bIsAllMotorFolded = isReadyToMoveH_and_540()
-#     if not bIsAllMotorFolded:
-#         sMsg = f'암과 트레이를 완전히 접어주세요'
-#         TTSAndroid(sMsg)
-#         #listCtl.extend(GetLiftControl(True))
-#         return False
+def StartCaliMainRotate():
+    listCtl = []
+    runningMotors = len(getRunningMotorsBLB())
+    statusCurrent = node_CtlCenter_globals.robot.get_current_state()
+    bIsAllMotorFolded = isReadyToMoveH_and_540()
+    if not bIsAllMotorFolded:
+        sMsg = f'암과 트레이를 완전히 접어주세요'
+        TTSAndroid(sMsg)
+        #listCtl.extend(GetLiftControl(True))
+        return False
   
-#     if runningMotors == 0 and statusCurrent == Robot_Status.idle:
-#         pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-#         cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -(pot_cur-not_cur), MAINROTATE_RPM_CALI, ACC_DECC_LONG, ACC_DECC_LONG)
-#         SendCMD_Device([cmdCaliStart])
-#         node_CtlCenter_globals.robot.trigger_start_calibration_mainRotate()
-#         return True
-#     else:
-#         rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name}')
-#     return False
+    if runningMotors == 0 and statusCurrent == Robot_Status.idle:
+        pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
+        cmdCaliStart = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, False, -(pot_cur-not_cur), MAINROTATE_RPM_CALI, ACC_DECC_LONG, ACC_DECC_LONG)
+        SendCMD_DeviceService([cmdCaliStart])
+        node_CtlCenter_globals.robot.trigger_start_calibration_mainRotate()
+        return True
+    else:
+        rospy.loginfo(f'활성화된 모터수:{runningMotors},로봇상태:{statusCurrent.name}')
+    return False
   
 def CheckMotorOrderValid(dictMotor):
     # if isinstance(dictMotor,dict):
@@ -1193,6 +1193,7 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
       #목적지가 충전소로 가는 경우에는 반드시 현재 RFID태그가 읽히고 있고 POT_15 ON 이어야 함.
       #분기기로 가는 경우에는 현재 정지상태인지만 체크하면 됨.
       #제정신일때 다시 정의하자.
+      #if False:
       if isRealMachine:
         if bSendJCCmd and node_CtlCenter_globals.bReturn_CROSS:
             rospy.loginfo(f'범블비가 원하는 분기기 세팅:{node_CtlCenter_globals.StateSet},현재 수신된 분기기 세팅:{node_CtlCenter_globals.stateDic}')

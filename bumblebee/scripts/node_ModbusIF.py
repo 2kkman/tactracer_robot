@@ -1284,9 +1284,7 @@ while not rospy.is_shutdown():
                                   cur_pos,
                               )
                           elif isPot:
-                              stopMotor(
-                                  modbusID
-                              )  # 정방향인데 POT를 만났으니 아마 멈출거다. 호출안해도 될지도
+                              stopMotor(modbusID)  # 정방향인데 POT를 만났으니 아마 멈출거다. 호출안해도 될지도
                               initMotorCustom(
                                   modbusID, MotorCmdField.WZERO
                               )  # 엔코더값 0으로 초기화 한다.

@@ -146,8 +146,10 @@ DECC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.D
 DECC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
 
 #11번 서빙 텔레스코픽 모터
-ACC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-DECC_ST = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+ACC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+DECC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+ACC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
+DECC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
 
 #13번 1관절 모터
 SPD_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
@@ -262,7 +264,7 @@ def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.
         deccArm1 = DECC_ARM1_EXTEND        
     dicArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value,True,targetPulse_arm1,rpm_arm1,accArm1,deccArm1)
     dicArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value,True,targetPulse_arm2,rpm_arm2,accArm2,deccArm2)
-    return [dicArm1,dicArm2], rpm_time_arm1
+    return [dicArm1,dicArm2], rpm_time_arm1,stroke_arm1_signed
 
 def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd_rate = 1.0):
     #bUseCurrentPosition 에 따라 RPM 이 달라진다.
@@ -278,7 +280,7 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
     
     #서빙암 타겟 펄스    
     targetPulse_serv = GetTargetPulseServingArm(distanceServingTeleTotal, 0)
-    targetAngle_arm1 = calculate_weight_angle(distanceServingTeleTotal,1300,500,90)
+    targetAngle_arm1 = calculate_weight_angle(distanceServingTeleTotal,1300,650,90)
     
     #현재 위치에서 서빙암이 뻗어야 할 스트로크 계산
     stroke_servArm_signed = targetPulse_serv - cur_serv
@@ -286,13 +288,22 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
     #target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
     #targetPulse_arm1 = min(round(mapRange(targetPulse_serv,0,STROKE_MAX,0,pot_arm1)),pot_arm1)
     #서빙암 스트로크 RPM
-    lsBal, rpm_time_arm1= GetControlInfoBalances(targetAngle_arm1,bUseCurrentPosition,spd_rate)
+    lsBal, rpm_time_arm1,stroke_arm1_signed= GetControlInfoBalances(targetAngle_arm1,bUseCurrentPosition,spd_rate)
     servArmCountAbs = round(stroke_servArm_abs/roundPulse)
-    rpm_servArm = max(calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
+    if abs(stroke_arm1_signed) > roundPulse:
+        rpm_servArm = max(calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
+    else:
+        rpm_servArm = DEFAULT_RPM_SLOW
     # 원본 값 보정
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
     #rpm_servArm = max(DEFAULT_RPM_SLOWER, min(rpm_servArm, DEFAULT_RPM_SLOW))
-    dicSrvArm = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,targetPulse_serv,rpm_servArm,ACC_ST,DECC_ST)
+    acc_st =ACC_ST_EXTEND
+    decc_st = DECC_ST_EXTEND
+    if stroke_servArm_signed < 0:
+        acc_st =ACC_ST_FOLD
+        decc_st = DECC_ST_FOLD
+        
+    dicSrvArm = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,targetPulse_serv,rpm_servArm,acc_st,decc_st)
     lsBal.append(dicSrvArm)
     return lsBal,rpm_time_arm1
 
@@ -671,6 +682,7 @@ def callbackACK(recvData):
         if isTrue(flagFinished):
             # 회전모터 (27,31) 자동 상시 캘리브레이션.
             # 회전모터가 홈센서에 걸려서 멈췄을 경우 0 으로 위치값을 초기화 한다            
+            rospy.loginfo(f'정방향토크:{torque_max},역방향토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
             if mbid_instance in lsRotateMotors and isTrue(isHome):
                 lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
                 bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
@@ -1470,14 +1482,14 @@ def service_cmd_device():
             if control360 == cur_angle360:
                 return {bResult:bExecuteMsg}, 200            
             targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
-            dic540 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
+            dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
             #print(dic540)
-            lsCmd = [dic540]
+            lsCmd = [dic360]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
-            if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
-            elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
+            # if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
+            #     lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
+            # elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
+            #     lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
@@ -1492,10 +1504,10 @@ def service_cmd_device():
             #print(dic540)
             lsCmd = [dic540]
             di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
-            if si_home == BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
-            elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
+            # if si_home == BLD_PROFILE_CMD.ESTOP.name:
+            #     lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
+            # elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
+            #     lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
@@ -1525,7 +1537,7 @@ def service_cmd_device():
             currentAngle_arm1 =mapRange(pos_BAL1,0,pot_arm1,0,90)
             if currentAngle_arm1 == controlArm2:
                 return {bResult:bExecuteMsg}, 200
-            lsCmd,rpm_time = GetControlInfoBalances(controlArm2,True, spd_rate)
+            lsCmd,rpm_time,stroke_arm1_signed = GetControlInfoBalances(controlArm2,True, spd_rate)
             #print(lsCmd)
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400

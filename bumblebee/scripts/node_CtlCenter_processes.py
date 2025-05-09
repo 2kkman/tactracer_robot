@@ -906,7 +906,7 @@ def MotorBalanceControlEx(bSkip):
             
         if isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms):
             # 트레이 흔들림 감지시 제어
-            if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 30.0 and isRealMachine:
+            if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 40.0 and isRealMachine:
               dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, ALMOST_ZEROINT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
               SendCMD_Device([dicSpd])
               TTSAndroid(TTSMessage.SHAKE_TRAY_DETECTED.value)
@@ -941,7 +941,7 @@ def MotorBalanceControlEx(bSkip):
                       # rospy.loginfo(f'트레이 세이프티 정지!:{lastLD_Raw}')
             
             #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현
-            if rpmLift > 0:
+            if rpmLift > 0 and not GetWaitConfirmFlag():
                 openTargetPos = round(pot_cur_lift * DOOROPEN_PERCENT)
                 #if cur_pos_lift > openTargetPos and node_CtlCenter_globals.robot.get_current_state() != Robot_Status.onServing:
                 if cur_pos_lift > openTargetPos:
@@ -992,30 +992,30 @@ def MotorBalanceControlEx(bSkip):
     #isPendingArm2 = motorStatus_arm2 == STATUS_MOTOR.PENDING_CCW or motorStatus_arm2 == STATUS_MOTOR.PENDING_CW
     #isPendingArm1 = motorStatus_arm1 == STATUS_MOTOR.PENDING_CCW or motorStatus_arm1 == STATUS_MOTOR.PENDING_CW
     isTimeOK = isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
-    # if isActivatedMotor(ModbusID.ROTATE_SERVE_360.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_tray:
-    #     DI_POT_tray,DI_NOT_tray,DI_HOME_tray,SI_POT_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
-    #     #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
-    #     if DI_HOME_tray:
-    #         #StopMotor(ModbusID.ROTATE_SERVE_360.value, DECC_540)
-    #         StopMotor(ModbusID.ROTATE_SERVE_360.value, 500)
-    #         node_CtlCenter_globals.robot.trigger_complete_calibration_tray()
-    #         time.sleep(1)
-    #         dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_SERVE_360.value, 0)
-    #         cmdpos_360,cur_pos_360 =GetPosServo(ModbusID.ROTATE_SERVE_360)
-    #         rospy.loginfo(f"Tray Cali OK at pulse :{cur_pos_360}")            
-    #         SendCMD_Device([dicLoc]) 
+    if isActivatedMotor(ModbusID.ROTATE_SERVE_360.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_tray:
+        DI_POT_tray,DI_NOT_tray,DI_HOME_tray,SI_POT_tray = GetPotNotHomeStatus(ModbusID.ROTATE_SERVE_360)
+        #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
+        if DI_HOME_tray:
+            #StopMotor(ModbusID.ROTATE_SERVE_360.value, DECC_540)
+            StopMotor(ModbusID.ROTATE_SERVE_360.value, 500)
+            time.sleep(1)
+            dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_SERVE_360.value, 0)
+            cmdpos_360,cur_pos_360 =GetPosServo(ModbusID.ROTATE_SERVE_360)
+            rospy.loginfo(f"Tray Cali OK at pulse :{cur_pos_360}")            
+            SendCMD_DeviceService([dicLoc]) 
+            node_CtlCenter_globals.robot.trigger_complete_calibration_tray()
             
-    # if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_mainRotate:
-    #     DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
-    #     #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
-    #     if DI_HOME_540:
-    #         StopMotor(ModbusID.ROTATE_MAIN_540.value, 800)
-    #         node_CtlCenter_globals.robot.trigger_complete_calibration_mainRotate()
-    #         time.sleep(1)
-    #         cmd_540,pos_540 =GetPosServo(ModbusID.ROTATE_MAIN_540)
-    #         rospy.loginfo(f"Main Rotate Cali OK at pulse :{pos_540}")
-    #         # dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
-            # SendCMD_Device([dicLoc]) 
+    if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value) and node_CtlCenter_globals.robot.get_current_state() == Robot_Status.cali_mainRotate:
+        DI_POT_540,DI_NOT_540,DI_HOME_540,SI_POT_540 = GetPotNotHomeStatus(ModbusID.ROTATE_MAIN_540)
+        #rospy.loginfo(DI_POT_tray,DI_NOT_tray,DI_HOME_tray)
+        if DI_HOME_540:
+            StopMotor(ModbusID.ROTATE_MAIN_540.value, 800)
+            time.sleep(1)
+            cmd_540,pos_540 =GetPosServo(ModbusID.ROTATE_MAIN_540)
+            rospy.loginfo(f"Main Rotate Cali OK at pulse :{pos_540}")
+            # dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
+            SendCMD_DeviceService([dicLoc]) 
+            node_CtlCenter_globals.robot.trigger_complete_calibration_mainRotate()
             
     # if (
     #     isFinishedMotor_teleBalance

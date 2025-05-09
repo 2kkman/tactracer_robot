@@ -141,7 +141,7 @@ SPD_TRAY_MARKER_SCAN = 700
 MAX_ANGLE_BLBBODY = 360
 MAX_ANGLE_TRAY = 360
 SPEED_RATE_H = 1.0
-SPEED_RATE_ARM = 1
+SPEED_RATE_ARM = 0.5
 DEFAULT_RPM_MIN = 2
 DEFAULT_RPM_SLOW = 300
 DEFAULT_RPM_SLOWER = 100
@@ -1915,7 +1915,8 @@ class BLD_PROFILE_CMD(Enum):
     WLOC_NOT = 31
     TrayHome = 32
     MOTORSTOP = 33
-    
+    CALI_MAIN = 34
+        
 class ModbusID(Enum):
     MOTOR_H = 15  # 주행 (6040)
     MOTOR_V = 6  # 견인 (6040)
@@ -2268,7 +2269,7 @@ class TRAY_TILT_STATUS(Enum):
 
 def API_ARD(msg):
     bResult, bStrMsg = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.ARD.name, f'q={msg}')  
-    cmdStr=log_all_frames(f'{msg}->{bStrMsg}')
+    cmdStr=log_all_frames(f'{msg}->{bStrMsg}',5)
     logger_ard.info(cmdStr)
     #rospy.loginfo(f'{msg}->{bStrMsg}')
     return bResult, bStrMsg
@@ -5831,8 +5832,9 @@ def CheckMotorCmdValid(listDF,dictPos):
         if dictTmp[MotorWMOVEParams.CMD.name] == MotorCmdField.WMOVE.name:
             iPos = int(dictTmp[MotorWMOVEParams.POS.name])
             mbid = dictTmp[MotorWMOVEParams.MBID.name]
+            runMode = dictTmp[MotorWMOVEParams.MODE.name]
             curPos = dictPos[mbid]
-            if abs(iPos-curPos) < roundPulse/10:
+            if abs(iPos-curPos) < roundPulse/10 and is_equal(runMode,1):
                 lsRemoveIndexes.append(mbid)
     
     df = pd.DataFrame(listDF)

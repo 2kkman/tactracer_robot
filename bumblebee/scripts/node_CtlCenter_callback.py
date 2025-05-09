@@ -71,15 +71,23 @@ def callbackAck(data,topic_name='' ):
 
         mbid_tmp = lsResult[2]  # 모드버스 ID
         flag = lsResult[1]  # 0 이면 미완료, 1 이면 완료
-        if len(lsResult) >= 9:
+        #if len(lsResult) >= 9:
+        if len(lsResult) > 14:
             #print(lsResult)
-            torque_max = lsResult[3]  # 최대토크
-            torque_ave = lsResult[4]  # 평균토크
-            ovr_max = lsResult[5]  # 최대오버로드
-            ovr_ave = lsResult[6]  # 평균오버로드
-            last_started_pos = int(lsResult[7])  # 최대오버로드
-            last_targeted_pos = int(lsResult[8])  # 평균오버로드
-            SetTorqueData(mbid_tmp,torque_max,torque_ave,ovr_max,ovr_ave)
+            torque_max = lsResult[3]  # 정방향 최대토크
+            torque_mean = lsResult[4]  # 평균토크
+            torque_min = lsResult[5]  # 역방향 최대토크
+            ovr_max = lsResult[6]  # 최대오버로드
+            last_started_pos = int(lsResult[7])  # 운행 시작 지점
+            last_targeted_pos = int(lsResult[8])  # 운행 종료 목표 지점
+            stopped_pos = int(lsResult[9])  # 현재 지점
+            last_spd = int(lsResult[10])  # 정지시점 속도 및 방향
+            isHome = lsResult[11]  # HOME에 걸려서 멈췄으면 1
+            isPot = lsResult[12]  # POT에 걸려서 멈췄으면 1
+            isNot = lsResult[13]  # NOT에 걸려서 멈췄으면 1
+            isESTOP = lsResult[14]  # ESTOP에 걸려서 멈췄으면 1
+            rospy.loginfo(f'정방향토크:{torque_max},역방향토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
+            #SetTorqueData(mbid_tmp,torque_max,torque_ave,ovr_max,ovr_ave)
         
         # if mbid_tmp == str(ModbusID.BAL_ARM1.value):
         #     rospy.loginfo(f'Ack:{node_CtlCenter_globals.dicModbusCallbackCount[mbid_tmp]},{mbid_tmp}:{flag}:Max:{torque_max},Ave:{torque_ave}')
@@ -379,7 +387,7 @@ def callbackAck(data,topic_name='' ):
                     #if int(node_current) != node_KITCHEN_STATION:
                     # 리프트 모터 하강구동이 완료된 경우 30초내로 꺼내가라는 방송을 한다.
                     #if not isScanOn:
-                    DoorOpen()
+                    #DoorOpen()
                     targetTable =GetCurrentTargetTable()
                     curNode = GetCurrentNode()
                     dicTagretTableInfo = getTableServingInfo(targetTable)
