@@ -184,7 +184,7 @@ def RunListBlbMotorsEx(listBLB):
                 rospy.loginfo(f'{bReturn},{strResult}')
                 if not isTrue(bReturn):
                     node_CtlCenter_globals.listBLB.insert(0,dicInfo_local_org)
-                    SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
+                    #SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
                     return APIBLB_ACTION_REPLY.E110
                 rospy.loginfo(f"Moving H motor : {node_CtlCenter_globals.nStart}->{node_CtlCenter_globals.nTarget}({listBLB.pop(0)})")
             else:
@@ -229,6 +229,9 @@ def RunListBlbMotorsEx(listBLB):
         valuesInlist = len(dicInfo_local)
         for i in range(valuesInlist):
             dicArray = dicInfo_local[i]
+            if not isinstance(dicArray,dict):
+                rospy.logerr(dicArray)
+                continue
             sMBID = dicArray.get(MotorWMOVEParams.MBID.name,None)
             sPOS = dicArray.get(MotorWMOVEParams.POS.name)
             if sMBID == None:
@@ -262,7 +265,9 @@ def RunListBlbMotorsEx(listBLB):
                 if iPOS > cur_pos_srv and onScan:
                     adjustrate = 0.3
                     TiltArucoScan()
-                    CamControl(True)                
+                    CamControl(True)
+                    MotorBalanceControlEx.onCaliT = True
+                
                 break
             # #테이블 탐색 모드에서는 속도 줄인다.
             # if iPOS > cur_pos_srv and (valuesInlist > 1) and (onScan or finalScan):
@@ -427,7 +432,7 @@ def RunListBlbMotorsEx(listBLB):
                     TiltTableObstacleScan()
                 if CheckMotorOrderValid(dicArray):
                     #트레이 모터를 움직일때 현재 서빙부의 길이를 구한 후 200mm 이상이지 않으면 알람.
-                    if curDistanceSrvTele <= 50 and isRealMachine:
+                    if curDistanceSrvTele < 200 and isRealMachine:
                         rospy.loginfo(dicArray)
                         StopEmergency(ALM_User.TRAY360_SAFETY.value)
                         return APIBLB_ACTION_REPLY.E102
@@ -527,10 +532,9 @@ def RunListBlbMotorsEx(listBLB):
             sMsg = 'listBLB 스레드 점검필요'
             rospy.loginfo(sMsg)
             bResult = False
-            SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
-
+            SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP) 
         if len(lsFinalCmd) ==0 and not isTrue(bResult):
-            if isExceptionSSE(bStrMsg):
+            if bStrMsg is None or isExceptionSSE(bStrMsg):
                 #SendAlarmHTTP(ALM_User.SSE_CONNETION_ERROR.value,True)    
                 StopEmergency(ALM_User.SSE_CONNETION_ERROR.value, True,False)
                 return APIBLB_ACTION_REPLY.E500
@@ -691,29 +695,29 @@ def RunListBlbMotorsEx(listBLB):
             # lsFinalMbid = ""
             # nextCmdMbid = ""
             #메인회전 모터 필터링 - 다음 명령어도 메인회전이거나 다음 명령어가 H 인 경우 스킵한다.
-            if len(node_CtlCenter_globals.listBLB) > 0:
-                lsDF = []
-                lsNextCmd = node_CtlCenter_globals.listBLB[0]
-                isNextDict = isinstance(lsNextCmd, dict)
-                if isNextDict:
-                    lsDF.append(lsNextCmd)
-                else:
-                    lsDF.extend(lsNextCmd)
-                dfNext = pd.DataFrame(lsDF)
-                dfNext.dropna(how='all', inplace=True)
-                rospy.loginfo(dfNext)
-                contains_nan = dfNext.isnull().values.any()
-                if contains_nan:
-                  rospy.loginfo(dfNext)
-                if len(lsFinalCmdEx) == 1:
-                    lsCurCmd = lsFinalCmdEx[0]
-                    curMBID = lsCurCmd.get(MotorWMOVEParams.MBID.name, "")
-                    if curMBID == str(ModbusID.ROTATE_MAIN_540.value):
-                        if len(lsNextCmd) == 1:
-                            nextMBID = lsNextCmd[0].get(MotorWMOVEParams.MBID.name, "")
-                            if curMBID == nextMBID:
-                                rospy.loginfo('Skipped by dup 540 cmd')
-                                return APIBLB_ACTION_REPLY.E105
+            # if len(node_CtlCenter_globals.listBLB) > 0:
+            #     lsDF = []
+            #     lsNextCmd = node_CtlCenter_globals.listBLB[0]
+            #     isNextDict = isinstance(lsNextCmd, dict)
+            #     if isNextDict:
+            #         lsDF.append(lsNextCmd)
+            #     else:
+            #         lsDF.extend(lsNextCmd)
+            #     dfNext = pd.DataFrame(lsDF)
+            #     dfNext.dropna(how='all', inplace=True)
+            #     rospy.loginfo(dfNext)
+            #     contains_nan = dfNext.isnull().values.any()
+            #     if contains_nan:
+            #       rospy.loginfo(dfNext)
+            #     if len(lsFinalCmdEx) == 1:
+            #         lsCurCmd = lsFinalCmdEx[0]
+            #         curMBID = lsCurCmd.get(MotorWMOVEParams.MBID.name, "")
+            #         if curMBID == str(ModbusID.ROTATE_MAIN_540.value):
+            #             if len(lsNextCmd) == 1:
+            #                 nextMBID = lsNextCmd[0].get(MotorWMOVEParams.MBID.name, "")
+            #                 if curMBID == nextMBID:
+            #                     rospy.loginfo('Skipped by dup 540 cmd')
+            #                     return APIBLB_ACTION_REPLY.E105
             #df = pd.DataFrame(lsFinalCmdEx)
             #SendCMD_Device(lsFinalCmdEx)
             # marginTime = df[df['MBID'] == '9']['TIME'].values[0]
@@ -732,9 +736,13 @@ def RunListBlbMotorsEx(listBLB):
                 mbid_current = unique_mbid[0]
                 dicCurrent = lsFinalCmdEx[0]
                 iPos = int(dicCurrent[MotorWMOVEParams.POS.name])
+                iSpd = int(dicCurrent[MotorWMOVEParams.SPD.name])
                 if is_equal(mbid_current, ModbusID.ROTATE_MAIN_540.value):
-                    cur_angle_540 = pulse_to_angle(iPos, potRotate540_cmd, MAX_ANGLE_TRAY)%360
-                    bResult, bStrMsg = API_MoveMainRotate(cur_angle_540, adjustrate)
+                    if iSpd == MAINROTATE_RPM_SLOWEST:
+                        bResult, bStrMsg = SendCMD_Device(lsFinalCmdEx)
+                    else:
+                        cur_angle_540 = pulse_to_angle(iPos, potRotate540_cmd, MAX_ANGLE_TRAY)%360
+                        bResult, bStrMsg = API_MoveMainRotate(cur_angle_540, adjustrate)
                     sMsg = f'메인회전컨트롤:{bResult},{bStrMsg}'
                     rospy.loginfo(sMsg)
                 elif is_equal(mbid_current, ModbusID.ROTATE_SERVE_360.value):

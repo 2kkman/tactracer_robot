@@ -316,7 +316,7 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
     #rospy.loginfodicBatteryInfo)
     volt = dicBatteryInfo.get(MonitoringField_BMS.Voltage.name,MIN_INT)
     battery_level = try_parse_float(dicBatteryInfo.get(MonitoringField_BMS.RSOC.name))
-    ischarging = dicBatteryInfo.get(MonitoringField_BMS.battery_status.name)
+    ischarging = dicBatteryInfo.get(MonitoringField_BMS.battery_status.name,False)
     watt = dicBatteryInfo.get(MonitoringField_BMS.WATT.name,MIN_INT)
     #dicCurNode = getTableServingInfo(curTable)
     # node_ID = dicCurNode.get(TableInfo.NODE_ID.name, "")
@@ -476,31 +476,30 @@ def CheckMotorAlarms():
 def CheckETCActions():
     lsCmdRelase = []
     releasePulse = round(roundPulse/10)
-    if isRealMachine:
-        get_mpv_process_info()
-        DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    cur_node = GetCurrentNode()
+    DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    if isRealMachine and cur_node == node_KITCHEN_STATION and isTrue(DI_POT):
+        #get_mpv_process_info()
         node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
         #stateCharger = isChargerPlugOn()
-        cur_node = GetCurrentNode()
-        node_pos = GetNodePos_fromNode_ID(cur_node)
-        cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
-
-        if cur_node == node_KITCHEN_STATION and isTrue(DI_POT):        
-            if abs(cur_pos - node_pos) > roundPulse/2:
-                dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
-                SendCMD_Device([dicLoc])
-            if not isActivatedMotor(ModbusID.MOTOR_H.value):
-                SetChargerPlug(True)
-    
-    for modbus in lsReleaseMotors:
-        DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(modbus)        
-        cmdpos, curpos = GetPosServo(modbus)
-        if DI_POT:
-            lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos-releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
-        elif DI_NOT:
-            lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
-    if len(lsCmdRelase) > 0:
-        SendCMD_Device(lsCmdRelase)
+        # node_pos = GetNodePos_fromNode_ID(cur_node)
+        # cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
+        # if cur_node == node_KITCHEN_STATION and isTrue(DI_POT):        
+        #     if abs(cur_pos - node_pos) > roundPulse/2:
+        #         dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, node_pos)
+        #         SendCMD_Device([dicLoc])
+        #     if not isActivatedMotor(ModbusID.MOTOR_H.value):
+        #         SetChargerPlug(True)
+        #관절이 POT, NOT 에 있으면 0.1바퀴씩 풀어준다
+        for modbus in lsReleaseMotors:
+            DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(modbus)        
+            cmdpos, curpos = GetPosServo(modbus)
+            if DI_POT:
+                lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos-releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
+            elif DI_NOT:
+                lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
+        if len(lsCmdRelase) > 0:
+            SendCMD_DeviceService(lsCmdRelase)
     
 def CheckETCAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()
@@ -530,6 +529,11 @@ def CheckETCAlarms():
           SetWaitConfirmFlag(True, {key:value})
     
 def MotorBalanceControlEx(bSkip):
+    if not hasattr(MotorBalanceControlEx, "onCaliR"):
+        MotorBalanceControlEx.onCaliR = False
+    if not hasattr(MotorBalanceControlEx, "onCaliT"):
+        MotorBalanceControlEx.onCaliT = False
+    
     #돌고 있는 모터가 없으면 종료
     if not has_common_element(getRunningMotorsBLB(),list_ArmControlMotors):
         return
@@ -614,7 +618,6 @@ def MotorBalanceControlEx(bSkip):
     # columns_to_keep = []
     # if dfReceived is not None:
     #   columns_to_keep = [field.name for field in APIBLB_FIELDS_TASK if field.name in dfReceived.columns]
-   
     dicTagretTableInfoCurrent = getTableServingInfo(curTargetTable)
     isScanOn = isScanTableMode(curTargetTable)
     target540 = dicTagretTableInfoCurrent.get(TableInfo.SERVING_ANGLE.name, StateBranchValue.ERROR.value)
@@ -625,7 +628,9 @@ def MotorBalanceControlEx(bSkip):
     targetTable = dicTagretTableInfoCurrent.get(TableInfo.TABLE_ID.name, StateBranchValue.ERROR.value)
     tiltStutus = GetTiltStatus()
     modbusIDStr_H = str(ModbusID.MOTOR_H.value)
+    modbusIDStr_V = str(ModbusID.TELE_SERV_MAIN.value)   
     isDistanceVReceived = len(GetDistanceV()) > 0
+    marker_magin_cnt = 1
     
     #모터 ID 로 그룹화 하는 것이 아닌 각 기능별로 그룹화 할 것.
     if isScanOn:
@@ -639,9 +644,11 @@ def MotorBalanceControlEx(bSkip):
             value_marker = int(dicAruco[ARUCO_RESULT_FIELD.MARKER_VALUE.name])
             diff_X,diff_Y =get_camera_offset(CAMERA_DISTANCE_FROM_CENTER,9)
             ref_dict2 = { 'X' : ref_dict['X'] - diff_X, 'Y': ref_dict['Y'] + diff_Y, 'Z': ref_dict['Z'] }
-            
             if isActivatedMotor(ModbusID.ROTATE_MAIN_540.value):
                 isScanSpd =is_within_range(abs(spd_cur_540),MAINROTATE_RPM_SLOWEST,15)
+                if MotorBalanceControlEx.onCaliR == False:
+                    return
+                curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
                 rospy.loginfo(f'Scan spd_cur_540:{spd_cur_540},isScanSpd:{isScanSpd},MarkerXY:{marker_X},{marker_Y},lastDifX={node_CtlCenter_globals.aruco_lastDiffX},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                 if isScanSpd:
                     #ClearArucoTable()
@@ -652,18 +659,51 @@ def MotorBalanceControlEx(bSkip):
                     #rospy.loginfo(f'Aruco X2 Check : resultDiff={resultDiff2},diff_X={diff_X2},diff_Y={diff_Y2}')
                     # rospy.loginfo(format_vars(currTime,resultDiff,diff_X,diff_Y))
                     
-                    if abs(diff_X1) < CAM_LOCATION_MARGIN_OK or (abs(diff_X1) < CAM_LOCATION_MARGIN_FINE and node_CtlCenter_globals.aruco_lastDiffX < abs(diff_X1)):
-                    #if diff_X1 < CAM_LOCATION_MARGIN_OK:
+                    #if abs(diff_X1) < CAM_LOCATION_MARGIN_OK or (abs(diff_X1) < CAM_LOCATION_MARGIN_FINE and node_CtlCenter_globals.aruco_lastDiffX < abs(diff_X1)):
+                    if diff_X1 < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
                         StopAllMotors(ACC_DECC_SMOOTH)
+                        lsMotorOperationNew = []
                         rospy.loginfo(f'Aruco X OK : cam diff_X={diff_X},cam diff_Y={diff_Y},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
-                        lsMotorOperationNew=GetStrArmExtendMain(1250,0,True)
+                        if diff_Y1 < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
+                            MotorBalanceControlEx.onCaliT = False
+                            MotorBalanceControlEx.onCaliR = False
+                            curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+                            diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
+                            diffx_meter = ConvertArucoSizeToReal(diffX)
+                            diffy_meter = ConvertArucoSizeToReal(diffY)    
+                            newX = curX + diffx_meter
+                            newY = curY + diffy_meter
+                            rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+                            distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+                            df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+                            # 조건에 맞는 행의 MARKER_VALUE 업데이트
+                            df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
+                            df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                            isScanOn = False
+                            dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
+                            angle_new = (180+ angle_marker)%360
+                            lsMotorOperationNew = []
+                            lsMotorOperationNew.append([dicFinalRotate])
+                            lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
+                            lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
+                            lsMotorOperationNew.append(GetListLiftDown(250000))
+                            node_CtlCenter_globals.listBLB.clear()
+                            node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
+                        elif diff_Y1 < 0:
+                            lsMotorOperationNew.extend(GetStrArmExtendMain(1250,0,True))
+                            MotorBalanceControlEx.onCaliT = True
+                        else:
+                            lsMotorOperationNew.extend(GetStrArmExtendMain(0,0,True))
+                            MotorBalanceControlEx.onCaliT = True
                         node_CtlCenter_globals.listBLB.append(lsMotorOperationNew)
                     else:
                         node_CtlCenter_globals.aruco_lastDiffX = abs(diff_X1)
 
             elif isActivatedMotor(ModbusID.TELE_SERV_MAIN.value):
                 rospy.loginfo(f'Scan spd_cur_srvTele:{spd_cur_srvTele},MarkerXY:{marker_X,marker_Y}')
-                if spd_cur_srvTele > 0:
+                if MotorBalanceControlEx.onCaliT == False:
+                    return
+                if abs(spd_cur_srvTele) > 10:
                     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
                     resultDiff3,diff_X3,diff_Y3= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
                     #resultDiff4,diff_X4,diff_Y4= compare_dicts(dicAruco, ref_dict2, CAM_LOCATION_MARGIN_OK)
@@ -673,75 +713,93 @@ def MotorBalanceControlEx(bSkip):
                     lastY = node_CtlCenter_globals.aruco_lastDiffY
                     node_CtlCenter_globals.aruco_lastDiffY = abs(diff_Y3)
                     seekRange = int(pot_cur_540 / 2)
-                    if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK or (lastY < abs(diff_Y3) and abs(diff_Y3) < CAM_LOCATION_MARGIN_FINE):
+                    #if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK or (lastY < abs(diff_Y3) and abs(diff_Y3) < CAM_LOCATION_MARGIN_FINE):
+                    if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
                         StopAllMotors(ACC_DECC_SMOOTH)
                         rospy.loginfo(f'Aruco Y OK : resultDiff={resultDiff3},diff_X={diff_X3},diff_Y={diff_Y3},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
-                        #curDistanceSrvTele, curAngle_540,cur_angle_360
-                        curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
-                        diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
-                        diffx_meter = ConvertArucoSizeToReal(diffX)
-                        diffy_meter = ConvertArucoSizeToReal(diffY)    
-                        newX = curX + diffx_meter
-                        newY = curY + diffy_meter
-                        rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
-                        distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
-                        df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
-                        # 조건에 맞는 행의 MARKER_VALUE 업데이트
-                        df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
-                        df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
-                        isScanOn = False
-                        dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
-                        angle_new = (180+ angle_marker)%360
-                        lsMotorOperationNew = []
-                        lsMotorOperationNew.append([dicFinalRotate])
-                        lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
-                        lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
-                        lsMotorOperationNew.append(GetListLiftDown(200000))
-                        node_CtlCenter_globals.listBLB.clear()
-                        node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
-                    #else:
-                    elif marker_Y_abs > 0 and marker_Y_abs < 0.4 and node_CtlCenter_globals.aruco_lastDiffX == aruco_lastDiff_Default:
-                    # elif abs(diff_X3) > CAM_LOCATION_MARGIN_FINE:
-                        targetPosKey = str(ModbusID.TELE_SERV_MAIN.value)
-                        targetPosTeleSrv=try_parse_int(node_CtlCenter_globals.dicTargetPos.get(targetPosKey), MIN_INT)
-                        if is_between(not_cur_SrvTele,200000,targetPosTeleSrv):
-                            # StopAllMotors(ACC_DECC_SMOOTH)
-                            # resultDiff4,diff_X4,diff_Y4= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
-                            # rospy.loginfo(f'한번에 보정하기. : resultDiff={resultDiff4},diff_X={diff_X4},diff_Y={diff_Y4},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
-                            # #curDistanceSrvTele, curAngle_540,cur_angle_360
-                            # curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
-                            # #diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
-                            # diffx_meter = ConvertArucoSizeToReal(diff_X4)
-                            # diffy_meter = ConvertArucoSizeToReal(diff_Y4)    
-                            # newX = curX + diffx_meter
-                            # newY = curY + diffy_meter
-                            # rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
-                            # distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
-                            # df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
-                            # # 조건에 맞는 행의 MARKER_VALUE 업데이트
-                            # df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
-                            # df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
-                            # isScanOn = False                            
-                            # dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
-                            # angle_new = (180+ angle_marker)%360
-                            # lsMotorOperationNew = []
-                            # lsMotorOperationNew.append([dicFinalRotate])
-                            # lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
-                            # lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
-                            # lsMotorOperationNew.append(GetListLiftDown(200000))
-                            # node_CtlCenter_globals.listBLB.clear()
-                            # node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
-                            
+                        if abs(diff_X3) > CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
+                            MotorBalanceControlEx.onCaliT = False
+                            MotorBalanceControlEx.onCaliR = True                            
                             seekMargin = seekRange if diff_X3 < 0 else -seekRange
                             StopAllMotors(ACC_DECC_LONG)
-                            node_CtlCenter_globals.dicTargetPos[targetPosKey] = 200000
+                            node_CtlCenter_globals.dicTargetPos[modbusIDStr_V] = 210000
                             target_pulse=  cur_pos_540 + seekMargin                     
                             dicRotateNewVerySlow = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, True, target_pulse,MAINROTATE_RPM_SLOWEST,ACC_540,DECC_540)
                             #dicRotateNewVerySlow = GetDicRotateMotorMain(curAngle_540_new,MAINROTATE_RPM_SLOWEST,False)
                             node_CtlCenter_globals.listBLB.clear()
                             node_CtlCenter_globals.aruco_lastDiffY = aruco_lastDiff_Default
-                            SendCMD_Device([dicRotateNewVerySlow])
-                            time.sleep(MODBUS_EXCEPTION_DELAY)
+                            SendCMD_DeviceService([dicRotateNewVerySlow])
+                            time.sleep(MODBUS_EXCEPTION_DELAY)  
+                        else:                      
+                            MotorBalanceControlEx.onCaliT = False
+                            MotorBalanceControlEx.onCaliR = False                            
+                            #curDistanceSrvTele, curAngle_540,cur_angle_360
+                            curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+                            diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
+                            diffx_meter = ConvertArucoSizeToReal(diffX)
+                            diffy_meter = ConvertArucoSizeToReal(diffY)    
+                            newX = curX + diffx_meter
+                            newY = curY + diffy_meter
+                            rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+                            distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+                            df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+                            # 조건에 맞는 행의 MARKER_VALUE 업데이트
+                            df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
+                            df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                            isScanOn = False
+                            dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
+                            angle_new = (180+ angle_marker)%360
+                            lsMotorOperationNew = []
+                            lsMotorOperationNew.append([dicFinalRotate])
+                            lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
+                            lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
+                            lsMotorOperationNew.append(GetListLiftDown(200000))
+                            node_CtlCenter_globals.listBLB.clear()
+                            node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
+                    #else:
+                    # elif marker_Y_abs > 0 and marker_Y_abs < 0.4 and node_CtlCenter_globals.aruco_lastDiffX == aruco_lastDiff_Default:
+                    # # elif abs(diff_X3) > CAM_LOCATION_MARGIN_FINE:
+                    #     targetPosTeleSrv=try_parse_int(node_CtlCenter_globals.dicTargetPos.get(modbusIDStr_V), MIN_INT)
+                    #     if is_between(not_cur_SrvTele,200000,targetPosTeleSrv):
+                    #         # StopAllMotors(ACC_DECC_SMOOTH)
+                    #         # resultDiff4,diff_X4,diff_Y4= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
+                    #         # rospy.loginfo(f'한번에 보정하기. : resultDiff={resultDiff4},diff_X={diff_X4},diff_Y={diff_Y4},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
+                    #         # #curDistanceSrvTele, curAngle_540,cur_angle_360
+                    #         # curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
+                    #         # #diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
+                    #         # diffx_meter = ConvertArucoSizeToReal(diff_X4)
+                    #         # diffy_meter = ConvertArucoSizeToReal(diff_Y4)    
+                    #         # newX = curX + diffx_meter
+                    #         # newY = curY + diffy_meter
+                    #         # rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+                    #         # distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+                    #         # df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+                    #         # # 조건에 맞는 행의 MARKER_VALUE 업데이트
+                    #         # df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
+                    #         # df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
+                    #         # isScanOn = False                            
+                    #         # dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
+                    #         # angle_new = (180+ angle_marker)%360
+                    #         # lsMotorOperationNew = []
+                    #         # lsMotorOperationNew.append([dicFinalRotate])
+                    #         # lsMotorOperationNew.append(GetStrArmExtendMain(distanceFinal,angle_degrees_final,True))
+                    #         # lsMotorOperationNew.append([GetDicRotateMotorTray(angle_new)])
+                    #         # lsMotorOperationNew.append(GetListLiftDown(200000))
+                    #         # node_CtlCenter_globals.listBLB.clear()
+                    #         # node_CtlCenter_globals.listBLB.extend(lsMotorOperationNew)
+                            
+                    #         seekMargin = seekRange if diff_X3 < 0 else -seekRange
+                    #         StopAllMotors(ACC_DECC_LONG)
+                    #         node_CtlCenter_globals.dicTargetPos[modbusIDStr_V] = 230000
+                    #         target_pulse=  cur_pos_540 + seekMargin                     
+                    #         dicRotateNewVerySlow = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, True, target_pulse,MAINROTATE_RPM_SLOWEST,ACC_540,DECC_540)
+                    #         #dicRotateNewVerySlow = GetDicRotateMotorMain(curAngle_540_new,MAINROTATE_RPM_SLOWEST,False)
+                    #         node_CtlCenter_globals.listBLB.clear()
+                    #         node_CtlCenter_globals.aruco_lastDiffY = aruco_lastDiff_Default
+                    #         SendCMD_DeviceService([dicRotateNewVerySlow])
+                    #         MotorBalanceControlEx.onCaliT = False
+                    #         MotorBalanceControlEx.onCaliR = True                                                        
+                    #         time.sleep(MODBUS_EXCEPTION_DELAY)
             # elif isActivatedMotor(ModbusID.TELE_SERV_MAIN.value) and spd_cur_srvTele > 0:
             #     if lsDF:
             #         resultDiff,diff_X,diff_Y= compare_dicts(dicAruco, ref_dict, CAM_LOCATION_MARGIN_OK)
@@ -948,29 +1006,30 @@ def MotorBalanceControlEx(bSkip):
                     if curNode == node_KITCHEN_STATION:
                         SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
                     else:
-                        SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)                        
-                    if doorStatus == TRAYDOOR_STATUS.CLOSED:
-                        rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
-                        if dfReceived is None:
-                            rospy.loginfo(f"dfReceived not found")
-                            #추후 중량값 들어오고 있는 셀로 고치자.
-                            if not isScanOn:
-                                DoorOpen()
-                            LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
-                        else:
-                            SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
-                            dicFirst = dfReceived.iloc[0]
-                            taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
-                            dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
-                            trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
-                            if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
-                                DoorOpen()
-                            else:
-                                trayRackID = RackID.from_name_or_value(trayrack,True)
-                                trayidx = trayRackID.value
-                                #trayidx = (int)(trayrack[1:]) - 1
-                                DoorOpen(trayidx)
-                            #RemoveDF(curTargetTable)
+                        SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
+                        LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)                        
+                    # if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                    #     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
+                    #     if dfReceived is None:
+                    #         rospy.loginfo(f"dfReceived not found")
+                    #         #추후 중량값 들어오고 있는 셀로 고치자.
+                    #         if not isScanOn:
+                    #             DoorOpen()
+                    #         LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+                    #     else:
+                    #         SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
+                    #         dicFirst = dfReceived.iloc[0]
+                    #         taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
+                    #         dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
+                    #         trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
+                    #         if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                    #             DoorOpen()
+                    #         else:
+                    #             trayRackID = RackID.from_name_or_value(trayrack,True)
+                    #             trayidx = trayRackID.value
+                    #             #trayidx = (int)(trayrack[1:]) - 1
+                    #             DoorOpen(trayidx)
+                    #         #RemoveDF(curTargetTable)
                         UpdateLastBalanceTimeStamp()
                     return    
             #리프트 상승시 도어 열려있는 경우 닫힘 기능 구현

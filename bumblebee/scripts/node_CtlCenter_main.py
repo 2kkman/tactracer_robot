@@ -200,6 +200,7 @@ if __name__ == "__main__":
         time.sleep(1)
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
     cmdpos_H, curpos_H = GetPosServo(ModbusID.MOTOR_H)
+    #개발기에서는 항상 모든 모터 펄스를 0 으로 초기화 한다.
     if not isRealMachine:
         fieldvalue = f'q={BLD_PROFILE_CMD.WLOC_NOT.value}'
         print(API_call_http(GetMasterIP(), HTTP_COMMON_PORT, 'CMD_DEVICE', fieldvalue))
@@ -211,6 +212,13 @@ if __name__ == "__main__":
       SendCMD_Device([dicLoc])
       TTSAndroid('현재 충전소에 있습니다.',1)
       SetCurrentNode(node_KITCHEN_STATION)
+    else:
+      dicCurNodeInfo=GetNodeDicFromPos(node_CtlCenter_globals.dfNodeInfo,curpos_H)
+      curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+      curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
+      curNode_pos = int(dicCurNodeInfo.get(posStr))
+      TTSAndroid(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
+      SetCurrentNode(curNodeID_fromPulse)
     # else:
     #   #RFID로 위치 확인 isRealMachine 일때만
     #   #RFID_DF 에 값이 들어올때까지 기다릴것.

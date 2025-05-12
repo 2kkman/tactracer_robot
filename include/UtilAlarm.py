@@ -19,6 +19,8 @@ class ALM_User(Enum):
     TRAY360_SAFETY = "54007: Not enough space for tray rotate"
     OUT_OF_SERVING_RANGE = "54028: Not able to serve the distance"
     SAFETY_TRAYDOOR = "54006: Lift Down is required before DoorOpen"
+    GYRO_ORIGINAL_DATA_ERROR = "50400: gyro original data error"
+    NVME_FULL = "50405: NVME FULL"
     SAFETY_ARM = "54017: tray and lift must be on the origin before Arm control."
     SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before MotorH run."
     SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
@@ -36,11 +38,13 @@ class ALM_User(Enum):
     CMD_FORMAT_INVALID = "50106: Motor cmd format invalid"    
     CMD_ISNULL = "54070: Motor cmd is null"
     SSE_CONNETION_ERROR = "52127: BLB service proceess died"
+    TOPICNAME_REQUIRED = "50401: topicname is required"
+    TOPICNAME_WRONG = "50105: wrong topicname"
+    TRAYDOOR_ERROR = "50000: DOOR sensor signals must be exclusive."
+    INTERNAL_EXCEPTION = "52097: err : "
     
 class ALM_Fatal(Enum):
-    BATTERY_TOO_LOW_SHUTDOWN = "50401: battery too low and shutdown"
     BATTERY_TEMPERATURE_TOO_HIGH = "50402: temperature of battery is too high"
-    TRAYDOOR_ERROR = "50000: DOOR sensor signals must be exclusive."
     RESOURCE_EXHAUSTION = "50001: resource exhaustion"
     SW_ERROR = "50002: sw error"
     MAP_PARSE_ERROR = "50100: map parse error"
@@ -48,7 +52,6 @@ class ALM_Fatal(Enum):
     MAP_TOO_LARGE = "50102: map is too large"
     MAP_EMPTY = "50103: map is empty"
     MAP_META_ERROR = "50104: map meta error"
-    MAP_RESOLUTION_ILLEGAL = "50105: map resolution is illegal"
     LOAD_MOBILEROBOTS_LIB_ERROR = "50200: load mobilerobots lib error"
     INIT_MOBILEROBOTS_FAILED = "50201: Failed to initialize mobilerobots"
     MOBILEROBOTS_REGISTER_ERROR = "50202: mobilerobots register error"
@@ -58,8 +61,6 @@ class ALM_Fatal(Enum):
     DSP_FIRMWARE_MODEL_NOT_FOUND = "50301: dsp firmware model can not get"
     FIRMWARE_VERSION_TOO_LOW = "50304: firmware version too low"
     FIRMWARE_MODEL_UNREACHABLE = "50305: firmware model unreachable or robot model param config error"
-    GYRO_ORIGINAL_DATA_ERROR = "50400: gyro original data error"
-    NVME_FULL = "50405: NVME FULL"
 # Example usage
 # if __name__ == "__main__":
 #     for alarm in AlarmCode:
@@ -141,7 +142,6 @@ class ALM_error(Enum):
     ARM_DISCONNECTED = "52050: arm disconnected"
     ARM_GRASP_LOAD = "52051: Arm GraspLoad to/from target"
     INTERNAL_LASER_ERROR = "52096: internal laser error"
-    RESTART_LASER = "52097: please restart laser, get internal Error with Nanosick"
     CANNOT_CONNECT_SICK_NANO_LASER = "52098: cannot connect sick nano laser with same port"
     LASER_CONFIG_PARAM_ERROR = "52099: laser config param error"
     CANNOT_CONNECT_LASER = "52100: can't connect with laser"

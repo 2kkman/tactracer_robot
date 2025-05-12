@@ -549,6 +549,9 @@ def is_within_range(A, B, C):
     """
     return abs(abs(A) - abs(B)) <= C
 
+def is_within_range_signed(A, B, C):
+    return abs(A-B) <= abs(C)
+
 def df_to_dict_int_values(df: pd.DataFrame, key_col, value_col):
     return dict(zip(df[key_col], df[value_col].astype(int)))
 
@@ -618,14 +621,18 @@ def insert_row_to_csv(strFileEPC_total, strSplitter, new_row):
     dfNew.to_csv(strFileEPC_total, sep=strSplitter, index=False)    
     return dfNew
 
-def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0):
+def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False):
     try:
         # DataFrame 복사 및 diff 계산
         df = dfTemp.copy()
-        
+
         if 'POS' not in df.columns:
             return []
-        
+
+        # onlyRealNode 조건에 따라 EPC 필터링
+        if onlyRealNode and 'EPC' in df.columns:
+            df = df[df['EPC'].astype(str).str.contains('NOTAG')]
+
         df['diff'] = (df['POS'] - pos_target).abs()
 
         # 방향 조건에 따른 필터링
@@ -637,14 +644,15 @@ def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0):
         # 가까운 값 정렬 및 추출
         nearest_rows = df.nsmallest(nearPoints, 'diff')
         result = nearest_rows.to_dict(orient='records')
-        
+
         return result
     except Exception:
         return []
 
 
-def GetCurrentNodeDicFromPulsePos(dfTemp, pos_target : int):
-    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0)
+
+def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False):
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode)
     if lsResult:
         return lsResult[0]
     else:

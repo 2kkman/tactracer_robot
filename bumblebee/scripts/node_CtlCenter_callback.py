@@ -86,7 +86,7 @@ def callbackAck(data,topic_name='' ):
             isPot = lsResult[12]  # POT에 걸려서 멈췄으면 1
             isNot = lsResult[13]  # NOT에 걸려서 멈췄으면 1
             isESTOP = lsResult[14]  # ESTOP에 걸려서 멈췄으면 1
-            rospy.loginfo(f'정방향토크:{torque_max},역방향토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
+            rospy.loginfo(f'{mbid_tmp}-정방토크:{torque_max},역방토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
             #SetTorqueData(mbid_tmp,torque_max,torque_ave,ovr_max,ovr_ave)
         
         # if mbid_tmp == str(ModbusID.BAL_ARM1.value):
@@ -383,11 +383,34 @@ def callbackAck(data,topic_name='' ):
                 CamControl(False)
                 isLiftTrayDown = isLiftTrayDownFinished()
                 node_current = GetCurrentNode()
+                doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
                 if isLiftTrayDown and node_current is not None:
                     #if int(node_current) != node_KITCHEN_STATION:
                     # 리프트 모터 하강구동이 완료된 경우 30초내로 꺼내가라는 방송을 한다.
                     #if not isScanOn:
                     #DoorOpen()
+                    if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                        #rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
+                        if dfReceived is None:
+                            rospy.loginfo(f"dfReceived not found")
+                            #추후 중량값 들어오고 있는 셀로 고치자.
+                            #if not isScanOn:
+                            DoorOpen(0)
+                            #LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+                        else:
+                            SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
+                            dicFirst = dfReceived.iloc[0]
+                            taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
+                            dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
+                            trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
+                            if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                                DoorOpen()
+                            else:
+                                trayRackID = RackID.from_name_or_value(trayrack,True)
+                                trayidx = trayRackID.value
+                                #trayidx = (int)(trayrack[1:]) - 1
+                                DoorOpen(trayidx)
+                            #RemoveDF(curTargetTable)                    
                     targetTable =GetCurrentTargetTable()
                     curNode = GetCurrentNode()
                     dicTagretTableInfo = getTableServingInfo(targetTable)
@@ -761,14 +784,22 @@ def callbackModbus(data,topic_name):
             logmsg = f"{recvData} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name}"
             rospy.loginfo(logmsg)
 
-        # KV 구분자 콜론, 아이템구분자 쉼표인 문자열을 dict 로 파싱한다
-        recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
+        recvData = data.data
+        if is_valid_python_dict_string(recvData):
+            recvDataMap = ast.literal_eval(recvData)
+        elif is_json(recvData):
+            recvDataMap = json.loads(recvData)
+        else:
+            recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
 
         # 수신 메세지에는 무조건 MBID 필드가 있으며 없으면 무시된다.
         mbid = recvDataMap.get(MotorWMOVEParams.MBID.name, None)
         if mbid is None:
           return      
 
+        # if is_equal(mbid, ModbusID.TOF.value):
+        #     print(recvDataMap)
+        
         # 모니터링 변수를 업데이트 한다        
         if isinstance(node_CtlCenter_globals.dic_485ex.get(mbid), dict):
             node_CtlCenter_globals.dic_485ex[mbid].update(recvDataMap)
@@ -1408,7 +1439,7 @@ for item in ModbusID:
     subTopicName = f'{TopicName.MB_.name}{item.value}'
     rospy.Subscriber(subTopicName, String, callbackModbus, queue_size=ROS_TOPIC_QUEUE_SIZE,callback_args=subTopicName)
     node_CtlCenter_globals.numSubTopics += 1
-    rospy.loginfo(f'모드버스 구독번호 {node_CtlCenter_globals.numSubTopics}:{subTopicName}')
+    print(f'모드버스 구독번호 {node_CtlCenter_globals.numSubTopics}:{subTopicName}')
     #rospy.loginfo(f'모드버스 구독번호 {node_CtlCenter_globals.numSubTopics}:{subTopicName}')
 
 x, y, z = 0.5, 0.0, 0.0  # Example target position, modify as needed

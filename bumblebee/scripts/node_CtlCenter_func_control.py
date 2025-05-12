@@ -187,11 +187,11 @@ def GetRotateMainPulseFromAngle(angleStr, modifyAngle=0):
 
 # 메인바디 회전 모터 제어 문자열
 def GetDicRotateMotorMain(angleStr, rotateRPM=SPD_540, isTargetPulse=False):
-    pot_cur540, not_cur540, cmdpos540, cur_pos540 = GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-    roundFullPulse = pot_cur540 - not_cur540  # 1회전 펄스 값 (649800)
+    pot_540, not_cur540, cmdpos540, cur_540 = GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
+    # roundFullPulse = pot_cur540 - not_cur540  # 1회전 펄스 값 (649800)
 
-    #target_pulse_raw = angleStr if isTargetPulse else GetRotateMainPulseFromAngle(angleStr)
-    target_pulse = angleStr if isTargetPulse else GetRotateMainPulseFromAngle(angleStr)
+    # #target_pulse_raw = angleStr if isTargetPulse else GetRotateMainPulseFromAngle(angleStr)
+    # target_pulse = angleStr if isTargetPulse else GetRotateMainPulseFromAngle(angleStr)
 
     # # CW (시계 방향) 이동 거리
     # diff_CW = (target_pulse_raw - cur_pos540) % roundFullPulse
@@ -208,7 +208,12 @@ def GetDicRotateMotorMain(angleStr, rotateRPM=SPD_540, isTargetPulse=False):
     #     target_pulse = target_pulseCW  # CW 이동
     # else:
     #     target_pulse = target_pulseCCW  # CCW 이동 (음수 값)
-
+    angle = (360 + strToRoundedInt(angleStr)) % 360
+    target_pulse_org = round(mapRange(angle,0,MAX_ANGLE_BLBBODY,0,pot_540))
+    target_pulse_cw = target_pulse_org + pot_540
+    target_pulse_ccw = target_pulse_org - pot_540
+    arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
+    target_pulse=find_closest_value(arr,cur_540)
     motorDic = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, True, target_pulse,rotateRPM,ACC_540,DECC_540)
     motorDic[MotorWMOVEParams.TIME.name] = GetTimeFromRPM(ModbusID.ROTATE_MAIN_540, target_pulse, rotateRPM)
     return motorDic
@@ -324,14 +329,15 @@ def CalculateLengthFromPulse(motorInstance : ModbusID, pulse_pos):
     return round(lenMillimeter)
     
 def GetSerArmDistance():
-    posSrvInnerCmd, posSrvMainCur= GetPosServo(ModbusID.TELE_SERV_MAIN)
-    potpos,notpos = GetPotNotServo(ModbusID.TELE_SERV_MAIN)
-    # posSrvInnerCmd, posSrvInnerCur= GetPosServo(ModbusID.TELE_SERV_INNER)
-    # lenSrvInner = CalculateLengthFromPulse(ModbusID.TELE_SERV_INNER, posSrvInnerCur)
-    lenSrvMain=GetTargetLengthMMServingArm(posSrvInnerCmd, notpos)
-    #lenSrvMain = CalculateLengthFromPulse(ModbusID.TELE_SERV_MAIN, posSrvMainCur)
-    return round(lenSrvMain)
-    #return round(lenSrvInner+lenSrvMain)
+    cmd_pos = GetItemsFromModbusTable(ModbusID.TOF,SeqMapField.DISTANCE)
+    # posSrvInnerCmd, posSrvMainCur= GetPosServo(ModbusID.TELE_SERV_MAIN)
+    # potpos,notpos = GetPotNotServo(ModbusID.TELE_SERV_MAIN)
+    # # posSrvInnerCmd, posSrvInnerCur= GetPosServo(ModbusID.TELE_SERV_INNER)
+    # # lenSrvInner = CalculateLengthFromPulse(ModbusID.TELE_SERV_INNER, posSrvInnerCur)
+    # lenSrvMain=GetTargetLengthMMServingArm(posSrvInnerCmd, notpos)
+    # #lenSrvMain = CalculateLengthFromPulse(ModbusID.TELE_SERV_MAIN, posSrvMainCur)
+    # return round(lenSrvMain)
+    return cmd_pos
 
 def GetCurrentPosDistanceAngle():
   potRotate540_cmd, notRotate540_cur, posRotate540_cmd,posRotate540_cur= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)

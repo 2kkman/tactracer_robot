@@ -15,8 +15,8 @@ param_ARD_show = False
 enableDummyArduino = False
 
 #샤누이사 서버랑 연동할때 True
-#enableSvrPath = False
-enableSvrPath = True
+enableSvrPath = False
+#enableSvrPath = True
 
 stateDic = {}
 dicTorqueAve = {}
@@ -70,7 +70,6 @@ CROSS.txt 예제 (교차로 정보)
 #100번 크로스 상태0 일때 시작점은 2과 , 끝점은 3과 연결된 상태.
 #100번 크로스 상태1 일때 시작점은 끊김(-1) , 끝점은 91와 연결된 상태.
 """
-
 # 테이블을 제외한 분기기, 리프트, 엑세스 도어의 nodeID 가 등록된 변수
 StateInfo: Dict[str, list] = {}
 
@@ -82,7 +81,7 @@ dfLinkPosInfo = pd.DataFrame()
 dfLast = pd.DataFrame()
 dfTaskChainInfo = pd.DataFrame()
 dfEPCInfo = pd.DataFrame()
-dfEPCTotal = pd.read_csv(strFileEPC_total, delimiter=sDivTab)
+dfNodeInfo = pd.read_csv(strFileEPC_total, delimiter=sDivTab)
 dfEPCView = pd.DataFrame()
 lsRackStatus = [0,0]
 # 분기기 메타정보 100 -1 2 3 91 를 읽어들여서 100 이 키, -1 2 3 91 번호가 배열

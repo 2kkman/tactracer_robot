@@ -1277,6 +1277,10 @@ def API_CROSS_set(ipaddress, statusCross):
         fieldvalue = 'CMD=WMOVE&MODE=1&POS=0&SPD=500&ACC=3000&DECC=3000'        
     return API_call_http(BLB_CROSS_IP_DEFAULT, HTTP_COMMON_PORT, 'cross', fieldvalue)
 
+#분기기 제어
+def API_CROSS_CMD(fieldvalue):
+    return API_call_http(BLB_CROSS_IP_DEFAULT, HTTP_COMMON_PORT, 'cross', fieldvalue)
+
 def API_CROSS_stop():
     fieldvalue ='CMD=STOP&DECC=800'    
     return API_call_http(BLB_CROSS_IP_DEFAULT, HTTP_COMMON_PORT, 'cross', fieldvalue)
@@ -5512,7 +5516,9 @@ def get_tasmota_info(ip):
     except Exception as e:
         print("상태 정보 읽기 중 에러 발생:", e)
         return None
-    return status_data["StatusSNS"]["ENERGY"]
+    dicResult = status_data["StatusSNS"]["ENERGY"]
+    dicResult[CALLBELL_FIELD.IP.name] = ip
+    return dicResult
 
     # # JSON 응답에서 전력 소비량(Power) 값 추출 (일반적으로 StatusSNS > ENERGY > Power)
     # try:
@@ -5834,13 +5840,35 @@ def CheckMotorCmdValid(listDF,dictPos):
             mbid = dictTmp[MotorWMOVEParams.MBID.name]
             runMode = dictTmp[MotorWMOVEParams.MODE.name]
             curPos = dictPos[mbid]
-            if abs(iPos-curPos) < roundPulse/10 and is_equal(runMode,1):
+            if abs(iPos-curPos) < roundPulse/10 and is_equal(runMode,ServoParam.MOVE_TYPE_ABS.value):
                 lsRemoveIndexes.append(mbid)
     
     df = pd.DataFrame(listDF)
     df_filtered2 = df[~df[MotorWMOVEParams.MBID.name].isin(lsRemoveIndexes)]
     lsdfTable=df_filtered2.to_dict(orient='records')
     return lsdfTable
+
+def GetErrResponse(e):
+    return {False: f'{ALM_User.INTERNAL_EXCEPTION.value}{e}'}, 500    
+
+sEPCKey = RFID_RESULT.EPC.name
+sRSSIKey = RFID_RESULT.RSSI.name
+sPOS_Key = MonitoringField.CUR_POS.name
+sLAST_TARGET_POS = MonitoringField.LAST_TARGET_POS.name
+sST_CMD_FINISH = MonitoringField.ST_CMD_FINISH.name
+sSPD_Key = MonitoringField.CUR_SPD.name
+sSI_HOME =MonitoringField.SI_HOME.name
+sSI_POT =MonitoringField.SI_POT.name
+sDI_POT =MonitoringField.DI_POT.name
+sDI_NOT =MonitoringField.DI_NOT.name
+sDI_HOME =MonitoringField.DI_HOME.name
+sDI_ESTOP =MonitoringField.DI_ESTOP.name
+sInv_Key = RFID_RESULT.inventoryMode.name
+sALIVE_Key = RFID_RESULT.status.name
+wmoveStr = MotorCmdField.WMOVE.name
+posStr = MotorWMOVEParams.POS.name
+cmdStr = MotorWMOVEParams.CMD.name
+mbidStr = MotorWMOVEParams.MBID.name
 
 lsRotateMotors = [ModbusID.ROTATE_MAIN_540.value, ModbusID.ROTATE_SERVE_360.value]
 lsReleaseMotors = [ModbusID.MOTOR_V, ModbusID.BAL_ARM1,ModbusID.BAL_ARM2, ModbusID.TELE_SERV_MAIN]

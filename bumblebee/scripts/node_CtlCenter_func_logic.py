@@ -101,19 +101,19 @@ def AppendTableHistory(table:str):
   node_CtlCenter_globals.table_history.append(table)
     
 def GetEPCDict(key1, key2):
-  return df_to_dict(node_CtlCenter_globals.dfEPCTotal, key1, key2)
+  return df_to_dict(node_CtlCenter_globals.dfNodeInfo, key1, key2)
 
 def GetEPC_Pos_Info(epcValue):
   #lastEPC = get_last_field_value(node_CtlCenter_globals.dfEPCTotal, MAPFIELD.EPC.name)
-  print(node_CtlCenter_globals.dfEPCTotal)
-  result_dict = node_CtlCenter_globals.dfEPCTotal[node_CtlCenter_globals.dfEPCTotal[MAPFIELD.EPC.name]==str(epcValue)].tail(1).to_dict(orient='records')
+  print(node_CtlCenter_globals.dfNodeInfo)
+  result_dict = node_CtlCenter_globals.dfNodeInfo[node_CtlCenter_globals.dfNodeInfo[MAPFIELD.EPC.name]==str(epcValue)].tail(1).to_dict(orient='records')
   if len(result_dict) == 0:
     return {}
   else:
     return result_dict[0]
 
 def UpdateEPC_Pos_Info(dicEPC):
-  insert_or_update_row_to_df(node_CtlCenter_globals.dfEPCTotal, dicEPC, MonitoringField.CUR_POS.name)
+  insert_or_update_row_to_df(node_CtlCenter_globals.dfNodeInfo, dicEPC, MonitoringField.CUR_POS.name)
 
 def GetEPCInfo(epcValue): #당분간 사용 안함
   if node_CtlCenter_globals.dfEPCInfo.empty:
@@ -503,7 +503,7 @@ def IsOrderEmpty():
     dicTask = GetTaskChainHead(APIBLB_FIELDS_TASK.taskrunok.name, 1, False)
     condition_B =len(dicTask)
   if condition_A == 0 and  condition_B== 0 and condition_C == 0:
-    TTSAndroid('작업이 없습니다.')
+    #TTSAndroid('작업이 없습니다.')
     return True
   return False
 
