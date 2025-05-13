@@ -83,6 +83,27 @@ machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_cs
 def getDateTime():
   return datetime.now()
 
+def estimate_backlash_error(current_distance, full_distance=7259818, full_error=89000):
+    """
+    선형 보간법을 통해 현재 이동 거리에서의 예상 오차를 계산합니다.
+    
+    Parameters:
+    - current_distance: 현재 이동 거리 (정방향 이동한 거리)
+    - full_distance: 전체 이동 거리 (기준 거리)
+    - full_error: 전체 거리에서 발생한 오차 (기준 오차)
+    
+    Returns:
+    - 예상 오차 (float)
+    """
+    error = (current_distance / full_distance) * full_error
+    return round(error)
+
+# # 예시
+# distance = 3000000  # 현재 이동 거리
+# estimated_error = estimate_backlash_error(distance)
+
+# print(f"{distance} 펄스 이동 시 예상 오차는 약 {estimated_error:.2f} 펄스입니다.")
+
 def GetResultMessageFromJsonStr(data_str):
     try:
         data = json.loads(data_str)

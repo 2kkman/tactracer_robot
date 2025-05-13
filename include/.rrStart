@@ -14,7 +14,8 @@ if [[ "$HOSTNAME" == *"ITX"* ]]; then
     iwconfig wlp2s0 power off
     roslaunch tta_blb BLB_start_itx.launch rviz:=false &
     /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
-    cd "$SCR_DIR" && ./videoplay.sh
+    cd "$SCR_DIR" && ./slideshow.sh /root/Downloads/slide/ 5 &
+    #cd "$SCR_DIR" && ./videoplay.sh
 
 else
     echo "⚠️ Hostname does NOT contain 'ITX' → 일부만 실행"

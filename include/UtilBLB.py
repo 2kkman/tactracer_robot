@@ -509,6 +509,7 @@ class EndPoints(Enum):
     control = auto()  # KEEP_ALIVE 메세지 발행 토픽
     ARD = auto()  # 아두이노 제어
     CONTROL = auto()  # 테이블 탐색 정보 저장
+    MANAGEMENT_SBC = auto()  # PC 제어
 
 class JogControl(Enum):
     CONTROL_3ARMS = auto()  #서빙텔레+밸런싱암2개 3축 제어
@@ -1948,6 +1949,9 @@ class ModbusID(Enum):
             if member.value == value:
                 return member
         raise ValueError(f"No member found for value: {value}")
+
+key_motorH = str(ModbusID.MOTOR_H.value)
+key_motorMainRotate = str(ModbusID.ROTATE_MAIN_540.value)
 
 class RackID(Enum):
     R1 = 0
@@ -5833,7 +5837,7 @@ def CheckMotorCmdValid(listDF,dictPos):
     #현재 모터 위치 정보와 커맨드를 비교해서 이동거리가 1000 미만인 것들은 제거한다.
     listReturnBackup = []
     listReturnBackup.extend(listDF)
-    lsRemoveIndexes = []    
+    lsRemoveIndexes = []
     for dictTmp in listDF:
         if dictTmp[MotorWMOVEParams.CMD.name] == MotorCmdField.WMOVE.name:
             iPos = int(dictTmp[MotorWMOVEParams.POS.name])

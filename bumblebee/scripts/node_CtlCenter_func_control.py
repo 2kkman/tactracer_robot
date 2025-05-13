@@ -246,10 +246,10 @@ def getMainRotateDicByNode(endNode):
     diff_abs = abs(diff_signed)
     #pot_cur540,not_cur540,cmdpos540,cur_pos540 =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
     # 목표지점까지 거리가 40만 펄스 이내이고 현재 각도가 0도 혹은 180 도면 현재 메인회전 각도 그대로 리턴을 한다.
-    if curAngle540%180 == 0 and diff_abs < MOVE_H_SAMPLE_PULSE / 3:
+    if curAngle540%180 == 0 and diff_abs < (MOVE_H_SAMPLE_PULSE / 3):
         target_angle = curAngle540
     # 목표까지 정방향이면 0도, 역방향이면 180도
-    elif diff_abs > 0:
+    elif diff_signed > 0:
         target_angle = 0
     else:
         target_angle = 180
@@ -1359,8 +1359,6 @@ def SetPauseState():
             return pd.DataFrame(), APIBLB_ACTION_REPLY.R103
             
         SetWaitConfirmFlag(True,AlarmCodeList.JOB_PAUSE)
-        key_motorH = str(ModbusID.MOTOR_H.value)
-        key_motorMainRotate = str(ModbusID.ROTATE_MAIN_540.value)
         #curTargetTable=GetTableTarget()
         dfReceived = GetDF()
         lsCurrentRow = []

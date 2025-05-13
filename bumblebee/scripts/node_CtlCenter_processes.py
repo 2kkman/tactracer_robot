@@ -671,7 +671,10 @@ def MotorBalanceControlEx(bSkip):
                             diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
                             diffx_meter = ConvertArucoSizeToReal(diffX)
                             diffy_meter = ConvertArucoSizeToReal(diffY)    
-                            newX = curX + diffx_meter
+                            if curAngle_540 < 180:
+                                newX = curX + diffx_meter
+                            else:
+                                newX = curX - diffx_meter
                             newY = curY + diffy_meter
                             rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
                             distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
@@ -738,7 +741,10 @@ def MotorBalanceControlEx(bSkip):
                             diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
                             diffx_meter = ConvertArucoSizeToReal(diffX)
                             diffy_meter = ConvertArucoSizeToReal(diffY)    
-                            newX = curX + diffx_meter
+                            if curAngle_540 < 180:
+                                newX = curX + diffx_meter
+                            else:
+                                newX = curX - diffx_meter
                             newY = curY + diffy_meter
                             rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
                             distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)

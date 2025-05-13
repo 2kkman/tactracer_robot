@@ -220,7 +220,8 @@ alias 88='vi '$full_path    #start_common_scr.sh 수정 88
 alias 77='vi /etc/samba/smb.conf';service smbd restart  #삼바SMB 설정 수정 77
 alias 99='vi /etc/udev/rules.d/99-usb-serial.rules' #usb rule 수정 99
 alias cls='clear'
-alias vv='cd "$SCR_DIR" && ./videoplay.sh'
+alias ss='cd "$SCR_DIR" && ./slideshow.sh /root/Downloads/slide 5'
+alias kss='cd "$SCR_DIR" && ./kill_slideshow.sh'
 alias vs='cd "$SCR_DIR" && ./videostop.sh'
 alias rsd='cd "$SCR_DIR" && ./reset_sd.sh'
 alias rsse='cd "$SCR_DIR" && ./reset_sse.sh 6001 9000 9001 6000'
@@ -232,7 +233,10 @@ alias kse='cd "$SCR_DIR" && ./kill_sse.sh 6001'
 alias rblb='cd "$SCR_DIR" && ./reset_blbsvr.sh 9000'
 alias kblb='cd "$SCR_DIR" && ./kill_sse.sh 9000'
 
-alias rrfid='cd "$SCR_DIR" && ./reset_rfid.sh 6000'
+alias vr='cd "$SCR_DIR" && ./record_mjpeg.sh start https://172.30.1.8:6001/cam /root/Downloads'
+alias kvr='cd "$SCR_DIR" && ./record_mjpeg.sh stop'
+
+alias rrfid='cd "$SCR_DIR" && ./record_mjpeg.sh 6000'
 alias krfid='cd "$SCR_DIR" && ./kill_sse.sh 6000'
 alias kmb='cd "$SCR_DIR" && ./kill_mb.sh'
 alias rmb='cd "$SCR_DIR" && ./reset_modbus.sh'
