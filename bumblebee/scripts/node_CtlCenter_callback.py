@@ -395,7 +395,11 @@ def callbackAck(data,topic_name='' ):
                             rospy.loginfo(f"dfReceived not found")
                             #추후 중량값 들어오고 있는 셀로 고치자.
                             #if not isScanOn:
-                            DoorOpen(0)
+                            currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+                            if currentWeight1 > 100:
+                                DoorOpen(0)
+                            elif currentWeight2 > 100:
+                                DoorOpen(1)
                             #LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
                         else:
                             SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])

@@ -26,6 +26,7 @@ class ALM_User(Enum):
     SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
     CMD_INTERVAL_DUPLICATED = "54023: MotorCmd duplicated."
     ALREADY_FINISHED_CMD_POS = "54022: Motor Pos is already on the position"
+    CALI_ALREADY_DONE = "50402: Motor calibration already done"
     ABNORMAL_CMD_DATA2 = "54028: Motor command format must be array"
     TRAY_WEIGHT_LIMIT = "54021: Too much load in the tray"
     ROBOT_JUST_INITIALIZED = "52010: BLB is now just started."
@@ -44,7 +45,6 @@ class ALM_User(Enum):
     INTERNAL_EXCEPTION = "52097: err : "
     
 class ALM_Fatal(Enum):
-    BATTERY_TEMPERATURE_TOO_HIGH = "50402: temperature of battery is too high"
     RESOURCE_EXHAUSTION = "50001: resource exhaustion"
     SW_ERROR = "50002: sw error"
     MAP_PARSE_ERROR = "50100: map parse error"

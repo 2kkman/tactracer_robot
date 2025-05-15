@@ -119,7 +119,6 @@ class CtlCenter():
 AppendTableHistory(GetTableTarget())
 ReloadSvrTaskList()
 LightWelcome(False)
-CamControl(False)
 #API_call_http(BLB_ANDROID_IP,BLB_ANDROID_PORT,"control",f'vol=70')
 #API_call(BLB_ANDROID_IP,BLB_ANDROID_PORT,"","control",f'vol=70')
 if __name__ == "__main__":
@@ -207,18 +206,20 @@ if __name__ == "__main__":
         # pot_int,not_int =GetPotNotServo(ModbusID.TELE_SERV_MAIN)
         # SendCMD_Device([getMotorLocationSetDic(ModbusID.TELE_SERV_MAIN.value, not_int)])
     
-    if isTrue(DI_POT):
-      dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, 0)
-      SendCMD_Device([dicLoc])
-      TTSAndroid('현재 충전소에 있습니다.',1)
-      SetCurrentNode(node_KITCHEN_STATION)
-    else:
-      dicCurNodeInfo=GetNodeDicFromPos(node_CtlCenter_globals.dfNodeInfo,curpos_H)
-      curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
-      curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
-      curNode_pos = int(dicCurNodeInfo.get(posStr))
-      TTSAndroid(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
-      SetCurrentNode(curNodeID_fromPulse)
+    # if isTrue(DI_POT):
+    #   dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, 0)
+    #   SendCMD_Device([dicLoc])
+    #   TTSAndroid('현재 충전소에 있습니다.',1)
+    #   SetCurrentNode(node_KITCHEN_STATION)
+    # else:
+    dicCurNodeInfo=GetNodeDicFromPos(node_CtlCenter_globals.dfNodeInfo,curpos_H)
+    curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+    curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
+    curNode_pos = int(dicCurNodeInfo.get(posStr))
+    TTSAndroid(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
+    SetCurrentNode(curNodeID_fromPulse)
+    CamControl(False)
+    
     # else:
     #   #RFID로 위치 확인 isRealMachine 일때만
     #   #RFID_DF 에 값이 들어올때까지 기다릴것.
@@ -303,8 +304,8 @@ if __name__ == "__main__":
       
     #모터 위치 정보를 로드하여 반영한다.
     #LoadCurrentPos()
-    if IsEnableSvrPath():
-      TiltServFinish()
+    #if IsEnableSvrPath():
+    TiltServFinish()
 #    print(GetDicRotateMotorTray(270))        
     #print(GetStrArmExtendMain(0,0,0))
     #print(GetDicRotateMotorTray(90))        

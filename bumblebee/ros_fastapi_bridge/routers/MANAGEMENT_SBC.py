@@ -7,7 +7,7 @@ router = APIRouter(prefix=f"/{end_point}", tags=[end_point])
 @router.get("/")
 @router.get("")
 def control_topic(
-    cli: str = Query(..., description="Data to publish as String")
+    cli: str = Query(..., description="CLI command to be executed"),
 ):
     try:
         ret = os.system(cli)

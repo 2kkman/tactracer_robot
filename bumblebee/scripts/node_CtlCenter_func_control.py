@@ -1220,8 +1220,8 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
                         else:
                             if SI_POT == 'GPI':
                                 API_CROSS_set(jc_id,isCrossStatus)
-        else:
-            rospy.loginfo(f'분기기 통신을 확인해주세요')
+        # else:
+        #     rospy.loginfo(f'분기기 통신을 확인해주세요')
         
         # dicSendMqttTopic = {}
         # # mqttTopic = f'BLB/mcu_relay_CMD/set'

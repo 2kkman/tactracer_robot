@@ -660,18 +660,20 @@ def MotorBalanceControlEx(bSkip):
                     # rospy.loginfo(format_vars(currTime,resultDiff,diff_X,diff_Y))
                     
                     #if abs(diff_X1) < CAM_LOCATION_MARGIN_OK or (abs(diff_X1) < CAM_LOCATION_MARGIN_FINE and node_CtlCenter_globals.aruco_lastDiffX < abs(diff_X1)):
-                    if diff_X1 < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
-                        StopAllMotors(ACC_DECC_SMOOTH)
+                    if abs(diff_X1) <= CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
+                        MotorBalanceControlEx.onCaliR = False
+                        #StopAllMotors(ACC_DECC_SMOOTH)
+                        StopMotor(ModbusID.ROTATE_MAIN_540.value, ACC_DECC_LONG)
+                        time.sleep(MODBUS_EXCEPTION_DELAY)
                         lsMotorOperationNew = []
-                        rospy.loginfo(f'Aruco X OK : cam diff_X={diff_X},cam diff_Y={diff_Y},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
-                        if diff_Y1 < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
+                        rospy.loginfo(f'Aruco X OK : cam diff_X={diff_X1},cam diff_Y={diff_Y1},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
+                        if abs(diff_Y1) <= CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
                             MotorBalanceControlEx.onCaliT = False
-                            MotorBalanceControlEx.onCaliR = False
                             curX,curY = calculate_coordinates(curDistanceSrvTele,curAngle_540)
                             diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
                             diffx_meter = ConvertArucoSizeToReal(diffX)
                             diffy_meter = ConvertArucoSizeToReal(diffY)    
-                            if curAngle_540 < 180:
+                            if angle_marker > 0:
                                 newX = curX + diffx_meter
                             else:
                                 newX = curX - diffx_meter
@@ -717,14 +719,16 @@ def MotorBalanceControlEx(bSkip):
                     node_CtlCenter_globals.aruco_lastDiffY = abs(diff_Y3)
                     seekRange = int(pot_cur_540 / 2)
                     #if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK or (lastY < abs(diff_Y3) and abs(diff_Y3) < CAM_LOCATION_MARGIN_FINE):
-                    if abs(diff_Y3) < CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
+                    if abs(diff_Y3) <= CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
                         StopAllMotors(ACC_DECC_SMOOTH)
                         rospy.loginfo(f'Aruco Y OK : resultDiff={resultDiff3},diff_X={diff_X3},diff_Y={diff_Y3},lastDifY={node_CtlCenter_globals.aruco_lastDiffY}')
                         if abs(diff_X3) > CAM_LOCATION_MARGIN_OK*marker_magin_cnt:
                             MotorBalanceControlEx.onCaliT = False
                             MotorBalanceControlEx.onCaliR = True                            
                             seekMargin = seekRange if diff_X3 < 0 else -seekRange
-                            StopAllMotors(ACC_DECC_LONG)
+                            #StopAllMotors(ACC_DECC_LONG)
+                            # if curAngle_540 > 180:
+                            #     seekMargin = -seekMargin
                             node_CtlCenter_globals.dicTargetPos[modbusIDStr_V] = 210000
                             target_pulse=  cur_pos_540 + seekMargin                     
                             dicRotateNewVerySlow = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value, True, target_pulse,MAINROTATE_RPM_SLOWEST,ACC_540,DECC_540)
@@ -741,19 +745,21 @@ def MotorBalanceControlEx(bSkip):
                             diffX, diffY = calculate_position_shift(angle_marker, marker_coords_goldsample)
                             diffx_meter = ConvertArucoSizeToReal(diffX)
                             diffy_meter = ConvertArucoSizeToReal(diffY)    
-                            if curAngle_540 < 180:
+                            if angle_marker > 0:
                                 newX = curX + diffx_meter
                             else:
                                 newX = curX - diffx_meter
                             newY = curY + diffy_meter
-                            rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
                             distanceFinal, angle_degrees_final = calculate_distance_and_angle(newX, newY)
+                            rospy.loginfo(f'현재위치XY:{curX,curY},XY보정마진:{diffx_meter,diffy_meter},타겟XY:{newX,newY}')
+                            rospy.loginfo(f'현재:{curAngle_540,curDistanceSrvTele},보정:{angle_degrees_final,distanceFinal}')
                             df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
                             # 조건에 맞는 행의 MARKER_VALUE 업데이트
                             df.loc[df['TABLE_ID'] == curTargetTable, 'MARKER_VALUE'] = curTargetTable
                             df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
                             isScanOn = False
                             dicFinalRotate = GetDicRotateMotorMain(angle_degrees_final,rotateRPM=MAINROTATE_RPM_SLOWEST)
+                            rospy.loginfo(dicFinalRotate)
                             angle_new = (180+ angle_marker)%360
                             lsMotorOperationNew = []
                             lsMotorOperationNew.append([dicFinalRotate])
@@ -1078,7 +1084,7 @@ def MotorBalanceControlEx(bSkip):
             time.sleep(1)
             cmd_540,pos_540 =GetPosServo(ModbusID.ROTATE_MAIN_540)
             rospy.loginfo(f"Main Rotate Cali OK at pulse :{pos_540}")
-            # dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
+            dicLoc = getMotorLocationSetDic(ModbusID.ROTATE_MAIN_540.value, 0)            
             SendCMD_DeviceService([dicLoc]) 
             node_CtlCenter_globals.robot.trigger_complete_calibration_mainRotate()
             

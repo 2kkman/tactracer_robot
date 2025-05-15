@@ -9,7 +9,7 @@ from std_msgs.msg import String
 from enum import Enum, auto
 from UtilBLB import *
 from flask_cors import CORS
-
+diff_roundPulse = round(roundPulse/2)
 # dicPOTNOT_ON = getMotorDefaultDic(ModbusID.MOTOR_H.value,True)
 # dicPOTNOT_OFF = getMotorDefaultDic(ModbusID.MOTOR_H.value,False)
 dicWE_ON = getMotorWE_ONDic()
@@ -35,6 +35,7 @@ pub_motorPos = rospy.Publisher(TopicName.MOTOR_POS.name, String, queue_size=1)
 pub_alarmstatus = rospy.Publisher(TopicName.ALARM_STATUS.name, String, queue_size=1)
 pub_BLB_CMD = rospy.Publisher(TopicName.BLB_CMD.name, String, queue_size=1)
 pub_BLB_CROSS = rospy.Publisher(TopicName.CROSS_INFO.name, String, queue_size=1)
+pub_BLB_POS = rospy.Publisher(TopicName.POSITION_INFO.name, String, queue_size=1)
 pub_SMARTPLUG = rospy.Publisher(TopicName.SMARTPLUG_INFO.name, String, queue_size=1)
 pub_RECEIVE_MQTT = rospy.Publisher(TopicName.RECEIVE_MQTT.name, String, queue_size=1)
 #pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
@@ -69,7 +70,7 @@ dicAllFold = [getMotorMoveDic(ModbusID.BAL_ARM2.value, True, 0, 1150,750,250),
                 getMotorMoveDic(ModbusID.BAL_ARM1.value, True, 0, 1500,250,250),
                 getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 0, 253,150,2500)]
 
-dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, 200, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
+dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
 dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
         
 dicArmExpand = dicAllExpand[:-1]
@@ -444,7 +445,7 @@ def CheckSafetyMotorMove(listReturnTmp):
         target_pos31 = try_parse_int(dic31.get(posStr),MIN_INT)
         target_angle360=GetRotateTrayAngleFromPulse(target_pos31)
         
-        if pos_ServArm < roundPulse*10 and target_angle360 != cur_angle360:
+        if pos_ServArm < roundPulse*6 and target_angle360 != cur_angle360:
             bSafety = False
             strCheckResult = ALM_User.TRAY360_SAFETY.value
     if len(ls15) > 0:
@@ -734,12 +735,17 @@ def callbackACK(recvData):
                 bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
                 rospy.loginfo(f'Cali {mbid_tmp} Result:{bSafetyCheck},{strMsg}')
             #POT 예정 펄스보다 5바퀴 이상 차이나면 모든 모터를 중지하고 알람을 날린다
-            elif mbid_instance in lsReleaseMotors:
+            elif mbid_instance in lsReleaseMotors and not onScaning():
                 if isTrue(isPot) or isTrue(isNot):
                     diffPos = abs(last_targeted_pos - stopped_pos)
                     if diffPos > roundPulse*5:
                         SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',True)
                         rospy.loginfo(f'ESTOP triggered at {mbid_tmp} too much diff pos {diffPos}')
+            elif is_equal(mbid_tmp,ModbusID.ROTATE_MAIN_540.value) or is_equal(mbid_tmp,ModbusID.ROTATE_SERVE_360.value):
+                if isTrue(isHome):
+                    dicLoc = getMotorHomeDic(mbid_tmp)
+                    SendCMD_Device([getMotorWHOME_OFFDic(mbid_tmp),dicLoc])                
+                return
         
         if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
             return
@@ -910,6 +916,49 @@ def callbackMB_11(recvDataMap):
         rospy.loginfo(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
+# def callbackMB_Rotate(recvDataMap):
+#     global lastNode
+#     global lastPos
+#     global endPos
+#     global endnode
+#     global isScan
+#     global dicLastMotor11
+#     global dicPulsePos  #도그 신호가 들어올때 엔코더 값을 기록해두고 보정수치로 쓴다
+#     dicLastMotor11.update(recvDataMap)
+#     try:
+#         isST_CMD_FINISH = recvDataMap.get(sST_CMD_FINISH)
+#         if not isTrue(isST_CMD_FINISH):
+#             return
+        
+#         sSPD_signed = (recvDataMap.get(sSPD_Key))
+#         target_pos = (recvDataMap.get(sLAST_TARGET_POS))
+#         if sSPD_signed is None:
+#             return
+#         if target_pos is None:
+#             return
+#         sSPD_signed = int(sSPD_signed)
+#         target_pos = int(target_pos)
+#         #isCrossRailRunOK = isCrossRailDirection()
+#         #sSPD_abs = abs(sSPD_signed)
+#         sPOS = int(recvDataMap.get(sPOS_Key))
+#         di_pot_status = isTrue(recvDataMap.get(sDI_POT,""))
+        
+#         # sSPD_abs = abs(sSPD_signed)
+#         # sPOS = try_parse_int(recvDataMap.get(sPOS_Key))
+#         # si_pot = recvDataMap.get(sSI_POT,"")
+#         # di_pot_status = recvDataMap.get(sDI_POT,"")
+#         # last_started_pos = try_parse_int(recvDataMap.get(MonitoringField.LAST_STARTED_POS.name))        
+#         if sSPD_signed < 0 and callbackMB_11.last_target_mm > 100:
+#             tof_distance=GetTofDistance()
+#             if is_between(callbackMB_11.last_target_mm-10,callbackMB_11.last_target_mm+20,tof_distance):
+#                 rospy.loginfo(f'Stop at TOF : {tof_distance}, Target = {callbackMB_11.last_target_mm}')
+#                 StopMotor(lsReleaseMotors,EMERGENCY_DECC)
+#                 callbackMB_11.last_target_mm = -1
+#     except Exception as e:
+#         message = traceback.format_exc()
+#         rospy.loginfo(message)
+#         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
+
 
 def callbackMB_15(recvDataMap):
     global lastNode
@@ -936,7 +985,7 @@ def callbackMB_15(recvDataMap):
         sSPD_signed = int(sSPD_signed)
         target_pos = int(target_pos)
         #isCrossRailRunOK = isCrossRailDirection()
-        #sSPD_abs = abs(sSPD_signed)
+        sSPD_abs = abs(sSPD_signed)
         sPOS = int(recvDataMap.get(sPOS_Key))
         di_pot_status = isTrue(recvDataMap.get(sDI_POT,""))
         last_started_pos = int(recvDataMap.get(MonitoringField.LAST_STARTED_POS.name))
@@ -952,7 +1001,38 @@ def callbackMB_15(recvDataMap):
                     endPos = sPOS + (sSPD_signed * 5)    # - (sSPD_signed * 20) 
                 # sLogMsg = f'도그위치:{sPOS},시작위치:{last_started_pos},목표위치:{target_pos},속도:{sSPD_signed}'
                 # rospy.loginfo(sLogMsg)
-        if abs(target_pos - sPOS) > roundPulse * 50:
+            else:
+                dicCurNodeInfo=GetNodeDicFromPos(dfNodeInfo,sPOS,di_pot_status)
+                if not dicCurNodeInfo:
+                    return
+                endnode_pos = int(recvDataMap.get(MonitoringField.LAST_TARGET_POS.name))
+                dicEndNodeInfo=GetNodeDicFromPos(dfNodeInfo,endnode_pos)
+                endNodeID_fromPulse = dicEndNodeInfo.get(TableInfo.NODE_ID.name)
+                curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+                rospy.loginfo(dicCurNodeInfo)        
+                #rospy.loginfo(sLogMsg)        
+                
+                if endNodeID_fromPulse == curNodeID_fromPulse:
+                    return
+                curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
+                #curNode_pos = int(dicCurNodeInfo.get(posStr))
+                lastNode = curNodeID_fromPulse
+                
+                dicSpdControl = {}
+                if curNode_type.find(RailNodeInfo.R_END.name) >= 0:
+                    if sSPD_signed > 0 and sSPD_abs > 100:
+                        dicSpdControl.update(dicSpdFast)
+                    if sSPD_signed < 0 and sSPD_abs > 100:
+                        dicSpdControl.update(dicSpdSlow)
+                elif curNode_type.find(RailNodeInfo.R_START.name) >= 0:
+                    if sSPD_signed < 0:
+                        dicSpdControl.update(dicSpdFast)
+                    else:
+                        dicSpdControl.update(dicSpdSlow)                
+                if dicSpdControl:
+                    SendCMD_Device([dicSpdControl])
+
+        if abs(target_pos - sPOS) > roundPulse * 10:
             return
         
         si_pot = recvDataMap.get(sSI_POT,"")
@@ -1237,6 +1317,9 @@ def callback_factory(topic_name):
             
             if topic_name == topicName_ServArm:
                 callbackMB_11(recvDataMap)
+
+            # if topic_name == topicName_RotateMain or topic_name == topicName_RotateTray:
+            #     callbackMB_Rotate(recvDataMap)
             
             if topic_name == TopicName.ACK.name:
                 if lastAck != recvData:
@@ -1316,6 +1399,7 @@ def control_data():
                 #dic_newNodeInfo['tableid'] = topic_name.upper()
                 curnode = GetCurrentNode()
                 dic_newNodeInfo2 = {TableInfo.TABLE_ID.name: table_id_add.upper(), **dic_newNodeInfo}
+                rospy.loginfo(dic_newNodeInfo2)
                 add_or_update_row(csvPathNodes,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
                 new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCutTemp)
                 generate_table_info(new_csv_node,strFileTableNode)
@@ -1411,6 +1495,26 @@ def service_cross():
         now = time.time()
         loaded_data=immutable_multi_dict_to_dict(request.args)
         data_out = json.dumps(loaded_data)
+        pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+        dic_tof = shared_data.get(topicName_TOF,{})
+        
+        lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
+        distance_tof = dic_tof.get(SeqMapField.DISTANCE.name,-1)
+        cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+        cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+        cur_pos_mm = pulseH_to_distance(pos_MotorH)
+        currentAngle_arm1 =round(mapRange(pos_BAL1,0,pot_arm1,0,90))
+        di_pot = dicLastMotor15.get(sDI_POT)
+        dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))        
+        dicPostion['di_pot']=di_pot
+        dicPostion['cur_angle540']=cur_angle540
+        dicPostion['cur_angle360']=cur_angle360
+        dicPostion['cur_pos_mm']=cur_pos_mm
+        dicPostion['distance_tof']=distance_tof
+        dicPostion['currentAngle_arm1']=currentAngle_arm1
+        data_out2 = json.dumps(dicPostion)
+        pub_BLB_POS.publish(data_out2)
+
         pub_BLB_CROSS.publish(data_out)
         cur_pos =  loaded_data.get(MonitoringField.CUR_POS.name, None)
         isPOT = loaded_data.get(MonitoringField.DI_POT.name, None)
@@ -1632,17 +1736,31 @@ def service_cmd_device():
             return {bResult:bExecuteMsg}, 200
         if control360 != MIN_INT:
             cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+            spd360 = SPD_360
             if control360 == cur_angle360:
                 return {bResult:bExecuteMsg}, 200            
-            targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
-            dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,SPD_360,ACC_360_UP,DECC_360_UP)
+            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
+            if control360 >=0:
+                targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
+                diff_serv = (targetPulse_serv - pos_360)
+                if control360 == 0:
+                    if diff_serv > 0:
+                        targetPulse_serv += diff_roundPulse
+                    else:
+                        targetPulse_serv -= diff_roundPulse
+            else:
+                if isTrue(di_home):
+                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200
+                targetPulse_serv = pos_360 - pot_360
+                spd360=DEFAULT_RPM_SLOW
+            dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,ACC_360_UP,DECC_360_UP)
             #print(dic540)
             lsCmd = [dic360]
-            # di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
-            # if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
-            #     lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
-            # elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
-            #     lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
+            
+            if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
+                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
+            elif control360 < 0 or (control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
+                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
@@ -1650,17 +1768,30 @@ def service_cmd_device():
         
         elif control540 != MIN_INT:            
             cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+            spd540=SPD_540
             if control540 == cur_angle540:
                 return {bResult:bExecuteMsg}, 200
-            targetPulse_serv = GetRotateMainPulseFromAngle(control540)
-            dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,SPD_540,ACC_540,DECC_540)
+            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
+            if control540 >=0:
+                targetPulse_serv = GetRotateMainPulseFromAngle(control540)
+                diff_serv = (targetPulse_serv - pos_540)
+                if control540 == 0:
+                    if diff_serv > 0:
+                        targetPulse_serv += diff_roundPulse
+                    else:
+                        targetPulse_serv -= diff_roundPulse
+            else:
+                if isTrue(di_home):
+                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200                
+                targetPulse_serv = pos_540 - pot_540
+                spd540=60
+            dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,spd540,ACC_540,DECC_540)
             #print(dic540)
             lsCmd = [dic540]
-            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
-            # if si_home == BLD_PROFILE_CMD.ESTOP.name:
-            #     lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
-            # elif control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name:
-            #     lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
+            if si_home == BLD_PROFILE_CMD.ESTOP.name:
+                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
+            elif control540 < 0 or (control540 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
+                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
@@ -1751,7 +1882,7 @@ def service_cmd_device():
                 #return {"message": f"{request.method},{qNumber}"}, 200
                 return {f"{reqargs}": dicMotorPos}, 200
             elif qNumber == BLD_PROFILE_CMD.ALM_C.value:
-                SendAlarmClear(f'T{ACC_DECC_SMOOTH}')    
+                SendAlarmClear(f'T{ACC_DECC_SMOOTH}')
                 return {f"{reqargs}": dicMotorPos}, 200
             elif qNumber == BLD_PROFILE_CMD.balLiftDown.value:
                 listReturn.append(dicDownV)

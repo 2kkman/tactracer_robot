@@ -571,6 +571,7 @@ class TopicName(Enum):
     SMARTPLUG_INFO = auto()
     LIDAR_OBSTACLE = auto
     LIDAR_CROPPED = auto()
+    POSITION_INFO = auto()
 
 class SMARTPLUG_INFO(Enum):
     GPI1_CHARGE = auto()
@@ -2257,7 +2258,8 @@ class MonitorROS(Enum):
     ros_start_time = auto()
 
 class CameraMode(Enum):
-    WIDE_LOW = 'camid=2,640,480'
+    #WIDE_LOW = 'camid=2,640,480'
+    WIDE_LOW = 'camid=2,1024,768'
     WIDE_FHD = 'camid=2,1280,960'
     WIDE_HIGH = 'camid=2,1920,1440'
     MAIN_LOW = 'camid=0,640,480'
@@ -5882,3 +5884,40 @@ print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
 # filtered = df[(df['NODE_ID'] == 2) & (df['MARKER_VALUE'] < 0)]
 # lsDictNotScaned = filtered.to_dict(orient='records')
 # print(lsDictNotScaned)
+
+def generate_graph_from_position_csv(csv_path: str, save_path: str):
+    # CSV 불러오기
+    df = pd.read_csv(csv_path, sep='\t')
+    
+    # NODE_ID 3 이하 제거
+    df = df[df["NODE_ID"] > 3]
+
+    # POS 기준 정렬
+    df = df.sort_values("POS").reset_index(drop=True)
+
+    # 결과 리스트
+    graph = []
+
+    for i in range(len(df) - 1):
+        node1 = df.loc[i, "NODE_ID"]
+        pos1 = df.loc[i, "POS"]
+
+        node2 = df.loc[i + 1, "NODE_ID"]
+        pos2 = df.loc[i + 1, "POS"]
+
+        delta_pulse = abs(pos2 - pos1)
+        distance_mm = round(delta_pulse * 2820 / 1200000)
+
+        # 작은 POS를 갖는 노드가 먼저 오도록
+        if pos1 <= pos2:
+            graph.append(f"{node1}\t{node2}\t{distance_mm}")
+        else:
+            graph.append(f"{node2}\t{node1}\t{distance_mm}")
+
+    # 파일 저장
+    with open(save_path, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(graph))
+
+    print(f"노드 그래프를 '{save_path}' 경로에 저장했습니다.")
+
+generate_graph_from_position_csv(strFileEPC_total,strFileShortCut)

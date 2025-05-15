@@ -267,7 +267,7 @@ def RunListBlbMotorsEx(listBLB):
                     TiltArucoScan()
                     CamControl(True)
                     MotorBalanceControlEx.onCaliT = True
-                
+                    dicArray[MotorWMOVEParams.POS.name] = (pot_telesrv - roundPulse*10)
                 break
             # #테이블 탐색 모드에서는 속도 줄인다.
             # if iPOS > cur_pos_srv and (valuesInlist > 1) and (onScan or finalScan):
@@ -385,8 +385,8 @@ def RunListBlbMotorsEx(listBLB):
                         descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
                         bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
                         isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
-                    if imgPath is not None and angle_y is not None and isCoolTimePassed:
-                        save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
+                    # if imgPath is not None and angle_y is not None and isCoolTimePassed:
+                    #     save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
                     if isObstaclePresent:
                         return APIBLB_ACTION_REPLY.E111
 
@@ -432,10 +432,10 @@ def RunListBlbMotorsEx(listBLB):
                     TiltTableObstacleScan()
                 if CheckMotorOrderValid(dicArray):
                     #트레이 모터를 움직일때 현재 서빙부의 길이를 구한 후 200mm 이상이지 않으면 알람.
-                    if curDistanceSrvTele < 200 and isRealMachine:
-                        rospy.loginfo(dicArray)
-                        StopEmergency(ALM_User.TRAY360_SAFETY.value)
-                        return APIBLB_ACTION_REPLY.E102
+                    # if curDistanceSrvTele < 200 and isRealMachine:
+                    #     rospy.loginfo(dicArray)
+                    #     StopEmergency(ALM_User.TRAY360_SAFETY.value)
+                    #     return APIBLB_ACTION_REPLY.E102
                     #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
                     tray_angle = GetRotateTrayAngleFromPulse(iPOS)
                     if abs(tray_angle) > 0:
