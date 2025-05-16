@@ -2,6 +2,9 @@
 
 # 모든 Python3 프로세스 종료
 killall -9 python3
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+"$SCRIPT_DIR/kill_sse.sh" 6001 6002 9000
+pkill -f roslaunch
 
 # 현재 호스트이름 확인
 HOSTNAME=$(hostname)
@@ -13,13 +16,13 @@ if [[ "$HOSTNAME" == *"ITX"* ]]; then
     pulseaudio --start
     iwconfig wlp2s0 power off
     roslaunch tta_blb BLB_start_itx.launch rviz:=false &
-    /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
     cd "$SCR_DIR" && ./slideshow.sh /root/Downloads/slide/ 5 &
     #cd "$SCR_DIR" && ./videoplay.sh
 
 else
-    echo "⚠️ Hostname does NOT contain 'ITX' → 일부만 실행"
-    
+    echo "⚠️ Hostname does NOT contain 'ITX' → 일부만 실행"    
     roslaunch tta_blb BLB_start_itx.launch rviz:=false &
-    /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+    
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/ros_fastapi_bridge/main.py &    
 fi

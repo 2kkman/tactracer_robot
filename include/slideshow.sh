@@ -55,4 +55,8 @@ echo "각 이미지는 $INTERVAL초 동안 표시됩니다."
 # -D: 각 이미지 표시 시간 설정
 # --cycle-once: 한 번 순환 후 종료 (제거하면 반복)
 # --hide-pointer: 마우스 포인터 숨기기
+#!/bin/bash
+export DISPLAY=:0
+export XAUTHORITY=/root/.Xauthority
+xhost +SI:localuser:$(whoami)
 feh -F -Z -D "$INTERVAL" --auto-rotate --cycle --hide-pointer "${IMAGE_FILES[@]}"

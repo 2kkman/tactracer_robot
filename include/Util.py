@@ -2340,6 +2340,7 @@ def save_dict_to_csv(file_path: str, data: dict, limit : int):
             df = pd.concat([existing_df, df])
         except Exception as e:
             print(f"Error reading existing CSV file: {existing_df}")
+            log_all_frames(file_path)
     
     df = df.sort_values(by='timestamp')  # 오래된 순으로 정렬
     df = df.iloc[-limit:]  # 100개 초과 시 오래된 항목 삭제

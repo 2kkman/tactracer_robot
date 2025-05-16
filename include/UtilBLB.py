@@ -18,6 +18,7 @@ NODE_CROSS = 10
 NODES_SPECIAL = [NODE_KITCHEN,NODE_CROSS]
 
 HTTP_COMMON_PORT=6001
+HTTP_FASTAPI_PORT=6002
 WEIGHT_OCCUPIED = 200
 HOME_TABLE='H1'
 HOME_CHARGE='P1'
@@ -119,6 +120,7 @@ BLB_CHARGERPLUG_IP_DEFAULT=ip_dict[IPList.BLB_CHARGERPLUG_IP.name]
 BLB_CROSS_IP_DEFAULT=ip_dict[IPList.BLB_CROSS_IP.name]
 BLB_CROSSPLUG_IP_DEFAULT=ip_dict[IPList.BLB_CROSSPLUG_IP.name]
 BLB_LIGHTPLUG_IP_DEFAULT=ip_dict[IPList.BLB_LIGHTPLUG_IP.name]
+BLB_SLAVE_IP_DEFAULT='172.30.1.9'
 BLB_SVR_PORT_DEFAULT=4041
 
 WEIGHT_ISNOT_EMPTY = 100
@@ -5621,6 +5623,10 @@ def RFIDPwr(enable : int):
     if isRealMachine:
         if is_between(1000,2000,enable):
             bReturn,strResult = API_call_http(BLB_RFID_IP,HTTP_COMMON_PORT,"rfid",f'pwr={enable}')
+    return bReturn,strResult
+
+def API_ResetQBI():
+    bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,"MANAGEMENT_SBC",f'scr=.rrStartqbi')
     return bReturn,strResult
 
 def API_MoveH(POS,spd,endnode):

@@ -1350,6 +1350,8 @@ while not rospy.is_shutdown():
 
                   except Exception as e:
                       # exception_read_count += 3
+                      if dicMB_Exception_count.get(modbusID) is None:   
+                          dicMB_Exception_count[modbusID] = 0
                       dicMB_Exception_count[modbusID] += 3
                       #rospy.loginfo(traceback.format_exc()){addr:04X}
                       rospy.loginfo(f"{dicConfigTmp[modbusID]}:{poll_id}-{e} : Count:{dicMB_Exception_count[modbusID]}")
