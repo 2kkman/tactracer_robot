@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from node_CtlCenter_import import *
+start = time.time()
+
 bInitOK = False
 bReturn_CROSS = False
 #현재 위치한 노드ID
@@ -187,14 +189,13 @@ DefaultGndDistance = 0.56
 
 if not isRealMachine:
     BLB_ANDROID_IP = '172.30.1.22'
-
 if isFileExist(strFileDistanceArm):
     dfDistanceArm = pd.read_csv(strFileDistanceArm, delimiter=sDivTab)
 if isFileExist(strFileDistanceV):
     dfDistanceV = pd.read_csv(strFileDistanceV, delimiter=sDivEmart)
 if isFileExist(strFileAruco):
     dfAruco = pd.read_csv(strFileAruco, delimiter=sDivTab)
-
+print("DF loaded in", time.time() - start, "seconds")
 nodeStateOpen = [0, 1]  # 인덱스가 0,1 일때는 Open 상태, 2,3 일땐 Close
 
 def LoadMap():
@@ -275,7 +276,7 @@ def LoadMap():
     print(f"분기기:{numberOfCrossNodes}개, 총 노드수 {totalNodesCnt} : 모든노드 정보 : {totalNodes}")
     return graph, bgraphOK ,lsTotalMap,node_location,node_seq
 graph, bgraphOK ,lsTotalMap,node_location,node_seq = LoadMap()
-
+print("LoadMap in", time.time() - start, "seconds")
 #lsNoLiftDownNodes.extend(StateInfo.keys())
 #lsNoLiftDownNodes.extend([10])
 #lsNoLiftDownNodes.append(node_CHARGING_STATION)
@@ -304,6 +305,7 @@ lsNodeHistory = []
 spdMode = BLB_CMD_MODE.FAST
 node_id = 0
 position = Pose2D(x=0.0, y=0.0)
+print("position2d in", time.time() - start, "seconds")
 trajectory = []
 table_positions = []
 robot= Robot()
