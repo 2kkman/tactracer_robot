@@ -227,8 +227,8 @@ alias rsd='cd "$SCR_DIR" && ./reset_sd.sh'
 alias rsse='cd "$SCR_DIR" && ./reset_sse.sh 6001 9000 9001 6000'
 alias ksse='cd "$SCR_DIR" && ./kill_sse.sh 6001 9000 9001 6000'
 
-alias rse='cd "$SCR_DIR" && ./reset_sse.sh 6001'
-alias kse='cd "$SCR_DIR" && ./kill_sse.sh 6001'
+alias rse='cd "$SCR_DIR" && ./reset_sse.sh 6001 6002'
+alias kse='cd "$SCR_DIR" && ./kill_sse.sh 6001 6002'
 
 alias rblb='cd "$SCR_DIR" && ./reset_blbsvr.sh 9000'
 alias kblb='cd "$SCR_DIR" && ./kill_sse.sh 9000'

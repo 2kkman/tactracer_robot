@@ -10,5 +10,9 @@
 #
 #sleep 2
 #pulseaudio --start
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 iwconfig wlp2s0 power off
-roslaunch tta_blb BLB_start_qbi.launch rviz:=false
+"$SCRIPT_DIR/kill_sse.sh" 6002
+pkill -f roslaunch
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/ros_fastapi_bridge/main.py &
+roslaunch tta_blb BLB_start_qbi.launch rviz:=false &
