@@ -661,19 +661,15 @@ def RunListBlbMotorsEx(listBLB):
                     #     return APIBLB_ACTION_REPLY.E108
 
                 #최종 필터링 이후 추가해야할 동작 확인
-                if mbid == str(ModbusID.MOTOR_V.value):
+                if mbid == str(ModbusID.MOTOR_V.value):                    
                     if target_pulse ==0:    #상승시
-                        TiltTableObstacleScan()
+                        TiltServFinish()
                     else:#target_pulse != 0:   #하강시
                         #모니터 감지각으로 틸팅 변경
                         CamControl(False)
-                        TiltServFinish()
+                        TiltTableObstacleScan()
                         if int(curTargetNode) == node_KITCHEN_STATION:
                             SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
-                            # if abs(cur_posH) > roundPulse:
-                            #   dicLoc = getMotorHomeDic(ModbusID.MOTOR_H.value)
-                            #   SendCMD_Device([dicLoc])
-                            #SendAlarmHTTP(f'포지션을 0 으로 보정합니다:{cur_posH}',True,node_CtlCenter_globals.BLB_ANDROID_IP)
                             node_CtlCenter_globals.dicPOS_ABS.clear()
                         
                 node_CtlCenter_globals.dicTargetPos[mbid] = dicCtlTmp2[MotorWMOVEParams.POS.name]                        
@@ -688,11 +684,8 @@ def RunListBlbMotorsEx(listBLB):
             manager.remove_cmd(MotorWMOVEParams.SPD.name, str(DEFAULT_RPM_MIN))
             lsFinalCmdEx.clear()
             lsFinalCmdEx = manager.get_all_commands()
-            #추후 전개 전 트레이가 안착되어있는지 확인하는 세이프티 코드 추가할 것.
-            #compressed_output = json.dumps(lsFinalCmd, separators=(',', '\n'))
             dfLog = pd.DataFrame(lsFinalCmdEx)
             rospy.loginfo(f"Moving {len(lsFinalCmdEx)} motors,curTable:{curTargetTable},{dfLog}")
-
             lsNextCmd = []
             # print(node_CtlCenter_globals.listBLB)
             # lsFinalMbid = ""

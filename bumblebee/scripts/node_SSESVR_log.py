@@ -1484,9 +1484,9 @@ def service_dataExport():
   
     return (resultData), 200
 
+#임과장이 호출하는 엔드포인트. 받은 query_str 그대로 분기기 ESP32 에 포워딩.
 @app.route('/cross', methods=['GET'])
 def service_junction():
-    loaded_data=immutable_multi_dict_to_dict(request.args)
     query_str = request.query_string.decode('utf-8')
     bResult,strMsg = API_CROSS_CMD(query_str)
     return {bResult: strMsg}, 200  
@@ -1540,21 +1540,14 @@ def service_cross():
                 status = 1
             if cur_pos > 490000:
                 status = 0
-            # if isTrue(isNOT) or cur_pos < roundPulse:
-            #     status = 0
-            # if isTrue(isPOT) or cur_pos > 490000:
-            #     status = 1
             dicCross = {MQTT_FIELD.TOPIC.name : MQTT_TOPIC_VALUE.MSG_CROSS_REQUEST.value,MonitoringField.LASTSEEN.name:getCurrentTime(),
                         MQTT_FIELD.PAYLOAD.name : {devID : status}}
             data_out = json.dumps(dicCross)
             pub_RECEIVE_MQTT.publish(data_out)            
-            #TopicName.RECEIVE_MQTT.name
-        
     except Exception as e:
         logSSE_error(traceback.format_exc())
         rospy.logerr(f"데이터 처리 오류: {e}")
-        return GetErrResponse(e)
-  
+        return GetErrResponse(e)  
     return {"message": f"{request.method},{request.args}"}, 200  
 
 @app.route('/CHARGE', methods=['GET'])
@@ -2097,13 +2090,59 @@ def handle_connect():
                 socketio.emit(f"update_{topic_name}", data)
     except:
         pass
+    
+def publish_loop():
+    while True:
+        try:
+            args_dict = {
+                "RSSI": "-47",
+                "TIME_JC": "19:44:52",
+                "IP": "172.30.1.10",
+                "BUS_VOLTAGE": "240",
+                "DI_NA": "0",
+                "DI_07": "0",
+                "DI_06": "0",
+                "DI_HOME": "0",
+                "DI_ESTOP": "0",
+                "DI_NOT": "0",
+                "DI_POT": "0",
+                "DI_01": "1",
+                "CMD_SPD": "500",
+                "ST_NA": "0",
+                "ST_HOME_FINISH": "1",
+                "ST_PATH_FINISH": "1",
+                "ST_03": "0",
+                "ST_RUNNING": "0",
+                "ST_ENABLE": "1",
+                "ST_FAULTY": "0",
+                "ALM_CD": "0",
+                "CMD_POS": "501870",
+                "CUR_POS": "501865",
+                "CUR_SPD": "-1"
+            }
 
+            # 자기 자신에게 GET 요청 보내기
+            response = requests.get(f"http://localhost:{HTTP_COMMON_PORT}/CROSS", params=args_dict)
+            #print("CROSS response:", response.status_code, response.json())
+        except Exception as e:
+            print("Error calling /CROSS:", e)
+
+        time.sleep(2)
+
+#@app.before_first_request
+def start_background_thread():
+    if not isRealMachine:
+        thread = threading.Thread(target=publish_loop)
+        thread.daemon = True  # Flask 종료 시 함께 종료
+        thread.start()
+    
 if __name__ == "__main__":
     try:
         loaded_data2 = load_csv_to_dict(csvPathalarm, sort_ascending=False)
         #data_out2 = json.dumps(loaded_data2)
         shared_data[TopicName.HISTORY_ALARM.name] = loaded_data2
         threading.Thread(target=update_data, daemon=True).start()        
+        start_background_thread()
         socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True,allow_unsafe_werkzeug=True)
     except rospy.ROSInterruptException:
         pass

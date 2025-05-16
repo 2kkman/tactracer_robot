@@ -18,12 +18,16 @@ def is_command_allowed(cmd: str) -> bool:
 def control_topic(
     cli: Optional[str] = Query(None, description="CLI command 1"),
     scr: Optional[str] = Query(None, description="script cmd in execution"),
+    tts: Optional[str] = Query(None, description="Text to Speech"),
 ):
     ret = False
     rMsg=  AlarmCodeList.OK.name
     try:
         if cli:
             ret = os.system(cli)
+        elif tts:
+            ret = True
+            rMsg= tts_service.handle_tts(tts, True)
         elif scr:
             scr_dir = os.environ.get("SCR_DIR")
             if not scr_dir:

@@ -52,4 +52,5 @@ rosnode kill /ITX_and
 #     roslaunch tta_blb BLB_RFID_ESP32.launch &
 # fi
 /usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/ros_fastapi_bridge/main.py &
 roslaunch tta_blb BLB_ANDROID.launch &

@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 from UtilBLB import *
 import serial
-# import struct
-# import time
-# import rospy
-# from std_msgs.msg import String
-# import json
 
 # RS485 설정
 SERIAL_PORT = '/dev/ttyUSB1'  # 사용하는 Serial 포트를 지정하세요
@@ -14,6 +9,8 @@ BAUD_RATE = 38400
 BMS_ID = 0x01  # 기본 ID
 CHARGER_IP=BLB_CHARGERPLUG_IP_DEFAULT
 # 배터리 상태와 플래그에 대한 설명
+#isRealMachine = False
+
 BATTERY_STATUS = {
     0: "Idle (Ready)",
     1: "Discharge",
@@ -80,15 +77,7 @@ def parse_response(data):
             struct.unpack('>H', data[34 + i * 2:36 + i * 2])[0] for i in range(13)
         ]
     CurCadc = (struct.unpack('>h', data[15:17])[0] / 10.0)*-1
-    Voltage = struct.unpack('>H', data[13:15])[0] / 10.0
-    # Chager = get_tasmota_state(CHARGER_IP)
-    # if Chager == "ON":
-    #   if CurCadc > -1.5 and CurCadc <=0:
-    #     set_tasmota_state(CHARGER_IP, "off")
-    # elif Chager == "OFF":
-    #   if Voltage <=52.5:
-    #     set_tasmota_state(CHARGER_IP, "on")
-    
+    Voltage = struct.unpack('>H', data[13:15])[0] / 10.0    
     Watt = round(Voltage*CurCadc)
     response = {
         "battery_id": data[4],
@@ -97,7 +86,6 @@ def parse_response(data):
         "total_capacity_ah": struct.unpack('>H', data[7:9])[0] / 10.0,
         "remaining_capacity_ah": struct.unpack('>H', data[9:11])[0] / 10.0,
         "cycle_count": struct.unpack('>H', data[11:13])[0],
-        #MonitoringField_BMS.Charger.name : Chager,
         MonitoringField_BMS.Vmax.name: max(cell_voltages_mv)/1000,
         MonitoringField_BMS.Vmin.name: min(cell_voltages_mv)/1000,
         MonitoringField_BMS.Tmax.name: max(cell_temperatures_c),
@@ -111,12 +99,9 @@ def parse_response(data):
         "battery_status": BATTERY_STATUS.get(data[21], "Unknown"),
         "protection_flags": sDivEmart.join(decode_flags(struct.unpack('>H', data[22:24])[0], PROTECTION_FLAG)),
         "warning_flags": sDivEmart.join(decode_flags(struct.unpack('>H', data[24:26])[0], WARNING_FLAG)),
-        #"protection_flags_little": sDivEmart.join(decode_flags(struct.unpack('<H', data[22:24])[0], PROTECTION_FLAG)),
-        #"warning_flags_little": sDivEmart.join(decode_flags(struct.unpack('<H', data[24:26])[0], WARNING_FLAG)),
         "cell_temperatures_c": sDivEmart.join(map(str, cell_temperatures_c)),
         "cell_voltages_mv": sDivEmart.join(map(str,cell_voltages_mv))
     }
-    #print(" ".join(f"{b:02X}" for b in data))
     width = 10
     for i, b in enumerate(data):
         if i % width == 0 and i != 0:
@@ -135,16 +120,48 @@ def init_serial():
         stopbits=serial.STOPBITS_ONE,
         timeout=1
     )
-
 def main():
     rospy.init_node('bms_publisher', anonymous=True)
     pub = rospy.Publisher(TopicName.BMS.name, String, queue_size=10)
+    rate = rospy.Rate(0.5)  # 0.5Hz
 
+    if not isRealMachine:
+        rospy.logwarn("Running in simulation mode. Fake BMS data will be published.")
+        while not rospy.is_shutdown():
+            # 가짜 데이터 생성
+            fake_data = {
+                "battery_id": 1,
+                "hardware_version": 2,
+                "firmware_version": 3,
+                "total_capacity_ah": 100.0,
+                "remaining_capacity_ah": 75.0,
+                "cycle_count": 120,
+                MonitoringField_BMS.Vmax.name: 4.2,
+                MonitoringField_BMS.Vmin.name: 3.7,
+                MonitoringField_BMS.Tmax.name: 38.5,
+                MonitoringField_BMS.Tmin.name: 25.3,
+                MonitoringField_BMS.WATT.name: 120,
+                MonitoringField_BMS.Voltage.name: 48.5,
+                MonitoringField_BMS.CurCadc.name: 2.5,
+                MonitoringField_BMS.RSOC.name: 75.0,
+                "soh_percent": 98,
+                "serial_cell_count": 13,
+                "battery_status": BATTERY_STATUS.get(1),
+                "protection_flags": sDivEmart.join(["Discharge over-current"]),
+                "warning_flags": sDivEmart.join(["Cell under-voltage"]),
+                "cell_temperatures_c": sDivEmart.join(map(str, [25.3, 38.5])),
+                "cell_voltages_mv": sDivEmart.join(map(str, [3700 + i * 10 for i in range(13)]))
+            }
+            json_data = json.dumps(fake_data)
+            pub.publish(json_data)
+            print(f"[SIM] Published: {json_data}")
+            rate.sleep()
+        return
+
+    # 실기기 모드
     try:
         ser = init_serial()
         request_command = create_request_command(BMS_ID)
-        
-        rate = rospy.Rate(0.5)  # 0.5Hz
         while not rospy.is_shutdown():
             ser.write(request_command)
             response = ser.read(63)

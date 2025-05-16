@@ -20,7 +20,6 @@ from UtilBLB import *
 from std_srvs.srv import *
 
 dirPath = os.path.dirname(__file__)
-filePath_param_parse = f"{dirPath}/param_SD.txt"
 dicParamParse = getDic_FromFile(filePath_param_parse, sDivEmart)
 
 lastupdate = getDateTime()

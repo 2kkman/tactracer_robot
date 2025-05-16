@@ -368,13 +368,8 @@ RS485 MODBUS 범용 제어 패키지 - 최병진
 
 # getTxtPath 함수 만들자.
 # dirPath2 = getConfigPath()
-
-strLiftFilePath = f"{dirPath2}/LIFTDOWN.txt"
-
-print(filePath_modbusconfig, strLiftFilePath)
 filePath_ModbusAlarm = f"{dirPath2}/SERVO_ALARM.txt"
 # print(os.path.isfile(filePath_modbusconfig) )
-filePath_ModbusSetupInit = f"{dirPath2}/SERVO_Init.txt"
 filePath_param_parse = f"{dirPath2}/MODBUSDATA.txt"
 dicParamParse = getDic_FromFile(filePath_param_parse, sDivEmart)
 dic_ServoMonitorAlarm = getDic_FromFile(

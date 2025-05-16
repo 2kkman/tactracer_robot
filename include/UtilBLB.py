@@ -53,7 +53,11 @@ def getConfigPath(host=None) -> str:
 # Get base directory path
 dirPath = getConfigPath(UbuntuEnv.ITX.name)
 dirCommonMap =f"{getConfigPath(UbuntuEnv.COMMON.name)}/map"
+dirCommonMotor =f"{getConfigPath(UbuntuEnv.COMMON.name)}/motor"
+dirCommonCali =f"{getConfigPath(UbuntuEnv.COMMON.name)}/cali"
+dirCommonParser =f"{getConfigPath(UbuntuEnv.COMMON.name)}/parser"
 
+filePath_param_parse = f"{dirCommonParser}/param_SD.txt"
 # Main configuration files
 csvPathNodes = f'{dirPath}/node_info.csv'
 csvPathalarm = f'{dirPath}/history_alarm.csv'
@@ -72,9 +76,10 @@ except Exception as e:
     ip_dict = {item.name: item.value for item in IPList}
 
 # Distance related files
-strFileDistanceV = f"{dirPath}/DISTANCE_V.txt"
-strFileDistanceArm = f"{dirPath}/DISTANCE_Arm.txt"
-strFileDistanceBal = f"{dirPath}/DISTANCE_Balance.txt"
+strFileDistanceV = f"{dirCommonCali}/DISTANCE_V.txt"
+strFileDistanceArm = f"{dirCommonCali}/DISTANCE_Arm.txt"
+strFileDistanceBal = f"{dirCommonCali}/DISTANCE_Balance.txt"
+strFileWeightBal = f"{dirCommonCali}/WEIGHTBAL.txt"
 
 # Node and rail information
 strCSV_NodeLoc = f"{dirPath}/node_Loc.txt"
@@ -100,7 +105,6 @@ strFileAruco = f"{dirPath}/Table_aruco.txt"
 strFileEPC_Info = f"{dirPath}/EPC_INFO.txt" #사용하지 않는다
 strFileEPC_node = f"{dirPath}/epcNode.txt"
 strFileLastPos = f"{dirPath}/LAST_POSITION.txt"
-strFileWeightBal = f"{dirPath}/WEIGHTBAL.txt"
 
 strFileTableNode = f"{dirCommonMap}/DF_EPC_TABLE_TEMP.txt"
 strFileTableNodeEx = f"{dirCommonMap}/DF_EPC_TABLE.txt"
@@ -200,7 +204,8 @@ STROKE_MIN = 0
 SERVING_ANGLE_MAX = 649800
 MARKER_ANGLE_MAX = 833146
 ANGLE_FULL = 360
-dirPath2 = getConfigPath(UbuntuEnv.ITX.name)
+#dirPath2 = getConfigPath(UbuntuEnv.ITX.name)
+dirPath2 = dirCommonMotor
 filePath_modbusconfig = f"{dirPath2}/ModbusConfig_{machineName}.txt"
 filePath_Torqueconfig = f"{dirPath2}/ModbusTORQUE_{machineName}.txt"
 filePath_CaliPotConfig = f"{dirPath2}/ModbusCaliPot_{machineName}.txt"
@@ -751,6 +756,15 @@ class APIBLB_FIELDS_ALARM(Enum):
     alarmmsgs   = auto()
     commentss = auto()
 
+class APIBLB_TTS(Enum):
+    texttoplays   = auto()
+    langtypes   = auto()
+    noofplayss   = auto()
+    playstatuss = auto()
+    col1s = auto()
+    col2s = auto()
+    SPstatus = auto()
+    
 class APIBLB_FIELDS_TASK(Enum):
     taskids   = auto()
     taskid   = auto()
@@ -879,6 +893,7 @@ class APIBLB_METHODS_GET(Enum):
     robot_TaskChain_ListRequest = auto()
     robot_TrackRackUpdate_action = auto()
     robot_serviceRunokno_action = auto()
+    SetTexttoSpeechListDetails = auto()
 
 class APIBLB_METHODS_POST(Enum):
     robot_task_action = auto()
@@ -5680,6 +5695,34 @@ def SetCameraMode(cm : CameraMode):
 #     API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,calStr)
 #     return True
 
+def TTSServer(ttsMsg, ttsIntervalSec=5):
+    # 함수에 필요한 속성 없으면 초기화
+    if not hasattr(TTSServer, "last_tts_time"):
+        TTSServer.last_tts_time = -1
+    if not hasattr(TTSServer, "last_tts_msg"):
+        TTSServer.last_tts_msg = None
+
+    now = time.time()
+
+    if ttsMsg == TTSServer.last_tts_msg:
+        # 같은 메시지면 쿨타임 검사
+        if now - TTSServer.last_tts_time < ttsIntervalSec:
+            return False
+
+    # 다르거나, 쿨타임이 지난 경우 TTS 실행
+    dictParam = {APIBLB_TTS.texttoplays.name:ttsMsg,
+                APIBLB_TTS.langtypes.name:'ko-KR',
+                APIBLB_TTS.noofplayss.name:1,
+                APIBLB_TTS.playstatuss.name:1,
+                APIBLB_TTS.col1s.name:1,
+                APIBLB_TTS.col2s.name:0,
+                APIBLB_TTS.SPstatus.name:2
+    }
+    paramStr=urllib.parse.urlencode(dictParam)
+    bReturn,strResult = API_call(svrIP=BLB_SVR_IP_DEFAULT,port=BLB_SVR_PORT_DEFAULT,serviceName=APIBLB_METHODS_GET.SetTexttoSpeechListDetails.name, fieldValue=paramStr)
+    return bReturn,strResult
+#print(TTSServer('음식이나왔습니다'))
+
 def TTSAndroid(ttsMsg, ttsIntervalSec=5):
     # 함수에 필요한 속성 없으면 초기화
     if not hasattr(TTSAndroid, "last_tts_time"):
@@ -5696,7 +5739,10 @@ def TTSAndroid(ttsMsg, ttsIntervalSec=5):
 
     # 다르거나, 쿨타임이 지난 경우 TTS 실행
     calStr = f'tts=10,10,{ttsMsg}'
-    API_call_Android(BLB_ANDROID_IP_DEFAULT, HTTP_COMMON_PORT, calStr)
+    bReturn,strResult = API_call_Android(BLB_ANDROID_IP_DEFAULT, HTTP_COMMON_PORT, calStr)
+    if not bReturn:
+        print(TTSServer('스마트폰 통신을 점검해주세요.'))
+        return False
     TTSAndroid.last_tts_time = now
     TTSAndroid.last_tts_msg = ttsMsg
     return True
