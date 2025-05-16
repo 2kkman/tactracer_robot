@@ -145,12 +145,16 @@ def RunListBlbMotorsEx(listBLB):
                       bCrossCheck = False
                 #if False:   #임시로 분기기는 무조건 True 라고 가정하자.
                 if bCrossCheck == False and isRealMachine:
-                    SetWaitCrossFlag(True)
-                    UpdateLastCmdTimeStamp()
-                    message=f'남은테이블:{node_CtlCenter_globals.listTable},분기기 상황:{strStatusInfo}'
-                    PrintStatusInfoEverySec()
-                    rospy.loginfo_throttle(20, message)       
-                    return APIBLB_ACTION_REPLY.E107
+                    if NODE_CROSS == GetCurrentNode():
+                        SetWaitCrossFlag(True)
+                        UpdateLastCmdTimeStamp()
+                        message=f'남은테이블:{node_CtlCenter_globals.listTable},분기기 상황:{strStatusInfo}'
+                        PrintStatusInfoEverySec()
+                        rospy.loginfo_throttle(20, message)       
+                        return APIBLB_ACTION_REPLY.E107
+                    else:
+                        StopEmergency(ALM_User.CROSS_STATUS_INVALID.value)
+                        return APIBLB_ACTION_REPLY.E107
                 #데모에서는 일단 이렇게
                 dicInfo_local = getMotorMoveDic(ModbusID.MOTOR_H.value, True, iTargetPulse, iSpdH, ACC_MOVE_H,DECC_MOVE_H)
                 SetWaitCrossFlag(False)
@@ -203,7 +207,6 @@ def RunListBlbMotorsEx(listBLB):
         filtered_data = [item for item in dicInfo_local if item]
         if len(filtered_data) > 0:
             #print(dicInfo_local)
-            
             #GetWaitConfirmFlag 가 활성화 되어 있는 경우 암을 펼치거나 리프트다운을 하지 않는다.
             dfReceived = pd.DataFrame(filtered_data) 
             try:

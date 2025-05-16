@@ -306,125 +306,131 @@ def MotorH_Event():
     cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
 
 def PrintStatusInfoEverySec(diffCharRate = 0.96):
-    #현재 노드
-    lsCurTable,curNode = GetCurrentTableNode()
-    #현재 H Pos(cur_pos), 회전모터별 앵글, 서빙길이, 밸런싱 길이. (오차율)
-    curMovingTargetTable,curMovingTargetNode = GetCurrentTargetTable()
-    #bAPI_Result, dicBatteryInfo = API_robot_battery_status()    
-    dicBatteryInfo ={}
-    dicBatteryInfo.update(node_CtlCenter_globals.dic_BMS)
-    #rospy.loginfodicBatteryInfo)
-    volt = dicBatteryInfo.get(MonitoringField_BMS.Voltage.name,MIN_INT)
-    battery_level = try_parse_float(dicBatteryInfo.get(MonitoringField_BMS.RSOC.name))
-    ischarging = dicBatteryInfo.get(MonitoringField_BMS.battery_status.name,False)
-    watt = dicBatteryInfo.get(MonitoringField_BMS.WATT.name,MIN_INT)
-    #dicCurNode = getTableServingInfo(curTable)
-    # node_ID = dicCurNode.get(TableInfo.NODE_ID.name, "")
-    cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
-    cur_pos_mm = pulseH_to_distance(cur_pos)
-    #curX,curY = GetLocNodeID(node_CtlCenter_globals.node_current)
-    curX,curY = GetLocXY()
-    #cmd_pos_srvInner, cur_pos_srvInner = GetPosServo(ModbusID.TELE_SERV_INNER)
-    cmd_pos_srvMain, cur_pos_srvMain = GetPosServo(ModbusID.TELE_SERV_MAIN)
-    #distanceSrvInnerMechanic = (cur_pos_srvInner *  1.46433333)/roundPulse
-    distanceSrvMainMechanic = (cur_pos_srvMain * 1.875)/roundPulse
-    #distMechanic = round(distanceSrvMainMechanic+distanceSrvInnerMechanic)
-    distMechanic = distanceSrvMainMechanic
-    curDistanceSrvTele, curAngle,cur_angle_360=GetCurrentPosDistanceAngle()
-    curDistanceSrvTele2, curSrvPer, curBalPulse,curBalPer = GetArmStatus()
-    pulseBalanceCalculated = GetpulseBalanceCalculated()
-    cur_rpm = getMotorSpdDirection(ModbusID.MOTOR_H.value)
-    cur_spd= calculate_speed_fromRPM(cur_rpm)
-    # pot_cur_arm1,not_cur_arm1 ,cmdpos_arm1,cur_pos_arm1 =GetPotNotCurPosServo(ModbusID.BAL_ARM1)
-    # pot_cur_telebal,not_cur_telebal ,cmd_pos_telebal,cur_pos_telebal =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
-    # arm_degrees = mapRange(cmdpos_arm1, not_cur_arm1,pot_cur_arm1, 0, 90)
-    # distance_arm = calculate_third_side(LENGTH_ARM1,LENGTH_ARM2,arm_degrees)
-    # distance_tele_bal = CalculateLengthFromPulse(ModbusID.TELE_BALANCE,cur_pos_telebal)
-    # distance_arm_total = distance_arm+distance_tele_bal
-    # distanceBalanceTotalExpected = calculate_balance_distance(WEIGHT_BALARM_GRAM,WEIGHT_SERVARM_GRAM, curDistanceSrvTele)
-    # accuBalnceLength = (distanceBalanceTotalExpected / distance_arm_total) * 100
-    table_target = GetTableTarget()
-    dicCurrentJob = GetCurrentJob(table_target)
-    dicFirstJob = GetCurrentJob(table_target, True)
-    dicLastJob = GetCurrentJob(table_target, False)
-    jobStr = ""
-    if len(dicCurrentJob) > 0:
-      jobStr = f'주행방향:{dicCurrentJob.get(APIBLB_FIELDS_INFO.direction.name)},시작노드:{dicFirstJob.get(APIBLB_FIELDS_TASK.startnode.name)},목표노드:{dicLastJob.get(APIBLB_FIELDS_TASK.startnode.name)}'
-    accuBalnceLength = (pulseBalanceCalculated / curBalPulse) * 100 if curBalPulse > 0 else 0
-    doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
-    r1,r2,r_total = getLoadWeight()
-    if doorStatus == TRAYDOOR_STATUS.OPENED and len(node_CtlCenter_globals.dicTTS) == 0:
-        if r1 > WEIGHT_OCCUPIED:
-          LightTrayCell(TraySector.Cell1.value,LightBlink.Solid.value,LightColor.BLUE.value)
-        else:
-          LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
-        if r2 > WEIGHT_OCCUPIED:
-          LightTrayCell(TraySector.Cell2.value,LightBlink.Solid.value,LightColor.BLUE.value)
-        else:
-          LightTrayCell(TraySector.Cell2.value,LightBlink.Normal.value,LightColor.BLUE.value)
-    angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name, -100)
-    tilt_angle = node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.TILT_ANGLE.name, -1)
-    detected_height = node_CtlCenter_globals.dicARD_CARRIER.get(MAIN_STATUS.DETECTED_HEIGHT.name, -1)
-    lastLD_Raw = GetDistanceV()
-    dyros = GetDynamicConfigROS()      
-    dyros.pop('groups', None)
-    if len(lastLD_Raw) > 0:
-      distancePoints = int(lastLD_Raw[2])
-      distanceSTD = round(float(lastLD_Raw[1]),4)
-      distanceLD = round(float(lastLD_Raw[0]),3)
-      dyros["DISTANCE_POINTS"] = distancePoints
-      dyros["DISTANCE_STD"] = distanceSTD
-      dyros["DISTANCE_LD"] = distanceLD
-    
-    tilt_status_name = GetTiltStatus().name
-    tray_height = GetLiftCurPositionDown()
-    dfReceived = GetDF(curMovingTargetTable)
-    dyros["TRAY_HEIGHT"] = tray_height
-    dyros["TARGET_NODE"] = curMovingTargetNode
-    dyros["TARGET_TABLE"] = curMovingTargetTable    
-    result = ','.join(map(str, lsCurTable))
-    dyros["CUR_TABLE"] = result
-    dyros["CUR_H_LOC_MM"] = cur_pos_mm
-    dyros["CUR_NODE"] = curNode
-    dyros["TILT_STATUS_NAME"] = tilt_status_name
-    dyros["CROSS_STATE"] = str(node_CtlCenter_globals.stateDic)
-    dyros[MAIN_STATUS.DETECTED_HEIGHT.name] = detected_height
-    if dfReceived is not None:
-        dicLast = dfReceived.iloc[-1]
-        filtered = {k: int(v) if isinstance(v, np.integer) else v
-                    for k, v in dicLast.items()
-                    if isinstance(v, (int, str)) and v not in [None, ""]}
-        dyros.update(filtered)
-    
-    if dyros is not None:
-      pub_ros_config.publish(json.dumps(dyros, sort_keys=True))
-    #rospy.loginfo(node_CtlCenter_globals.last_detect_status)
-    
-    ledInfo = GetLedStatus()
-    multi_line_string = f"""{jobStr}
-    펄스기반서빙길이:{distMechanic}mm,현재서빙길이:{curDistanceSrvTele}mm,현재밸런싱펄스:{curBalPulse},계산된밸런싱펄스:{pulseBalanceCalculated},메인회전각도:{curAngle},트레이각도:{cur_angle_360}
-    틸트:{tilt_status_name},DOORLOCKED:{doorArray},현재 무게 :{r_total}g,현재테이블:{lsCurTable},현재노드:{curNode},현재H위치:{cur_pos_mm}mm,현재속도:{cur_rpm}rpm/{cur_spd}mm/s,다음테이블:{GetTableList()}
-    틸팅각:{angle_y},서보각:{tilt_angle},LED:{ledInfo},작업상태:{node_CtlCenter_globals.robot.get_current_state().name}
-    크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
-    현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%({ischarging}),밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
-    """
-    if isRealMachine and battery_level < 15 and ischarging.startswith('Dis'):
-      TTSAndroid(TTSMessage.ALARM_BATTERY.value, 60)
-    #서빙전개율:{curSrvPer}%,밸런싱암전개율:{curBalPer}%,정확도:{accuBalnceLength:.1f}%,
-    #남은 서빙 시간 : {GetRPMFromTimeAccDecc(node_CtlCenter_globals.listBLB)}
-    # 토크맥스정보:{json.dumps(node_CtlCenter_globals.dicTorqueMax, indent=2)}
-    # 오버로드정보:{json.dumps(node_CtlCenter_globals.dicOvrMax, indent=2)}
-    # 주행타겟정보:{json.dumps(node_CtlCenter_globals.dicTargetPos, indent=2)}
-    
-    diffCharCnt = difflib.SequenceMatcher(None,node_CtlCenter_globals.multi_line_string, multi_line_string).ratio()
-    if diffCharCnt < diffCharRate and len(getRunningMotorsBLB()) == 0:
-        rospy.loginfo(multi_line_string)
-        node_CtlCenter_globals.multi_line_string = multi_line_string
+    try:
+        #현재 노드
+        lsCurTable,curNode = GetCurrentTableNode()
+        #현재 H Pos(cur_pos), 회전모터별 앵글, 서빙길이, 밸런싱 길이. (오차율)
+        curMovingTargetTable,curMovingTargetNode = GetCurrentTargetTable()
+        #bAPI_Result, dicBatteryInfo = API_robot_battery_status()    
+        dicBatteryInfo ={}
+        dicBatteryInfo.update(node_CtlCenter_globals.dic_BMS)
+        #rospy.loginfodicBatteryInfo)
+        volt = dicBatteryInfo.get(MonitoringField_BMS.Voltage.name,MIN_INT)
+        battery_level = try_parse_float(dicBatteryInfo.get(MonitoringField_BMS.RSOC.name))
+        ischarging = dicBatteryInfo.get(MonitoringField_BMS.battery_status.name,"UNKNOWN")
+        watt = dicBatteryInfo.get(MonitoringField_BMS.WATT.name,MIN_INT)
+        #dicCurNode = getTableServingInfo(curTable)
+        # node_ID = dicCurNode.get(TableInfo.NODE_ID.name, "")
+        cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
+        cur_pos_mm = pulseH_to_distance(cur_pos)
+        #curX,curY = GetLocNodeID(node_CtlCenter_globals.node_current)
+        curX,curY = GetLocXY()
+        #cmd_pos_srvInner, cur_pos_srvInner = GetPosServo(ModbusID.TELE_SERV_INNER)
+        cmd_pos_srvMain, cur_pos_srvMain = GetPosServo(ModbusID.TELE_SERV_MAIN)
+        #distanceSrvInnerMechanic = (cur_pos_srvInner *  1.46433333)/roundPulse
+        distanceSrvMainMechanic = (cur_pos_srvMain * 1.875)/roundPulse
+        #distMechanic = round(distanceSrvMainMechanic+distanceSrvInnerMechanic)
+        distMechanic = distanceSrvMainMechanic
+        curDistanceSrvTele, curAngle,cur_angle_360=GetCurrentPosDistanceAngle()
+        curDistanceSrvTele2, curSrvPer, curBalPulse,curBalPer = GetArmStatus()
+        pulseBalanceCalculated = GetpulseBalanceCalculated()
+        cur_rpm = getMotorSpdDirection(ModbusID.MOTOR_H.value)
+        cur_spd= calculate_speed_fromRPM(cur_rpm)
+        # pot_cur_arm1,not_cur_arm1 ,cmdpos_arm1,cur_pos_arm1 =GetPotNotCurPosServo(ModbusID.BAL_ARM1)
+        # pot_cur_telebal,not_cur_telebal ,cmd_pos_telebal,cur_pos_telebal =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)
+        # arm_degrees = mapRange(cmdpos_arm1, not_cur_arm1,pot_cur_arm1, 0, 90)
+        # distance_arm = calculate_third_side(LENGTH_ARM1,LENGTH_ARM2,arm_degrees)
+        # distance_tele_bal = CalculateLengthFromPulse(ModbusID.TELE_BALANCE,cur_pos_telebal)
+        # distance_arm_total = distance_arm+distance_tele_bal
+        # distanceBalanceTotalExpected = calculate_balance_distance(WEIGHT_BALARM_GRAM,WEIGHT_SERVARM_GRAM, curDistanceSrvTele)
+        # accuBalnceLength = (distanceBalanceTotalExpected / distance_arm_total) * 100
+        table_target = GetTableTarget()
+        dicCurrentJob = GetCurrentJob(table_target)
+        dicFirstJob = GetCurrentJob(table_target, True)
+        dicLastJob = GetCurrentJob(table_target, False)
+        jobStr = ""
+        if len(dicCurrentJob) > 0:
+            jobStr = f'주행방향:{dicCurrentJob.get(APIBLB_FIELDS_INFO.direction.name)},시작노드:{dicFirstJob.get(APIBLB_FIELDS_TASK.startnode.name)},목표노드:{dicLastJob.get(APIBLB_FIELDS_TASK.startnode.name)}'
+        accuBalnceLength = (pulseBalanceCalculated / curBalPulse) * 100 if curBalPulse > 0 else 0
+        doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
+        r1,r2,r_total = getLoadWeight()
+        if doorStatus == TRAYDOOR_STATUS.OPENED and len(node_CtlCenter_globals.dicTTS) == 0:
+            if r1 > WEIGHT_OCCUPIED:
+                LightTrayCell(TraySector.Cell1.value,LightBlink.Solid.value,LightColor.BLUE.value)
+            else:
+                LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+            if r2 > WEIGHT_OCCUPIED:
+                LightTrayCell(TraySector.Cell2.value,LightBlink.Solid.value,LightColor.BLUE.value)
+            else:
+                LightTrayCell(TraySector.Cell2.value,LightBlink.Normal.value,LightColor.BLUE.value)
+        angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name, -100)
+        tilt_angle = node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.TILT_ANGLE.name, -1)
+        detected_height = node_CtlCenter_globals.dicARD_CARRIER.get(MAIN_STATUS.DETECTED_HEIGHT.name, -1)
+        lastLD_Raw = GetDistanceV()
+        dyros = GetDynamicConfigROS()      
+        dyros.pop('groups', None)
+        if len(lastLD_Raw) > 0:
+            distancePoints = int(lastLD_Raw[2])
+            distanceSTD = round(float(lastLD_Raw[1]),4)
+            distanceLD = round(float(lastLD_Raw[0]),3)
+            dyros["DISTANCE_POINTS"] = distancePoints
+            dyros["DISTANCE_STD"] = distanceSTD
+            dyros["DISTANCE_LD"] = distanceLD
         
-    #print(f'주행타겟정보:{json.dumps(node_CtlCenter_globals.dicTargetPos, indent=4)}')
-    #pprint.pprint(f'')
-    # dicPos = GetCurrentPos()
-    # pub_motorPos.publish(json.dumps(dicPos, sort_keys=True))
+        tilt_status_name = GetTiltStatus().name
+        tray_height = GetLiftCurPositionDown()
+        dfReceived = GetDF(curMovingTargetTable)
+        dyros["TRAY_HEIGHT"] = tray_height
+        dyros["TARGET_NODE"] = curMovingTargetNode
+        dyros["TARGET_TABLE"] = curMovingTargetTable    
+        result = ','.join(map(str, lsCurTable))
+        dyros["CUR_TABLE"] = result
+        dyros["CUR_H_LOC_MM"] = cur_pos_mm
+        dyros["CUR_NODE"] = curNode
+        dyros["TILT_STATUS_NAME"] = tilt_status_name
+        dyros["CROSS_STATE"] = str(node_CtlCenter_globals.stateDic)
+        dyros[MAIN_STATUS.DETECTED_HEIGHT.name] = detected_height
+        if dfReceived is not None:
+            dicLast = dfReceived.iloc[-1]
+            filtered = {k: int(v) if isinstance(v, np.integer) else v
+                        for k, v in dicLast.items()
+                        if isinstance(v, (int, str)) and v not in [None, ""]}
+            dyros.update(filtered)
+        
+        if dyros is not None:
+            pub_ros_config.publish(json.dumps(dyros, sort_keys=True))
+        #rospy.loginfo(node_CtlCenter_globals.last_detect_status)
+        
+        ledInfo = GetLedStatus()
+        multi_line_string = f"""{jobStr}
+        펄스기반서빙길이:{distMechanic}mm,현재서빙길이:{curDistanceSrvTele}mm,현재밸런싱펄스:{curBalPulse},계산된밸런싱펄스:{pulseBalanceCalculated},메인회전각도:{curAngle},트레이각도:{cur_angle_360}
+        틸트:{tilt_status_name},DOORLOCKED:{doorArray},현재 무게 :{r_total}g,현재테이블:{lsCurTable},현재노드:{curNode},현재H위치:{cur_pos_mm}mm,현재속도:{cur_rpm}rpm/{cur_spd}mm/s,다음테이블:{GetTableList()}
+        틸팅각:{angle_y},서보각:{tilt_angle},LED:{ledInfo},작업상태:{node_CtlCenter_globals.robot.get_current_state().name}
+        크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
+        현재 리프트 하강지점(m):{tray_height},아르코추정하강지점:{GetLiftCurPositionAruco()},전압:{volt}V,소비전력:{watt}W,배터리:{battery_level}%({ischarging}),밸런스펄스:{node_CtlCenter_globals.dicWeightBal[0]},
+        """
+        if isRealMachine and battery_level < 15 and ischarging.startswith('Dis'):
+            TTSAndroid(TTSMessage.ALARM_BATTERY.value, 60)
+        #서빙전개율:{curSrvPer}%,밸런싱암전개율:{curBalPer}%,정확도:{accuBalnceLength:.1f}%,
+        #남은 서빙 시간 : {GetRPMFromTimeAccDecc(node_CtlCenter_globals.listBLB)}
+        # 토크맥스정보:{json.dumps(node_CtlCenter_globals.dicTorqueMax, indent=2)}
+        # 오버로드정보:{json.dumps(node_CtlCenter_globals.dicOvrMax, indent=2)}
+        # 주행타겟정보:{json.dumps(node_CtlCenter_globals.dicTargetPos, indent=2)}
+        
+        diffCharCnt = difflib.SequenceMatcher(None,node_CtlCenter_globals.multi_line_string, multi_line_string).ratio()
+        if diffCharCnt < diffCharRate and len(getRunningMotorsBLB()) == 0:
+            rospy.loginfo(multi_line_string)
+            node_CtlCenter_globals.multi_line_string = multi_line_string
+            
+        #print(f'주행타겟정보:{json.dumps(node_CtlCenter_globals.dicTargetPos, indent=4)}')
+        #pprint.pprint(f'')
+        # dicPos = GetCurrentPos()
+        # pub_motorPos.publish(json.dumps(dicPos, sort_keys=True))
+    except Exception as e:
+      rospy.loginfo(e)
+      sMsg = traceback.format_exc()
+      SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
+      StopEmergency(sMsg)   
     return
 
 def KeepArmBalancing():

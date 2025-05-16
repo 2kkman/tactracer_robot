@@ -291,7 +291,7 @@ dicSTROKE[ModbusID.BAL_ARM2] = LENGTH_ARM2
 dicSafety = {}
 dicWeightBal = {}
 dicWeightBalTmp = LoadJsonFile(strFileWeightBal)
-
+dicLast_POSITION_INFO = {}
 #EPCNodeInfo = LoadJsonFile(strFileEPC_node)
 EPCNodeInfo = GetEPCNodeInfoDic()
 if dicWeightBalTmp is not None:

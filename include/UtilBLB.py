@@ -51,16 +51,12 @@ def getConfigPath(host=None) -> str:
     return strFilePath
 # Get base directory path
 dirPath = getConfigPath(UbuntuEnv.ITX.name)
+dirCommonMap =f"{getConfigPath(UbuntuEnv.COMMON.name)}/map"
 
 # Main configuration files
 csvPathNodes = f'{dirPath}/node_info.csv'
 csvPathalarm = f'{dirPath}/history_alarm.csv'
 csvPathInfo = f'{dirPath}/history_info.csv'
-strFileCross = f"{dirPath}/CROSS.txt"
-strFileTableNode = f"{dirPath}/DF_EPC_TABLE_TEMP.txt"
-strFileTableNodeEx = f"{dirPath}/DF_EPC_TABLE.txt"
-strFileShortCut = f"{dirPath}/SHORTCUT.txt"
-strFileShortCutTemp = f"{dirPath}/SHORTCUT_Temp.txt"
 #machineName = 'ITX' if get_hostname().find(UbuntuEnv.ITX.name) >= 0 else 'DEV'
 machineName = 'ITX' if get_hostname().find(UbuntuEnv.QBI.name) < 0 else 'QBI'
 filePath_IPSetup = f"{dirPath}/DIC_IPSetup_ITX.txt"
@@ -102,11 +98,18 @@ strGetSeq = f"{dirPath}/temp_getseq.txt"
 strFileAruco = f"{dirPath}/Table_aruco.txt"
 strFileEPC_Info = f"{dirPath}/EPC_INFO.txt" #사용하지 않는다
 strFileEPC_node = f"{dirPath}/epcNode.txt"
-strFileEPC_total = f"{dirPath}/DF_EPC_NODE.txt"
-strFileEPC_scan = f"{dirPath}/DF_EPC_SCAN.txt"
-strFileTableSpd = f"{dirPath}/DF_SPEEDTABLE_ITX.txt"
-strFileWeightBal = f"{dirPath}/WEIGHTBAL.txt"
 strFileLastPos = f"{dirPath}/LAST_POSITION.txt"
+strFileWeightBal = f"{dirPath}/WEIGHTBAL.txt"
+
+strFileTableNode = f"{dirCommonMap}/DF_EPC_TABLE_TEMP.txt"
+strFileTableNodeEx = f"{dirCommonMap}/DF_EPC_TABLE.txt"
+strFileEPC_total = f"{dirCommonMap}/DF_EPC_NODE.txt"
+strFileEPC_scan = f"{dirCommonMap}/DF_EPC_SCAN.txt"
+strFileTableSpd = f"{dirCommonMap}/DF_SPEEDTABLE_ITX.txt"
+strFileCross = f"{dirCommonMap}/CROSS.txt"
+strFileShortCut = f"{dirCommonMap}/SHORTCUT.txt"
+strFileShortCutTemp = f"{dirCommonMap}/SHORTCUT_Temp.txt"
+
 
 BLB_SVR_IP_DEFAULT=ip_dict[IPList.BLB_SVR_IP.name]
 BLB_RFID_IP=ip_dict[IPList.BLB_RFID_IP.name]
@@ -603,12 +606,13 @@ class TableInfo(Enum):
     MOVE_DISTANCE = auto()
     HEIGHT_LIFT = auto()
     MARKER_VALUE = auto()
-    
+
 class RailNodeInfo(Enum):
     NOTAG = auto()
     NONE = auto()
     R_END = auto()
     R_START = auto()
+strNOTAG = RailNodeInfo.NOTAG.name    
 
 class ARUCO_RESULT_FIELD(Enum):
     IS_MARKERSCAN = auto()  # 마커 스캔 동작 여부
@@ -2177,6 +2181,7 @@ class MotorWMOVEParams(Enum):
     TQL = auto()  #토크리밋
     POT = auto()  #SW POT
     NOT = auto()  #SW NOT
+    DIFF_POS = auto()   #현재위치와 마스터 노드위치의 차이
 
 class MotorCommandManager:
     def __init__(self, data):
@@ -2293,6 +2298,50 @@ def TiltingARD(tiltStatus : TRAY_TILT_STATUS, smoothdelay=10):
 def SaveTableInfo(curTableInt):
     msg = f"{TableInfo.TABLE_ID.name}={curTableInt}"
     return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.CONTROL.name, msg)  
+
+
+def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False):
+    try:
+        # DataFrame 복사 및 diff 계산
+        df = dfTemp.copy()
+        posStr = MotorWMOVEParams.POS.name
+        epcStr = RFID_RESULT.EPC.name
+        if posStr not in df.columns:
+            return []
+
+        # onlyRealNode 조건에 따라 EPC 필터링
+        if onlyRealNode and epcStr in df.columns:
+            df = df[df[epcStr].astype(str).str.contains(strNOTAG)]
+
+        df[MotorWMOVEParams.DIFF_POS.name] = (df[posStr] - pos_target).abs()
+
+        # 방향 조건에 따른 필터링
+        if signedSpd > 0:
+            df = df[df[posStr] < pos_target]
+        elif signedSpd < 0:
+            df = df[df[posStr] > pos_target]
+
+        # 가까운 값 정렬 및 추출
+        nearest_rows = df.nsmallest(nearPoints, MotorWMOVEParams.DIFF_POS.name)
+        result = nearest_rows.to_dict(orient='records')
+        return result
+    except Exception:
+        return []
+
+
+
+def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False):
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode)
+    if lsResult:
+        return lsResult[0]
+    else:
+        return {}
+
+def find_key_by_nested_value(d, target_value):
+    for key, value_list in d.items():
+        if target_value in value_list:
+            return key
+    return None  # 못 찾으면 None 반환
 
 class TRAY_ARD_Field(Enum):
     GLA_SVN = auto()  # linear_acceleration
@@ -5841,6 +5890,10 @@ def CheckMotorCmdValid(listDF,dictPos):
     listReturnBackup.extend(listDF)
     lsRemoveIndexes = []
     for dictTmp in listDF:
+        keyCMD = dictTmp.get(MotorWMOVEParams.CMD.name)
+        if keyCMD is None:
+            rospy.loginfo(f"Invalid command: {dictTmp}")
+            continue
         if dictTmp[MotorWMOVEParams.CMD.name] == MotorCmdField.WMOVE.name:
             iPos = int(dictTmp[MotorWMOVEParams.POS.name])
             mbid = dictTmp[MotorWMOVEParams.MBID.name]
@@ -5884,18 +5937,18 @@ print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
 # filtered = df[(df['NODE_ID'] == 2) & (df['MARKER_VALUE'] < 0)]
 # lsDictNotScaned = filtered.to_dict(orient='records')
 # print(lsDictNotScaned)
+import pandas as pd
 
 def generate_graph_from_position_csv(csv_path: str, save_path: str):
     # CSV 불러오기
     df = pd.read_csv(csv_path, sep='\t')
-    
+
     # NODE_ID 3 이하 제거
     df = df[df["NODE_ID"] > 3]
 
     # POS 기준 정렬
     df = df.sort_values("POS").reset_index(drop=True)
 
-    # 결과 리스트
     graph = []
 
     for i in range(len(df) - 1):
@@ -5908,16 +5961,64 @@ def generate_graph_from_position_csv(csv_path: str, save_path: str):
         delta_pulse = abs(pos2 - pos1)
         distance_mm = round(delta_pulse * 2820 / 1200000)
 
-        # 작은 POS를 갖는 노드가 먼저 오도록
+        # 방향성: POS가 작은 쪽이 앞
         if pos1 <= pos2:
-            graph.append(f"{node1}\t{node2}\t{distance_mm}")
+            graph.append((node1, node2, distance_mm))
         else:
-            graph.append(f"{node2}\t{node1}\t{distance_mm}")
+            graph.append((node2, node1, distance_mm))
 
-    # 파일 저장
+    graph.append((1, 2, 400))
+    graph.append((2, 3, 700))
+    graph.append((3, 10, 700))
+    # node1 기준 숫자 오름차순 정렬
+    graph.sort(key=lambda x: x[0])
+
+    # 문자열로 포맷팅
+    graph_lines = [f"{n1}\t{n2}\t{dist}" for n1, n2, dist in graph]
+
+    # 저장
     with open(save_path, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(graph))
+        f.write('\n'.join(graph_lines))
 
     print(f"노드 그래프를 '{save_path}' 경로에 저장했습니다.")
 
-generate_graph_from_position_csv(strFileEPC_total,strFileShortCut)
+
+#generate_graph_from_position_csv(strFileEPC_total,strFileShortCut)
+
+def upsert_table_record(csv_path: str, table_id, node_id, serving_distance, serving_angle):
+    # CSV 불러오기
+    df = pd.read_csv(csv_path, sep='\t')
+    
+    # 기본값
+    marker_angle = 0
+    height_lift = 880000
+    marker_value = -1
+   # TABLE_ID가 None이거나 int 변환 불가능할 경우: max + 1로 설정
+    try:
+        table_id = int(table_id)
+    except (ValueError, TypeError):
+        table_id = int(df['TABLE_ID'].max() + 1) if not df.empty else 1
+
+    # 새로운 데이터 구성
+    new_data = {
+        'TABLE_ID': table_id,
+        'NODE_ID': node_id,
+        'SERVING_DISTANCE': serving_distance,
+        'SERVING_ANGLE': serving_angle,
+        'MARKER_ANGLE': marker_angle,
+        'HEIGHT_LIFT': height_lift,
+        'MARKER_VALUE': marker_value
+    }
+    # 주요 문제 수정: 레퍼런스로 전달된 df를 직접 수정하고 반환
+    if df['TABLE_ID'].astype(str).isin([str(table_id)]).any():
+        # 기존 TABLE_ID가 존재하면 해당 row를 수정
+        df.loc[df['TABLE_ID'].astype(str) == str(table_id), list(new_data.keys())[1:]] = list(new_data.values())[1:]
+    else:
+        # 없으면 새로 추가
+        df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
+
+    df.to_csv(csv_path, index=False, sep='\t')
+    return df
+
+
+#upsert_table_record(strFileTableNodeEx, 107, 7, 892, 27)

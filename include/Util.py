@@ -32,7 +32,7 @@ import time
 import traceback
 import psutil
 from skimage.metrics import structural_similarity as ssim
-
+import shlex
 # Third-party imports
 from flask_socketio import *
 from transitions import *
@@ -641,49 +641,6 @@ def insert_row_to_csv(strFileEPC_total, strSplitter, new_row):
     # 변경된 DataFrame을 파일에 저장
     dfNew.to_csv(strFileEPC_total, sep=strSplitter, index=False)    
     return dfNew
-
-def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False):
-    try:
-        # DataFrame 복사 및 diff 계산
-        df = dfTemp.copy()
-
-        if 'POS' not in df.columns:
-            return []
-
-        # onlyRealNode 조건에 따라 EPC 필터링
-        if onlyRealNode and 'EPC' in df.columns:
-            df = df[df['EPC'].astype(str).str.contains('NOTAG')]
-
-        df['diff'] = (df['POS'] - pos_target).abs()
-
-        # 방향 조건에 따른 필터링
-        if signedSpd > 0:
-            df = df[df['POS'] < pos_target]
-        elif signedSpd < 0:
-            df = df[df['POS'] > pos_target]
-
-        # 가까운 값 정렬 및 추출
-        nearest_rows = df.nsmallest(nearPoints, 'diff')
-        result = nearest_rows.to_dict(orient='records')
-
-        return result
-    except Exception:
-        return []
-
-
-
-def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False):
-    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode)
-    if lsResult:
-        return lsResult[0]
-    else:
-        return {}
-
-def find_key_by_nested_value(d, target_value):
-    for key, value_list in d.items():
-        if target_value in value_list:
-            return key
-    return None  # 못 찾으면 None 반환
 
 def is_equal(a, b):
     return str(a) == str(b)

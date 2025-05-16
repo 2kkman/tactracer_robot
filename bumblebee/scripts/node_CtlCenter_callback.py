@@ -907,6 +907,25 @@ def callbackARD_CARRIER(data,topic_name=''):
         # SendFeedback(e)
 
 
+def callback_POSITION_INFO(data,topic_name=''):
+    try:
+        node_CtlCenter_globals.dicTopicCallbackTimeStamp[topic_name] = getDateTime()
+        recvData = data.data.replace("'", '"')
+        if is_valid_python_dict_string(recvData):
+            recvDataMap2 = ast.literal_eval(recvData)
+        elif is_json(recvData):
+            recvDataMap2 = json.loads(recvData)
+        else:
+            recvDataMap2 = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
+        
+        if isinstance(recvDataMap2,dict):
+            node_CtlCenter_globals.dicLast_POSITION_INFO.update(recvDataMap2)   
+    except Exception as e:
+        message = traceback.format_exc()
+        rospy.logdebug(message)
+        SendAlarmHTTP(e,True,node_CtlCenter_globals.BLB_ANDROID_IP)
+     
+
 def callback_BMS(data,topic_name=''):
     recvDatalist = []
     try:
@@ -1121,7 +1140,7 @@ def callbackRFID(data,topic_name=''):
         else:
             recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivItemComma)
         
-        sEPC = recvDataMap.get(sEPCKey,RailNodeInfo.NOTAG.name)
+        sEPC = recvDataMap.get(sEPCKey,strNOTAG)
         sRSSI = try_parse_int(recvDataMap.get(sRSSIKey,-1))
         sPOS = try_parse_int(recvDataMap.get(sPOS_Key,-1))
         sSPD = try_parse_int(recvDataMap.get(sSPD_Key,-1))
@@ -1546,7 +1565,9 @@ node_CtlCenter_globals.dictTopicToSubscribe = {
     TopicName.ARUCO_RESULT.name : callback_ARUCO_RESULT,
     TopicName.CROSS_INFO.name : callback_CROSS_INFO,
     TopicName.SMARTPLUG_INFO.name : callback_CROSS_INFO,    
+    TopicName.POSITION_INFO.name : callback_POSITION_INFO,    
     TopicName.LIDAR_OBSTACLE.name : callback_lidar_obstacle
+    
     # ,
     # '/bumblebee/distance' : callBackLidarDistance,
     # '/detect_cropped_distance' : callBackLidarDistanceOnly

@@ -12,7 +12,8 @@ from flask_cors import CORS
 
 dicWE_ON = getMotorWE_ONDic()
 dicWE_OFF = getMotorWE_OFFDic()
-notagstr = RailNodeInfo.NOTAG.name
+#strNOTAG = RailNodeInfo.NOTAG.name
+
 node_virtual_str = RailNodeInfo.NONE.name
 isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 app = Flask(__name__)
@@ -697,7 +698,7 @@ def callbackACK(recvData):
             rfidInstanceDefault()
             return
         
-        if curNode_type.find(notagstr) < 0 and curNodeID_fromPulse == endnode:
+        if curNode_type.find(strNOTAG) < 0 and curNodeID_fromPulse == endnode:
             rfidInstanceDefault()
             return
         

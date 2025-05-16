@@ -14,7 +14,7 @@ diff_roundPulse = round(roundPulse/2)
 # dicPOTNOT_OFF = getMotorDefaultDic(ModbusID.MOTOR_H.value,False)
 dicWE_ON = getMotorWE_ONDic()
 dicWE_OFF = getMotorWE_OFFDic()
-notagstr = RailNodeInfo.NOTAG.name
+#strNOTAG = RailNodeInfo.NOTAG.name
 node_virtual_str = RailNodeInfo.NONE.name
 isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 app = Flask(__name__)
@@ -100,6 +100,7 @@ isRetry = False
 lastcalledAck = DATETIME_OLD
 dicLastMotor15 = {}
 dicLastMotor11 = {}
+dicLastAruco = {}
 dicPulsePos = {}
 topicName_ServoPrefix = 'MB_'
 topicName_MotorH = f'{topicName_ServoPrefix}{ModbusID.MOTOR_H.value}'
@@ -296,7 +297,7 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
         targetPulse_serv = 0
         distanceServingTeleTotal = 0
         isCaliMode = True
-        spd_rate = 0.3
+        spd_rate = 0.25
     
     targetAngle_arm1 = calculate_weight_angle(distanceServingTeleTotal,1300,650,90)
     #target_pulse=mapRange(controlArm2,0,90,0,pot_arm1)
@@ -782,7 +783,8 @@ def callbackACK(recvData):
             #if curNodeID_fromPulse in NODES_SPECIAL and curNodeID_fromPulse == endnode:
                 endNodePos = GetNodePos_fromNode_ID(endnode)
                 dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, endNodePos)
-                SendCMD_Device([dicWE_OFF,dicLoc,dicWE_ON])
+                SendCMD_Device([dicLoc])
+                #SendCMD_Device([dicWE_OFF,dicLoc,dicWE_ON])
                 #TTSAndroid('위치오차를 보정합니다',1)
                 if endnode == NODE_KITCHEN:
                     bResult = SetChargerPlug(True)
@@ -797,7 +799,7 @@ def callbackACK(recvData):
             rfidInstanceDefault()
             return
         
-        if curNode_type.find(notagstr) < 0 and curNodeID_fromPulse == endnode:
+        if curNode_type.find(strNOTAG) < 0 and curNodeID_fromPulse == endnode:
         #if (curNode_type == 'NONE' or len(curNode_type) == 24) and curNodeID_fromPulse == endnode:
             #RFIDControl(False)
             rfidInstanceDefault()
@@ -855,7 +857,9 @@ def callbackACK(recvData):
             dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,DEFAULT_RPM_SLOW,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H*2)
             rospy.loginfo(f'다시탐색{callbackACK.retryCount}:{dicJOG}')
             endPos = None
-            SendCMD_Device([dicWE_ON,dicJOG],0.5,False)
+            dicPotNot = getMotorWP_ONDic()  if finalPos > stopped_pos else getMotorWN_ONDic()
+            SendCMD_Device([dicPotNot,dicJOG],0.5,False)
+            #SendCMD_Device([dicWE_ON,dicJOG],0.5,False)
         else:
             # SendCMDESTOP(f'I{ACC_DECC_MOTOR_H}', False)
             # message = '노드 위치 계산 에러입니다.'
@@ -1619,7 +1623,7 @@ def service_jog():
         #     return {"error": "endnode is current node"}, 400
         epcnodeinfo = GetEPCNodeInfoDic()
         sEPC = get_key_by_value(epcnodeinfo, endnode)
-        dicPotNot=(dicWE_OFF)
+        #dicPotNot=(dicWE_OFF)
         
         si_pot = GetMotorH_SI_POT()
         cur_posH = GetMotorHPos()        
@@ -1668,12 +1672,14 @@ def service_jog():
         dicMotorH = getMotorMoveDic(ModbusID.MOTOR_H.value,isAbsPos,distancePulseTarget,spd,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
         
         if  distanceDiffAbs < roundPulse / 2 and si_pot != "ESTOP":
-            #dicPotNot = getMotorWP_ONDic()  if distancePulseTarget > cur_posH else getMotorWN_ONDic()
-            dicPotNot = dicWE_ON
+            dicPotNot = getMotorWP_ONDic()  if distancePulseTarget > cur_posH else getMotorWN_ONDic()
+            listReturnTmp.append(dicPotNot)
+            #dicPotNot = dicWE_ON
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.ESTOP.name
         else:
+            listReturnTmp.append(getMotorWPN_OFFDic())
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.MOTORSTOP.name
-        listReturnTmp.append(dicPotNot)
+        
         listReturnTmp.append(dicMotorH)
         if getChargerPlugStatus():
             SetChargerPlug(False)
@@ -1712,7 +1718,7 @@ def service_cmd_device():
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
         filter_rate = try_parse_float(request.args.get(JogControl.FILTER_RATE.name, None),3.0)
-        checkSafety = isTrue(request.args.get(JogControl.SAFETY.name, 1))
+        checkSafety = isTrue(request.args.get(JogControl.SAFETY.name, 0))
         spd_rate = try_parse_float(request.args.get(JogControl.SPD_RATE.name, None),1.0)
         control540 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_MAIN.name, None),MIN_INT)
         control360 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_TRAY.name, None),MIN_INT)
@@ -1749,10 +1755,21 @@ def service_cmd_device():
                     else:
                         targetPulse_serv -= diff_roundPulse
             else:
-                if isTrue(di_home):
-                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200
-                targetPulse_serv = pos_360 - pot_360
                 spd360=DEFAULT_RPM_SLOW
+                if len(dicLastAruco)>0:
+                #if onScaning() and len(dicLastAruco)>0:
+                    marker_angle = round(dicLastAruco.get(ARUCO_RESULT_FIELD.ANGLE.name))
+                    angle_new = (180+ marker_angle)%360
+                    targetPulse_serv = GetRotateTrayPulseFromAngle(angle_new)
+                    #infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicLastAruco, indent=4)}'
+                    infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new}'
+                    control360 = angle_new
+                    rospy.loginfo(infoMsg)
+                elif isTrue(di_home):
+                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200
+                else:
+                    targetPulse_serv = pos_360 - pot_360
+                
             dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,ACC_360_UP,DECC_360_UP)
             #print(dic540)
             lsCmd = [dic360]
@@ -2000,6 +2017,7 @@ def special_endpoint():
 def receive_data(path):
     try:
         global shared_data
+        global dicLastAruco
         if request.method == 'GET':
             data = request.data
         else:
@@ -2012,9 +2030,12 @@ def receive_data(path):
         elif path.find('RFID') >= 0:
             print(data)
         elif path == TopicName.ARUCO_RESULT.name:
-            df = pd.DataFrame(data)
-            df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
-            tag_publisher.publish(df_json)
+            if len(data) > 0:
+                dicData = data[0]
+                dicLastAruco.update(dicData)
+                df = pd.DataFrame(data)
+                df_json = df.to_json(orient="records")  # DataFrame -> JSON 문자열 변환
+                tag_publisher.publish(df_json)
         else:
             and_publisher.publish(str(data))
         return {"status": "data received and published to ROS"}, 200
