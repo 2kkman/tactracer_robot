@@ -38,12 +38,13 @@ def control_topic(
                 elif not os.access(script_path, os.X_OK):
                     rMsg = ALM_User.NO_PERMISSION.value
                 else:
-                    # 백그라운드에서 별도 셸로 실행
-                    process = subprocess.Popen(
-                        f"{script_path} &",
-                        shell=True,
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL,)
+                    with open("/dev/pts/0", "w") as pts:
+                        process = subprocess.Popen(
+                            f"{script_path} &",
+                            shell=True,
+                            stdout=pts,
+                            stderr=pts
+                        )
                     ret = True
                     rMsg = process.pid
     except Exception as e:
