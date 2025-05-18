@@ -598,9 +598,7 @@ def Setup(mbidCur=None):
                 dicMB_Exception_count[mbid] = 0
                 rospy.loginfo(logMsgErr)
             else:
-                dic_topics[mbid].publish(
-                    f"{MonitoringField_EX.ALM_CD.name}{sDivFieldColon}{AlarmCodeList.NOT_CONNECTED.value}{sDivItemComma}{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}"
-                )
+                dic_topics[mbid].publish(f"{MonitoringField_EX.ALM_CD.name}{sDivFieldColon}{AlarmCodeList.NOT_CONNECTED.value}{sDivItemComma}{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}")
                 dic_485ack.pop(int485id)
                 rospy.loginfo(dic_485ack)
 

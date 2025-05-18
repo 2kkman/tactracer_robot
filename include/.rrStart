@@ -8,7 +8,8 @@ pkill -f roslaunch
 
 # 현재 호스트이름 확인
 HOSTNAME=$(hostname)
-
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
+/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/ros_fastapi_bridge/main.py &    
 # ITX 포함 여부 확인
 if [[ "$HOSTNAME" == *"ITX"* ]]; then
     echo "✅ Hostname contains 'ITX' → 전체 실행"
@@ -23,6 +24,4 @@ else
     echo "⚠️ Hostname does NOT contain 'ITX' → 일부만 실행"    
     roslaunch tta_blb BLB_start_itx.launch rviz:=false &
     
-/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/flask_ros/run.py &
-/usr/bin/python3 /root/catkin_ws/src/tactracer_robot/bumblebee/ros_fastapi_bridge/main.py &    
 fi

@@ -3218,7 +3218,7 @@ def getMotorSetPOTNOTString(mbid,not_pos=0,pot_pos = 0):
     )
     return sCmd
 
-def getMotorTorqueDic(mbid,tql=EMERGENCY_DECC):
+def getMotorTorqueDic(mbid,tql=100):
     strVal = getMotorTorqueString(mbid,tql)
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 
@@ -6074,3 +6074,5 @@ def upsert_table_record(csv_path: str, table_id, node_id, serving_distance, serv
 
 
 #upsert_table_record(strFileTableNodeEx, 107, 7, 892, 27)
+
+#API_SendCMD_Device(getMotorTorqueDic(15,200))
