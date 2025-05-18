@@ -82,7 +82,6 @@ startPos = 0
 endPos = None
 endnode= 0
 epcTotalView = pd.DataFrame()
-dfNodeInfo = pd.read_csv(strFileEPC_total, sep=sDivTab)
 dicPotInfo = getDic_FromFile(filePath_CaliPotConfig)
 pot_telesrv = dicPotInfo.get(str(ModbusID.TELE_SERV_MAIN.value))
 pot_arm1 = dicPotInfo.get(str(ModbusID.BAL_ARM1.value))
@@ -1584,9 +1583,6 @@ def service_jog():
         if spd < 0: 
             return {"error": "spd string is not valid."}, 400
         
-        # if distance_tmp is None and pulse_tmp is None:
-        #     return {"error": "distance and pulse is required."}, 400
-        
         if endnode_tmp is None:
             return {"error": "endnode is required."}, 400
         
@@ -1655,6 +1651,10 @@ def service_jog():
         #isCrossRailRunOK = isCrossRailDirection()        
         
         distancePulseTarget = GetNodePos_fromNode_ID(endnode)
+        if not isRealMachine:
+            bResult,bExecuteMsg=SendCMD_Device([getMotorLocationSetDic(ModbusID.MOTOR_H.value,distancePulseTarget)])
+            return {bResult: bExecuteMsg}, 200
+        
         if distancePulseTarget is None:
             return {"ERR": "endNode not found"}, 400      
         distanceDiffSigned = distancePulseTarget-(cur_posH)
@@ -1742,7 +1742,7 @@ def service_cmd_device():
             if control360 >=0:
                 targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
                 diff_serv = (targetPulse_serv - pos_360)
-                if control360 == 0:
+                if control360 == 0 and isRealMachine:
                     if diff_serv > 0:
                         targetPulse_serv += diff_roundPulse
                     else:
@@ -1785,7 +1785,7 @@ def service_cmd_device():
             if control540 >=0:
                 targetPulse_serv = GetRotateMainPulseFromAngle(control540)
                 diff_serv = (targetPulse_serv - pos_540)
-                if control540 == 0:
+                if control540 == 0 and isRealMachine:
                     if diff_serv > 0:
                         targetPulse_serv += diff_roundPulse
                     else:
@@ -2092,6 +2092,7 @@ def handle_connect():
         pass
     
 def publish_loop():
+    time.sleep(5) 
     while True:
         try:
             args_dict = {
@@ -2126,7 +2127,6 @@ def publish_loop():
             #print("CROSS response:", response.status_code, response.json())
         except Exception as e:
             print("Error calling /CROSS:", e)
-
         time.sleep(2)
 
 #@app.before_first_request

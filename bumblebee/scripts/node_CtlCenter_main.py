@@ -74,7 +74,6 @@ if __name__ == "__main__":
       raise ValueError(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
     else:
       rospy.loginfo(f"안드로이드 통신성공:{strResult_ANDROID}")
-
     if isRealMachine:
       # for p in psutil.process_iter(['name']):
       #   if 'mpv' in p.info['name']:

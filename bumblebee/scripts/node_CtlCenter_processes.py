@@ -1477,7 +1477,6 @@ def GenerateServingTableList():
                     pub_DF.publish(json_string)
                     STATUS_TASK = APIBLB_STATUS_TASK.NONE 
                     resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,STATUS_TASK)
-                    
                     PrintDF(df_result)
                     node_CtlCenter_globals.listBLB.extend(df_result.to_dict(orient='records'))
                 else:
@@ -1488,6 +1487,32 @@ def GenerateServingTableList():
                     # rospy.loginfo(df_result)
                     # node_CtlCenter_globals.listBLB.extend(df_result.to_dict(orient='records'))
                     node_CtlCenter_globals.listBLB.extend(lsSeqNode)
+                    dfPath = pd.DataFrame(lsSeqNode)
+                    print(dfPath)   
+                
+                print(node_CtlCenter_globals.listBLB[-1])
+                dicStartNode = node_CtlCenter_globals.listBLB[0]
+                dicTarget = node_CtlCenter_globals.listBLB[-1]
+                targetNode = dicTarget['END_NODE']
+                targetNodeInfo= GetNodeDic_fromNodeID(targetNode)
+                targetPOS = targetNodeInfo[MotorWMOVEParams.POS.name]
+                
+                targetNodeInfo= GetNodeDic_fromNodeID(targetNode)
+                if targetNodeInfo is None:
+                    rospy.loginfo(f"타겟노드 정보가 없습니다. {targetNode}")
+                    raise ValueError(f"타겟노드 정보가 없습니다. {targetNode}")
+                targetNodeType = targetNodeInfo[RFID_RESULT.EPC.name]
+                if targetNodeType.find(strNOTAG) < 0:   #도그가 없는 가상 노드가 목적지인 경우 목적지에서 가장 가까운 도그가 있는 노드를 경유한다
+                    dicNodeNear = GetNodeDicFromPos(dfNodeInfo,targetPOS,True)
+                    nearNode = dicNodeNear[TableInfo.NODE_ID.name]
+                    isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
+                    if not isPathValid: 
+                        lsNode1,listSeqMapOrg1=getSeqMap(dicStartNode['START_NODE'],nearNode)
+                        lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
+                        node_CtlCenter_globals.listBLB.clear()
+                        node_CtlCenter_globals.listBLB.extend(lsNode1)
+                        node_CtlCenter_globals.listBLB.extend(lsNode2)
+
                 #if True:
                 if nodeTarget_local not in node_CtlCenter_globals.lsNoLiftDownNodes:
                 #if nodeTarget_local != node_CHARGING_STATION:

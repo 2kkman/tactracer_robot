@@ -114,6 +114,7 @@ strFileTableSpd = f"{dirCommonMap}/DF_SPEEDTABLE_ITX.txt"
 strFileCross = f"{dirCommonMap}/CROSS.txt"
 strFileShortCut = f"{dirCommonMap}/SHORTCUT.txt"
 strFileShortCutTemp = f"{dirCommonMap}/SHORTCUT_Temp.txt"
+dfNodeInfo = pd.read_csv(strFileEPC_total, sep=sDivTab)
 
 
 BLB_SVR_IP_DEFAULT=ip_dict[IPList.BLB_SVR_IP.name]
@@ -3658,116 +3659,21 @@ def GetNodePos_fromNode_ID(node_id):
     result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, MotorWMOVEParams.POS.name)
     return result
 
+def GetNodeDic_fromNodeID(node_id):
+    filtered = dfNodeInfo[dfNodeInfo[TableInfo.NODE_ID.name].astype(str) == str(node_id)]
+    if filtered.empty:
+        return None
+    return filtered.iloc[-1].to_dict()
+
+#print(GetNodeDic_fromNodeID(3))
+
 def GetEPC_Loc_Master(epc):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
     #epcnodeinfo = df_to_dict_int_values(df, MAPFIELD.EPC.name, MonitoringField.CUR_POS.name)
     result=get_last_value_for_key(df, MAPFIELD.EPC.name, epc,MotorWMOVEParams.POS.name)
     return result
-  
-# class ServoMonitorLOC(Enum):
-#     # ServoMonitorLOC_Addr = 0x602A
-#     # ServoMonitorLOC_Items = ['LOC_CMD_1', 'LOC_CMD_2', 'LOC_MOT_1', 'LOC_MOT_2',4,5]
-#     ServoMonitorLOC_Addr = 0x6200
-#     ServoMonitorLOC_Items = [
-#         "PRO_MODE",
-#         "LOCCMD_1",
-#         "LOCCMD_2",
-#         "SPD_CMD",
-#         "ACC_TIME",
-#         "DEC_TIME",
-#     ]
-#     ServoMonitorLOC_Len = len(ServoMonitorLOC_Items)
-
-
-# class ServoMonitorALM(Enum):
-#     ALM_CD = 0
-#     ALM_STR = "READY"
-#     ServoMonitorALM_Addr = 0x0B03
-#     ServoMonitorALM_Items = [
-#         "ALM",
-#         "MOTOR_FACTOR",
-#         "DRV_STATE",
-#         "ACTU_SPD",
-#         "ACT_TORQ",
-#         "ACT_CURRENT",
-#         "ACTF_SPD",
-#         "DC_VOLT",
-#         "DRV_TEMPER",
-#         12,
-#         13,
-#         14,
-#         "OVERLOAD_RATIO",
-#         "REGENLOAD_RATIO",
-#         17,
-#         18,
-#         19,
-#         20,
-#         21,
-#         22,
-#         23,
-#         24,
-#         25,
-#         26,
-#         27,
-#         "LOCMOT_1",
-#         "LOCMOT_2",
-#         "DEVI_ENC_1",
-#         "DEVI_ENC_2",
-#         30,
-#         31,
-#     ]
-#     # ServoMonitorALM_Items = ['ALM', 'MOTOR_FACTOR', 'DRV_STATE', 'ACTU_SPD','ACT_TORQ','ACT_CURRENT', 'ACTF_SPD', 'DC_VOLT'
-#     # ,'DRV_TEMPER', 12,13,14,'OVERLOAD_RATIO', 'REGENLOAD_RATIO', 'DIN_STATUS', 'DOUT_STATUS', 19, 'LOCCMD_1'
-#     # , 'LOCCMD_2','PULSE_1','PULSE_2', 'DEVI_CMD_1','DEVI_CMD_2','LOCENC_1'
-#     # , 'LOCENC_2','LOCMOT_1', 'LOCMOT_2','DEVI_ENC_1','DEVI_ENC_2','POS_RORATION_1','POS_RORATION_2']
-#     ServoMonitorALM_Len = len(ServoMonitorALM_Items)
-
-
-# class ServoMonitorStatus(Enum):
-#     NAME = "MONITOR_STATUS"
-#     STATUS_ADDR = 0x6002
-#     ERR01 = 0x01
-#     ERR20 = 0x20
-#     ERR40 = 0x40
-#     READY = 0  # 위치 지정이 완료되고 새 데이터를 수신 할 수 있음을 나타냄 Ready
-#     MOVING = 0x100  # 경로가 실행 중임을 표시 Moving
-#     FINISHING = 0x200  # 경로가 실행 중임을 표시 Moving
-
-#ip_dict = {item.name: item.value for item in IPList}
-
-class PIN_BCM(Enum):
-    FORCELIFT_I = 26
-    LOGO_O = 17
-    NEST_DOCK_I = 16
-    MAIN_DOCK_I = 19
-    NEST_CHARGE_O = 22
-    MAIN_CHARGE_O = 27
-    USB_SHARE_O = 10
-    SERVO_PWM = 18
-    BREAK_PWM = 13
-    BREAK_O = 4
-    BREAK_H_O = 20
-    BREAK_EVT_H_I = 5
-    BREAK_EVT_V_I = 6
-    ARD_ENABLE_O = 9
-    # ARD_21_I = 5
-    # ARD_20_I = 6
-    ARD_19_I = 26
-    SMOOTH_EVT_H_I = 23
-    SMOOTH_EVT_V_I = 24
-    ARD_10_I = 25
-
-    def GetEnumValue(strCurrent):
-        sCurrent = str(strCurrent)
-        for s in PIN_BCM:
-            sCurrentTmp = str(s)
-            if sCurrent.endswith(sCurrentTmp):
-                return s.value
-        return -1
 
 def getSpeedTableInfo(MBID, k,adjustRate=1.0,file_path = strFileTableSpd):
-    # if tableNo == node_CHARGING_STATION:
-    #     tableNo = 'H1'
     MBIDKey = MotorWMOVEParams.MBID.name
     df_manager = DataFrameManager(file_path)
     df = df_manager.filter_by_key(MBIDKey, (MBID))

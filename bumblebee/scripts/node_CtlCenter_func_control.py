@@ -701,23 +701,17 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
     pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
     listBLBTmp = []
     if isUp:    #수축-리프트업
-        # dicCali360 = getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value)
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, DECC_360_UP)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsLiftUp = GetListLiftUp()
-        #lsLiftUp.append(dicRotate360)
         isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
         listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
-        # if not isTrue(isHome):
-        #     listBLBTmp.append([dicCali360]) #트레이를 돌리고
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, ACC_DECC_LONG)
         listBLBTmp.append([dicRotate360]) #트레이를 돌리고
         listBLBTmp.append(lsArmControl) #밸런스암 수축
     else:   #전개-리프트다운
         lsRotate540_down = getListedDic(GetDicRotateMotorMain(serve_angle))
-        #dicRotate360_down = GetDicRotateMotorTray(marker_angle,ACC_360_DOWN, DECC_360_DOWN)
         dicRotate360_down = GetDicRotateMotorTray(marker_angle,SPD_360,ACC_360_DOWN, DECC_360_DOWN)
-        #x,y = calculate_coordinates(serve_distance_mm,serve_angle)
         lsArmControl = GetStrArmExtendMain(serve_distance_mm,serve_angle,False)
         lsRotate360_down = [dicRotate360_down]
         lsLiftDown = GetListLiftDown(height_pulse)
@@ -726,13 +720,6 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
         listBLBTmp.append(lsArmControl) #서빙-밸런스 전개하고
         listBLBTmp.append([dicRotate360_down])   
         listBLBTmp.append(lsLiftDown)   
-
-        # if IsEnableSvrPath():
-        #     listBLBTmp.append(lsRotate360_down)   #지정된 각도에 따라 돌리고
-        # else:
-        #     listBLBTmp.append([dicRotate360_down])   
-        #     listBLBTmp.append(lsLiftDown)   
-        # #listBLBTmp.append(lsLiftDown)   #리프트를 내리면서 아르코 마커의 각도에 따라 내린다.
     return listBLBTmp
 
 # def LiftDown():
