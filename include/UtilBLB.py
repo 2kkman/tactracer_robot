@@ -202,8 +202,8 @@ STROKE_MAX = 320000
 STROKE_MM = 1300
 STROKE_MIN = 0
 
-SERVING_ANGLE_MAX = 649800
-MARKER_ANGLE_MAX = 833146
+# SERVING_ANGLE_MAX = 649800
+# MARKER_ANGLE_MAX = 833146
 ANGLE_FULL = 360
 #dirPath2 = getConfigPath(UbuntuEnv.ITX.name)
 dirPath2 = dirCommonMotor
@@ -922,7 +922,7 @@ class DisconnectedNodeError(GraphError):
         super().__init__(self.message)
 
 
-def generate_table_info(new_csv_path: str, table_info_path: str):
+def generate_table_info(new_csv_path: str, table_info_path: str,pot_540,pot_360):
     # CSV 로드
     df = pd.read_csv(new_csv_path, sep='\t')
 
@@ -936,10 +936,10 @@ def generate_table_info(new_csv_path: str, table_info_path: str):
     df[TableInfo.SERVING_DISTANCE.name] = ((df["MB_11"] + 200000) * STROKE_MM / (STROKE_MAX - STROKE_MIN)).round().astype(int)
 
     # SERVING_ANGLE 계산
-    df[TableInfo.SERVING_ANGLE.name] = (df["MB_27"] * ANGLE_FULL / SERVING_ANGLE_MAX).round().astype(int)
+    df[TableInfo.SERVING_ANGLE.name] = (df["MB_27"] * ANGLE_FULL / pot_540).round().astype(int)
 
     # MARKER_ANGLE 계산
-    df[TableInfo.MARKER_ANGLE.name] = (df["MB_31"] * ANGLE_FULL / MARKER_ANGLE_MAX).round().astype(int)
+    df[TableInfo.MARKER_ANGLE.name] = (df["MB_31"] * ANGLE_FULL / pot_360).round().astype(int)
 
     # LIFT_V 계산
     df[TableInfo.HEIGHT_LIFT.name] = df["MB_6"]
@@ -1321,8 +1321,11 @@ def SendAlarmHTTP(alarmMsg, tts=True, TTS_IP=BLB_ANDROID_IP_DEFAULT):
     return rs
 
 def logSSE_error(msg):
-    logger_api.info(log_all_frames(msg))
+    logger_api.error(log_all_frames(msg))
     SendAlarmHTTP(msg,True,BLB_ANDROID_IP_DEFAULT)
+
+def logSSE_info(msg):
+    logger_api.info(log_all_frames(msg))
 
 infoMsg = ''
 def SendInfoHTTP(strResult):
@@ -1797,6 +1800,7 @@ class APIBLB_ACTION_REPLY(Enum):
     E109 = 'Overload error,too much foods in the tray.'   #알람이 감지된 상태에서 모터 제어 명령어를 보내면 응답
     E110 = 'MotorH is paused.'   #주행중지 모드 (관절 및 리프트만 동작)
     E111 = 'Not able to lift down cause table is not clean.'    #서빙 테이블 장애물로 트레이를 내리지 못하는 상태
+    E112 = 'MotorH is not finished'
 
 class MonitoringField_EX(Enum):
     def __init__(
@@ -3754,6 +3758,23 @@ def pulse_to_angle(pulse_count, total_pulses=10000, max_angle=540):
     return round(angle)
 
 
+def pulse_to_angle_sse(pulse, pulses_per_revolution=650000):
+    """
+    펄스를 0~359 범위의 정수 각도로 변환한다.
+    """
+    angle_per_pulse = 360.0 / pulses_per_revolution
+    raw_angle = pulse * angle_per_pulse
+    wrapped_angle = raw_angle % 360  # 항상 0~359.999...
+    return int(round(wrapped_angle)) % 360  # 정수로 반올림 후 0~359 보장
+
+# # 예시 테스트
+# print(pulse_to_angle(0))           # 0
+# print(pulse_to_angle(325000))      # 180
+# print(pulse_to_angle(650000))      # 0
+# print(pulse_to_angle(975000))      # 180
+# print(pulse_to_angle(-325000))     # 180
+# print(pulse_to_angle(-100000))     # 304
+
 def angle_to_pulse(angle, total_pulses=10000, max_angle=540):
     angle = float(angle)
     total_pulses = int(total_pulses)
@@ -5546,8 +5567,22 @@ def RFIDPwr(enable : int):
             bReturn,strResult = API_call_http(BLB_RFID_IP,HTTP_COMMON_PORT,"rfid",f'pwr={enable}')
     return bReturn,strResult
 
-def API_ResetQBI():
-    bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,"MANAGEMENT_SBC",f'scr=.rrStartqbi')
+def API_ResetQBI(isCoolReset=False):
+    if isCoolReset:
+        bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'scr=.rrStartqbi')
+    else:
+        bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'cli=reboot')
+    return bReturn,strResult
+
+def API_ResetITX(isCoolReset=False):
+    if isCoolReset:
+        bReturn,strResult = API_call_http(IP_MASTER,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'cli=reboot')
+    else:
+        bReturn,strResult = API_call_http(IP_MASTER,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'scr=.rrStart')
+    return bReturn,strResult
+
+def API_ResetAndroid():
+    bReturn,strResult = bReturn,strResult = API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,f'reset=1')
     return bReturn,strResult
 
 def API_MoveH(POS,spd,endnode):
@@ -5580,13 +5615,25 @@ def API_SendCMD_Device(sendbuf:list):
     bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
     return bReturn,strResult
 
-def API_MoveArms(distance:int,spd_rate:float):
-    msg = f"{JogControl.CONTROL_3ARMS.name}={distance}&{JogControl.SPD_RATE.name}={spd_rate}"
+def API_MoveArms(distance:int,spd_rate:float,tray_angle = None):
+    #msg = f"{JogControl.CONTROL_3ARMS.name}={distance}&{JogControl.SPD_RATE.name}={spd_rate}"
+    dictParam = {JogControl.CONTROL_3ARMS.name:distance,
+                JogControl.SPD_RATE.name:spd_rate
+                }
+    angle360 = try_parse_int(tray_angle,MIN_INT)
+    if angle360 != MIN_INT:
+        dictParam[JogControl.CONTROL_ROTATE_TRAY.name] = angle360
+    msg=urllib.parse.urlencode(dictParam)    
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
     bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
     return bReturn,strResult
 
+# fieldvalue = f'q={BLD_PROFILE_CMD.WLOC_NOT.value}'
+# print(API_call_http(GetMasterIP(), HTTP_COMMON_PORT, 'CMD_DEVICE', fieldvalue))
+
+# bResult, bStrMsg = API_MoveArms(700, 1,345)
+# print(bResult, bStrMsg)
 def SetIMUInterval(time_ms):
     calStr = time_ms
     API_call_Android(BLB_ANDROID_IP_DEFAULT,HTTP_COMMON_PORT,f'time={calStr}')
@@ -5978,6 +6025,24 @@ def upsert_table_record(csv_path: str, table_id, node_id, serving_distance, serv
     df.to_csv(csv_path, index=False, sep='\t')
     return df
 
+def find_most_similar_table_id(node_id, serving_distance, serving_angle):
+    df = pd.read_csv(strFileTableNodeEx, sep=sDivTab)
+    # NODE_ID가 일치하는 행 필터링
+    subset = df[df['NODE_ID'] == node_id]
+    if subset.empty or (serving_distance < 150 and serving_angle == 0):
+        return "None"  # 일치하는 NODE_ID가 없으면 None 반환
+
+    # 거리 및 각도 차이 계산
+    subset = subset.copy()
+    subset['DIST_DIFF'] = np.abs(subset['SERVING_DISTANCE'] - serving_distance)
+    subset['ANGLE_DIFF'] = np.abs(subset['SERVING_ANGLE'] - serving_angle)
+
+    # 거리와 각도의 가중치를 조정할 수 있음 (필요시)
+    subset['TOTAL_DIFF'] = subset['DIST_DIFF'] + subset['ANGLE_DIFF']  # 단순 합산
+
+    # TOTAL_DIFF가 가장 작은 행의 TABLE_ID 반환
+    most_similar = subset.loc[subset['TOTAL_DIFF'].idxmin()]
+    return most_similar['TABLE_ID']
 
 #upsert_table_record(strFileTableNodeEx, 107, 7, 892, 27)
 

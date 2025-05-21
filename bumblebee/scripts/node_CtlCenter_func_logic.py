@@ -80,11 +80,15 @@ def GetHeightDiffTray():
       #print(f"장애물 내 상대적인 높이 차이: {height_diff:.2f} m")
       node_CtlCenter_globals.last_detect_3d = None
 
+def GetPositionInfo(strKey):
+  return node_CtlCenter_globals.dicLast_POSITION_INFO.get(strKey, None)
+
 def GetCrossInfo(strKey):
   return node_CtlCenter_globals.dic_CROSSINFO.get(strKey, None)
 
 def SetCrossInfo(strKey, strValue): 
   node_CtlCenter_globals.dic_CROSSINFO[strKey] = strValue
+
 
 def isChargeSensorOn():
   chargerSensorState = GetCrossInfo(SMARTPLUG_INFO.GPI1_CHARGE.name)
@@ -545,14 +549,16 @@ def SetCurrentNode(flag_bool):
     
   sEPC = get_key_by_value(node_CtlCenter_globals.EPCNodeInfo, result)
   
-  if not isRealMachine and sEPC is not None:
-    dictEPC = { MAPFIELD.EPC.name : sEPC }
-    API_public_strtopic(f'/{TopicName.RFID.name}', dictEPC)
+  # if not isRealMachine and sEPC is not None:
+  #   dictEPC = { MAPFIELD.EPC.name : sEPC }
+  #   API_public_strtopic(f'/{TopicName.RFID.name}', dictEPC)
   if result != MIN_INT and sEPC is not None:
     SendInfoHTTP(sMsg + sEPC)
 
 def GetCurrentNode():
-  return node_CtlCenter_globals.node_current
+  #return node_CtlCenter_globals.node_current
+  return node_CtlCenter_globals.dicLast_POSITION_INFO.get(TableInfo.NODE_ID.name, -1)
+  
 
 def SetTableTarget(tableNo):
   sMsg = log_all_frames(logmsg=tableNo,max_frames=5)
@@ -583,7 +589,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
     if flag_bool:
       node_CtlCenter_globals.flag_WaitConfirm =flag_bool
       
-    lsCurTable,curNode = GetCurrentTableNode()
+    curTable,curNode = GetCurrentTableNode()
     table_target = GetTableTarget()
     dfReceived = GetDF(table_target)
     if dfReceived is not None or reason != AlarmCodeList.JOB_COMPLETED:
@@ -593,7 +599,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
     if dfReceived is None and IsEnableSvrPath() and GetWaitConfirmFlag() == flag_bool:
       return
       
-    sMsg = f"reason={reason},tabletarget={table_target},curnode:{curNode},curTable:{lsCurTable},Flag:{flag_bool},{sys._getframe(0).f_code.co_name}:{sys._getframe(1).f_code.co_name}:{sys._getframe(2).f_code.co_name}"
+    sMsg = f"reason={reason},tabletarget={table_target},curnode:{curNode},curTable:{curTable},Flag:{flag_bool},{sys._getframe(0).f_code.co_name}:{sys._getframe(1).f_code.co_name}:{sys._getframe(2).f_code.co_name}"
     rospy.loginfo(sMsg)
     STATUS_TASK=APIBLB_STATUS_TASK.Completed
     if reason == AlarmCodeList.JOB_COMPLETED:
@@ -633,18 +639,18 @@ def SetWaitConfirmFlag(flag_bool, reason):
         dfReceived[APIBLB_FIELDS_TASK.orderstatus.name] = STATUS_TASK.value
         PrintDF(dfReceived)
         dicLast = dfReceived.iloc[-1]
-        
         taskid_current = int(dicLast[APIBLB_FIELDS_TASK.taskid.name])
         tableid_current = dicLast[APIBLB_FIELDS_TASK.endnode.name]
         table_target_tts = table_target if try_parse_int(table_target, MIN_INT) == MIN_INT else f'T{table_target}'
-        if table_target in lsCurTable:
+        if is_equal(table_target ,curTable):
+        #if table_target in lsCurTable:
           if STATUS_TASK == APIBLB_STATUS_TASK.Completed:
             TTSAndroid(f'{table_target_tts}완료')
           else:
             TTSAndroid(f'{table_target_tts}실패')
           #time.sleep(1)
         else:
-          TTSAndroid(f'현재 테이블 {lsCurTable}, 목적지는 {table_target_tts}입니다')
+          TTSAndroid(f'현재 테이블 {curTable}, 목적지는 {table_target_tts}입니다')
         data_list = dfReceived.to_dict(orient="records")
         json_string = json.dumps(data_list)
         pub_DF.publish(json_string)
@@ -706,11 +712,12 @@ def GetCurrentTargetTable():
   #   return HOME_TABLE,node_KITCHEN_STATION
   
 def GetCurrentTableNode():
-    node_current = GetCurrentNode()
-    if node_current is None:
-      print('Node error')
-    end_node = node_current
-    return GetTableFromNode(end_node), end_node
+    # node_current = GetCurrentNode()
+    # if node_current is None:
+    #   print('Node error')
+    curTable = node_CtlCenter_globals.dicLast_POSITION_INFO.get(TableInfo.TABLE_ID.name, -1)
+    #return GetTableFromNode(end_node), end_node
+    return curTable,  GetCurrentNode()
   
 def GetTargetTableNode():
     if len(node_CtlCenter_globals.lsNodeHistory) > 0:
@@ -798,6 +805,9 @@ def GetTiltStatus():
   rs = list(TRAY_TILT_STATUS)[closest_idx]  
   return rs
 
+def onScan():
+  return True if GetTiltStatus() == TRAY_TILT_STATUS.TiltDown else False
+  
 def GetArucoMarkerInfo(tableNo=None):
     tableNo = try_parse_int(tableNo)
     if tableNo == 0:

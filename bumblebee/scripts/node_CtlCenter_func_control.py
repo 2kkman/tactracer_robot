@@ -255,10 +255,11 @@ def getMainRotateDicByNode(endNode):
         target_angle = 180
     return GetDicRotateMotorMain(target_angle)
 
-def GetRotateTrayAngleFromPulse(target_pulse):
-  potRotate360, notRotate360, posRotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-  angle = mapRange(target_pulse,notRotate360,potRotate360,0,MAX_ANGLE_TRAY)
-  return round(angle)
+# def GetRotateTrayAngleFromPulse(target_pulse):
+#   #target_pulse = strToRoundedInt(target_pulse)
+#   potRotate360, notRotate360, posRotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
+#   angle = mapRange(target_pulse,notRotate360,potRotate360,0,MAX_ANGLE_TRAY)
+#   return round(angle)
 
 def GetRotateTrayPulseFromAngle(angleStr):
   angle = (strToRoundedInt(angleStr)) % 360
@@ -688,27 +689,49 @@ def GetStrArmExtendMain(distanceServingTotal, angle_degrees, bUseCurrentPosition
 def GetListLiftDown(pot_lift=None):
     if pot_lift is None:
         pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
-    lsLiftDown = getListedDic(getMotorMoveDic(ModbusID.MOTOR_V.value, True, pot_lift,SPD_LIFT,ACC_LIFT_DOWN,DECC_LIFT_DOWN))
-    return lsLiftDown
+    return [getMotorMoveDic(ModbusID.MOTOR_V.value, True, pot_lift,SPD_LIFT,ACC_LIFT_DOWN,DECC_LIFT_UP)]
+    #lsLiftDown = getListedDic(getMotorMoveDic(ModbusID.MOTOR_V.value, True, pot_lift,SPD_LIFT,ACC_LIFT_DOWN,DECC_LIFT_DOWN))
+    #return lsLiftDown
 
 def GetListLiftUp():
     pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
-    lsLiftUp = getListedDic(getMotorMoveDic(ModbusID.MOTOR_V.value, True, not_lift,SPD_LIFT,ACC_LIFT_UP,DECC_LIFT_UP))
-    return lsLiftUp
+    return [getMotorMoveDic(ModbusID.MOTOR_V.value, True, not_lift,SPD_LIFT,ACC_LIFT_UP,DECC_LIFT_UP)]
+    # lsLiftUp = getListedDic(getMotorMoveDic(ModbusID.MOTOR_V.value, True, not_lift,SPD_LIFT,ACC_LIFT_UP,DECC_LIFT_UP))
+    # return lsLiftUp
 
 def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
-    log_all_frames(isUp)
-    pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
+    if IsEnableSvrPath() or not isRealMachine:
+        return GetLiftControlRealMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
+    else:
+        return GetLiftControlScanMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
+
+def GetLiftUpControl():
     listBLBTmp = []
-    if isUp:    #수축-리프트업
+    if GetPositionInfo(TableInfo.SERVING_DISTANCE.name) < 1000:
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, DECC_360_UP)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsLiftUp = GetListLiftUp()
-        isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
+        #isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
         listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, ACC_DECC_LONG)
         listBLBTmp.append([dicRotate360]) #트레이를 돌리고
         listBLBTmp.append(lsArmControl) #밸런스암 수축
+    else:
+        dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, ACC_DECC_LONG)
+        lsArmControl = GetStrArmExtendMain(0,0,True)
+        lsArmControl.append(dicRotate360)
+        lsLiftUp = GetListLiftUp()
+        #isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
+        listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
+        listBLBTmp.append(lsArmControl) #밸런스암 수축
+    return listBLBTmp        
+    
+def GetLiftControlScanMode(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
+    log_all_frames(isUp)
+    #pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
+    listBLBTmp = []
+    if isUp:    #수축-리프트업
+        listBLBTmp.extend(GetLiftUpControl())
     else:   #전개-리프트다운
         lsRotate540_down = getListedDic(GetDicRotateMotorMain(serve_angle))
         dicRotate360_down = GetDicRotateMotorTray(marker_angle,SPD_360,ACC_360_DOWN, DECC_360_DOWN)
@@ -722,29 +745,24 @@ def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, mark
         listBLBTmp.append(lsLiftDown)   
     return listBLBTmp
 
-# def LiftDown():
-#   rospy.loginfo(
-#       f"Called : {sys._getframe(0).f_code.co_name}-{sys._getframe(1).f_code.co_name}-{sys._getframe(2).f_code.co_name}"
-#   )
-#   #node_CtlCenter_globals.listBLB.extend(GetLiftControlUp())
-#   node_CtlCenter_globals.listBLB = GetLiftControlDown()
-#   # node_CtlCenter_globals.curBLB_Status = (
-#   #     BLB_STATUS_FIELD.LIFTING_UP
-#   # )
-#   node_CtlCenter_globals.cmdIdx = 0
-#   node_CtlCenter_globals.is_docked = True
-#   node_CtlCenter_globals.is_lifted = False
-#   node_CtlCenter_globals.flag_liftup = (
-#       False  # 상승 명령어가 들어갔으니 플래그 OFF
-#   )  
-
-# def LiftUp():
-#   node_CtlCenter_globals.listBLB = GetLiftControlUp()
-#   #node_CtlCenter_globals.listBLB.extend(GetLiftControlDown())
-#   node_CtlCenter_globals.cmdIdx = 0
-#   node_CtlCenter_globals.flag_liftup = True
-#   node_CtlCenter_globals.is_docked = False
-#   node_CtlCenter_globals.is_lifted = True  
+def GetLiftControlRealMode(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
+    log_all_frames(isUp)
+    #pot_lift, not_lift = GetPotNotServo(ModbusID.MOTOR_V)
+    listBLBTmp = []
+    if isUp:    #수축-리프트업
+        listBLBTmp.extend(GetLiftUpControl())
+    else:   #전개-리프트다운
+        lsRotate540_down = getListedDic(GetDicRotateMotorMain(serve_angle))
+        dicRotate360_down = GetDicRotateMotorTray(marker_angle,SPD_360,ACC_360_DOWN, DECC_360_DOWN)
+        lsArmControl = GetStrArmExtendMain(serve_distance_mm,serve_angle,False)
+        lsArmControl.append(dicRotate360_down)
+        #lsRotate360_down = [dicRotate360_down]
+        lsLiftDown = GetListLiftDown(height_pulse)
+        #lsRotate360_down.extend(lsLiftDown)
+        listBLBTmp.append(lsRotate540_down) #몸통회전해서 각 잡고
+        listBLBTmp.append(lsArmControl) #서빙-밸런스 전개하고
+        listBLBTmp.append(lsLiftDown)   
+    return listBLBTmp
 
 def GetCustomFileControl(strProfileName: str):
     listBLBTmp = []

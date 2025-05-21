@@ -208,6 +208,11 @@ def RunListBlbMotorsEx(listBLB):
         #종료코드는 IsPOT == 1 이어야 위치결정이 완료된것임. 수정할것
         #현재노드가 NONE 타입 이라면 한번에 멈출 예정.
         #가장 인접한 노드에서 move 명령어를 한번 더 내보낸다.
+        curNode_Type = node_CtlCenter_globals.dicLast_POSITION_INFO[RFID_RESULT.EPC.name]
+        curNode_diPot = node_CtlCenter_globals.dicLast_POSITION_INFO[MonitoringField.DI_POT.name]
+        if curNode_Type.find(strNOTAG) >= 0 and is_equal(curNode_diPot,0) and isRealMachine:
+            return APIBLB_ACTION_REPLY.E112
+        
         filtered_data = [item for item in dicInfo_local if item]
         if len(filtered_data) > 0:
             #print(dicInfo_local)
@@ -444,7 +449,7 @@ def RunListBlbMotorsEx(listBLB):
                     #     StopEmergency(ALM_User.TRAY360_SAFETY.value)
                     #     return APIBLB_ACTION_REPLY.E102
                     #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
-                    tray_angle = GetRotateTrayAngleFromPulse(iPOS)
+                    tray_angle = pulse_to_angle_sse(iPOS)
                     if abs(tray_angle) > 0:
                         if dicAruco:
                             marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
@@ -515,7 +520,12 @@ def RunListBlbMotorsEx(listBLB):
             sMsg = f'리프트컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isArmControl:
-            bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
+            if dfReceivedNew[MotorWMOVEParams.MBID.name].astype(str).isin([str(ModbusID.ROTATE_SERVE_360.value)]).any():
+                sPosTray = get_last_value_for_key(dfReceivedNew, MotorWMOVEParams.MBID.name, str(ModbusID.ROTATE_SERVE_360.value),MotorWMOVEParams.POS.name)
+                sPosAngle = pulse_to_angle_sse(int(sPosTray),pot_31)
+                bResult, bStrMsg = API_MoveArms(distance_target, adjustrate,sPosAngle)
+            else:
+                bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
             #dfBackUp = listBLB.pop(0)
             bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'암컨트롤:{bResult},{bStrMsg}'

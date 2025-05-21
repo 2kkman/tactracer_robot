@@ -33,9 +33,6 @@ class CtlCenter():
     def CTL_BLB(self, req):
         message = req.message
         bReturnAPI = APIBLB_ACTION_REPLY.R101
-        #if message != APIBLB_FIELDS_ACTION.resume.name:
-        # if message != APIBLB_FIELDS_ACTION.cancel.name:
-        #   rospy.loginfo(f'{message} from {sys._getframe(0).f_code.co_name}')
         try:
             lsModbus = BLB_CMD_Profile(message)
             if isinstance(lsModbus, list) and len(lsModbus) > 0:
@@ -56,17 +53,19 @@ class CtlCenter():
         return utilboxDataResponse(True if bReturnAPI == APIBLB_ACTION_REPLY.R101 else False, returnMsg)
 
 AppendTableHistory(GetTableTarget())
-ReloadSvrTaskList()
-LightWelcome(False)
 
 if __name__ == "__main__":
     if IsEnableSvrPath():
+      ReloadSvrTaskList()
       SetCurrentTable()
       API_SetCurrentNode()
     rospy.init_node(node_name, anonymous=False)
     CtlCenter()
     rospy.loginfo(f"{node_name} Started")     
     #runFromLaunch = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
+    LightWelcome(False)
+
+    
     bReturn_ANDROID,strResult_ANDROID=API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'svrip={IP_MASTER}')
     if not bReturn_ANDROID:
       rospy.loginfo(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
@@ -254,7 +253,7 @@ if __name__ == "__main__":
                   SendStatus(blbStatus)
                 node_CtlCenter_globals.lastMainLoopTimeStamp = getDateTime()
                 #배터리 저전압 등 체크는 n초마다 한번씩
-                if iCnt5s % 10 == 0:
+                if iCnt5s % 5 == 0:
                   CheckETCActions()
                 #TODO 동적 밸런싱 기능 - 중량에 따른 밸런싱암 길이 조절
                 # if GetWaitConfirmFlag():z

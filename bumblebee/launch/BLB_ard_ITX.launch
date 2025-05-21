@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="$(env CONFIG)_ard" pkg="tta_blb" type="node_ArdDummy.py" respawn="False" output="log" /> 
+  <node name="$(env CONFIG)_SSE" pkg="tta_blb" type="node_ArdDummy.py" respawn="False" output="log" /> 
 </launch>

@@ -186,7 +186,7 @@ SERVING_ARM_EXPAND_CONSTANT = 0
 SERVING_ARM_BALANCE_PULSE = 530000
 SERVING_ARM_EXPAND_PULSE = 200000
 DefaultGndDistance = 0.56
-
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
 if not isRealMachine:
     BLB_ANDROID_IP = '172.30.1.22'
 if isFileExist(strFileDistanceArm):
@@ -280,7 +280,7 @@ print("LoadMap in", time.time() - start, "seconds")
 #lsNoLiftDownNodes.extend(StateInfo.keys())
 #lsNoLiftDownNodes.extend([10])
 #lsNoLiftDownNodes.append(node_CHARGING_STATION)
-
+print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
 lastPath = []
 dicSTROKE={}
 #dicSTROKE[ModbusID.TELE_SERV_INNER] = STROKE_INNER
@@ -304,8 +304,8 @@ dicInv_last = {}
 lsNodeHistory = []
 spdMode = BLB_CMD_MODE.FAST
 node_id = 0
-position = Pose2D(x=0.0, y=0.0)
-print("position2d in", time.time() - start, "seconds")
+# position = Pose2D(x=0.0, y=0.0)
+# print("position2d in", time.time() - start, "seconds")
 trajectory = []
 table_positions = []
 robot= Robot()

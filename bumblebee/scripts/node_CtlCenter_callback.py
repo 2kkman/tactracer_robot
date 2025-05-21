@@ -424,7 +424,8 @@ def callbackAck(data,topic_name='' ):
                         SendInfoHTTP(f'{targetTable} 번 테이블정보 저장 :{bReturn} - {strResult}')
                     
                     #if curTargetN != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
-                    if curNode != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
+                    if curNode != node_KITCHEN_STATION and isLiftTrayDown:
+                    #if curNode != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
                         SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
                         nowTime = getDateTime()
                         # 경과 시간 리스트 (초 단위)
@@ -874,23 +875,23 @@ def callbackARD_CARRIER(data,topic_name=''):
             #current_angle_z = float(GOR_SVNarr[2])
             #current_angle_z = cleaned_data.get(DataKey.Angle_Z.name)
             #if current_angle_z is not None:
-            blb_status = node_CtlCenter_globals.robot.get_current_state()
-            lastdistance = 0
-            if blb_status == Robot_Status.onNoding:
-                cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
-                distanceNew = pulseH_to_distance(cur_pos)/1000.0
-                if len(node_CtlCenter_globals.trajectory) > 0:
-                  node_id, posX,posY, old_angle_z,lastdistance = node_CtlCenter_globals.trajectory[-1]
-                  distanceDiff = distanceNew - lastdistance
-                  #if abs(distanceDiff) > 0.00001:
-                  theta = math.radians(90-current_angle_z)
-                  node_CtlCenter_globals.position.x += round(distanceDiff * math.cos(theta),3)
-                  node_CtlCenter_globals.position.y += round(distanceDiff * math.sin(theta),3)
-                  node_CtlCenter_globals.node_id += 1
-                  node_CtlCenter_globals.trajectory.append((node_CtlCenter_globals.node_id, node_CtlCenter_globals.position.x, node_CtlCenter_globals.position.y,current_angle_z,distanceNew))
-                  sMsg = f"New Node Created:ID={node_CtlCenter_globals.node_id},X={node_CtlCenter_globals.position.x},Y={node_CtlCenter_globals.position.y},angle_z={current_angle_z},distance={distanceNew}"
-                  rospy.loginfo(sMsg)
-                #SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
+            # blb_status = node_CtlCenter_globals.robot.get_current_state()
+            # lastdistance = 0
+            # if blb_status == Robot_Status.onNoding:
+            #     cmd_pos, cur_pos = GetPosServo(ModbusID.MOTOR_H)
+            #     distanceNew = pulseH_to_distance(cur_pos)/1000.0
+            #     if len(node_CtlCenter_globals.trajectory) > 0:
+            #       node_id, posX,posY, old_angle_z,lastdistance = node_CtlCenter_globals.trajectory[-1]
+            #       distanceDiff = distanceNew - lastdistance
+            #       #if abs(distanceDiff) > 0.00001:
+            #       theta = math.radians(90-current_angle_z)
+            #       node_CtlCenter_globals.position.x += round(distanceDiff * math.cos(theta),3)
+            #       node_CtlCenter_globals.position.y += round(distanceDiff * math.sin(theta),3)
+            #       node_CtlCenter_globals.node_id += 1
+            #       node_CtlCenter_globals.trajectory.append((node_CtlCenter_globals.node_id, node_CtlCenter_globals.position.x, node_CtlCenter_globals.position.y,current_angle_z,distanceNew))
+            #       sMsg = f"New Node Created:ID={node_CtlCenter_globals.node_id},X={node_CtlCenter_globals.position.x},Y={node_CtlCenter_globals.position.y},angle_z={current_angle_z},distance={distanceNew}"
+            #       rospy.loginfo(sMsg)
+            #     #SendAlarmHTTP(sMsg,True,node_CtlCenter_globals.BLB_ANDROID_IP)
         
         node_CtlCenter_globals.dicARD_CARRIER.update(cleaned_data)
         load1 = node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.LOAD1.name,-1)

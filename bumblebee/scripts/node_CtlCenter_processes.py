@@ -383,8 +383,8 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
         dyros["TRAY_HEIGHT"] = tray_height
         dyros["TARGET_NODE"] = curMovingTargetNode
         dyros["TARGET_TABLE"] = curMovingTargetTable    
-        result = ','.join(map(str, lsCurTable))
-        dyros["CUR_TABLE"] = result
+        #result = ','.join(map(str, lsCurTable))
+        dyros["CUR_TABLE"] = lsCurTable
         dyros["CUR_H_LOC_MM"] = cur_pos_mm
         dyros["CUR_NODE"] = curNode
         dyros["TILT_STATUS_NAME"] = tilt_status_name
@@ -504,8 +504,13 @@ def CheckETCActions():
                 lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos-releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
             elif DI_NOT:
                 lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
-        if len(lsCmdRelase) > 0:
-            SendCMD_DeviceService(lsCmdRelase)
+    else:
+        curNode_sse = node_CtlCenter_globals.dicLast_POSITION_INFO['NODE_ID']
+        if GetCurrentNode() != curNode_sse and IsOrderEmpty():
+            SetCurrentNode(curNode_sse)
+            TTSAndroid(f'{curNode_sse}번 노드로 변경되었습니다.')
+    if len(lsCmdRelase) > 0:
+        SendCMD_DeviceService(lsCmdRelase)
     
 def CheckETCAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()
@@ -1258,7 +1263,7 @@ def GenerateServingTableList():
                     table_targetTask = str(dicTask.get(APIBLB_FIELDS_TASK.workname.name))
                     taskid = str(dicTask.get(APIBLB_FIELDS_TASK.taskid.name))
                     
-                    if table_targetTask in lsCurTable:
+                    if is_equal(table_targetTask ,lsCurTable):
                         SetTaskCompleted(taskid,2)
                         return
                     if table_targetTask.startswith('T'):
@@ -1429,7 +1434,7 @@ def GenerateServingTableList():
                   #내 알고리즘으로 만들어진 로직
                   dfOrg_local = pd.DataFrame(lsSeqNode)
                 else:
-                  dicMap = {}
+                  dicMap = {}   #같은 노드에서 테이블만 바뀔 경우 수기로 지시정보 만들어줌
                   dicMap[SeqMapField.START_NODE.name] = nodeTarget_local
                   dicMap[SeqMapField.START_STATUS.name] = -1
                   dicMap[SeqMapField.END_NODE.name] = nodeTarget_local

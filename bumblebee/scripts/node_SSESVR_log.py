@@ -21,11 +21,16 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 shared_data = {topic.name: {} for topic in TopicName}
-maxAlarmHistory = 500
+maxAlarmHistory = 500   #최대 웹 알람/로그 저장 갯수
 maxRetryCount = 5
 cmdIntervalSec = 3
 
-rospy.init_node('node_API', anonymous=False)
+# 설정
+CHECK_INTERVAL = 1  #백그라운드에서 1초마다 값을 체크
+ALERT_THRESHOLD_SECONDS = 5 #해당 값이 이 시간만큼 변하지 않으면 알람 발생
+ALARM_SUPPRESS_SECONDS = 10 #같은 알람은 이 시간 내엔 다시 발생하지 않음
+last_alarm_times = {} # 상태 추적
+
 move_publisher = rospy.Publisher(TopicName.CMD_DEVICE.name, String, queue_size=10)
 tag_publisher = rospy.Publisher(TopicName.ARUCO_RESULT.name, String, queue_size=10)
 and_publisher = rospy.Publisher(TopicName.ANDROID.name, String, queue_size=10)
@@ -161,7 +166,10 @@ DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELD
 
 def GetTofDistance():
     dicTOF = shared_data.get(topicName_TOF,{})
-    return dicTOF.get(SeqMapField.DISTANCE.name,-1)
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)    
+    distance_tof = dicTOF.get(SeqMapField.DISTANCE.name,-1) if isRealMachine else pos_ServArm_mm
+    return distance_tof
 
 def GetDoorStatus():
     global shared_data    
@@ -195,12 +203,14 @@ def GetDoorStatus():
     return resultReturn,resultArray
 
 def GetRotateMainAngleFromPulse(target_pulse):
-  angle = mapRange(target_pulse,0,pot_540,0,MAX_ANGLE_TRAY)
-  return round(angle)%MAX_ANGLE_TRAY
+#   angle = mapRange(target_pulse,0,pot_540,0,MAX_ANGLE_TRAY)
+#   return round(angle)%MAX_ANGLE_TRAY
+    return pulse_to_angle_sse(target_pulse, pot_540)    
 
 def GetRotateTrayAngleFromPulse(target_pulse):
-  angle = mapRange(target_pulse,0,pot_360,0,MAX_ANGLE_TRAY)
-  return round(angle)%MAX_ANGLE_TRAY
+#   angle = mapRange(target_pulse,0,pot_360,0,MAX_ANGLE_TRAY)
+#   return round(angle)%MAX_ANGLE_TRAY
+    return pulse_to_angle_sse(target_pulse, pot_360)
 
 def GetRotateTrayPulseFromAngle(angleStr):
   cur_360 = int(dicMotorPos[topicName_RotateTray])
@@ -321,7 +331,8 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
         
     dicSrvArm = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value,True,targetPulse_serv,rpm_servArm,acc_st,decc_st)
     lsBal.append(dicSrvArm)
-    rospy.loginfo(json.dumps(lsBal, indent=4))
+    #rospy.loginfo()
+    logSSE_info(json.dumps(lsBal, indent=4))
     return lsBal,rpm_time_arm1
 
 # def getRFIDInvStatus():
@@ -356,11 +367,6 @@ def GetAndroidInfoDic():
     global shared_data    
     dicBLB_Status = shared_data.get(TopicName.ANDROID.name)
     return dicBLB_Status
-
-def GetCurrentNode():
-    global shared_data    
-    dicBLB_Status = shared_data.get(TopicName.BLB_STATUS.name)
-    return try_parse_int(dicBLB_Status.get(BLB_STATUS.NODE_CURRENT.name))
 
 def GetMotorPos(topicName):
     cur_pos = try_parse_int(dicMotorPos.get(topicName))
@@ -407,7 +413,7 @@ def CheckSafetyMotorMove(listReturnTmp):
     pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
     dic_tof = shared_data.get(topicName_TOF,{})
     lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
-    distance_tof = dic_tof.get(SeqMapField.DISTANCE.name,-1)
+    distance_tof = GetTofDistance()
     cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
     cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
     isTrayOrigin = True if cur_angle360 == 0 else False
@@ -445,7 +451,8 @@ def CheckSafetyMotorMove(listReturnTmp):
         target_pos31 = try_parse_int(dic31.get(posStr),MIN_INT)
         target_angle360=GetRotateTrayAngleFromPulse(target_pos31)
         
-        if pos_ServArm < roundPulse*6 and target_angle360 != cur_angle360:
+        if distance_tof < 150 and target_angle360 != cur_angle360:
+        #if pos_ServArm < roundPulse*6 and target_angle360 != cur_angle360:
             bSafety = False
             strCheckResult = ALM_User.TRAY360_SAFETY.value
     if len(ls15) > 0:
@@ -620,11 +627,15 @@ def SendCMDArd(sCmdArd,isSafetyCheck=True):
     time.sleep(MODBUS_WRITE_DELAY)        
     return resultArd,strMsg
 
-def SendCMD_Device(sendbuf, cmdIntervalSec=0.01,isCheckSafety=True):
+def SendCMD_Device(sendbuf, cmdIntervalSec=0.01,isCheckSafety=True, delayTime = 0):
     if not hasattr(SendCMD_Device, "last_cmd_time"):
         SendCMD_Device.last_cmd_time = 0
     if not hasattr(SendCMD_Device, "last_cmd_msg"):
         SendCMD_Device.last_cmd_msg = None
+        
+    if delayTime > 0:
+        time.sleep(delayTime)
+        
     now = time.time()
     cmdTmp = sendbuf
     if isinstance(cmdTmp, list) and len(cmdTmp) > 0:
@@ -634,24 +645,24 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=0.01,isCheckSafety=True):
             if isCheckSafety:
                 bResultSafety,strMsg=CheckSafetyMotorMove(sendbuf)
                 if not bResultSafety:
-                    rospy.loginfo(strMsg)
+                    logSSE_info(strMsg)
                     return False,strMsg
             cmdTmp = json.dumps(sendbuf)
             if cmdTmp == SendCMD_Device.last_cmd_msg:
                 # 같은 메시지면 쿨타임 검사
                 if now - SendCMD_Device.last_cmd_time < cmdIntervalSec:
                     strMsg = ALM_User.CMD_INTERVAL_DUPLICATED.value
-                    rospy.loginfo(strMsg)
+                    logSSE_info(strMsg)
                     return False,strMsg
             SendCMD_Device.last_cmd_time = now
             SendCMD_Device.last_cmd_msg = cmdTmp
         else:
             strMsg = ALM_User.ALREADY_FINISHED_CMD_POS.value
-            rospy.loginfo(strMsg)
+            logSSE_info(strMsg)
             return True,strMsg
     else:
         strMsg = ALM_User.CMD_FORMAT_INVALID.value
-        rospy.loginfo(strMsg)
+        logSSE_info(strMsg)
         return False,strMsg
         
     #log_all_frames(sendbuf)
@@ -729,18 +740,18 @@ def callbackACK(recvData):
         if isTrue(flagFinished):
             # 회전모터 (27,31) 자동 상시 캘리브레이션.
             # 회전모터가 홈센서에 걸려서 멈췄을 경우 0 으로 위치값을 초기화 한다            
-            rospy.loginfo(f'{mbid_tmp}-정방향토크:{torque_max},역방향토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
+            logSSE_info(f'{mbid_tmp}-정방향토크:{torque_max},역방향토크:{torque_min},평균토크:{torque_mean},운행시작:{last_started_pos},목표지점:{last_targeted_pos},현지점:{stopped_pos},속도:{last_spd},isHome:{isHome},isNot:{isNot},isPot:{isPot},isESTOP:{isESTOP}')
             if mbid_instance in lsRotateMotors and isTrue(isHome):
                 lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
                 bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
-                rospy.loginfo(f'Cali {mbid_tmp} Result:{bSafetyCheck},{strMsg}')
+                logSSE_info(f'Cali {mbid_tmp} Result:{bSafetyCheck},{strMsg}')
             #POT 예정 펄스보다 5바퀴 이상 차이나면 모든 모터를 중지하고 알람을 날린다
             elif mbid_instance in lsReleaseMotors and not onScaning():
                 if isTrue(isPot) or isTrue(isNot):
                     diffPos = abs(last_targeted_pos - stopped_pos)
                     if diffPos > roundPulse*5:
                         SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',True)
-                        rospy.loginfo(f'ESTOP triggered at {mbid_tmp} too much diff pos {diffPos}')
+                        logSSE_info(f'ESTOP triggered at {mbid_tmp} too much diff pos {diffPos}')
             elif is_equal(mbid_tmp,ModbusID.ROTATE_MAIN_540.value) or is_equal(mbid_tmp,ModbusID.ROTATE_SERVE_360.value):
                 if isTrue(isHome):
                     dicLoc = getMotorHomeDic(mbid_tmp)
@@ -764,8 +775,8 @@ def callbackACK(recvData):
         #print(lsCurNode)
         curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
         curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
-        rospy.loginfo(f'운행완료.지시노드:{endnode},직전노드:{lastNode},현재노드:{curNodeID_fromPulse}:{curNode_type},Retried:{callbackACK.retryCount},POT:{isPot}')
-        rospy.loginfo(f'정방토크:{torque_max},역방토크:{torque_min},평균토크:{torque_ave},최대부하:{ovr_max},평균부하:{ovr_ave},시작위치:{last_started_pos},지시위치:{last_targeted_pos}:,정지위치:{stopped_pos},속도:{last_spd}')
+        logSSE_info(f'운행완료.지시노드:{endnode},직전노드:{lastNode},현재노드:{curNodeID_fromPulse}:{curNode_type},Retried:{callbackACK.retryCount},POT:{isPot}')
+        logSSE_info(f'정방토크:{torque_max},역방토크:{torque_min},평균토크:{torque_ave},최대부하:{ovr_max},평균부하:{ovr_ave},시작위치:{last_started_pos},지시위치:{last_targeted_pos}:,정지위치:{stopped_pos},속도:{last_spd}')
         #목적지 노드 타입 확인 - 유효한 EPC이면 RFID노드, NONE 면 가상노드, NOTAG 면 도그 노드.
         
         
@@ -854,7 +865,7 @@ def callbackACK(recvData):
                 finalPos = endPos
                 callbackACK.retryCount = 100
             dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,DEFAULT_RPM_SLOW,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H*2)
-            rospy.loginfo(f'다시탐색{callbackACK.retryCount}:{dicJOG}')
+            logSSE_info(f'다시탐색{callbackACK.retryCount}:{dicJOG}')
             endPos = None
             dicPotNot = getMotorWP_ONDic()  if finalPos > stopped_pos else getMotorWN_ONDic()
             SendCMD_Device([dicPotNot,dicJOG],0.5,False)
@@ -868,7 +879,7 @@ def callbackACK(recvData):
             print(f'di_pot:{di_pot},di_not:{di_not},si_pot:{si_pot},si_home:{si_home}')
     except Exception as e:
         message = traceback.format_exc()
-        rospy.loginfo(message)
+        logSSE_error(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
 def isCrossRailDirection():
@@ -911,12 +922,12 @@ def callbackMB_11(recvDataMap):
         if sSPD_signed < 0 and callbackMB_11.last_target_mm > 100:
             tof_distance=GetTofDistance()
             if is_between(callbackMB_11.last_target_mm-10,callbackMB_11.last_target_mm+20,tof_distance):
-                rospy.loginfo(f'Stop at TOF : {tof_distance}, Target = {callbackMB_11.last_target_mm}')
+                logSSE_info(f'Stop at TOF : {tof_distance}, Target = {callbackMB_11.last_target_mm}')
                 StopMotor(lsReleaseMotors,EMERGENCY_DECC)
                 callbackMB_11.last_target_mm = -1
     except Exception as e:
         message = traceback.format_exc()
-        rospy.loginfo(message)
+        logSSE_error(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
 # def callbackMB_Rotate(recvDataMap):
@@ -994,7 +1005,7 @@ def callbackMB_15(recvDataMap):
         last_started_pos = int(recvDataMap.get(MonitoringField.LAST_STARTED_POS.name))
         if di_pot_status:
             sLogMsg = f'도그위치:{sPOS},시작위치:{last_started_pos},목표위치:{target_pos},속도:{sSPD_signed}'
-            rospy.loginfo(sLogMsg)        
+            logSSE_info(sLogMsg)        
             if callbackMB_15.ESTOP_ON == BLD_PROFILE_CMD.ESTOP.name:
                 callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.BACK_HOME.name
                 StopMotor(ModbusID.MOTOR_H.value,ACC_DECC_NORMAL)
@@ -1012,7 +1023,7 @@ def callbackMB_15(recvDataMap):
                 dicEndNodeInfo=GetNodeDicFromPos(dfNodeInfo,endnode_pos)
                 endNodeID_fromPulse = dicEndNodeInfo.get(TableInfo.NODE_ID.name)
                 curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
-                rospy.loginfo(dicCurNodeInfo)        
+                logSSE_info(dicCurNodeInfo)        
                 #rospy.loginfo(sLogMsg)        
                 
                 if endNodeID_fromPulse == curNodeID_fromPulse:
@@ -1111,7 +1122,7 @@ def callbackMB_15(recvDataMap):
             #listReturnTmp.append(dicWE_ON)
             # potnotControlDic = getMotorWP_ONDic() if sSPD_signed > 0 else getMotorWN_ONDic()
             # listReturnTmp.append(potnotControlDic)
-            rospy.loginfo(f'#EStop On - 목표까지 남은펄스:{target_pos-sPOS},현재속도:{sSPD_signed},현재위치:{sPOS},목표위치:{target_pos},모드:{si_pot}')
+            logSSE_info(f'#EStop On - 목표까지 남은펄스:{target_pos-sPOS},현재속도:{sSPD_signed},현재위치:{sPOS},목표위치:{target_pos},모드:{si_pot}')
             #SendCMD_Device(listReturnTmp)
 
         # #목적지가 충전소면 NOT활성화.        
@@ -1155,7 +1166,7 @@ def callbackMB_15(recvDataMap):
         #목적펄스까지 
     except Exception as e:
         message = traceback.format_exc()
-        rospy.loginfo(message)
+        logSSE_error(message)
         SendAlarmHTTP(message,True,BLB_ANDROID_IP_DEFAULT)
 
 # def callbackRFID(recvDataMap):
@@ -1352,7 +1363,7 @@ def callback_factory(topic_name):
         except Exception as e:
             message = traceback.format_exc()
             logmsg = f"{e}:{message} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name}"
-            rospy.loginfo(logmsg)
+            logSSE_info(logmsg)
             logSSE_error(traceback.format_exc())
     return callback
 
@@ -1387,6 +1398,20 @@ def control_data():
                 os.remove(strCSV_NodeInfo)
             if isFileExist(strPNG_NodeInfo):
                 os.remove(strPNG_NodeInfo)
+
+            # SCR_DIR 환경변수에서 경로 읽기
+            scr_dir = os.getenv(UbuntuEnv.SCR_DIR.name)
+
+            if scr_dir and os.path.isdir(scr_dir):
+                log_files = glob.glob(os.path.join(scr_dir, '*.log'))
+                for file_path in log_files:
+                    try:
+                        os.remove(file_path)
+                        print(f"Deleted: {file_path}")
+                    except Exception as e:
+                        print(f"Failed to delete {file_path}: {e}")
+            else:
+                print("SCR_DIR is not set or not a valid directory.")
             
             shared_data.pop(TopicName.HISTORY_ALARM.name,None)
             shared_data.pop(TopicName.HISTORY_INFO.name,None)
@@ -1400,9 +1425,8 @@ def control_data():
                     if try_parse_int(v,MIN_INT) != MIN_INT:
                         dic_newNodeInfo.setdefault(k, v)
                 #dic_newNodeInfo['tableid'] = topic_name.upper()
-                curnode = GetCurrentNode()
                 dic_newNodeInfo2 = {TableInfo.TABLE_ID.name: table_id_add.upper(), **dic_newNodeInfo}
-                rospy.loginfo(dic_newNodeInfo2)
+                logSSE_info(dic_newNodeInfo2)
                 add_or_update_row(csvPathNodes,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
                 new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCutTemp)
                 generate_table_info(new_csv_node,strFileTableNode)
@@ -1420,7 +1444,7 @@ def control_data():
         logSSE_error(traceback.format_exc())
         return GetErrResponse(e)
   
-    return {"message": f"{request.path},{request.args.to_dict()}"}, 200
+    return shared_data, 200
 
 @app.route(f'/{EndPoints.ARD.name}', methods=['GET'])
 def service_ard():
@@ -1463,25 +1487,47 @@ def service_data2():
         return GetErrResponse(e)
         
     return jsonify(resultData), 200
-  
+
 @app.route('/DATA1', methods=['GET'])
 def service_dataExport():
-    resultData = ''
     try:
-        topic_name = request.args.get('topicname', None)        
+        client_ip = request.remote_addr
+        topic_name = request.args.get('topicname', None)
+        rospy.loginfo_throttle(10, f"[DATA1] 요청 수신: IP={client_ip}, topicname={topic_name}")
+
         if topic_name is None:
+            rospy.loginfo_throttle(10, "[DATA1] 누락된 파라미터: topicname")
             return {"error": "topicname is required."}, 400
+
         resultData = shared_data.get(topic_name, None)
         if resultData is None:
+            rospy.loginfo_throttle(10, f"[DATA1] 존재하지 않는 topicname 요청: {topic_name}")
             return {"error": "wrong topicname."}, 400
-        #resultData = json.dumps(resultData, ensure_ascii=False)
+
+        rospy.loginfo_throttle(10, f"[DATA1] 응답 완료: topicname={topic_name}")
+        return resultData, 200
 
     except Exception as e:
-        logSSE_error(traceback.format_exc())
-        rospy.logerr(f"데이터 처리 오류: {e}")
+        error_trace = traceback.format_exc()
+        logSSE_error(error_trace)
+        rospy.logerr(f"[DATA1] 데이터 처리 오류: {e}")
         return GetErrResponse(e)
   
-    return (resultData), 200
+# @app.route('/DATA1', methods=['GET'])
+# def service_dataExport():
+#     resultData = ''
+#     try:
+#         topic_name = request.args.get('topicname', None)        
+#         if topic_name is None:
+#             return {"error": "topicname is required."}, 400
+#         resultData = shared_data.get(topic_name, None)
+#         if resultData is None:
+#             return {"error": "wrong topicname."}, 400
+#     except Exception as e:
+#         logSSE_error(traceback.format_exc())
+#         rospy.logerr(f"데이터 처리 오류: {e}")
+#         return GetErrResponse(e)
+#     return (resultData), 200
 
 #임과장이 호출하는 엔드포인트. 받은 query_str 그대로 분기기 ESP32 에 포워딩.
 @app.route('/cross', methods=['GET'])
@@ -1500,21 +1546,26 @@ def service_cross():
         data_out = json.dumps(loaded_data)
         pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
         dic_tof = shared_data.get(topicName_TOF,{})
-        
-        lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
-        distance_tof = dic_tof.get(SeqMapField.DISTANCE.name,-1)
+        #lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
+        pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
+        distance_tof = GetTofDistance()
         cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
         cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
         cur_pos_mm = pulseH_to_distance(pos_MotorH)
         currentAngle_arm1 =round(mapRange(pos_BAL1,0,pot_arm1,0,90))
         di_pot = dicLastMotor15.get(sDI_POT)
-        dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))        
-        dicPostion['di_pot']=di_pot
-        dicPostion['cur_angle540']=cur_angle540
-        dicPostion['cur_angle360']=cur_angle360
+        dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))
+        node_id = dicPostion.get(TableInfo.NODE_ID.name)
+        table_id = find_most_similar_table_id(node_id,distance_tof,cur_angle540)
+        dicPostion[TableInfo.TABLE_ID.name]=table_id
+        dicPostion[MonitoringField.DI_POT.name]=di_pot
+        dicPostion[TableInfo.SERVING_ANGLE.name]=cur_angle540
+        dicPostion[TableInfo.MARKER_ANGLE.name]=cur_angle360
         dicPostion['cur_pos_mm']=cur_pos_mm
-        dicPostion['distance_tof']=distance_tof
+        dicPostion[TableInfo.SERVING_DISTANCE.name]=distance_tof
         dicPostion['currentAngle_arm1']=currentAngle_arm1
+        dicPostion['onScaning']=onScaning()
+        
         data_out2 = json.dumps(dicPostion)
         pub_BLB_POS.publish(data_out2)
 
@@ -1698,6 +1749,53 @@ def service_jog():
         logSSE_error(traceback.format_exc())
         return GetErrResponse(e)
 
+def RotateMotor360(control360,filter_rate,checkSafety, delayTime = 0):
+    if delayTime > 0:
+        delayTime = min(delayTime, 2)
+        rospy.loginfo(f"Delay {delayTime} sec")
+        time.sleep(delayTime)
+    bResult=True
+    bExecuteMsg = AlarmCodeList.OK.name
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+    spd360 = SPD_360
+    if control360 == cur_angle360:
+        return bResult,bExecuteMsg        
+    di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
+    if control360 >=0:
+        targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
+        diff_serv = (targetPulse_serv - pos_360)
+        if control360 == 0 and isRealMachine:
+            if diff_serv > 0:
+                targetPulse_serv += diff_roundPulse
+            else:
+                targetPulse_serv -= diff_roundPulse
+    else:
+        spd360=DEFAULT_RPM_SLOW
+        if len(dicLastAruco)>0:
+            marker_angle = round(dicLastAruco.get(ARUCO_RESULT_FIELD.ANGLE.name))
+            angle_new = (180+ marker_angle)%360
+            targetPulse_serv = GetRotateTrayPulseFromAngle(angle_new)
+            #infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicLastAruco, indent=4)}'
+            infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new}'
+            control360 = angle_new
+            rospy.loginfo(infoMsg)
+        elif isTrue(di_home):
+            return bResult,ALM_User.CALI_ALREADY_DONE.value
+        else:
+            targetPulse_serv = pos_360 - pot_360
+    dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,ACC_360_UP,DECC_360_UP)
+    #print(dic540)
+    lsCmd = [dic360]
+    
+    if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
+        lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
+    elif control360 < 0 or (control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
+        lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
+    bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
+    #reponseCode = 200 if bResult else 400
+    return bResult,bExecuteMsg
+
 @app.route(f'/{ServiceBLB.CMD_DEVICE.name}', methods=['GET'])
 def service_cmd_device():
     listReturn = []
@@ -1733,49 +1831,29 @@ def service_cmd_device():
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             return {bResult:bExecuteMsg}, 200
-        if control360 != MIN_INT:
-            cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
-            spd360 = SPD_360
-            if control360 == cur_angle360:
-                return {bResult:bExecuteMsg}, 200            
-            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
-            if control360 >=0:
-                targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
-                diff_serv = (targetPulse_serv - pos_360)
-                if control360 == 0 and isRealMachine:
-                    if diff_serv > 0:
-                        targetPulse_serv += diff_roundPulse
-                    else:
-                        targetPulse_serv -= diff_roundPulse
+        elif controlArm3 != MIN_INT:
+            #controlArm3 값은 길이로 넘어온다.
+            targetPulse_serv = GetTargetPulseServingArm(controlArm3, 0)
+            #POT기반한 서빙가능한 최대길이 계산
+            limit_arm1_mm = GetTargetLengthMMServingArm(pot_telesrv)
+            pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
+            if targetPulse_serv == pos_ServArm_mm:
+                return {bResult:bExecuteMsg}, 200
+            #서빙암 요청길이가 물리적 최대길이를 넘어가면 실행하지 않는다.
+            if targetPulse_serv > pot_telesrv:
+                return {False:f'{ALM_User.OUT_OF_SERVING_RANGE.value} over {limit_arm1_mm}mm'}, 202
             else:
-                spd360=DEFAULT_RPM_SLOW
-                if len(dicLastAruco)>0:
-                #if onScaning() and len(dicLastAruco)>0:
-                    marker_angle = round(dicLastAruco.get(ARUCO_RESULT_FIELD.ANGLE.name))
-                    angle_new = (180+ marker_angle)%360
-                    targetPulse_serv = GetRotateTrayPulseFromAngle(angle_new)
-                    #infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new},마커정보:{json.dumps(dicLastAruco, indent=4)}'
-                    infoMsg = f'이전 각도:{cur_angle360},마커로 바뀐각도:{angle_new}'
-                    control360 = angle_new
-                    rospy.loginfo(infoMsg)
-                elif isTrue(di_home):
-                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200
-                else:
-                    targetPulse_serv = pos_360 - pot_360
-                
-            dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,ACC_360_UP,DECC_360_UP)
-            #print(dic540)
-            lsCmd = [dic360]
-            
-            if isTrue(di_home) and si_home == BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_SERVE_360.value))
-            elif control360 < 0 or (control360 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
-                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_SERVE_360.value))
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
+                lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
+                bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
+                if control360 != MIN_INT:
+                    bResult,bExecuteMsg=RotateMotor360(control360,filter_rate,checkSafety, rpm_time/2)
+                reponseCode = 200 if bResult else 400
+                #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            return {bResult:bExecuteMsg}, reponseCode
+        elif control360 != MIN_INT:
+            bResult,bExecuteMsg=RotateMotor360(control360,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
-            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:bExecuteMsg}, 200
-        
+            return {bResult:bExecuteMsg}, reponseCode    
         elif control540 != MIN_INT:            
             cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
             spd540=SPD_540
@@ -1807,25 +1885,6 @@ def service_cmd_device():
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
             return {bResult:bExecuteMsg}, 200
         
-        elif controlArm3 != MIN_INT:
-            #controlArm3 값은 길이로 넘어온다.
-            targetPulse_serv = GetTargetPulseServingArm(controlArm3, 0)
-            #POT기반한 서빙가능한 최대길이 계산
-            limit_arm1_mm = GetTargetLengthMMServingArm(pot_telesrv)
-            pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
-            if targetPulse_serv == pos_ServArm_mm:
-                return {bResult:bExecuteMsg}, 200
-            #서빙암 요청길이가 물리적 최대길이를 넘어가면 실행하지 않는다.
-            if targetPulse_serv > pot_telesrv:
-                return {False:f'{ALM_User.OUT_OF_SERVING_RANGE.value} over {limit_arm1_mm}mm'}, 202
-            else:
-                lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
-                #print(lsCmd)
-                bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
-                reponseCode = 200 if bResult else 400
-                #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:bExecuteMsg}, 200
-        
         elif controlArm2 != MIN_INT:
             #controlArm2 은 0~90 사이 각도로 넘어온다.
             currentAngle_arm1 =mapRange(pos_BAL1,0,pot_arm1,0,90)
@@ -1836,7 +1895,7 @@ def service_cmd_device():
             bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
-            return {bResult:bExecuteMsg}, 200
+            return {bResult:bExecuteMsg}, reponseCode
         
         elif lightplug is not None:
             plug_enable = isTrue(lightplug)
@@ -2129,20 +2188,85 @@ def publish_loop():
             print("Error calling /CROSS:", e)
         time.sleep(2)
 
-#@app.before_first_request
+def parse_timestamp(value):
+    if isinstance(value, float):
+        return datetime.fromtimestamp(value)
+    elif isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value)
+        except ValueError:
+            return None
+    return None
+
+def find_lastseen(data):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if key.upper() == "LASTSEEN":
+                ts = parse_timestamp(value)
+                if ts:
+                    return ts
+            elif isinstance(value, dict):
+                result = find_lastseen(value)
+                if result:
+                    return result
+    return None
+
+def monitor_dict():
+    global last_alarm_times
+    while True:
+        current_time = datetime.now()
+
+        for device, data in shared_data.items():
+            lastseen = find_lastseen(data)
+
+            if lastseen:
+                time_diff = (current_time - lastseen).total_seconds()
+                last_alarm = last_alarm_times.get(device, datetime.min)
+                suppress_elapsed = (current_time - last_alarm).total_seconds()
+
+                if time_diff > ALERT_THRESHOLD_SECONDS and suppress_elapsed > ALARM_SUPPRESS_SECONDS:
+                    print(f"⚠️  {device} has not been seen for {int(time_diff)} seconds.")
+                    last_alarm_times[device] = current_time
+
+        time.sleep(CHECK_INTERVAL)
+
 def start_background_thread():
+    thread_monitor = threading.Thread(target=monitor_dict)
+    thread_monitor.daemon = True  # Flask 종료 시 함께 종료
+    thread_monitor.start()
+
     if not isRealMachine:
         thread = threading.Thread(target=publish_loop)
         thread.daemon = True  # Flask 종료 시 함께 종료
         thread.start()
-    
+
 if __name__ == "__main__":
     try:
+        rospy.init_node('node_API', anonymous=False)
+        rospy.loginfo('node_API started')
+
         loaded_data2 = load_csv_to_dict(csvPathalarm, sort_ascending=False)
-        #data_out2 = json.dumps(loaded_data2)
         shared_data[TopicName.HISTORY_ALARM.name] = loaded_data2
-        threading.Thread(target=update_data, daemon=True).start()        
+
+        threading.Thread(target=update_data, daemon=True).start()
         start_background_thread()
-        socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True,allow_unsafe_werkzeug=True)
+
+        # Flask + SocketIO run
+        socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True, allow_unsafe_werkzeug=True)
+
     except rospy.ROSInterruptException:
-        pass
+        rospy.logwarn("node_API 종료됨.")
+    
+# if __name__ == "__main__":
+#     try:
+#         rospy.init_node('node_API', anonymous=False)
+#         rospy.loginfo('node_API started')
+#         loaded_data2 = load_csv_to_dict(csvPathalarm, sort_ascending=False)
+#         #data_out2 = json.dumps(loaded_data2)
+#         shared_data[TopicName.HISTORY_ALARM.name] = loaded_data2
+#         threading.Thread(target=update_data, daemon=True).start()        
+#         start_background_thread()
+#         socketio.run(app, host="0.0.0.0", port=HTTP_COMMON_PORT, debug=False, use_reloader=False, log_output=True,allow_unsafe_werkzeug=True)
+#         rospy.spin()
+#     except rospy.ROSInterruptException:
+#         pass

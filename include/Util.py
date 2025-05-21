@@ -11,6 +11,7 @@ from typing import *
 from urllib.parse import *
 from pathlib import *
 import ast
+import glob
 import copy
 import csv
 import difflib
@@ -1743,7 +1744,8 @@ def mapRangeLog(x, input_min, input_max, output_min, output_max, k):
 iRPM = int(map(iSpd,0,100, 0,3000))
 0~100 으로 iSpd 입력이 들어가면 0~3000 사이의 값으로 리턴한다.
 """
-def mapRange(x, input_min, input_max, output_min, output_max):
+def mapRange(x1, input_min, input_max, output_min, output_max):
+    x = strToRoundedInt(x1)
     try:
         return (x - input_min) * (output_max - output_min) / (
             input_max - input_min
