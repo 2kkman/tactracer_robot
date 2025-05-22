@@ -299,9 +299,9 @@ while not rospy.is_shutdown():
             elif listVCCMean - newVCCMean > charging_margin:  # 방전중
                 chargeStatus = 2
             del listVCC[0]
-
-        sMsg = strResult[:-1]
-        # sMsg = f'{strResult}CHARGE_STATE{sDivField}{chargeStatus}'
+        #] = getDateTime().timestamp()
+        #sMsg = strResult[:-1]
+        sMsg = f'{strResult}{MonitoringField.LASTSEEN.name}{sDivFieldColon}{getDateTime().timestamp()}'
         pub.publish(sMsg)
         if param_SD_show:
             rospy.logdebug(sMsg)

@@ -222,9 +222,12 @@ alias 99='vi /etc/udev/rules.d/99-usb-serial.rules' #usb rule 수정 99
 alias cls='clear'
 alias ss='cd "$SCR_DIR" && ./slideshow.sh /root/Downloads/slide 5'
 alias kss='cd "$SCR_DIR" && ./kill_slideshow.sh'
+alias kbms='cd "$SCR_DIR" && ./kill_bms.sh'
+alias ksd='cd "$SCR_DIR" && ./kill_sd.sh'
 alias vs='cd "$SCR_DIR" && ./videostop.sh'
-alias rsd='cd "$SCR_DIR" && ./reset_sd.sh'
 alias rsse='cd "$SCR_DIR" && ./reset_sse.sh 6001 9000 9001 6002'
+alias rbms='cd "$SCR_DIR" && ./reset_bms.sh'
+alias rsd='cd "$SCR_DIR" && ./reset_sd.sh'
 alias ksse='cd "$SCR_DIR" && ./kill_sse.sh 6001 9000 9001 6002'
 
 alias rse='cd "$SCR_DIR" && ./reset_sse.sh 6001 6002'

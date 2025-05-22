@@ -233,7 +233,7 @@ def callbackCmd(data):
         logmsg = f"{recvData} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name}"
         if not testModbus:
           #rospy.loginfo(logmsg)
-          SendInfoHTTP(logmsg)
+          #SendInfoHTTP(logmsg)
           logger_motor.info(logmsg)
           
         if is_json(recvData):

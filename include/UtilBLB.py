@@ -636,6 +636,7 @@ class ARUCO_RESULT_FIELD(Enum):
     ZZ = auto()  # 3D거리-Z 마커와 카메라와 직선으로 떨어진거리
     MARKER_VALUE = auto()  # 마커값 (0~255)
     ANGLE = auto()  # 마커의 회전각도
+    ANGLE_CALI = auto()  # 마커의 보정각도
     LASTSEEN = auto()   #아르코마커 수신시각 (마스터에서 기록)
 
 class EPCINFO_FIELDS(Enum):
@@ -1948,6 +1949,7 @@ class BLD_PROFILE_CMD(Enum):
     TrayHome = 32
     MOTORSTOP = 33
     CALI_MAIN = 34
+    GET_NODEMAP = 35
         
 class ModbusID(Enum):
     MOTOR_H = 15  # 주행 (6040)

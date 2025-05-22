@@ -700,7 +700,8 @@ def GetListLiftUp():
     # return lsLiftUp
 
 def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
-    if IsEnableSvrPath() or not isRealMachine:
+    #if IsEnableSvrPath() or not isRealMachine:
+    if serve_distance_mm > 1000:        
         return GetLiftControlRealMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
     else:
         return GetLiftControlScanMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)

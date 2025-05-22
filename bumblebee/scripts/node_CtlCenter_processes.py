@@ -1510,9 +1510,10 @@ def GenerateServingTableList():
                 if targetNodeType.find(strNOTAG) < 0:   #도그가 없는 가상 노드가 목적지인 경우 목적지에서 가장 가까운 도그가 있는 노드를 경유한다
                     dicNodeNear = GetNodeDicFromPos(dfNodeInfo,targetPOS,True)
                     nearNode = dicNodeNear[TableInfo.NODE_ID.name]
+                    startNode = dicStartNode[SeqMapField.START_NODE.name]
                     isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
-                    if not isPathValid: 
-                        lsNode1,listSeqMapOrg1=getSeqMap(dicStartNode['START_NODE'],nearNode)
+                    if not isPathValid and not (startNode < 4 and targetNode < 4): 
+                        lsNode1,listSeqMapOrg1=getSeqMap(startNode,nearNode)
                         lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
                         node_CtlCenter_globals.listBLB.clear()
                         node_CtlCenter_globals.listBLB.extend(lsNode1)

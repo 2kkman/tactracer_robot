@@ -164,7 +164,7 @@ if __name__ == "__main__":
     diff_pos = dicCurNodeInfo.get(MotorWMOVEParams.DIFF_POS.name)
     curNode_pos = int(dicCurNodeInfo.get(posStr))
     CamControl(False)
-    if abs(diff_pos) > roundPulse*10:
+    if abs(diff_pos) > roundPulse*100:
       StopEmergency(ALM_User.NODE_NOT_FOUND.value)
     else:
       rospy.loginfo(dicCurNodeInfo)

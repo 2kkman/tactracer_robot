@@ -100,6 +100,7 @@ def parse_response(data):
         "protection_flags": sDivEmart.join(decode_flags(struct.unpack('>H', data[22:24])[0], PROTECTION_FLAG)),
         "warning_flags": sDivEmart.join(decode_flags(struct.unpack('>H', data[24:26])[0], WARNING_FLAG)),
         "cell_temperatures_c": sDivEmart.join(map(str, cell_temperatures_c)),
+        MonitoringField.LASTSEEN.name:getDateTime().timestamp(),
         "cell_voltages_mv": sDivEmart.join(map(str,cell_voltages_mv))
     }
     width = 10

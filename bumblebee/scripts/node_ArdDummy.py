@@ -30,7 +30,7 @@ class DataRecorder:
             "O_V12_NC": "0", "L1": "3,1000", "L0": "3,1000", "TILT_ANGLE": "145",
             "LOAD1": "1", "LOAD2": "2", "GOR_SVN": "-0.34,-2.41,218.06",
             "GAV_SVN": "-0.00,0.00,0.00", "GLA_SVN": "0.42,-0.06,9.96", "GAV_TUN": "0.00",
-            "TEMPN": "26.03", "TIMESTAMP": rospy.get_time()
+            "TEMPN": "26.03", MonitoringField.LASTSEEN.name: rospy.get_time()
         }
         
         self.CMD_service = rospy.Service(ServiceBLB.CMDARD_ITX.value, Kill, self.update_data)
@@ -39,7 +39,7 @@ class DataRecorder:
         rospy.loginfo("ARD_CARRIER Node Started")
 
     def publish_data(self, event):
-        self.data_dict["TIMESTAMP"] = rospy.get_time()
+        self.data_dict[MonitoringField.LASTSEEN.name] = rospy.get_time()
         msg = json.dumps(self.data_dict)
         self.pub.publish(msg)
 

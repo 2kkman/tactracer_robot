@@ -176,12 +176,12 @@ def RunListBlbMotorsEx(listBLB):
                         listBLB.insert(0,lsDicRotateDirection)
                         return APIBLB_ACTION_REPLY.E108
                 TiltFace()
-                if dicInfo_local_org.get(SeqMapField.END_NODE.name) is not None:
-                  node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
-                rospy.loginfo(dicInfo_local)
                 endnode_current = dicInfo_local_org.get(SeqMapField.END_NODE.name)
                 pulseTarget= GetNodePos_fromNode_ID(endnode_current)
-                rospy.loginfo('CheckPointH5')
+                dicInfo_local[MotorWMOVEParams.POS.name] = pulseTarget
+                rospy.loginfo(dicInfo_local)
+                if dicInfo_local_org.get(SeqMapField.END_NODE.name) is not None:
+                    node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
                 if isRealMachine:
                     bReturn,strResult=API_MoveH(pulseTarget,dicInfo_local.get(MotorWMOVEParams.SPD.name),endnode_current)
                     rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
@@ -192,7 +192,6 @@ def RunListBlbMotorsEx(listBLB):
                         #SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
                         return APIBLB_ACTION_REPLY.E110
                 else:
-                    dicInfo_local['POS'] = pulseTarget
                     SendCMD_DeviceService([dicInfo_local])
                 rospy.loginfo(f"Moving H motor : {node_CtlCenter_globals.nStart}->{node_CtlCenter_globals.nTarget}({listBLB.pop(0)})")
             else:
