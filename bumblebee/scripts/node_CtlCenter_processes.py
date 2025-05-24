@@ -1256,6 +1256,11 @@ def GenerateServingTableList():
                     if workstatusLast is None or int(workstatusLast) != APIBLB_STATUS_TASK.Completed.value:
                         if workstatusFirst is not None and int(workstatusLast) != APIBLB_STATUS_TASK.Ideal.value:
                             rospy.loginfo_throttle(20, '작업이 완료되지 않았습니다')
+                            resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,APIBLB_STATUS_TASK.Completed)
+                            SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name])
+                            print(f"API RESULT:{resultAPI},{nodeReturn}")
+                            RemoveDF()
+                            #print(SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name]))
                             return
                 dicTask = GetTaskChainHead(APIBLB_FIELDS_TASK.taskrunok.name, 1, False)
                 if len(dicTask) > 0:

@@ -654,7 +654,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
         data_list = dfReceived.to_dict(orient="records")
         json_string = json.dumps(data_list)
         pub_DF.publish(json_string)
-        node_CtlCenter_globals.lock.acquire()
+        #node_CtlCenter_globals.lock.acquire()
         AppendTableHistory(tableid_current)        
         resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,STATUS_TASK)
         node_CtlCenter_globals.dfLast = copy.deepcopy(dfReceived)
@@ -667,7 +667,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
             rospy.loginfo(resultAPI)   
         else:
             SetCurrentNode(nodeReturn)
-        node_CtlCenter_globals.lock.release()
+        #node_CtlCenter_globals.lock.release()
       else:
         TTSAndroid(f'{table_target}번 테이블 값이 없습니다')
         SendInfoHTTP(sMsg)

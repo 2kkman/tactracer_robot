@@ -192,6 +192,7 @@ def RunListBlbMotorsEx(listBLB):
                         #SetWaitConfirmFlag(True, AlarmCodeList.JOB_PAUSE)
                         return APIBLB_ACTION_REPLY.E110
                 else:
+                    dicInfo_local[MotorWMOVEParams.SPD.name] = SPD_MOVE_H
                     SendCMD_DeviceService([dicInfo_local])
                 rospy.loginfo(f"Moving H motor : {node_CtlCenter_globals.nStart}->{node_CtlCenter_globals.nTarget}({listBLB.pop(0)})")
             else:

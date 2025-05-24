@@ -1,4 +1,2 @@
 rowsVal	taskid	robotip	workname	simulayoutcds	startworkstation	endworkstation	trayrack	taskrunok	tasktype	tasknm	trayracknm	Orderstatusnm	orderstatus	priority	emergency	sortorder	comments	updatedBy	updatedDate	Totaltimes
-0	148	172.30.1.40	T118	1001			R2	0	2	2		1	1	1	1	1				
-0	149	172.30.1.40	T120	1001			R1	0	2	2		1	1	1	1	2				
-0	150	172.30.1.40	T102	1001				0	3	3		1	1	1	1	3				
+0	202	172.30.1.40	T105	1001			R1	0	2	2		1	1	1	1	1	''			

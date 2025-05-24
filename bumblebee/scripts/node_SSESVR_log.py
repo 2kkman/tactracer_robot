@@ -120,7 +120,10 @@ topicName_TOF = f'{topicName_ServoPrefix}{ModbusID.TOF.value}'
 lsServoTopics = [topicName_MotorH,topicName_ServArm,topicName_BAL1,topicName_BAL2,topicName_LiftV,topicName_RotateTray,topicName_RotateMain]
 #암 속도 조절.
 adjustrate = SPEED_RATE_ARM
-
+adjustrate_h = SPEED_RATE_H
+if not isRealMachine:
+    adjustrate = 0.7
+    adjustrate_h = 1
 #6번 리프트 모터
 ACC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
 ACC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CW.name)
@@ -149,9 +152,9 @@ DECC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.D
 DECC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
 
 #15번 주행 모터
-ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,SPEED_RATE_H)
-DECC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CW.name,SPEED_RATE_H)
-SPD_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.SPD.name,SPEED_RATE_H)
+ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate_h)
+DECC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate_h)
+SPD_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate_h)
 
 #27번 메인회전 모터
 SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SPD.name)
