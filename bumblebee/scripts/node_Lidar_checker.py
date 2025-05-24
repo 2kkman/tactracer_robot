@@ -19,7 +19,7 @@ BASKET_LENGTH_CM = 55
 LIDAR_TO_BASKET_BOTTOM_CM = 10
 Z_IGNORE_THRESHOLD_MIN = 0.0        # 아래로 향하므로 Z는 점점 커짐
 Z_IGNORE_THRESHOLD_MAX = 3.0        # 3m까지만 탐지
-MIN_VALID_POINTS = 5
+MIN_VALID_POINTS = 2
 mm_float_precion = 3
 dicAndroid = {}
 # 글로벌
@@ -31,12 +31,12 @@ fieldvalue = f'topicname={TopicName.ANDROID.name}'
 log_period = float(rospy.get_param(f"~{ROS_PARAMS.lidar_interval.name}", default=0.2))
 ground_threshold = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_margin.name}", default=0.04))
 ground_distance_limit = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.560))
-point_threshold = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=5))
+point_threshold_min = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=MIN_VALID_POINTS))
 
 ipAddr = GetMasterIP()
 # Ground보다 위쪽(bin_z > ground_z) 중 points threshold 넘는 것만 배열로 리턴하는 버전
 def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.26, crop_y_low=0.0, crop_y_high=0.55, max_descend_distance=2.0,
-                              bin_size=0.005, point_threshold=3, ground_threshold =0.04,ground_distance_limit = ground_distance_limit ):
+                              bin_size=0.005, point_threshold=point_threshold_min, ground_threshold =0.04,ground_distance_limit = ground_distance_limit ):
     """
     Ground 계산 후, Ground보다 라이다쪽에 있는 장애물 후보 리스트를 리턴하는 버전
     points: np.array(N, 3)
@@ -186,7 +186,7 @@ def pointcloud_callback(msg):
     now = rospy.get_time()
     points = get_filtered_points(msg)
 
-    if len(points) < MIN_VALID_POINTS:
+    if len(points) < point_threshold_min:
         if now - last_log_time > log_period:
             rospy.loginfo("✅ 장애물 없음 (유효 포인트 부족)")
             last_log_time = now
@@ -211,7 +211,7 @@ def pointcloud_callback(msg):
         #print(recvDataMap)
 
         points = np.array(list(pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)))
-        crop_y_low=0;crop_y_high=0.55;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=3;ground_threshold_current=0.04;ground_distance_limit=0.56
+        crop_y_low=0;crop_y_high=0.55;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=point_threshold_min;ground_threshold_current=0.04;ground_distance_limit=0.56
         if is_between(-20,-90,angle_y):
             crop_y_low=-0.15;crop_y_high=0.30;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=10;ground_threshold_current =0.04;ground_distance_limit=2
         #distanceMax, cropped_points = calculate_descendable_distance_with_rotation(points,angle_y)
@@ -222,13 +222,14 @@ def pointcloud_callback(msg):
         if lsDicObstacle:
             first_item = next(iter(lsDicObstacle[0].items()))
             obstacle_distance, bin_points = first_item
-            returnObstanceData[OBSTACLE_INFO.LASTSEEN.name] = getDateTime().timestamp()
-            returnObstanceData[OBSTACLE_INFO.GND_DISTANCE.name] = ground_z_center
-            returnObstanceData[OBSTACLE_INFO.OBSTACLE_DISTANCE.name] =obstacle_distance
-            returnObstanceData[OBSTACLE_INFO.OBSTACLE_POINTS.name] = bin_points
-            data_out = json.dumps(returnObstanceData)
-            pub_obstacle.publish(data_out)
-            print(returnObstanceData)
+            if obstacle_distance < 1.49:    
+                returnObstanceData[OBSTACLE_INFO.LASTSEEN.name] = getDateTime().timestamp()
+                returnObstanceData[OBSTACLE_INFO.GND_DISTANCE.name] = ground_z_center
+                returnObstanceData[OBSTACLE_INFO.OBSTACLE_DISTANCE.name] =obstacle_distance
+                returnObstanceData[OBSTACLE_INFO.OBSTACLE_POINTS.name] = bin_points
+                data_out = json.dumps(returnObstanceData)
+                pub_obstacle.publish(data_out)
+                print(returnObstanceData)
         #bResult,obstacleBox = detect_obstacle_with_ground_estimation(cropped_points,300,0.02,0.03,0.01)
         #rospy.loginfo(f"현재각도:{angle_y},거리:{distanceMax*100:.1f}")      
         #rospy.loginfo(f"판정결과:{bResult},장애물정보:{obstacleBox}")      

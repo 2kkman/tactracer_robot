@@ -88,7 +88,7 @@ def parsing_data(data):
     tmp = "".join(data).replace('\n','')  # String 으로
     try:
         dicTmp = getDic_strArr(tmp, sDivFieldColon, sDivEmart)
-        dicTmp[CALLBELL_FIELD.TIMESTAMP.name] = getDateTime().timestamp()
+        dicTmp[MonitoringField.LASTSEEN.name] = getDateTime().timestamp()
         data_out = json.dumps(dicTmp)
         SendKeepAlive(data_out)
     except Exception as e:
