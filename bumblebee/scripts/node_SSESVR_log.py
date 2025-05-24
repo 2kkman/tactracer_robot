@@ -1366,7 +1366,8 @@ def callback_factory(topic_name):
                         alarmCD = recvDataMap[MonitoringField.ALM_CD.name]
                         if not is_equal(alarmCD, AlarmCodeList.OK.value):
                             TTSAndroid('서보모터를 점검해주세요',10)
-                        pub_motorPos.publish(json.dumps(dicMotorPos, sort_keys=True))
+                        if rospy.core.is_initialized():
+                            pub_motorPos.publish(json.dumps(dicMotorPos, sort_keys=True))
             else:
                 shared_data[topic_name] = recvDataMap  # 최초 생성
             socketio.emit(f"update_{topic_name}", shared_data[topic_name])

@@ -84,9 +84,12 @@ machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_cs
 def getDateTime():
   return datetime.now()
 
-def estimate_backlash_error(current_distance, full_distance=7259818, full_error=89000):
+def estimate_backlash_error(current_distance, full_distance=7662000, full_error=123654):
+#def estimate_backlash_error(current_distance, full_distance=7259818, full_error=89000):
     """
     선형 보간법을 통해 현재 이동 거리에서의 예상 오차를 계산합니다.
+    10 -> 15 노드 펄스 측정 -> full_distance = 7662000
+    15 -> 10 노드 펄스 측정 후 차이만큼이 full_error
     
     Parameters:
     - current_distance: 현재 이동 거리 (정방향 이동한 거리)
