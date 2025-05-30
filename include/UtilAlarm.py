@@ -26,7 +26,7 @@ class ALM_User(Enum):
     CROSS_STATUS_INVALID = "50001: Junction Status Invalid"    
     NVME_FULL = "50405: NVME FULL"
     SAFETY_ARM = "54017: tray and lift must be on the origin before Arm control."
-    SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before MotorH run."
+    SAFETY_MOTORH_ROTATEMAIN = "54018: All others must be on the origin before run MotorH/MainRotate."
     SAFETY_MOTORH_2 = "54014: Invalid Rotate Status, only 0 or 180 degree allowed"
     CMD_INTERVAL_DUPLICATED = "54023: MotorCmd duplicated."
     ALREADY_FINISHED_CMD_POS = "54022: Motor Pos is already on the position"

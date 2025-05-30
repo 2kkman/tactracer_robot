@@ -12,6 +12,11 @@ import ros_numpy
 minGYRO = -90
 maxGYRO = 45
 aruco_lastDiff_Default = 100
+MAX_INT = sys.maxsize
+MIN_INT = -sys.maxsize - 1
+save_dir_download = "/root/Downloads"
+machine_running_csv_filename = 'IsCleanTable.csv'
+machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_csv_filename)
 
 NODE_KITCHEN = 1
 NODE_CROSS = 10
@@ -19,7 +24,7 @@ NODES_SPECIAL = [NODE_KITCHEN,NODE_CROSS]
 
 HTTP_COMMON_PORT=6001
 HTTP_FASTAPI_PORT=6002
-WEIGHT_OCCUPIED = 200
+WEIGHT_OCCUPIED = 100
 HOME_TABLE='H1'
 HOME_CHARGE='P1'
 DATETIME_OLD = datetime(2013, 2, 18, 23, 0, 30)
@@ -38,6 +43,13 @@ class IPList(Enum):
     BLB_CROSSPLUG_IP = '172.30.1.25'
     BLB_LIGHTPLUG_IP = '172.30.1.23'
     BLB_SVR_PORT = '4041'
+  
+def GetUbutuParam(variable_name):
+    if variable_name in os.environ:
+        my_variable = os.environ[variable_name]
+        return my_variable
+    else:
+        return None
 
 include_path = GetUbutuParam(UbuntuEnv.SCR_DIR.name)        
 def getConfigPath(host=None) -> str:
@@ -50,12 +62,114 @@ def getConfigPath(host=None) -> str:
         config_dir = "tray_qbi"
     strFilePath = f"{include_path}/../bumblebee/config/{config_dir}"
     return strFilePath
+
+# def get_hostname(ip=None):
+#     if ip is None:
+#       host = os.uname()[1]
+#       # print('HOST:' + host)
+#       return host
+#     else:
+#       slave_hostname = socket.gethostbyaddr(ip)[0]
+#       return slave_hostname
+  
+def isServiceExist(serviceName):
+    service_list = rosservice.get_service_list()
+    return serviceName in service_list
+
+def GetMasterIP():
+  ipAddr = extract_hostname_from_uri(GetUbutuParam(UbuntuEnv.ROS_MASTER_URI.name))
+  return ipAddr
+
+def GetMachineStr():
+    return GetUbutuParam(UbuntuEnv.CONFIG.name)
+
+def get_logger(func_name):
+    """함수 이름을 기반으로 개별 로그 파일을 설정하고, pretty 로그 메서드 포함"""
+    log_dir = f"{GetUbutuParam(UbuntuEnv.SCR_DIR.name)}/"
+    os.makedirs(log_dir, exist_ok=True)
+
+    logger = logging.getLogger(func_name)
+    logger.setLevel(logging.INFO)
+
+    log_file = os.path.join(log_dir, f"{func_name}.log")
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+
+    if not logger.handlers:
+        logger.addHandler(file_handler)
+
+    # 🔽 pretty 메서드 추가
+    def pretty(url, result, response):
+        logger.info("=" * 100)
+        logger.info(f"URL: {url}")
+        logger.info(f"RESULT: {result}")
+        if isinstance(response, (dict, list)):
+            pretty_response = json.dumps(response, indent=4, ensure_ascii=False)
+            logger.info("RESPONSE:\n" + pretty_response)
+        else:
+            logger.info(f"RESPONSE: {response}")
+        logger.info("=" * 100 + "\n")
+
+    logger.pretty = pretty  # 메서드 바인딩
+
+    return logger
+
+logger_ard = get_logger(f'blb_ard')
+logger_local = get_logger(f'blb_local')
+logger_android = get_logger(f'blb_android')
+logger_svr = get_logger(f'blb_svr')
+logger_api = get_logger(f'blb_api')
+logger_motor = get_logger(f'blb_motor')
+
+def save_data_pickle(dataTmp, file_path):
+    with open(file_path, 'wb') as file:
+        pickle.dump(dataTmp, file)
+    rospy.loginfo(f'Data saved to {file_path}')
+
+def load_data_pickle(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as file:
+            return pickle.load(file)
+    else:
+        return None
+    
+def check_ros_master():
+    try:
+        rosgraph.Master("/rosout").getPid()  # '/rostopic'은 임의의 노드 이름입니다.
+        print("ROS Master is running.")
+        return True
+    except Exception as e:
+        print("Failed to contact ROS Master.")
+        print(e)
+        return False
+
+def getROS_Header(frame_id_str):
+    msgTmp = Header()
+    msgTmp.frame_id = frame_id_str
+    return msgTmp
+
+
+def getROS_Param(param_name):
+    if rospy.has_param(param_name):
+        return rospy.get_param(param_name)
+    return None
+    
+def GetROSString(dataStr):
+    callData = String()
+    callData.data = dataStr
+    return callData
+
+
 # Get base directory path
 dirPath = getConfigPath(UbuntuEnv.ITX.name)
 dirCommonMap =f"{getConfigPath(UbuntuEnv.COMMON.name)}/map"
 dirCommonMotor =f"{getConfigPath(UbuntuEnv.COMMON.name)}/motor"
 dirCommonCali =f"{getConfigPath(UbuntuEnv.COMMON.name)}/cali"
 dirCommonParser =f"{getConfigPath(UbuntuEnv.COMMON.name)}/parser"
+dirCommonStatus =f"{getConfigPath(UbuntuEnv.COMMON.name)}/status"
 
 filePath_param_parse = f"{dirCommonParser}/param_SD.txt"
 # Main configuration files
@@ -66,7 +180,6 @@ csvPathInfo = f'{dirPath}/history_info.csv'
 machineName = 'ITX' if get_hostname().find(UbuntuEnv.QBI.name) < 0 else 'QBI'
 filePath_IPSetup = f"{dirPath}/DIC_IPSetup_ITX.txt"
 filePath_IPSetupDev = f"{dirPath}/DIC_IPSetup_DEV.txt"
-isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 filePath_IP = filePath_IPSetup if isRealMachine else filePath_IPSetupDev
 
 try:
@@ -116,6 +229,53 @@ strFileShortCut = f"{dirCommonMap}/SHORTCUT.txt"
 strFileShortCutTemp = f"{dirCommonMap}/SHORTCUT_Temp.txt"
 dfNodeInfo = pd.read_csv(strFileEPC_total, sep=sDivTab)
 
+strFileServiceData = f"{dirCommonStatus}/BLB_SVC_DATA.txt"
+
+dicTest = {
+    'mastercode' : 250529092853705,
+    'endnode' : 'H1',
+    'distance' : 167347,
+    'END_TIME' : getDateTime().timestamp(),
+    'START_TIME' : getDateTime().timestamp(),
+    
+}
+
+def extract_dicTest(df: pd.DataFrame) -> dict:
+    # 마지막 row 기준 mastercode, endnode
+    last_row = df.iloc[-1]
+    mastercode = int(last_row['mastercode']) if pd.notnull(last_row['mastercode']) else None
+    endnode = str(last_row['endnode'])
+
+    # distance 합계
+    #total_distance = df['distance'].sum()
+    total_distance = df.iloc[:-1]['distance'].sum()
+    total_weight = abs(pd.to_numeric(df['nodetype'], errors='coerce').max(skipna=True) or 0)
+
+    # comments 컬럼에서 최소/최대 (NaN 제외)
+    if 'comments' in df.columns:
+        comment_series = pd.to_numeric(df['comments'], errors='coerce').dropna()
+        if not comment_series.empty:
+            start_time = comment_series.min()
+            end_time = comment_series.max()
+        else:
+            start_time = getDateTime().timestamp()
+            end_time = getDateTime().timestamp()
+    else:
+        start_time = getDateTime().timestamp()
+        end_time = getDateTime().timestamp()
+
+    # 결과 dict 생성
+    dicTest = {
+        'mastercode': mastercode,
+        'endnode': endnode,
+        'distance': int(total_distance),
+        'START_TIME': start_time,
+        'END_TIME': end_time,
+        'WEIGHT': total_weight,
+    }
+
+    return dicTest
+#print(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))
 
 BLB_SVR_IP_DEFAULT=ip_dict[IPList.BLB_SVR_IP.name]
 BLB_RFID_IP=ip_dict[IPList.BLB_RFID_IP.name]
@@ -150,7 +310,7 @@ SPD_TRAY_MARKER_SCAN = 700
 
 MAX_ANGLE_BLBBODY = 360
 MAX_ANGLE_TRAY = 360
-SPEED_RATE_H = 0.5
+SPEED_RATE_H = 0.75
 SPEED_RATE_ARM = 0.5
 DEFAULT_RPM_MIN = 2
 DEFAULT_RPM_SLOW = 300
@@ -531,6 +691,7 @@ class JogControl(Enum):
     FILTER_RATE = auto()  #중복명령어 필터타이밍 조정
     SAFETY = auto()
     data = auto()   #일반적인 command 로 명령
+    DOOR = auto()
 
 class OBSTACLE_INFO(Enum):
     LASTSEEN = auto()
@@ -1950,6 +2111,7 @@ class BLD_PROFILE_CMD(Enum):
     MOTORSTOP = 33
     CALI_MAIN = 34
     GET_NODEMAP = 35
+    GET_STATUS = 36
         
 class ModbusID(Enum):
     MOTOR_H = 15  # 주행 (6040)
@@ -1983,8 +2145,8 @@ key_motorH = str(ModbusID.MOTOR_H.value)
 key_motorMainRotate = str(ModbusID.ROTATE_MAIN_540.value)
 
 class RackID(Enum):
-    R1 = 0
-    R2 = 1
+    R1 = 1
+    R2 = 0
     @classmethod
     def from_name_or_value(cls, nm, isName):
         for member in cls:
@@ -3663,6 +3825,11 @@ def GetNodePos_fromEPC(epc):
 def GetNodePos_fromNode_ID(node_id):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
     result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, MotorWMOVEParams.POS.name)
+    return result
+
+def GetNodeID_longest(direction = True):
+    df = pd.read_csv(strFileEPC_total, sep=sDivTab)
+    result = get_extreme_value_by_key_fromDF(df, MotorWMOVEParams.POS.name, direction, TableInfo.NODE_ID.name)
     return result
 
 def GetNodeDic_fromNodeID(node_id):
@@ -5617,9 +5784,11 @@ def API_SendCMD_Device(sendbuf:list):
     bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,ServiceBLB.CMD_DEVICE.name, msg)
     return bReturn,strResult
 
-def API_MoveArms(distance:int,spd_rate:float,tray_angle = None):
+def API_MoveArms(distance:int,spd_rate:float,tray_angle = None ,bSafety = True):
     #msg = f"{JogControl.CONTROL_3ARMS.name}={distance}&{JogControl.SPD_RATE.name}={spd_rate}"
+    checkSafety = 1 if bSafety else 0
     dictParam = {JogControl.CONTROL_3ARMS.name:distance,
+                 JogControl.SAFETY.name:checkSafety,
                 JogControl.SPD_RATE.name:spd_rate
                 }
     angle360 = try_parse_int(tray_angle,MIN_INT)
@@ -5669,14 +5838,16 @@ def TTSServer(ttsMsg, ttsIntervalSec=5):
                 APIBLB_TTS.langtypes.name:'ko-KR',
                 APIBLB_TTS.noofplayss.name:1,
                 APIBLB_TTS.playstatuss.name:1,
-                APIBLB_TTS.col1s.name:1,
+                APIBLB_TTS.col1s.name:0,
                 APIBLB_TTS.col2s.name:0,
                 APIBLB_TTS.SPstatus.name:2
     }
     paramStr=urllib.parse.urlencode(dictParam)
     bReturn,strResult = API_call(svrIP=BLB_SVR_IP_DEFAULT,port=BLB_SVR_PORT_DEFAULT,serviceName=APIBLB_METHODS_GET.SetTexttoSpeechListDetails.name, fieldValue=paramStr)
     return bReturn,strResult
-#print(TTSServer('음식이나왔습니다'))
+# print(TTSServer('음식이나왔습니다'))
+# print(TTSServer('음식이나왔습니다'))
+# print(TTSServer('음식이나왔습니다'))
 
 def TTSAndroid(ttsMsg, ttsIntervalSec=5):
     # 함수에 필요한 속성 없으면 초기화
@@ -5696,6 +5867,7 @@ def TTSAndroid(ttsMsg, ttsIntervalSec=5):
     calStr = f'tts=10,10,{ttsMsg}'
     bReturn,strResult = API_call_Android(BLB_ANDROID_IP_DEFAULT, HTTP_COMMON_PORT, calStr)
     if not bReturn:
+        print(strResult)
         print(TTSServer('스마트폰 통신을 점검해주세요.'))
         return False
     TTSAndroid.last_tts_time = now
@@ -5944,7 +6116,6 @@ print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
 # filtered = df[(df['NODE_ID'] == 2) & (df['MARKER_VALUE'] < 0)]
 # lsDictNotScaned = filtered.to_dict(orient='records')
 # print(lsDictNotScaned)
-import pandas as pd
 
 def generate_graph_from_position_csv(csv_path: str, save_path: str):
     # CSV 불러오기
@@ -6049,3 +6220,49 @@ def find_most_similar_table_id(node_id, serving_distance, serving_angle):
 #upsert_table_record(strFileTableNodeEx, 107, 7, 892, 27)
 
 #API_SendCMD_Device(getMotorTorqueDic(15,200))
+
+def visualize_point_cloud(cloud):
+    visual = pcl.pcl_visualization.CloudViewing()
+    visual.ShowMonochromeCloud(cloud)
+    visual.Spin()
+    
+def get_connected_monitors():
+    drm_dir = "/sys/class/drm/"
+    connected_monitors = []
+
+    for entry in os.listdir(drm_dir):
+        if "card" in entry and "-DP-" in entry or "-HDMI-" in entry:
+            status_path = os.path.join(drm_dir, entry, "status")
+            if os.path.isfile(status_path):
+                with open(status_path, 'r') as f:
+                    status = f.read().strip()
+                    if status == "connected":
+                        connected_monitors.append(entry)
+
+    return connected_monitors
+
+def control_system_sound(mute: bool):
+    """
+    Mute or unmute the system sound using PulseAudio based on the mute flag.
+    
+    Args:
+    mute (bool): If True, mutes the sound. If False, unmutes the sound.
+    """
+    try:
+        # Determine the mute state based on the boolean input
+        mute_state = '1' if mute else '0'
+        
+        # Run the pactl command to set the mute state
+        subprocess.run(['pactl', 'set-sink-mute', '@DEFAULT_SINK@', mute_state], check=True)
+        
+        if mute:
+            print("System sound muted.")
+        else:
+            print("System sound unmuted.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while controlling the sound: {e}")
+
+# # Example usage
+# control_system_sound(True)  # To mute the sound
+# control_system_sound(False) # To unmute the sound
+

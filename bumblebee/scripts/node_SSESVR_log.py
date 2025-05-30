@@ -25,7 +25,7 @@ maxAlarmHistory = 500   #최대 웹 알람/로그 저장 갯수
 maxRetryCount = 10
 cmdIntervalSec = 3
 
-delayTimeMin = 3
+delayTimeMin = 1
 # 설정
 CHECK_INTERVAL = 1  #백그라운드에서 1초마다 값을 체크
 ALERT_THRESHOLD_SECONDS = 5 #해당 값이 이 시간만큼 변하지 않으면 알람 발생
@@ -44,12 +44,62 @@ pub_BLB_CROSS = rospy.Publisher(TopicName.CROSS_INFO.name, String, queue_size=1)
 pub_BLB_POS = rospy.Publisher(TopicName.POSITION_INFO.name, String, queue_size=1)
 pub_SMARTPLUG = rospy.Publisher(TopicName.SMARTPLUG_INFO.name, String, queue_size=1)
 pub_RECEIVE_MQTT = rospy.Publisher(TopicName.RECEIVE_MQTT.name, String, queue_size=1)
+#암 속도 조절.
+adjustrate = SPEED_RATE_ARM
+adjustrate_h = SPEED_RATE_H
+if not isRealMachine:
+    adjustrate = 0.7
+    adjustrate_h = 1
+
 #pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
 target_pulse_cw = 50000000
 ACC_DECC_MOTOR_H = 5000
 ACC_DECC_NORMAL = 3000
 findNodeTryPulse = roundPulse
 #target_pulse_ccw = -target_pulse_cw
+#6번 리프트 모터
+ACC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
+ACC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+DECC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+SPD_LIFT = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.SPD.name)
+
+#10번 2관절 모터
+SPD_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+ACC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+ACC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
+DECC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+DECC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
+
+#11번 서빙 텔레스코픽 모터
+ACC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+ACC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
+DECC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
+
+#13번 1관절 모터
+SPD_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
+ACC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
+ACC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
+DECC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
+DECC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
+
+#15번 주행 모터
+ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate_h)
+DECC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate_h)
+SPD_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate_h)
+
+#27번 메인회전 모터
+SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SPD.name)
+ACC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+
+#31번 트레이 모터
+SPD_360 =  getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.SPD.name)
+ACC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CW.name)
+DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CW.name)
+ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
+DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
 
 dicServExpand = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, target_pulse_cw, DEFAULT_RPM_SLOW, ACC_DECC_NORMAL,ACC_DECC_NORMAL)
 dicServFold = getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True,-target_pulse_cw, DEFAULT_RPM_SLOW,ACC_DECC_NORMAL,ACC_DECC_NORMAL)    
@@ -76,8 +126,8 @@ dicAllFold = [getMotorMoveDic(ModbusID.BAL_ARM2.value, True, 0, 1150,750,250),
                 getMotorMoveDic(ModbusID.BAL_ARM1.value, True, 0, 1500,250,250),
                 getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 0, 253,150,2500)]
 
-dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
-dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
+dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
+dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, SPD_MOVE_H, ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
         
 dicArmExpand = dicAllExpand[:-1]
 dicArmFold = dicAllFold[:-1]
@@ -106,6 +156,7 @@ lastcalledAck = DATETIME_OLD
 dicLastMotor15 = {}
 dicLastMotor11 = {}
 dicLastAruco = {}
+dicLastPosition = {}
 dicPulsePos = {}
 topicName_ServoPrefix = 'MB_'
 topicName_MotorH = f'{topicName_ServoPrefix}{ModbusID.MOTOR_H.value}'
@@ -118,55 +169,6 @@ topicName_RotateMain = f'{topicName_ServoPrefix}{ModbusID.ROTATE_MAIN_540.value}
 topicName_TOF = f'{topicName_ServoPrefix}{ModbusID.TOF.value}'
 
 lsServoTopics = [topicName_MotorH,topicName_ServArm,topicName_BAL1,topicName_BAL2,topicName_LiftV,topicName_RotateTray,topicName_RotateMain]
-#암 속도 조절.
-adjustrate = SPEED_RATE_ARM
-adjustrate_h = SPEED_RATE_H
-if not isRealMachine:
-    adjustrate = 0.7
-    adjustrate_h = 1
-#6번 리프트 모터
-ACC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
-ACC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.ACC_CW.name)
-DECC_LIFT_UP = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
-DECC_LIFT_DOWN = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.DECC_CW.name)
-SPD_LIFT = getSpeedTableInfo(ModbusID.MOTOR_V.value,SPEEDTABLE_FIELDS.SPD.name)
-
-#10번 2관절 모터
-SPD_ARM2 = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
-ACC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-ACC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
-DECC_ARM2_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
-DECC_ARM2_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM2.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
-
-#11번 서빙 텔레스코픽 모터
-ACC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CW.name)
-DECC_ST_EXTEND = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
-ACC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
-DECC_ST_FOLD = getSpeedTableInfo(ModbusID.TELE_SERV_MAIN.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
-
-#13번 1관절 모터
-SPD_ARM1 = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate)
-ACC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate)
-ACC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate)
-DECC_ARM1_EXTEND = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CW.name,adjustrate)
-DECC_ARM1_FOLD = getSpeedTableInfo(ModbusID.BAL_ARM1.value,SPEEDTABLE_FIELDS.DECC_CCW.name,adjustrate)
-
-#15번 주행 모터
-ACC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CCW.name,adjustrate_h)
-DECC_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.ACC_CW.name,adjustrate_h)
-SPD_MOVE_H = getSpeedTableInfo(ModbusID.MOTOR_H.value,SPEEDTABLE_FIELDS.SPD.name,adjustrate_h)
-
-#27번 메인회전 모터
-SPD_540 =  getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.SPD.name)
-ACC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.ACC_CW.name)
-DECC_540 = getSpeedTableInfo(ModbusID.ROTATE_MAIN_540.value,SPEEDTABLE_FIELDS.DECC_CW.name)
-
-#31번 트레이 모터
-SPD_360 =  getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.SPD.name)
-ACC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CW.name)
-DECC_360_DOWN = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CW.name)
-ACC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.ACC_CCW.name)
-DECC_360_UP = getSpeedTableInfo(ModbusID.ROTATE_SERVE_360.value,SPEEDTABLE_FIELDS.DECC_CCW.name)
 
 def GetTofDistance():
     dicTOF = shared_data.get(topicName_TOF,{})
@@ -174,6 +176,13 @@ def GetTofDistance():
     pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)    
     distance_tof = dicTOF.get(SeqMapField.DISTANCE.name,-1) if isRealMachine else pos_ServArm_mm
     return distance_tof
+
+def GetServDistanceFromPulse():
+    dicTOF = shared_data.get(topicName_TOF,{})
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)    
+    #distance_tof = dicTOF.get(SeqMapField.DISTANCE.name,-1) if isRealMachine else pos_ServArm_mm
+    return pos_ServArm_mm
 
 def GetDoorStatus():
     global shared_data    
@@ -223,7 +232,8 @@ def GetRotateTrayPulseFromAngle(angleStr):
   target_pulse_cw = target_pulse_org + pot_360
   target_pulse_ccw = target_pulse_org - pot_360
   arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
-  return find_closest_value(arr,cur_360)
+  target_pos=find_closest_value(arr,cur_360)
+  return target_pos
 
 def GetRotateMainPulseFromAngle(angleStr):
   cur_540 = int(dicMotorPos[topicName_RotateMain])
@@ -232,7 +242,8 @@ def GetRotateMainPulseFromAngle(angleStr):
   target_pulse_cw = target_pulse_org + pot_540
   target_pulse_ccw = target_pulse_org - pot_540
   arr = [target_pulse_org,target_pulse_cw,target_pulse_ccw]
-  return find_closest_value(arr,cur_540)
+  target_pos = find_closest_value(arr,cur_540)
+  return target_pos
 
 def onScaning():
     dicAndroid = GetAndroidInfoDic()
@@ -243,7 +254,7 @@ def onScaning():
     return onScan    
 
 def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.0):
-    targetPulse_arm1=mapRange(target_angle,0,90,0,pot_arm1)    
+    targetPulse_arm1=round(mapRange(target_angle,0,90,0,pot_arm1) )
     if bUseCurrentPosition:
         cur_arm1 = int(dicMotorPos[topicName_BAL1])
         cur_arm2 =int(dicMotorPos[topicName_BAL2])
@@ -256,16 +267,9 @@ def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.
     targetPulse_arm2 = min(round(mapRange(targetPulse_arm1,0,pot_arm1,0,pot_arm2)),pot_arm2)
     stroke_arm2_signed = targetPulse_arm2 - cur_arm2
     stroke_arm2_abs = abs(stroke_arm2_signed)
-    spd_arm1 = SPD_ARM1
+    spd_arm1 = SPD_ARM1_FOLD
     if onScaning():
-        spd_arm1 = round(SPD_ARM1/4)
-
-    #1관절 스트로크 RPM
-    rpm_arm1 = round(spd_arm1 * spd_rate)
-    round1CountAbs = round(stroke_arm1_abs/roundPulse)
-    round2CountAbs = round(stroke_arm2_abs/roundPulse)
-    rpm_time_arm1 = calculate_rpm_time(round1CountAbs, rpm_arm1)
-    rpm_arm2 = max(calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1),MAINROTATE_RPM_SLOWEST)
+        spd_arm1 = round(SPD_ARM1_FOLD/4)
     isExpand = stroke_arm1_signed > 0
     accArm2 = ACC_ARM2_FOLD
     deccArm2 = DECC_ARM2_FOLD
@@ -273,11 +277,13 @@ def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.
     deccArm1 = DECC_ARM1_FOLD
     if isExpand:
         if onScaning():
+            spd_arm1 = round(SPD_ARM1_FOLD/4)
             accArm2 = round(ACC_ARM2_EXTEND/2)
             deccArm2 = round(DECC_ARM2_EXTEND/2)
             accArm1 = round(ACC_ARM1_EXTEND/2)
             deccArm1 = round(DECC_ARM1_EXTEND/2)
         else:
+            spd_arm1 = round(SPD_ARM1_FOLD*0.8)
             accArm2 = ACC_ARM2_EXTEND
             deccArm2 = DECC_ARM2_EXTEND
             accArm1 = ACC_ARM1_EXTEND
@@ -285,7 +291,13 @@ def GetControlInfoBalances(target_angle,bUseCurrentPosition=False, spd_rate = 1.
             if target_angle > 70:
                 deccArm2 = ACC_DECC_MOTOR_H
                 deccArm1 = ACC_DECC_MOTOR_H
+    rpm_arm1 = spd_arm1
 
+    #1관절 스트로크 RPM
+    round1CountAbs = round(stroke_arm1_abs/roundPulse)
+    round2CountAbs = round(stroke_arm2_abs/roundPulse)
+    rpm_time_arm1 = calculate_rpm_time(round1CountAbs, rpm_arm1)
+    rpm_arm2 = max(calculate_targetRPM_fromtime(round2CountAbs, rpm_time_arm1),MAINROTATE_RPM_SLOWEST)
     dicArm1 = getMotorMoveDic(ModbusID.BAL_ARM1.value,True,targetPulse_arm1,rpm_arm1,accArm1,deccArm1)
     dicArm2 = getMotorMoveDic(ModbusID.BAL_ARM2.value,True,targetPulse_arm2,rpm_arm2,accArm2,deccArm2)
     return [dicArm1,dicArm2], rpm_time_arm1,stroke_arm1_signed
@@ -324,7 +336,12 @@ def GetControlInfoArms(distanceServingTeleTotal,bUseCurrentPosition = False, spd
     if abs(stroke_arm1_signed) > roundPulse:
         rpm_servArm = max(calculate_targetRPM_fromtime(servArmCountAbs, rpm_time_arm1),DEFAULT_RPM_SLOWER)
     else:
-        rpm_servArm = round(DEFAULT_RPM_SLOW * spd_rate)
+        if onScaning():
+            rpm_servArm = round(DEFAULT_RPM_SLOWER * spd_rate)
+        else:
+            rpm_servArm = DEFAULT_RPM_SLOW
+        # elif stroke_arm1_signed > 0:
+        # rpm_servArm = round(DEFAULT_RPM_SLOW * spd_rate)
         # if onScaning() or isCaliMode:
         #     rpm_servArm = DEFAULT_RPM_SLOWER
     # 원본 값 보정
@@ -435,7 +452,7 @@ def CheckSafetyMotorMove(listReturnTmp):
     ls15 = df.loc[(df[mbidStr] == str(ModbusID.MOTOR_H.value)) & (df[cmdStr] == wmoveStr)].to_dict(orient="records")
     bSafety = True
     doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
-    
+    #print(doorArray)
     if len(ls6) > 0:
         #도어가 열린 상태에서는 상승하지 않는다
         dic6 = ls6[0]
@@ -610,21 +627,48 @@ def SendCMDESTOP(enable,isAlarm=True):
     time.sleep(MODBUS_WRITE_DELAY)        
     return resultArd
 
-def SendCMDArd(sCmdArd,isSafetyCheck=True):
+def SendCMDArd(sCmdArd,isSafetyCheck=True,delayTime = 0):
+    if delayTime > 0:
+        time.sleep(delayTime)
     resultArd=True
     strMsg = AlarmCodeList.OK.name
     pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
     splitTmp = sCmdArd.split(sDivFieldColon)
+    
     if len(splitTmp) > 1:
+        doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
         sCmd = splitTmp[0]
         sParam = splitTmp[1]
-        #트레이 세이프티 - 도어(O명령) 상승시(2-상승) 리프트 모터 거리가 10만펄스 이상 확보되지 않으면 
-        #도어를 열지 않는다
-        if sCmd == 'O' and sParam.startswith('2') and pos_LiftV < roundPulse*10:
+        sVal1 = int(GetIndexString(sParam,sDivItemComma, 0))    #2는 상승, 1은 하강
+        sVal2 = int(GetLastString(sParam,sDivItemComma))    #도어번호 지정. 0,1 가능하며 2 이상은 둘다 동작.
+        isDoor0Closed = doorArray[0]
+        isDoor1Closed = doorArray[1]
+        doorCmdArr = []
+        #트레이 세이프티 - 도어(O명령) 상승시(2-상승오픈, 1-하강닫기)
+        # 리프트 모터 거리가 10만펄스 이상 확보되지 않으면 도어를 상승오픈하지 않는다
+        if sCmd == 'O' and sVal1 == 2 and pos_LiftV < roundPulse*10:
             resultArd = False
             strMsg = ALM_User.SAFETY_TRAYDOOR.value
         elif isRealMachine:
-            resultArd = service_setbool_client_common(ServiceBLB.CMDARD_QBI.value, sCmdArd, Kill)
+            if sCmd == 'O':
+                if sVal1 == 1:  #하강인 경우 도어센서 검사해서 꼭 필요한 도어제어만 호출.
+                    if not isDoor0Closed and (sVal2 == 0 or sVal2 > 1):
+                        doorCmdArr.append('O:1,0')
+                    if not isDoor1Closed and (sVal2 == 1 or sVal2 > 1):
+                        doorCmdArr.append('O:1,1')                        
+                elif sVal1 == 2:  #상승
+                    if isDoor0Closed and (sVal2 == 0 or sVal2 > 1):
+                        doorCmdArr.append('O:2,0')
+                    if isDoor1Closed and (sVal2 == 1 or sVal2 > 1):
+                        doorCmdArr.append('O:2,1')
+                idxCnt = 0
+                for sCmdTmp in doorCmdArr:
+                    resultArd = service_setbool_client_common(ServiceBLB.CMDARD_QBI.value, sCmdTmp, Kill)
+                    idxCnt += 1
+                    if len(doorCmdArr) > idxCnt:
+                        time.sleep(sVal2/10)
+            else:
+                resultArd = service_setbool_client_common(ServiceBLB.CMDARD_QBI.value, sCmdArd, Kill)
         else:
             sCmdArd = replace_string(sCmdArd)
             resultArd = service_setbool_client_common(ServiceBLB.CMDARD_ITX.value, sCmdArd, Kill)        
@@ -762,9 +806,15 @@ def callbackACK(recvData):
                         SendCMDESTOP(f'I{ACC_DECC_SMOOTH}',True)
                         logSSE_info(f'ESTOP triggered at {mbid_tmp} too much diff pos {diffPos}')
             elif is_equal(mbid_tmp,ModbusID.ROTATE_MAIN_540.value) or is_equal(mbid_tmp,ModbusID.ROTATE_SERVE_360.value):
-                if isTrue(isHome):
-                    dicLoc = getMotorHomeDic(mbid_tmp)
-                    SendCMD_Device([getMotorWHOME_OFFDic(mbid_tmp),dicLoc])                
+                #if isTrue(isHome):
+                pot_pos = pot_540 if is_equal(mbid_tmp,ModbusID.ROTATE_MAIN_540.value) else pot_360
+                if abs(stopped_pos) >= pot_pos:
+                    target_pos = stopped_pos%pot_pos
+                    if target_pos < 0:
+                        target_pos += pot_pos
+                    dicLoc = getMotorLocationSetDic(mbid_tmp,target_pos)
+                    #dicLoc = getMotorHomeDic(mbid_tmp)
+                    SendCMD_Device([getMotorWHOME_OFFDic(mbid_tmp),dicLoc])
                 return
         
         if not is_equal(mbid_tmp,ModbusID.MOTOR_H.value):
@@ -873,7 +923,7 @@ def callbackACK(recvData):
             if endPos is not None:
                 finalPos = endPos
                 callbackACK.retryCount = 100
-            dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,DEFAULT_RPM_SLOW,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H*2)
+            dicJOG = getMotorMoveDic(ModbusID.MOTOR_H.value,True,finalPos ,DEFAULT_RPM_SLOWER,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H*2)
             logSSE_info(f'다시탐색{callbackACK.retryCount}:{dicJOG}')
             endPos = None
             dicPotNot = getMotorWP_ONDic()  if finalPos > stopped_pos else getMotorWN_ONDic()
@@ -1012,51 +1062,59 @@ def callbackMB_15(recvDataMap):
         sPOS = int(recvDataMap.get(sPOS_Key))
         di_pot_status = isTrue(recvDataMap.get(sDI_POT,""))
         last_started_pos = int(recvDataMap.get(MonitoringField.LAST_STARTED_POS.name))
-        if di_pot_status:
+        endnode_pos = int(recvDataMap.get(MonitoringField.LAST_TARGET_POS.name))
+        dicEndNodeInfo=GetNodeDicFromPos(dfNodeInfo,endnode_pos)
+        endNodeID_fromPulse = dicEndNodeInfo.get(TableInfo.NODE_ID.name)
+        endNode_type = str(dicEndNodeInfo.get(RFID_RESULT.EPC.name))
+
+        if di_pot_status:            
             sLogMsg = f'도그위치:{sPOS},시작위치:{last_started_pos},목표위치:{target_pos},속도:{sSPD_signed}'
-            logSSE_info(sLogMsg)        
+            if abs(last_started_pos - sPOS) > roundPulse:
+                logSSE_info(sLogMsg)        
             if callbackMB_15.ESTOP_ON == BLD_PROFILE_CMD.ESTOP.name:
                 callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.BACK_HOME.name
                 StopMotor(ModbusID.MOTOR_H.value,ACC_DECC_NORMAL)
+                #marginPulse = sSPD_signed * 20
+                marginPulse = roundPulse * 5
+                
                 if sSPD_signed > 0:
-                    endPos = sPOS - (sSPD_signed * 5)
+                    endPos = sPOS - marginPulse
                 else:
-                    endPos = sPOS + (sSPD_signed * 5)    # - (sSPD_signed * 20) 
+                    endPos = sPOS + marginPulse
                 # sLogMsg = f'도그위치:{sPOS},시작위치:{last_started_pos},목표위치:{target_pos},속도:{sSPD_signed}'
                 # rospy.loginfo(sLogMsg)
             else:
                 dicCurNodeInfo=GetNodeDicFromPos(dfNodeInfo,sPOS,di_pot_status)
                 if not dicCurNodeInfo:
                     return
-                endnode_pos = int(recvDataMap.get(MonitoringField.LAST_TARGET_POS.name))
-                dicEndNodeInfo=GetNodeDicFromPos(dfNodeInfo,endnode_pos)
-                endNodeID_fromPulse = dicEndNodeInfo.get(TableInfo.NODE_ID.name)
+
                 curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+                if endNodeID_fromPulse == curNodeID_fromPulse:
+                    return                #endNodeType = dicEndNodeInfo[RFID_RESULT.EPC.name]
                 dicCurNodeInfo['END_NODE'] = endnode
                 logSSE_info(dicCurNodeInfo)        
                 #rospy.loginfo(sLogMsg)        
                 
-                if endNodeID_fromPulse == curNodeID_fromPulse:
-                    return
+
                 curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
                 #curNode_pos = int(dicCurNodeInfo.get(posStr))
                 lastNode = curNodeID_fromPulse
                 
-                # dicSpdControl = {}
-                # if curNode_type.find(RailNodeInfo.R_END.name) >= 0:
-                #     if sSPD_signed > 0 and sSPD_abs > 100:
-                #         dicSpdControl.update(dicSpdFast)
-                #     if sSPD_signed < 0 and sSPD_abs > 100:
-                #         dicSpdControl.update(dicSpdSlow)
-                # elif curNode_type.find(RailNodeInfo.R_START.name) >= 0:
-                #     if sSPD_signed < 0:
-                #         dicSpdControl.update(dicSpdFast)
-                #     else:
-                #         dicSpdControl.update(dicSpdSlow)                
-                # if dicSpdControl and not is_equal(endnode,0):
-                #     SendCMD_Device([dicSpdControl])
+                dicSpdControl = {}
+                if curNode_type.find(RailNodeInfo.R_END.name) >= 0:
+                    if sSPD_signed > 0 and sSPD_abs > 100:
+                        dicSpdControl.update(dicSpdFast)
+                    if sSPD_signed < 0 and sSPD_abs > 100:
+                        dicSpdControl.update(dicSpdSlow)
+                elif curNode_type.find(RailNodeInfo.R_START.name) >= 0:
+                    if sSPD_signed < 0:
+                        dicSpdControl.update(dicSpdFast)
+                    else:
+                        dicSpdControl.update(dicSpdSlow)                
+                if dicSpdControl and not is_equal(endnode,0):
+                    SendCMD_Device([dicSpdControl])
 
-        if abs(target_pos - sPOS) > roundPulse * 10:
+        if abs(target_pos - sPOS) > roundPulse * 20:
             return
         
         si_pot = recvDataMap.get(sSI_POT,"")
@@ -1126,7 +1184,7 @@ def callbackMB_15(recvDataMap):
         #node_near = 
 
         listReturnTmp = []
-        if callbackMB_15.ESTOP_ON == BLD_PROFILE_CMD.MOTORSTOP.name:
+        if callbackMB_15.ESTOP_ON == BLD_PROFILE_CMD.MOTORSTOP.name and endNode_type.find(strNOTAG) >= 0:
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.ESTOP.name            
             #listReturnTmp.append(dicSpdSlow)
             #listReturnTmp.append(dicWE_ON)
@@ -1412,6 +1470,7 @@ def control_data():
 
             # SCR_DIR 환경변수에서 경로 읽기
             scr_dir = os.getenv(UbuntuEnv.SCR_DIR.name)
+            
 
             if scr_dir and os.path.isdir(scr_dir):
                 log_files = glob.glob(os.path.join(scr_dir, '*.log'))
@@ -1428,6 +1487,9 @@ def control_data():
             shared_data.pop(TopicName.HISTORY_INFO.name,None)
             print(API_robot_node_info())
             print(API_robot_table_info())
+            #new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCut)    
+            generate_graph_from_position_csv(strFileEPC_total,strFileShortCut)        
+            #print(new_csv_node)
             #return {"error": "topicname is required."}, 400
         else:
             if isTableValid == MIN_INT:
@@ -1462,17 +1524,17 @@ def service_ard():
     bResult = True
     bStrMsg = AlarmCodeList.OK.name
     try:
-        tmpHalf = request.args.to_dict().get('q', None)
+        queryCmd = request.args.to_dict().get('q', None)
         tiltAngle = try_parse_int(request.args.to_dict().get('tilt', None),MIN_INT)
         if tiltAngle != MIN_INT:   
             ardmsg = round(mapRange(tiltAngle, minGYRO,maxGYRO,0,180))
             if tiltAngle != MIN_INT:
                 bResult,bStrMsg=SendCMDArd(f'S:10,{ardmsg}')
-        elif tmpHalf is None:
+        elif queryCmd is None:
             bResult = False
             bStrMsg = ALM_User.CMD_ISNULL.value
         else:
-            bResult,bStrMsg=SendCMDArd(tmpHalf)
+            bResult,bStrMsg=SendCMDArd(queryCmd)            
     except Exception as e:
         bResult = False
         bStrMsg = str(traceback.format_exc())
@@ -1504,7 +1566,7 @@ def service_dataExport():
     try:
         client_ip = request.remote_addr
         topic_name = request.args.get('topicname', None)
-        rospy.loginfo_throttle(10, f"[DATA1] 요청 수신: IP={client_ip}, topicname={topic_name}")
+        #rospy.loginfo_throttle(10, f"[DATA1] 요청 수신: IP={client_ip}, topicname={topic_name}")
 
         if topic_name is None:
             rospy.loginfo_throttle(10, "[DATA1] 누락된 파라미터: topicname")
@@ -1515,7 +1577,7 @@ def service_dataExport():
             rospy.loginfo_throttle(10, f"[DATA1] 존재하지 않는 topicname 요청: {topic_name}")
             return {"error": "wrong topicname."}, 400
 
-        rospy.loginfo_throttle(10, f"[DATA1] 응답 완료: topicname={topic_name}")
+        #rospy.loginfo_throttle(10, f"[DATA1] 응답 완료: topicname={topic_name}")
         return resultData, 200
 
     except Exception as e:
@@ -1551,6 +1613,7 @@ service_last_cmd_time = 0
 @app.route('/CROSS', methods=['GET'])
 def service_cross():
     global service_last_cmd_time
+    global dicLastPosition
     try:
         now = time.time()
         recvJunctionStatus=immutable_multi_dict_to_dict(request.args)
@@ -1579,6 +1642,7 @@ def service_cross():
         dicPostion['onScaning']=onScaning()
         
         data_out2 = json.dumps(dicPostion)
+        dicLastPosition.update(dicPostion)
         pub_BLB_POS.publish(data_out2)
 
         pub_BLB_CROSS.publish(data_out)
@@ -1624,6 +1688,29 @@ def service_charge():
   
     return {"message": f"{request.method},{loaded_data}"}, 200
 
+@app.route('/ROS', methods=['GET'])
+def service_ros():
+    bResult = False
+    bMsg = AlarmCodeList.OK.name
+    resp_cd = 400
+    try:
+        key = request.args.get('key')
+        value = request.args.get('val')
+        if key is None:
+            bMsg = ALM_User.CMD_FORMAT_INVALID.value
+        elif value is None:
+            bMsg = getROS_Param(key)
+            resp_cd = 200
+        else:
+            rospy.set_param(key, value)
+            rospy.loginfo(f"[set_ros_param] Set '{key}' to '{value}' successfully.")
+            bMsg = value
+            bResult = True
+            resp_cd = 200
+    except Exception as e:
+        rospy.logerr(f"[set_ros_param] Failed to set param '{key}': {e}")
+        bMsg = e
+    return {bResult:bMsg},resp_cd
 
 @app.route('/JOG', methods=['GET'])
 def service_jog():
@@ -1654,17 +1741,30 @@ def service_jog():
         #         lastNode = 1
         
         endnode = try_parse_int(endnode_tmp,MIN_INT)
-        if endnode == -1:   #DF를 short_cut.txt 로 변환 저장
-            new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCut)
+        if endnode == 0:   #현재 테이블 값 등을 저장
+            table_id=dicLastPosition[TableInfo.TABLE_ID.name]
+            node_id=dicLastPosition[TableInfo.NODE_ID.name]
+            cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
+            cur_angle360=dicLastPosition[TableInfo.MARKER_ANGLE.name]            
+            cur_tof = GetServDistanceFromPulse()
+            dic_newNodeInfo2 = {}
+            dic_newNodeInfo2[TableInfo.TABLE_ID.name] = table_id
+            dic_newNodeInfo2[TableInfo.NODE_ID.name] = node_id
+            dic_newNodeInfo2[TableInfo.SERVING_DISTANCE.name] = cur_tof
+            dic_newNodeInfo2[TableInfo.SERVING_ANGLE.name] = cur_angle540
+            dic_newNodeInfo2[TableInfo.MARKER_ANGLE.name] = cur_angle360
+            add_or_update_row(strFileTableNodeEx,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
+            
+            #new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCut)
             return {"OK": "Node Saved"}, 200      
-        if endnode == 0:
-            dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
-            avg_df = dfScan.groupby("NODE_ID", as_index=False)["POS"].mean()
-            avg_df["POS"] = avg_df["POS"].round().astype(int)
-            last_epc_df = dfScan.groupby("NODE_ID", as_index=False).last()[["NODE_ID", "EPC"]]
-            result_df = pd.merge(avg_df, last_epc_df, on="NODE_ID")
-            result_df.to_csv(strFileEPC_total, sep=sDivTab, index=False)
-            return {"OK": "MapSaved"}, 200      
+        # if endnode == 0:
+        #     dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
+        #     avg_df = dfScan.groupby("NODE_ID", as_index=False)["POS"].mean()
+        #     avg_df["POS"] = avg_df["POS"].round().astype(int)
+        #     last_epc_df = dfScan.groupby("NODE_ID", as_index=False).last()[["NODE_ID", "EPC"]]
+        #     result_df = pd.merge(avg_df, last_epc_df, on="NODE_ID")
+        #     result_df.to_csv(strFileEPC_total, sep=sDivTab, index=False)
+        #     return {"OK": "MapSaved"}, 200      
         if endnode == MIN_INT:
             isScan = True
         else:
@@ -1720,8 +1820,12 @@ def service_jog():
             return {"ERR": "endNode not found"}, 400      
         distanceDiffSigned = distancePulseTarget-(cur_posH)
         distanceDiffAbs = abs(distanceDiffSigned)
+        pos_cross = GetNodePos_fromNode_ID(NODE_CROSS)
+        node_longest = GetNodeID_longest(False)
+        pos_longest = GetNodePos_fromNode_ID(node_longest)
+        full_distanceCurrent = pos_cross - pos_longest
         if distanceDiffSigned > 0:
-            backlashPos = estimate_backlash_error(distanceDiffSigned)
+            backlashPos = estimate_backlash_error(current_distance=distanceDiffSigned,full_distance= full_distanceCurrent)   
             distancePulseTarget = distancePulseTarget - backlashPos
         dicMotorH = getMotorMoveDic(ModbusID.MOTOR_H.value,isAbsPos,distancePulseTarget,spd,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
         
@@ -1759,10 +1863,47 @@ def service_jog():
         logSSE_error(traceback.format_exc())
         return GetErrResponse(e)
 
+def RotateMotor540(control540,filter_rate,checkSafety, delayTime = 0):
+    if delayTime > 0:
+        rospy.loginfo(f"Delay540 {delayTime} sec")
+        time.sleep(delayTime)
+    bResult=True
+    bExecuteMsg = AlarmCodeList.OK.name
+    pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+    cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+    spd540=SPD_540
+    if control540 == cur_angle540:
+        return {bResult:bExecuteMsg}, 200
+    di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
+    if control540 >=0:
+        targetPulse_serv = GetRotateMainPulseFromAngle(control540)
+        diff_serv = (targetPulse_serv - pos_540)
+        # if control540 == 0 and isRealMachine:
+        #     if diff_serv > 0:
+        #         targetPulse_serv += diff_roundPulse
+        #     else:
+        #         targetPulse_serv -= diff_roundPulse
+    else:
+        if isTrue(di_home):
+            return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200                
+        targetPulse_serv = pos_540 - pot_540
+        spd540=60
+    dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,spd540,ACC_540,DECC_540)
+    #print(dic540)
+    lsCmd = [dic540]
+    if si_home == BLD_PROFILE_CMD.ESTOP.name:
+        lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
+    elif control540 < 0:
+    #elif control540 < 0 or (control540 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
+        lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
+    bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
+    reponseCode = 200 if bResult else 400
+    return bResult,bExecuteMsg
+
 def RotateMotor360(control360,filter_rate,checkSafety, delayTime = 0):
     if delayTime > 0:
-        delayTime = min(delayTime, delayTimeMin)
-        rospy.loginfo(f"Delay {delayTime} sec")
+        #delayTime = min(delayTime, delayTimeMin)
+        rospy.loginfo(f"Delay360 {delayTime} sec")
         time.sleep(delayTime)
     bResult=True
     bExecuteMsg = AlarmCodeList.OK.name
@@ -1809,6 +1950,7 @@ def RotateMotor360(control360,filter_rate,checkSafety, delayTime = 0):
 @app.route(f'/{ServiceBLB.CMD_DEVICE.name}', methods=['GET'])
 def service_cmd_device():
     listReturn = []
+    reponseCode = 200    
     try:
         reqargs = request.args.to_dict()
         param1 = MIN_INT
@@ -1819,12 +1961,13 @@ def service_cmd_device():
         chargeplug = request.args.get(SMARTPLUG_INFO.SET_CHARGERPLUG.name, None)
         lightplug = request.args.get(SMARTPLUG_INFO.SET_LIGHTPLUG.name, None)
         filter_rate = try_parse_float(request.args.get(JogControl.FILTER_RATE.name, None),3.0)
-        checkSafety = isTrue(request.args.get(JogControl.SAFETY.name, 0))
+        checkSafety = isTrue(request.args.get(JogControl.SAFETY.name, 1))
         spd_rate = try_parse_float(request.args.get(JogControl.SPD_RATE.name, None),1.0)
         control540 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_MAIN.name, None),MIN_INT)
         control360 = try_parse_int(request.args.get(JogControl.CONTROL_ROTATE_TRAY.name, None),MIN_INT)
         controlArm3 = try_parse_int(request.args.get(JogControl.CONTROL_3ARMS.name, None),MIN_INT)
         controlArm2 = try_parse_int(request.args.get(JogControl.CONTROL_2ARMS_ANGLE.name, None),MIN_INT)
+        doorCtrl = try_parse_int(request.args.get(JogControl.DOOR.name, None),MIN_INT)
         qNumber = request.args.get('q', MIN_INT)
         recvData = request.args.get('data')
         recvDF = request.args.get('DF')
@@ -1855,45 +1998,20 @@ def service_cmd_device():
             else:
                 lsCmd,rpm_time = GetControlInfoArms(controlArm3,True,spd_rate)
                 bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
-                if control360 != MIN_INT:
-                    bResult,bExecuteMsg=RotateMotor360(control360,filter_rate,checkSafety, max(rpm_time/2,delayTimeMin))
                 reponseCode = 200 if bResult else 400
-                #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+                if control360 != MIN_INT:
+                    bResult,bExecuteMsg=RotateMotor360(control360,filter_rate,False,delayTimeMin)
+                    reponseCode = 200 if bResult else 400
+                if control540 != MIN_INT:
+                    bResult,bExecuteMsg=RotateMotor540(control540,filter_rate,False)
+                    reponseCode = 200 if bResult else 400
             return {bResult:bExecuteMsg}, reponseCode
         elif control360 != MIN_INT:
             bResult,bExecuteMsg=RotateMotor360(control360,filter_rate,checkSafety)
             reponseCode = 200 if bResult else 400
             return {bResult:bExecuteMsg}, reponseCode    
         elif control540 != MIN_INT:            
-            cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
-            spd540=SPD_540
-            if control540 == cur_angle540:
-                return {bResult:bExecuteMsg}, 200
-            di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateMain)
-            if control540 >=0:
-                targetPulse_serv = GetRotateMainPulseFromAngle(control540)
-                diff_serv = (targetPulse_serv - pos_540)
-                # if control540 == 0 and isRealMachine:
-                #     if diff_serv > 0:
-                #         targetPulse_serv += diff_roundPulse
-                #     else:
-                #         targetPulse_serv -= diff_roundPulse
-            else:
-                if isTrue(di_home):
-                    return {bResult:ALM_User.CALI_ALREADY_DONE.value}, 200                
-                targetPulse_serv = pos_540 - pot_540
-                spd540=60
-            dic540 = getMotorMoveDic(ModbusID.ROTATE_MAIN_540.value,True,targetPulse_serv,spd540,ACC_540,DECC_540)
-            #print(dic540)
-            lsCmd = [dic540]
-            if si_home == BLD_PROFILE_CMD.ESTOP.name:
-                lsCmd.insert(0,getMotorWHOME_OFFDic(ModbusID.ROTATE_MAIN_540.value))
-            elif control540 < 0:
-            #elif control540 < 0 or (control540 == 0 and not isTrue(di_home) and si_home != BLD_PROFILE_CMD.ESTOP.name):
-                lsCmd.append(getMotorWHOME_ONDic(ModbusID.ROTATE_MAIN_540.value))
-            bResult,bExecuteMsg=SendCMD_Device(lsCmd,filter_rate,checkSafety)
-            reponseCode = 200 if bResult else 400
-            #return {f'Set SetLightPlug to {controlArm3} -> Result': bResult}, reponseCode
+            bResult,bExecuteMsg=RotateMotor540(control540,filter_rate,False,checkSafety)
             return {bResult:bExecuteMsg}, 200
         
         elif controlArm2 != MIN_INT:
@@ -1985,8 +2103,8 @@ def service_cmd_device():
                     listReturn.append(dicMotorH)
                 else:
                     listReturn.append(dicBackHome)
-            elif qNumber == BLD_PROFILE_CMD.FOLD_ALL.value:
-                listReturn.extend(dicAllFold)
+            # elif qNumber == BLD_PROFILE_CMD.FOLD_ALL.value:
+            #     listReturn.extend(dicAllFold)
             elif qNumber == BLD_PROFILE_CMD.FOLD_ARM.value:
                 listReturn.extend(dicArmFold)
             elif qNumber == BLD_PROFILE_CMD.EXPAND_ALL.value:
@@ -2007,7 +2125,13 @@ def service_cmd_device():
                 dfTableInfo = pd.read_csv(strFileEPC_total, sep=sDivTab)
                 lsdfTable=dfTableInfo.to_dict(orient='records')
                 #data_out = json.dumps(lsdfTable) 
+                return lsdfTable,200            
+            elif qNumber == BLD_PROFILE_CMD.GET_STATUS.value:
+                dfTableInfo = pd.read_csv(strFileServiceData, sep=sDivTab)
+                lsdfTable=dfTableInfo.to_dict(orient='records')
+                #data_out = json.dumps(lsdfTable) 
                 return lsdfTable,200
+            
         else:
             recvDataTmp = getDic_strArr(recvData.upper(), sDivFieldColon, sDivItemComma)
             PROFILE = recvDataTmp.get(BLB_CMD_CUSTOM.PROFILE.name)

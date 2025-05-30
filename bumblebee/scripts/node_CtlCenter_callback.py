@@ -112,6 +112,7 @@ def callbackAck(data,topic_name='' ):
         # 이 부분에서 현재 어떠한 상태인지 알 수 있음. (하강인지 상승인지 등)
         isStarted = flag == "0"
         isStopped = not isStarted
+        curTargetT,curTargetN = GetCurrentTargetTable()
         if mbid_tmp == str(ModbusID.MOTOR_H.value):          
         #   if len(node_CtlCenter_globals.lsHistory_motorH) > 0 and isStopped and isRealMachine:
         #     dicMotorH = node_CtlCenter_globals.lsHistory_motorH[-1]
@@ -227,7 +228,7 @@ def callbackAck(data,topic_name='' ):
               node_CtlCenter_globals.dicServoPos[mbid_tmp] = [0,0]
             node_CtlCenter_globals.dicServoPos[mbid_tmp][1] = cur_pos
             ClearDistanceBox()
-            curTargetT,curTargetN = GetCurrentTargetTable()
+            
             # 모터 구동 완료 ACK 수신 - 활성모터 리스트에서 제거
             
             removeRunningMotorsBLB(mbid_tmp)
@@ -388,33 +389,8 @@ def callbackAck(data,topic_name='' ):
                     #if int(node_current) != node_KITCHEN_STATION:
                     # 리프트 모터 하강구동이 완료된 경우 30초내로 꺼내가라는 방송을 한다.
                     #if not isScanOn:
-                    #DoorOpen()
-                    if doorStatus == TRAYDOOR_STATUS.CLOSED:
-                        #rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
-                        if dfReceived is None:
-                            rospy.loginfo(f"dfReceived not found")
-                            #추후 중량값 들어오고 있는 셀로 고치자.
-                            #if not isScanOn:
-                            currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
-                            if currentWeight1 > 100:
-                                DoorOpen(0)
-                            elif currentWeight2 > 100:
-                                DoorOpen(1)
-                            #LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
-                        else:
-                            SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
-                            dicFirst = dfReceived.iloc[0]
-                            taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
-                            dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
-                            trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
-                            if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
-                                DoorOpen()
-                            else:
-                                trayRackID = RackID.from_name_or_value(trayrack,True)
-                                trayidx = trayRackID.value
-                                #trayidx = (int)(trayrack[1:]) - 1
-                                DoorOpen(trayidx)
-                            #RemoveDF(curTargetTable)                    
+                    #DoorOpen() - 기존 리프트가 완료되면 열던 방식에서 고객안전을 위해
+                    #미리 열려서 내려오는 것으로 전환함.
                     targetTable =GetCurrentTargetTable()
                     curNode = GetCurrentNode()
                     dicTagretTableInfo = getTableServingInfo(targetTable)
@@ -424,6 +400,7 @@ def callbackAck(data,topic_name='' ):
                         SendInfoHTTP(f'{targetTable} 번 테이블정보 저장 :{bReturn} - {strResult}')
                     
                     #if curTargetN != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
+                    TiltServFinish()
                     if curNode != node_KITCHEN_STATION and isLiftTrayDown:
                     #if curNode != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
                         SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
@@ -439,10 +416,10 @@ def callbackAck(data,topic_name='' ):
                         }
                         #tts 서비스 가용하면 음식을 꺼내가라는 안내방송 진행
                         ttsResult = TTSAndroid(messageTTS,1)
-                        if ttsResult:
-                            node_CtlCenter_globals.dicTTS.clear()
-                            sorted_time_dict = OrderedDict(sorted(time_dict.items()))
-                            node_CtlCenter_globals.dicTTS.update(sorted_time_dict)
+                        # if ttsResult and IsEnableSvrPath():
+                        #     node_CtlCenter_globals.dicTTS.clear()
+                        #     sorted_time_dict = OrderedDict(sorted(time_dict.items()))
+                        #     node_CtlCenter_globals.dicTTS.update(sorted_time_dict)
                         
     except Exception as e:
         message = traceback.format_exc()
@@ -534,13 +511,18 @@ def callbackBLB_CMD(data,topic_name=''):
         else:
             recvDataMap = getDic_strArr(recvData, sDivFieldColon, sDivEmart)
         if APIBLB_FIELDS_ACTION.chainlist.name in recvDataMap.keys():
+            #관리자 툴에서 지시정보를 입력하면 여기로 가결정 정보가 온다.
             lsDicArray=recvDataMap[APIBLB_FIELDS_ACTION.chainlist.name]
             node_CtlCenter_globals.dfTaskChainInfo = GetDFTaskChain(lsDicArray)  
             return          
         elif APIBLB_FIELDS_ACTION.target.name in recvDataMap.keys():
-          #target = 주행시작하라는 명령어
+          #target = 주행시작하라는 지시 확정 명령어
           lsDicArray=recvDataMap[APIBLB_FIELDS_ACTION.target.name]
-          SetDFTableInfo(lsDicArray)
+          if lsDicArray:
+              #TTSAndroid('작업을 시작합니다')
+              SetDFTableInfo(lsDicArray)
+          else:
+              TTSAndroid('지시정보에 이상이 있습니다')
           return 
 
         # 메인회전, 트레이 회전 명령어.

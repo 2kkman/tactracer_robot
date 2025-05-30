@@ -678,8 +678,12 @@ class robot_trayload_status(MethodView):
         resultJS = {}
         iKg = float(dictGlobal.get(CARRIER_STATUS.LOAD1.name,-1))
         jKg = float(dictGlobal.get(CARRIER_STATUS.LOAD2.name,-1))
-        resultJS[APIBLB_FIELDS_STATUS.R1.name] = 1 if iKg >= 100 else 0
-        resultJS[APIBLB_FIELDS_STATUS.R2.name] = 1 if jKg >= 100 else 0
+        # resultJS[APIBLB_FIELDS_STATUS.R1.name] = 1 if iKg >= 100 else 0
+        # resultJS[APIBLB_FIELDS_STATUS.R2.name] = 1 if jKg >= 100 else 0
+        # 2025-05-20 음식을 미리 실어 무게가 감지되는 중
+        # 서버에서 지시정보를 생성하려 시도하면 에러가 나기때문에 전달하지 않는다.
+        resultJS[APIBLB_FIELDS_STATUS.R1.name] = 0        
+        resultJS[APIBLB_FIELDS_STATUS.R2.name] = 0
         return GetFlaskReponse(resultJS,request=request)
 
 class robot_battery_status(MethodView):

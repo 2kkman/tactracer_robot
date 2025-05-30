@@ -5,7 +5,7 @@ def RunListBlbMotorsEx(listBLB):
     lsMotorOperationNew = []
     isReady_Start = False
     isReady_End = False
-    runningMotors = getRunningMotorsBLB()
+    runningMotors = getRunningMotorsBLBEx()
     isTimePassed = isTimeExceeded(GetLastCmdTimeStamp(), MODBUS_EXECUTE_DELAY_ms)
     if len(runningMotors) > 0 or not isTimePassed:
         return APIBLB_ACTION_REPLY.E105
@@ -113,7 +113,7 @@ def RunListBlbMotorsEx(listBLB):
                           rospy.loginfo(node_CtlCenter_globals.dicTargetPosFeedBack)
                         
                 curX,curY = GetLocXY()
-                rospy.loginfo(f'현재Pulse:{cur_posH},펄스거리:{cur_pos_mm},현지점:{curX},{curY},중간노드좌표:{node_CtlCenter_globals.dicTargetPosFeedBack},남은테이블:{node_CtlCenter_globals.listTable}')
+                rospy.loginfo(f'현재Pulse:{cur_posH},펄스거리:{cur_pos_mm}mm,현지점:{curX},{curY},중간노드좌표:{node_CtlCenter_globals.dicTargetPosFeedBack},남은테이블:{node_CtlCenter_globals.listTable}')
                 
                 iSpdH = round(SPD_MOVE_H*SPEED_RATE_H)
                 iPOS_R = try_parse_int(sPOS_R)
@@ -153,7 +153,7 @@ def RunListBlbMotorsEx(listBLB):
                         rospy.loginfo_throttle(20, message)       
                         return APIBLB_ACTION_REPLY.E107
                     else:
-                        StopEmergency(ALM_User.CROSS_STATUS_INVALID.value)
+                        #StopEmergency(ALM_User.CROSS_STATUS_INVALID.value)
                         return APIBLB_ACTION_REPLY.E107
                 #데모에서는 일단 이렇게
                 dicInfo_local = getMotorMoveDic(ModbusID.MOTOR_H.value, True, iTargetPulse, iSpdH, ACC_MOVE_H,DECC_MOVE_H)
@@ -183,7 +183,8 @@ def RunListBlbMotorsEx(listBLB):
                 if dicInfo_local_org.get(SeqMapField.END_NODE.name) is not None:
                     node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
                 if isRealMachine:
-                    bReturn,strResult=API_MoveH(pulseTarget,dicInfo_local.get(MotorWMOVEParams.SPD.name),endnode_current)
+                    #bReturn,strResult=API_MoveH(pulseTarget,dicInfo_local.get(MotorWMOVEParams.SPD.name),endnode_current)
+                    bReturn,strResult=API_MoveH(pulseTarget,SPD_MOVE_H,endnode_current)
                     rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
                     bReturn,strResult=GetResultMessageFromJsonStr(strResult)
                     rospy.loginfo(f'{bReturn},{strResult}')
@@ -210,7 +211,9 @@ def RunListBlbMotorsEx(listBLB):
         #가장 인접한 노드에서 move 명령어를 한번 더 내보낸다.
         curNode_Type = node_CtlCenter_globals.dicLast_POSITION_INFO[RFID_RESULT.EPC.name]
         curNode_diPot = node_CtlCenter_globals.dicLast_POSITION_INFO[MonitoringField.DI_POT.name]
-        if curNode_Type.find(strNOTAG) >= 0 and is_equal(curNode_diPot,0) and isRealMachine:
+        isOKPos = True if node_CtlCenter_globals.dicLast_POSITION_INFO[MotorWMOVEParams.DIFF_POS.name] < 1000 else False
+        if curNode_Type.find(strNOTAG) >= 0 and (is_equal(curNode_diPot,0) and not isOKPos) and isRealMachine:
+            TTSServer('위치를 확인하고 있습니다.')
             return APIBLB_ACTION_REPLY.E112
         
         filtered_data = [item for item in dicInfo_local if item]
@@ -386,20 +389,23 @@ def RunListBlbMotorsEx(listBLB):
             #리프팅 모터 제어정보 사전 점검
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
                 if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan and isRealMachine:    #하강전 라이다 스캔 결과 확인후 내려간다.
-                    imgPath = capture_frame_from_mjpeg()
+                    # imgPath = capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5)
                     lsObstacleInfo = get_obstacle_data(1)
                     descendable_distance = node_CtlCenter_globals.DefaultGndDistance
                     isObstaclePresent = len(lsObstacleInfo)
                     rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                     bins_points = 0
-                    isCoolTimePassed = True
-                    if isObstaclePresent:
-                        descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
-                        bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
-                        isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
+                    isCoolTimePassed = False
+                    # if isObstaclePresent:
+                    #     descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
+                    #     bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
+                    #     isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
                     # if imgPath is not None and angle_y is not None and isCoolTimePassed:
                     #     save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
                     if isObstaclePresent:
+                        isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
+                        if isCoolTimePassed:
+                            TTSServer(f'테이블 {curTargetTable} 번 선반위에 장애물이 있습니다')
                         return APIBLB_ACTION_REPLY.E111
 
                 currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
@@ -523,9 +529,12 @@ def RunListBlbMotorsEx(listBLB):
             if dfReceivedNew[MotorWMOVEParams.MBID.name].astype(str).isin([str(ModbusID.ROTATE_SERVE_360.value)]).any():
                 sPosTray = get_last_value_for_key(dfReceivedNew, MotorWMOVEParams.MBID.name, str(ModbusID.ROTATE_SERVE_360.value),MotorWMOVEParams.POS.name)
                 sPosAngle = pulse_to_angle_sse(int(sPosTray),pot_31)
-                bResult, bStrMsg = API_MoveArms(distance_target, adjustrate,sPosAngle)
+                bResult, bStrMsg = API_MoveArms(distance_target, adjustrate,sPosAngle, False)
             else:
                 bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
+                
+            if not onScan:
+                TiltTableObstacleScan()
             #dfBackUp = listBLB.pop(0)
             bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'암컨트롤:{bResult},{bStrMsg}'
@@ -744,6 +753,9 @@ def RunListBlbMotorsEx(listBLB):
             unique_mbid = df_final[MotorWMOVEParams.MBID.name].unique().tolist()
             if len(unique_mbid) == 1:
                 mbid_current = unique_mbid[0]
+                if is_equal(mbid_current ,ModbusID.MOTOR_V.value):
+                #if is_equal(mbid_current ,ModbusID.ROTATE_SERVE_360.value):
+                    print(f"Lift command detected: {mbid_current}")
                 dicCurrent = lsFinalCmdEx[0]
                 iPos = int(dicCurrent[MotorWMOVEParams.POS.name])
                 iSpd = int(dicCurrent[MotorWMOVEParams.SPD.name])

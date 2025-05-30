@@ -127,52 +127,6 @@ def IsDoorMoving():
     else:
         return True
 
-def GetLedStatus():    
-    # led0 = '1,100'
-    # led1 = '2,1000'
-    led0 = node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.L0.name,"-1,-1")
-    led1 = node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.L1.name,"-1,-1")
-    lsData = [led0,led1]
-    lsReturn = []
-    for strTmp in lsData:
-      # LED컬러코드0,블링크타임0,LED컬러코드1,블링크타임1
-      lsLED = strTmp.split(sep=sDivItemComma)
-      dictLED = {}
-      dictLED[LED_STATUS.COLOR_CODE.name] = lsLED[0]
-      dictLED[LED_STATUS.BLINK_TIME.name] = lsLED[1]
-      lsReturn.append(dictLED)
-    
-    return lsReturn
-
-def GetDoorStatus():
-    doorStatusClose1 = node_CtlCenter_globals.dicARD_CARRIER.get(
-        CARRIER_STATUS.I_DOOR_1_BOTTOM.name, -1
-    )
-    doorStatusOpen1 = node_CtlCenter_globals.dicARD_CARRIER.get(
-        CARRIER_STATUS.I_DOOR_1_TOP.name, -2
-    )
-    doorStatusClose2 = node_CtlCenter_globals.dicARD_CARRIER.get(
-        CARRIER_STATUS.I_DOOR_2_BOTTOM.name, -1
-    )
-    doorStatusOpen2 = node_CtlCenter_globals.dicARD_CARRIER.get(
-        CARRIER_STATUS.I_DOOR_2_TOP.name, -2
-    )
-    isOpen1 = isTrue(doorStatusOpen1)
-    isClose1 = isTrue(doorStatusClose1)
-    isOpen2 = isTrue(doorStatusOpen2)
-    isClose2 = isTrue(doorStatusClose2)
-    resultReturn = TRAYDOOR_STATUS.MOVING
-    resultArray = [isClose1,isClose2]
-    if (isOpen1 and isClose1) or (isOpen2 and isClose2):
-        resultReturn = TRAYDOOR_STATUS.DOORALARM
-    elif isOpen1 or isOpen2:
-        resultReturn= TRAYDOOR_STATUS.OPENED
-    elif isClose1 and isClose2:
-        resultReturn= TRAYDOOR_STATUS.CLOSED
-    # else:
-    #     return TRAYDOOR_STATUS.MOVING
-    return resultReturn,resultArray
-
 def GetRotateMainAngleFromPulse(target_pulse):
   potRotate540, notRotate540, posRotate540,posRotate540= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
   angle = mapRange(target_pulse,notRotate540,potRotate540,0,MAX_ANGLE_TRAY)
@@ -245,8 +199,8 @@ def getMainRotateDicByNode(endNode):
     diff_signed = target_pulse - cur_posH
     diff_abs = abs(diff_signed)
     #pot_cur540,not_cur540,cmdpos540,cur_pos540 =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-    # 목표지점까지 거리가 40만 펄스 이내이고 현재 각도가 0도 혹은 180 도면 현재 메인회전 각도 그대로 리턴을 한다.
-    if curAngle540%180 == 0 and diff_abs < (MOVE_H_SAMPLE_PULSE / 3):
+    # 목표지점까지 거리가 60만 펄스 이내이고 현재 각도가 0도 혹은 180 도면 현재 메인회전 각도 그대로 리턴을 한다.
+    if curAngle540%180 == 0 and (diff_abs < (MOVE_H_SAMPLE_PULSE / 2) or endNode == NODE_KITCHEN):
         target_angle = curAngle540
     # 목표까지 정방향이면 0도, 역방향이면 180도
     elif diff_signed > 0:
@@ -260,113 +214,6 @@ def getMainRotateDicByNode(endNode):
 #   potRotate360, notRotate360, posRotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
 #   angle = mapRange(target_pulse,notRotate360,potRotate360,0,MAX_ANGLE_TRAY)
 #   return round(angle)
-
-def GetRotateTrayPulseFromAngle(angleStr):
-  angle = (strToRoundedInt(angleStr)) % 360
-  potRotate360, notRotate360, posRotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-  target_pulse = mapRange(angle,0,MAX_ANGLE_TRAY,notRotate360,potRotate360) 
-  return round(target_pulse)
-
-#트레이 회전 모터 제어 dict
-def GetDicRotateMotorTray(angleStr, rotateRPM = SPD_360,acc_rate =ACC_DECC_SMOOTH, decc_rate = DECC_360_DOWN):
-    potRotate360, notRotate360, poscmd_Rotate360,posRotate360= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-    roundFullPulse = potRotate360-notRotate360
-    #target_pulse = GetRotateTrayPulseFromAngle(angleStr)
-    target_pulse_raw = GetRotateTrayPulseFromAngle(angleStr)
-    
-    # CW (시계 방향) 이동 거리
-    diff_CW = (target_pulse_raw - posRotate360) % roundFullPulse
-    # CCW (반시계 방향) 이동 거리
-    diff_CCW = -((posRotate360 - target_pulse_raw) % roundFullPulse)
-
-    # 최단 거리 방향 선택
-    diff_total = abs(diff_CW) - abs(diff_CCW)
-    if abs(diff_CW) < abs(diff_CCW) or abs(diff_total) < roundPulse:
-        target_pulse = posRotate360 + diff_CW  # CW 이동
-    else:
-        target_pulse = posRotate360 + diff_CCW  # CCW 이동 (음수 값)
-    # target_CW = target_pulse_raw + roundFullPulse
-    # target_CCW = target_pulse_raw - roundFullPulse
-    # numbers= [target_pulse_raw,target_CW,target_CCW]
-    # target_pulse = min(numbers, key=lambda x: abs(x - posRotate360))  
-    motorStr = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value, True, target_pulse,rotateRPM,acc_rate,decc_rate)
-    return motorStr
-
-#주위 테이블 마커를 스캔하기 위한 모터 제어
-def GetCameraRotateCmds():
-    lsReturn = []
-    # motorInnerExtend = getMotorMoveDic(ModbusID.TELE_SERV_INNER.value, True, INNERSTEP_PULSE_TRAYMOVE,SPD_INNER,ACC_INNER,DECC_INNER)
-    # lsReturn.append([motorInnerExtend])
-    lsReturn.append([GetDicRotateMotorTray(20,SPD_TRAY_MARKER_SCAN,DEFAULT_ACC,DEFAULT_DECC)])
-    lsReturn.append([GetDicRotateMotorTray(0,SPD_TRAY_MARKER_SCAN,DEFAULT_ACC,DEFAULT_DECC)])
-    # potInner,notInner = GetPotNotServo(ModbusID.TELE_SERV_INNER)
-    # motorFold = getMotorMoveDic(ModbusID.TELE_SERV_INNER.value, True,notInner,SPD_INNER,ACC_INNER,DECC_INNER)
-    # lsReturn.append([motorFold])
-    return lsReturn
-
-def CalculateTarPosFromLength(motorInstance : ModbusID, distancePos_millimeter):
-    """
-    실제 length 를 pulse 로 변환하는 함수. POT_NOT 값에 따라 자동계산한다.
-    :return: (목표POS, 이동해야할 pulse)
-    """    
-    potpos,notpos = GetPotNotServo(motorInstance)
-    if motorInstance == ModbusID.TELE_SERV_MAIN:
-        notpos = 0
-    cmdpos,curpos = GetPosServo(motorInstance)
-    stroke = node_CtlCenter_globals.dicSTROKE[motorInstance]
-    targetpos = mapRange(distancePos_millimeter,0,stroke,notpos,potpos)
-    pulse_ToMove = abs(targetpos-curpos)
-    return round(targetpos),round(pulse_ToMove)
-    
-def CalculateLengthFromPulse(motorInstance : ModbusID, pulse_pos):
-    """
-    실제 length 를 pulse 로 변환하는 함수. POT_NOT 값에 따라 자동계산한다.
-    :return: (목표POS, 이동해야할 pulse)
-    """    
-    potpos,notpos = GetPotNotServo(motorInstance)
-    cmdpos,curpos = GetPosServo(motorInstance)
-    stroke = node_CtlCenter_globals.dicSTROKE[motorInstance]
-    lenMillimeter = mapRange(pulse_pos,notpos,potpos,0,stroke)
-    return round(lenMillimeter)
-    
-def GetSerArmDistance():
-    cmd_pos = GetItemsFromModbusTable(ModbusID.TOF,SeqMapField.DISTANCE)
-    # posSrvInnerCmd, posSrvMainCur= GetPosServo(ModbusID.TELE_SERV_MAIN)
-    # potpos,notpos = GetPotNotServo(ModbusID.TELE_SERV_MAIN)
-    # # posSrvInnerCmd, posSrvInnerCur= GetPosServo(ModbusID.TELE_SERV_INNER)
-    # # lenSrvInner = CalculateLengthFromPulse(ModbusID.TELE_SERV_INNER, posSrvInnerCur)
-    # lenSrvMain=GetTargetLengthMMServingArm(posSrvInnerCmd, notpos)
-    # #lenSrvMain = CalculateLengthFromPulse(ModbusID.TELE_SERV_MAIN, posSrvMainCur)
-    # return round(lenSrvMain)
-    return cmd_pos
-
-def GetCurrentPosDistanceAngle():
-  potRotate540_cmd, notRotate540_cur, posRotate540_cmd,posRotate540_cur= GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
-  potRotate360_cmd, notRotate360_cur, posRotate360_cmd,posRotate360_cur= GetPotNotCurPosServo(ModbusID.ROTATE_SERVE_360)
-  cur_angle_540 = pulse_to_angle(posRotate540_cur, potRotate540_cmd, MAX_ANGLE_BLBBODY)%360
-  #cur_angle_540 = (round(mapRange(posRotate540_cur,notRotate540_cur,potRotate540_cmd,0,MAX_ANGLE_BLBBODY)))%360
-  cur_angle_360 = pulse_to_angle(posRotate360_cur, potRotate360_cmd, MAX_ANGLE_TRAY)%360
-  return GetSerArmDistance(),cur_angle_540,cur_angle_360 
-
-def GetArmStatus():
-    pot_cur_arm1,not_cur_arm1 ,cmdpos_arm1,cur_pos_arm1 =GetPotNotCurPosServo(ModbusID.BAL_ARM1)
-    #pot_cur_telebal,not_cur_telebal ,cmd_pos_telebal,cur_pos_telebal =GetPotNotCurPosServo(ModbusID.TELE_BALANCE)  
-    cur_pos_telebal=0
-    pot_cur_telebal=0
-    curDistanceSrvMilimeter =GetSerArmDistance()
-    curPercentageSrvMilimeter = (100 * curDistanceSrvMilimeter) / STROKE_SERVE_TOTAL
-    curBalancePulse = cur_pos_arm1+cur_pos_telebal
-    curBalancePercentage = 100 * (curBalancePulse) / (pot_cur_arm1+pot_cur_telebal)
-    return round(curDistanceSrvMilimeter),round(curPercentageSrvMilimeter),round(curBalancePulse),round(curBalancePercentage)
-
-def GetCurrentPosXY():
-  lenSrvInner,cur_angle_540 ,cur_angle_360 = GetCurrentPosDistanceAngle()
-  return calculate_coordinates(lenSrvInner,cur_angle_540)
-
-def PrintCurrentPos():
-    curDistance, curAngle,cur_angle_360  = GetCurrentPosDistanceAngle()
-    curX,curY = calculate_coordinates(curDistance,curAngle)
-    print(f'현재위치:{curX},{curY}/{curDistance},메인회전:{curAngle}도,트레이회전:{cur_angle_360}')    
 
 def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPosition=True):
     listReturn = []
@@ -382,7 +229,7 @@ def GetDicServingArmRealTime(distanceServingTeleTotal,timeEstInput,bUseCurrentPo
         #return listReturn,timeEst
     mbid_instance = ModbusID.TELE_SERV_MAIN
     pot_cur,not_cur,cmdpos,cur_pos =GetPotNotCurPosServo(mbid_instance)
-    cur_distance = GetSerArmDistance()
+    #cur_distance = GetSerArmDistance()
     distanceServingTele = distanceServingTeleTotal
     # if distanceServingTeleTotal > STROKE_INNER:
     #     distanceServingTele = distanceServingTeleTotal - STROKE_INNER
@@ -701,14 +548,14 @@ def GetListLiftUp():
 
 def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
     #if IsEnableSvrPath() or not isRealMachine:
-    if serve_distance_mm > 1000:        
-        return GetLiftControlRealMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
-    else:
+    if serve_distance_mm <= 1100 and isUp:        
         return GetLiftControlScanMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
+    else:
+        return GetLiftControlRealMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
 
 def GetLiftUpControl():
     listBLBTmp = []
-    if GetPositionInfo(TableInfo.SERVING_DISTANCE.name) < 1000:
+    if GetPositionInfo(TableInfo.SERVING_DISTANCE.name) < 1100:
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, DECC_360_UP)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsLiftUp = GetListLiftUp()
@@ -821,36 +668,6 @@ def TTSCommon(ttsMsg,isQueueing = True, ttsInterval = 1, machineName=UbuntuEnv.Q
     
     # return mapping.get(input_str, input_str)  # 단순 매핑 변환
   
-def SendCMDArd(cmdStr):
-    #isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
-    return API_ARD(cmdStr)
-    bReturn,strResult=SendInfoHTTP(cmdStr.replace(sDivFieldColon,sDivSemiCol))
-    logger_ard.info(cmdStr)
-    rospy.loginfo(strResult)
-    if isRealMachine:
-        resultArd = service_setbool_client(ServiceBLB.CMDARD_QBI.value, cmdStr, Kill)
-    else:
-        cmdStr = replace_string(cmdStr)
-        resultArd = service_setbool_client(ServiceBLB.CMDARD_ITX.value, cmdStr, Kill)        
-    time.sleep(MODBUS_WRITE_DELAY)        
-    return resultArd
-
-def SendCMD_Device(sendbuf):
-    #cmdTmp = sendbuf
-    if isinstance(sendbuf, list):
-        if len(sendbuf) > 0:
-            return API_SendCMD_Device(sendbuf)
-            # dictTmp = sendbuf[0]
-            # if isinstance(dictTmp, dict):
-            #     if dictTmp.get('MBID') == '11':
-            #         print(dictTmp)
-
-            # cmdTmp = json.dumps(sendbuf)
-        else:
-            return False, ALM_User.ALREADY_FINISHED_CMD_POS.value
-    else:
-        return False, ALM_User.ABNORMAL_CMD_DATA2.value
-    
 def SendCMD_DeviceService(sendbuf):
     #cmdTmp = sendbuf
     if isinstance(sendbuf, list):
@@ -863,13 +680,6 @@ def SendCMD_DeviceService(sendbuf):
     # sMsg = log_all_frames('모터명령어',4)
     # SendInfoHTTP(sMsg)
     return True, service_setbool_client(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
-
-def LightWelcome(isOn):
-    OnOff = 1 if isOn else 0
-    isLightOn = try_parse_int(node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.O_V12_NC.name))
-    if OnOff != isLightOn:        
-        sCmd = f"V12:{OnOff}"
-        SendCMDArd(sCmd)
 
 def SaveCurrentPos():
   dicPos = {}
@@ -987,8 +797,8 @@ def DoorStop():
 def TrayStop():
     SendCMDArd(f"Y:0,10")
 
-def DoorOpen(doorIdx=4):
-    SendCMDArd(f"O:2{sDivItemComma}{doorIdx}")
+def DoorOpen(doorDelaySec=4):
+    SendCMDArd(f"O:2{sDivItemComma}{doorDelaySec}")
     #SendInfoHTTP(log_all_frames(doorIdx))
     # if isLiftTrayDownFinished() or not isRealMachine:
     #     #LightWelcome(False) 
@@ -1003,51 +813,6 @@ def DoorOpen(doorIdx=4):
     #     SendMsgToMQTT(pub_topic2mqtt,MQTT_TOPIC_VALUE.BLB_ALARM.value,ALM_User.SAFETY_TRAYDOOR.value)
     #     return False
 
-def DoorClose(doorIdx=4):
-    LightWelcome(False)
-    SendCMDArd(f"O:1{sDivItemComma}{doorIdx}")
-    #TiltDown()
-
-def TrayClose(spd=10):
-    SendCMDArd(f"Y:1{sDivItemComma}{spd}")
-
-
-def TrayOpen(spd=10):
-    SendCMDArd(f"Y:2{sDivItemComma}{spd}")
-
-#@rate_limited(3)  # 실행 제한 시간 설정
-def LightTrayCell(traySector=0,blinkTimeMs=1000,colorCode = 0):
-    if not hasattr(LightTrayCell, "last_cmd_msg"):
-        LightTrayCell.last_cmd_msg = ''
-    
-    #ledColor0,blink0,ledColor1,blink1  = GetLedStatus()
-    dicLED = GetLedStatus()[traySector]
-    curLedTime = int(dicLED.get(LED_STATUS.BLINK_TIME.name))
-    curLedColor = int(dicLED.get(LED_STATUS.COLOR_CODE.name))
-    if curLedTime == blinkTimeMs and curLedColor == colorCode:
-        return
-    sCmd = f"L:{colorCode}{sDivItemComma}{traySector}{sDivItemComma}{blinkTimeMs}"
-    if LightTrayCell.last_cmd_msg == sCmd:
-        return
-    log_all_frames(sCmd)
-    SendCMDArd(sCmd)
-    LightTrayCell.last_cmd_msg = sCmd
-
-
-def GetpulseBalanceCalculated():
-    curDistanceSrvTele2, curSrvPer, curBalPulse, curBalPer = GetArmStatus()
-    #currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
-    currentWeightTotal = 0
-    lenWeightData = len(node_CtlCenter_globals.dicWeightBal)
-    pulseBalanceTotal = get_balanceArmPulse(currentWeightTotal, node_CtlCenter_globals.dicWeightBal) if lenWeightData >=2 else -1
-    pulseBalanceCalculated = round(mapRange(curDistanceSrvTele2, 0,STROKE_SERVE_TOTAL, 0,pulseBalanceTotal))
-    return pulseBalanceCalculated
-
-def StopMotor(mbid, decc = EMERGENCY_DECC):
-    sendInit = getMotorStopDic(mbid, decc)
-    SendCMD_Device([sendInit])
-    log_all_frames(f"Trying to stop Motor {mbid},DECC:{decc}")
-
 def StopAllMotors(decc = EMERGENCY_DECC):
     lsModbusRequests = []
     for id in ModbusID:
@@ -1057,6 +822,7 @@ def StopAllMotors(decc = EMERGENCY_DECC):
 
 def getBLBStatus() -> BLB_STATUS_FIELD:
     #1- "Ideal"
+    isFinishedDown = isLiftTrayDownFinished()
     dic_SpdTable = {}
     dic_PosTable = {}
     doorStatus,doorArray = GetDoorStatus()
@@ -1084,7 +850,7 @@ def getBLBStatus() -> BLB_STATUS_FIELD:
     minSpd = 10
     
     #if isDoorOpened and curNode == node_KITCHEN_STATION:
-    if curNode == node_KITCHEN_STATION and isDoorOpened:        
+    if curNode == node_KITCHEN_STATION and len(getRunningMotorsBLBEx())==0:        
         return BLB_STATUS_FIELD.READY
     elif isDoorOpened:
         return BLB_STATUS_FIELD.CONFIRM    
@@ -1175,8 +941,11 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
     state_cd = blb_status.value
     state_nm = blb_status.name
     if blb_status == BLB_STATUS_FIELD.CONFIRM and isDoorOpened:
-        state_nm = tasktype.name
-        state_cd = tasktype.value + 100
+        if APIBLB_TASKTYPE.Parking.value == tasktype.value:
+            state_cd = 102
+        else:
+            state_nm = tasktype.name
+            state_cd = tasktype.value + 100
     dicStatusData[BLB_STATUS.STATE_CD.name] = state_cd
     dicStatusData[BLB_STATUS.STATE_NM.name] = state_nm
     

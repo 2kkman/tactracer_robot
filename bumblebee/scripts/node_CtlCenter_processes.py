@@ -328,9 +328,9 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
         #cmd_pos_srvInner, cur_pos_srvInner = GetPosServo(ModbusID.TELE_SERV_INNER)
         cmd_pos_srvMain, cur_pos_srvMain = GetPosServo(ModbusID.TELE_SERV_MAIN)
         #distanceSrvInnerMechanic = (cur_pos_srvInner *  1.46433333)/roundPulse
-        distanceSrvMainMechanic = (cur_pos_srvMain * 1.875)/roundPulse
-        #distMechanic = round(distanceSrvMainMechanic+distanceSrvInnerMechanic)
-        distMechanic = distanceSrvMainMechanic
+        # distanceSrvMainMechanic = (cur_pos_srvMain * 1.875)/roundPulse
+        # #distMechanic = round(distanceSrvMainMechanic+distanceSrvInnerMechanic)
+        # distMechanic = distanceSrvMainMechanic
         curDistanceSrvTele, curAngle,cur_angle_360=GetCurrentPosDistanceAngle()
         curDistanceSrvTele2, curSrvPer, curBalPulse,curBalPer = GetArmStatus()
         pulseBalanceCalculated = GetpulseBalanceCalculated()
@@ -403,7 +403,7 @@ def PrintStatusInfoEverySec(diffCharRate = 0.96):
         
         ledInfo = GetLedStatus()
         multi_line_string = f"""{jobStr}
-        펄스기반서빙길이:{distMechanic}mm,현재서빙길이:{curDistanceSrvTele}mm,현재밸런싱펄스:{curBalPulse},계산된밸런싱펄스:{pulseBalanceCalculated},메인회전각도:{curAngle},트레이각도:{cur_angle_360}
+        현재서빙길이:{curDistanceSrvTele}mm,현재밸런싱펄스:{curBalPulse},계산된밸런싱펄스:{pulseBalanceCalculated},메인회전각도:{curAngle},트레이각도:{cur_angle_360}
         틸트:{tilt_status_name},DOORLOCKED:{doorArray},현재 무게 :{r_total}g,현재테이블:{lsCurTable},현재노드:{curNode},현재H위치:{cur_pos_mm}mm,현재속도:{cur_rpm}rpm/{cur_spd}mm/s,다음테이블:{GetTableList()}
         틸팅각:{angle_y},서보각:{tilt_angle},LED:{ledInfo},작업상태:{node_CtlCenter_globals.robot.get_current_state().name}
         크로스대기:{GetWaitCrossFlag()},유저대기:{GetWaitConfirmFlag()},현재목적노드:{curMovingTargetNode},최종목적테이블:{GetTableTarget()},현재좌표:({curX},{curY}),현재트레이:{node_CtlCenter_globals.lsRackStatus},분기기:{node_CtlCenter_globals.stateDic}
@@ -484,9 +484,13 @@ def CheckETCActions():
     releasePulse = round(roundPulse/10)
     cur_node = GetCurrentNode()
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
-    if isRealMachine and cur_node == node_KITCHEN_STATION and isTrue(DI_POT):
-        #get_mpv_process_info()
-        node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
+    if isRealMachine and cur_node == node_KITCHEN_STATION and isTrue(DI_POT) and IsOrderEmpty():
+        r1,r2,r_total = getLoadWeight()
+        node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))
+        #로드셀 오차가 시간이 지날수록 -값이 누적된다.
+        #로드셀 -20g 이하 값이 될때 로드셀 초기화한다
+        if (abs(r_total) > 20 and abs(r_total) < 100) or r_total < 0:
+            SendCMDArd("R:2")   #로드셀 초기화 명령어.
         #stateCharger = isChargerPlugOn()
         # node_pos = GetNodePos_fromNode_ID(cur_node)
         # cmd_pos,cur_pos=GetPosServo(ModbusID.MOTOR_H)
@@ -861,8 +865,8 @@ def MotorBalanceControlEx(bSkip):
                         #방금 지나친 지점에 해당하는 detailcode 보다 높은값들중 가장 작은걸 골라서 running 이나 pause 로 바꾼다
                         min_notStarted_detailcode = dfReceived[dfReceived[key_detailcode] > iDetailcode][key_detailcode].min()
                         dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, APIBLB_FIELDS_NAVI.workstatus.name] = curState
-                        
-                        PrintDF(dfReceived)
+                        dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'comments'] = getDateTime().timestamp()
+                        #PrintDF(dfReceived)
                         #서버로 전송
                         STATUS_TASK=APIBLB_STATUS_TASK.Running
                         if GetWaitConfirmFlag():
@@ -945,18 +949,19 @@ def MotorBalanceControlEx(bSkip):
         #     if diffVal < TILT_TIMING:
         #         TiltTrayCenter()
         return    
-    if isActivatedMotor(ModbusID.TELE_SERV_MAIN.value):
-        #서빙암 세이프티 캘리브레이션. 평소에는 불필요.
-        #if len(node_CtlCenter_globals.dfDistanceArm) == 0 and isDistanceVReceived:
-        if not isFileExist(node_CtlCenter_globals.strFileDistanceArm):
-            lastLD_Raw = GetDistanceV()
-            if len(lastLD_Raw)>0:
-                dictTmp = {}
-                dictTmp[DISTANCE_V.pulseV.name] = cur_pos_SrvTele
-                dictTmp[DISTANCE_V.distanceSTD.name] = round(float(lastLD_Raw[1]),4)
-                dictTmp[DISTANCE_V.distanceLD.name] = round(float(lastLD_Raw[0]),4)
-                dictTmp[DISTANCE_V.timestampLD.name] = getCurrentTime()
-                node_CtlCenter_globals.lsDistanceArmDicArr.append(dictTmp)
+    
+    # if isActivatedMotor(ModbusID.TELE_SERV_MAIN.value):
+    #     #서빙암 세이프티 캘리브레이션. 평소에는 불필요.
+    #     #if len(node_CtlCenter_globals.dfDistanceArm) == 0 and isDistanceVReceived:
+    #     if not isFileExist(node_CtlCenter_globals.strFileDistanceArm):
+    #         lastLD_Raw = GetDistanceV()
+    #         if len(lastLD_Raw)>0:
+    #             dictTmp = {}
+    #             dictTmp[DISTANCE_V.pulseV.name] = cur_pos_SrvTele
+    #             dictTmp[DISTANCE_V.distanceSTD.name] = round(float(lastLD_Raw[1]),4)
+    #             dictTmp[DISTANCE_V.distanceLD.name] = round(float(lastLD_Raw[0]),4)
+    #             dictTmp[DISTANCE_V.timestampLD.name] = getCurrentTime()
+    #             node_CtlCenter_globals.lsDistanceArmDicArr.append(dictTmp)
 
     
     #트레이 리프트 관련 제어
@@ -968,100 +973,150 @@ def MotorBalanceControlEx(bSkip):
         if not isRealMachine and move_level is None:
             move_level = 0
         
-        #리프트 모터 캘리브레이션, 평소에는 불필요
-        if len(node_CtlCenter_globals.dfDistanceV) == 0 and isDistanceVReceived:
-            lastLD_Raw = GetDistanceV()
-            dictTmp = {}
-            dictTmp[DISTANCE_V.pulseV.name] = cur_pos_lift
-            dictTmp[DISTANCE_V.distanceSTD.name] = round(float(lastLD_Raw[1]),4)
-            dictTmp[DISTANCE_V.distanceLD.name] = round(float(lastLD_Raw[0]),3)
-            dictTmp[DISTANCE_V.timestampLD.name] = getCurrentTime()
-            lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(2),0.5)
-            aruco_Z = -1
-            if len(lsAruco) > 0:
-                dicAruco = lsAruco[0]
-                aruco_Z = dicAruco[ARUCO_RESULT_FIELD.Z.name]
-            dictTmp[DISTANCE_V.aruco_Z.name] = aruco_Z
-            node_CtlCenter_globals.lsDistanceVDicArr.append(dictTmp)
-            #rospy.loginfo(dictTmp)
+        # #리프트 모터 캘리브레이션, 평소에는 불필요
+        # if len(node_CtlCenter_globals.dfDistanceV) == 0 and isDistanceVReceived:
+        #     lastLD_Raw = GetDistanceV()
+        #     dictTmp = {}
+        #     dictTmp[DISTANCE_V.pulseV.name] = cur_pos_lift
+        #     dictTmp[DISTANCE_V.distanceSTD.name] = round(float(lastLD_Raw[1]),4)
+        #     dictTmp[DISTANCE_V.distanceLD.name] = round(float(lastLD_Raw[0]),3)
+        #     dictTmp[DISTANCE_V.timestampLD.name] = getCurrentTime()
+        #     lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(2),0.5)
+        #     aruco_Z = -1
+        #     if len(lsAruco) > 0:
+        #         dicAruco = lsAruco[0]
+        #         aruco_Z = dicAruco[ARUCO_RESULT_FIELD.Z.name]
+        #     dictTmp[DISTANCE_V.aruco_Z.name] = aruco_Z
+        #     node_CtlCenter_globals.lsDistanceVDicArr.append(dictTmp)
+        #     #rospy.loginfo(dictTmp)
             
-        if isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms):
-            # 트레이 흔들림 감지시 제어
-            if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 40.0 and isRealMachine:
-              dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, ALMOST_ZEROINT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
-              SendCMD_Device([dicSpd])
-              TTSAndroid(TTSMessage.SHAKE_TRAY_DETECTED.value)
-              UpdateLastCmdTimeStamp()
-            elif abs(rpmLift) < 10 and move_level < 5 and isRealMachine:
-              dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, SPD_LIFT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
-              SendCMD_Device([dicSpd])
-              #TTSAndroid(TTSMessage.SHAKE_TRAY_OK.value)
-              UpdateLastCmdTimeStamp()
+        # if isTimeExceeded(GetLastBalanceTimeStamp(), MODBUS_EXECUTE_DELAY_ms):
+        #     # 트레이 흔들림 감지시 제어
+        #     if abs(rpmLift) > (SPD_LIFT / 2) and move_level > 40.0 and isRealMachine:
+        #       dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, ALMOST_ZEROINT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
+        #       SendCMD_Device([dicSpd])
+        #       TTSAndroid(TTSMessage.SHAKE_TRAY_DETECTED.value)
+        #       UpdateLastCmdTimeStamp()
+        #     elif abs(rpmLift) < 10 and move_level < 5 and isRealMachine:
+        #       dicSpd = getMotorSpeedDic(ModbusID.MOTOR_V.value, True, SPD_LIFT, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)
+        #       SendCMD_Device([dicSpd])
+        #       #TTSAndroid(TTSMessage.SHAKE_TRAY_OK.value)
+        #       UpdateLastCmdTimeStamp()
             
-            #세이프티 커튼            
-            if isDistanceVReceived and rpmLift > 0:
-            #if not isTimeExceeded(node_CtlCenter_globals.lsDistanceLastSeen, 0.1) and isDistanceVReceived and rpmLift > 0:
-                # lastLD_Raw = GetDistanceV()
-                # distancePoints = int(lastLD_Raw[2])
-                # distanceSTD = round(float(lastLD_Raw[1]),4)
-                # distanceLD = round(float(lastLD_Raw[0]),3)
-                # if distanceLD < 0.65 and distanceSTD > 0 and distancePoints > 2 and targetPOS_V == MIN_INT:
-                    height_difference = calculate_relative_height_difference(node_CtlCenter_globals.last_detect_3d,90-angle_y)
-                    # lidar_tilt_deg=90-angle_y
-                    # tilt_rad = np.radians(lidar_tilt_deg)
-                    # height_difference = distanceLD * np.cos(tilt_rad)
-                    if height_difference is not None and targetPOS_V == pot_cur_lift:
-                      cur_distance_fromGND = GetRangeV(cur_pos_lift,DISTANCE_V.pulseV.name, DISTANCE_V.distanceLD.name)
-                      target_distance_fromGND = cur_distance_fromGND - height_difference + 0.15 #마진이 10
-                      target_pulse = round(GetRangeV(target_distance_fromGND,DISTANCE_V.distanceLD.name, DISTANCE_V.pulseV.name))
-                      node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_V.value)] = target_pulse
-                      TTSAndroid('물체가 감지되었습니다',1000)
-                      #StopMotor(ModbusID.MOTOR_V.value)
-                      SendCMD_Device([getMotorMoveDic(ModbusID.MOTOR_V.value,True,target_pulse,DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)])
-                      UpdateLastBalanceTimeStamp()
-                      # rospy.loginfo(f'트레이 세이프티 정지!:{lastLD_Raw}')
-            
-            #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현
-            if rpmLift > 0 and not GetWaitConfirmFlag():
-                openTargetPos = round(pot_cur_lift * DOOROPEN_PERCENT)
-                #if cur_pos_lift > openTargetPos and node_CtlCenter_globals.robot.get_current_state() != Robot_Status.onServing:
-                if cur_pos_lift > openTargetPos:
+        #세이프티 커튼            
+        if isDistanceVReceived and rpmLift > 0:
+        #if not isTimeExceeded(node_CtlCenter_globals.lsDistanceLastSeen, 0.1) and isDistanceVReceived and rpmLift > 0:
+            # lastLD_Raw = GetDistanceV()
+            # distancePoints = int(lastLD_Raw[2])
+            # distanceSTD = round(float(lastLD_Raw[1]),4)
+            # distanceLD = round(float(lastLD_Raw[0]),3)
+            # if distanceLD < 0.65 and distanceSTD > 0 and distancePoints > 2 and targetPOS_V == MIN_INT:
+                height_difference = calculate_relative_height_difference(node_CtlCenter_globals.last_detect_3d,90-angle_y)
+                # lidar_tilt_deg=90-angle_y
+                # tilt_rad = np.radians(lidar_tilt_deg)
+                # height_difference = distanceLD * np.cos(tilt_rad)
+                if height_difference is not None and targetPOS_V == pot_cur_lift:
+                    cur_distance_fromGND = GetRangeV(cur_pos_lift,DISTANCE_V.pulseV.name, DISTANCE_V.distanceLD.name)
+                    target_distance_fromGND = cur_distance_fromGND - height_difference + 0.15 #마진이 10
+                    target_pulse = round(GetRangeV(target_distance_fromGND,DISTANCE_V.distanceLD.name, DISTANCE_V.pulseV.name))
+                    node_CtlCenter_globals.dicTargetPos[str(ModbusID.MOTOR_V.value)] = target_pulse
+                    TTSAndroid('물체가 감지되었습니다',1000)
+                    #StopMotor(ModbusID.MOTOR_V.value)
+                    SendCMD_Device([getMotorMoveDic(ModbusID.MOTOR_V.value,True,target_pulse,DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)])
+                    UpdateLastBalanceTimeStamp()
+                    # rospy.loginfo(f'트레이 세이프티 정지!:{lastLD_Raw}')
+        
+        #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현
+        if rpmLift > 0 and not GetWaitConfirmFlag():
+            #openTargetPos = round(pot_cur_lift * DOOROPEN_PERCENT)
+            openTargetPos = 200000
+            #if cur_pos_lift > openTargetPos and node_CtlCenter_globals.robot.get_current_state() != Robot_Status.onServing:
+            if cur_pos_lift > openTargetPos:
+                if curNode == node_KITCHEN_STATION:
+                    SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
+                else:
+                    SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
+                    LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)                        
+                
+                currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+                if curNode != node_KITCHEN_STATION:
+                    TTSServer(f'로봇이 {curTargetTable} 번 테이블에 도착하였습니다.')
+
+                fileAge = get_file_modification_age_seconds(strFileTableNodeEx)
+                if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
+                    rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
                     if curNode == node_KITCHEN_STATION:
-                        SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
+                        DoorOpen()
+                    elif dfReceived is None:
+                        rospy.loginfo(f"dfReceived not found")
+                        #추후 중량값 들어오고 있는 셀로 고치자.
+                        #if not isScanOn:
+                        
+                        if currentWeight1 > WEIGHT_OCCUPIED:
+                            DoorOpen(0)
+                        elif currentWeight2 > WEIGHT_OCCUPIED:
+                            DoorOpen(1)
+                        else:
+                            DoorOpen()
+                        #LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
                     else:
-                        SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
-                        LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)                        
-                    # if doorStatus == TRAYDOOR_STATUS.CLOSED:
-                    #     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
-                    #     if dfReceived is None:
-                    #         rospy.loginfo(f"dfReceived not found")
-                    #         #추후 중량값 들어오고 있는 셀로 고치자.
-                    #         if not isScanOn:
-                    #             DoorOpen()
-                    #         LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
-                    #     else:
-                    #         SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
-                    #         dicFirst = dfReceived.iloc[0]
-                    #         taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
-                    #         dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
-                    #         trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
-                    #         if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
-                    #             DoorOpen()
-                    #         else:
-                    #             trayRackID = RackID.from_name_or_value(trayrack,True)
-                    #             trayidx = trayRackID.value
-                    #             #trayidx = (int)(trayrack[1:]) - 1
-                    #             DoorOpen(trayidx)
-                    #         #RemoveDF(curTargetTable)
-                        UpdateLastBalanceTimeStamp()
-                    return    
-            #리프트 상승시 도어 열려있는 경우 닫힘 기능 구현
-            if doorStatus == TRAYDOOR_STATUS.OPENED and rpmLift < -100 and not isScanOn:
-                DoorClose()
-                LightTrayCell(TraySector.Cell1.value,LightBlink.Solid.value,LightColor.OFF.value)
-                UpdateLastBalanceTimeStamp()
-                #TiltArucoScan()
-                rospy.loginfo(f"도어닫음/상태:{doorStatus},속도:{rpmLift}")
+                        SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
+                        dicFirst = dfReceived.iloc[0]
+                        taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
+                        tasktype_current = int(dicFirst[APIBLB_FIELDS_TASK.tasktype.name])
+                        dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
+                        trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)
+                        #회수인 경우는 문을 모두 연다.
+                        if tasktype_current == APIBLB_TASKTYPE.CashPay.value or tasktype_current == APIBLB_TASKTYPE.CollectingEmptyPlattes.value or trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                            DoorOpen()
+                        # elif trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                        #     DoorOpen()
+                        else:
+                            # trayRackID = RackID.from_name_or_value(trayrack,True)
+                            # trayidx = trayRackID.value
+                            # DoorOpen(trayidx)
+                            if currentWeight1 > WEIGHT_OCCUPIED:
+                                DoorOpen(0)
+                            elif currentWeight2 > WEIGHT_OCCUPIED:
+                                DoorOpen(1)
+                            else:
+                                DoorOpen()
+
+                            # elif currentWeight2 > WEIGHT_OCCUPIED:
+                            #     DoorOpen(1)
+                            
+                
+                # if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                #     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
+                #     if dfReceived is None:
+                #         rospy.loginfo(f"dfReceived not found")
+                #         #추후 중량값 들어오고 있는 셀로 고치자.
+                #         if not isScanOn:
+                #             DoorOpen()
+                #         LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+                #     else:
+                #         SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
+                #         dicFirst = dfReceived.iloc[0]
+                #         taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
+                #         dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
+                #         trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)                            
+                #         if trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                #             DoorOpen()
+                #         else:
+                #             trayRackID = RackID.from_name_or_value(trayrack,True)
+                #             trayidx = trayRackID.value
+                #             #trayidx = (int)(trayrack[1:]) - 1
+                #             DoorOpen(trayidx)
+                #         #RemoveDF(curTargetTable)
+                    UpdateLastBalanceTimeStamp()
+                return    
+        #리프트 상승시 도어 열려있는 경우 닫힘 기능 구현
+        if doorStatus == TRAYDOOR_STATUS.OPENED and rpmLift < -100 and not isScanOn:
+            DoorClose()
+            LightTrayCell(TraySector.Cell1.value,LightBlink.Solid.value,LightColor.OFF.value)
+            UpdateLastBalanceTimeStamp()
+            #TiltArucoScan()
+            rospy.loginfo(f"도어닫음/상태:{doorStatus},속도:{rpmLift}")
         return    
     #targetPOS_arm1
     isArm1Expanded = abs(pot_cur_arm1 - cur_pos_arm1) < roundPulse or DI_POT_arm1
@@ -1229,6 +1284,8 @@ def GenerateServingTableList():
     lnTables = 0 if GetTableList() == None else len(GetTableList())
     #curTable,curNode = GetCurrentTargetTable()
     lsCurTable,curNode = GetCurrentTableNode()
+    if curNode < NODE_KITCHEN:
+        return
     #defaultTable = GetTableFromNode(node_KITCHEN_STATION)
     
     # if lnListBLB == 0 and lnTables == 0 and curTable != defaultTable:
@@ -1259,6 +1316,9 @@ def GenerateServingTableList():
                             resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,APIBLB_STATUS_TASK.Completed)
                             SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name])
                             print(f"API RESULT:{resultAPI},{nodeReturn}")
+                            dfReceived.iloc[-1, dfReceived.columns.get_loc('comments')] = getDateTime().timestamp()
+                            dicTest= extract_dicTest(dfReceived)
+                            PrintDF(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))                            
                             RemoveDF()
                             #print(SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name]))
                             return
@@ -1478,6 +1538,9 @@ def GenerateServingTableList():
                       rospy.loginfo(rows_with_nan)
                     #첫행의 값을 Running 으로 변경한다.
                     dfReceived.iloc[0, dfReceived.columns.get_loc(APIBLB_FIELDS_TASK.workstatus.name)] = APIBLB_STATUS_TASK.Running.value
+                    dfReceived.iloc[0, dfReceived.columns.get_loc('comments')] = getDateTime().timestamp()
+                    currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+                    dfReceived.iloc[0, dfReceived.columns.get_loc('nodetype')] = currentWeightTotal
                     dfReceived[APIBLB_FIELDS_TASK.orderstatus.name] = APIBLB_STATUS_TASK.Running.value
                     API_robot_navigation_info(dfReceived)
                     # DataFrame을 리스트로 변환
@@ -1517,7 +1580,7 @@ def GenerateServingTableList():
                     nearNode = dicNodeNear[TableInfo.NODE_ID.name]
                     startNode = dicStartNode[SeqMapField.START_NODE.name]
                     isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
-                    if not isPathValid and not (startNode < 4 and targetNode < 4): 
+                    if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION: 
                         lsNode1,listSeqMapOrg1=getSeqMap(startNode,nearNode)
                         lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
                         node_CtlCenter_globals.listBLB.clear()
@@ -1536,7 +1599,8 @@ def GenerateServingTableList():
                 try:
                     node_CtlCenter_globals.robot.trigger_start_serving()
                     if infoTABLE_ID == HOME_TABLE:
-                        TTSAndroid(f'충전소로 복귀합니다.')
+                        #TTSAndroid(f'충전소로 복귀합니다.')
+                        TTSServer(f'서빙로봇이 주방으로 복귀합니다.')
                     else:
                         TTSAndroid(f'{infoTABLE_ID}번 테이블 시작.')
                 except:

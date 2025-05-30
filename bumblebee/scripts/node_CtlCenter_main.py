@@ -48,7 +48,11 @@ class CtlCenter():
           returnMsg = f'{message} 의 리턴값이 없습니다.'
           SendInfoHTTP(returnMsg)
         else:
-          dictReturn = {APIBLB_ACTION_REPLY.code.name :APIBLB_ACTION_REPLY.R101.name,APIBLB_ACTION_REPLY.message.name: bReturnAPI.value}
+          try:
+            message_value = bReturnAPI.value
+          except AttributeError:
+            message_value = bReturnAPI[1] if isinstance(bReturnAPI, tuple) else str(bReturnAPI)
+          dictReturn = {APIBLB_ACTION_REPLY.code.name :APIBLB_ACTION_REPLY.R101.name,APIBLB_ACTION_REPLY.message.name: str(message_value)}
           returnMsg = json.dumps(dictReturn)
         return utilboxDataResponse(True if bReturnAPI == APIBLB_ACTION_REPLY.R101 else False, returnMsg)
 
@@ -169,12 +173,13 @@ if __name__ == "__main__":
     else:
       rospy.loginfo(dicCurNodeInfo)
       TTSAndroid(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
+      TTSServer(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
       SetCurrentNode(curNodeID_fromPulse)
     TiltServFinish()
 
     #TODO : 모든 모터 정지
-    if isRealMachine:
-      StopAllMotors()
+    # if isRealMachine:
+    #   StopAllMotors()
     curNode = GetCurrentNode()
     cmdpos_H, curpos_H = GetPosServo(ModbusID.MOTOR_H)
     bSkip = False
@@ -211,7 +216,7 @@ if __name__ == "__main__":
               GenerateServingTableList()
             RunListBlbMotorsEx(node_CtlCenter_globals.listBLB)
             
-            isLiftTrayDown = isLiftTrayDownFinished()
+            #isLiftTrayDown = isLiftTrayDownFinished()
             #curTable,curNode = GetCurrentTable()
             if td_local.total_seconds() > 1:
                 iCnt5s += 1
@@ -226,7 +231,7 @@ if __name__ == "__main__":
                                 node_CtlCenter_globals.dicTTS.pop(scheduled_time, None)
                                 #del node_CtlCenter_globals.dicTTS[scheduled_time]
                                 if len(node_CtlCenter_globals.dicTTS) == 0:
-                                    if IsOrderEmpty():                                      
+                                    if IsOrderEmpty():
                                       #오더가 없을시 홈으로 복귀한다.
                                       InsertTableList(HOME_TABLE)
                                       #API_SetOrderHome()
@@ -239,6 +244,10 @@ if __name__ == "__main__":
                                 break
                     else:
                         node_CtlCenter_globals.dicTTS.clear()
+                        LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)
+                        time.sleep(MODBUS_WRITE_DELAY)
+                        LightTrayCell(TraySector.Cell2.value,LightBlink.Normal.value,LightColor.BLUE.value)
+                        
                 # elif waitFlag and isLiftTrayDown and not isActivatedMotor(ModbusID.MOTOR_V.value) and curNode != node_CHARGING_STATION and curNode != node_KITCHEN_STATION:
                 #     rospy.loginfo(f'시간이 경과하여 서빙을 취소합니다.')                
                 #상태정보 표시하는 함수 추가

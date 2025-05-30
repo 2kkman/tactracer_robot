@@ -20,10 +20,8 @@ import inspect
 import itertools
 import json
 import math
-import os
 import pickle
 import re
-import socket
 import string
 import struct
 import subprocess
@@ -78,12 +76,80 @@ import cv2
 import numpy as np
 import requests
 from datetime import datetime
-save_dir_download = "/root/Downloads"
-machine_running_csv_filename = 'IsCleanTable.csv'
-machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_csv_filename)
+import platform
+import socket
+
+def get_hostname(ip=None):
+    if ip is None:
+        # Windows에서도 동작하도록 platform.system()에 따라 처리
+        try:
+            if hasattr(os, "uname"):
+                host = os.uname().nodename
+            else:
+                host = platform.node()  # Windows에서 호환
+            return host
+        except Exception as e:
+            return f"UNKNOWN_HOSTNAME: {e}"
+    else:
+        try:
+            slave_hostname = socket.gethostbyaddr(ip)[0]
+            return slave_hostname
+        except Exception as e:
+            return f"UNKNOWN_IP_HOSTNAME: {e}"
 def getDateTime():
   return datetime.now()
 
+def to_radians(degrees):
+    return degrees * math.pi / 180
+
+def to_degrees(radians):
+    return radians * 180 / math.pi
+
+def calculate_absolute_command(x0, y0, compass_angle_deg, north_offset):
+    """
+    x0, y0: 현재 로봇팔 위치 (회전 + 텔레스코픽 결과)
+    compass_angle_deg: 나침반 방향 (북서 = 135도 등)
+    north_offset: 북쪽 방향으로 더 이동할 거리
+    """
+
+    # 현재 바라보는 벡터 방향
+    angle_rad = to_radians(compass_angle_deg)
+    
+    # 현재 로봇팔 위치: (x0, y0)
+    # 북쪽 방향 벡터 = (0, 1)
+    # 목표 지점은 현재 위치에서 y축으로 north_offset 만큼 더한 위치
+    x_target = x0
+    y_target = y0 + north_offset
+
+    # 원점 기준: 회전 각도 = atan2(y, x)
+    dx = x_target
+    dy = y_target
+
+    distance = math.hypot(dx, dy)
+    angle_to_target = math.atan2(dy, dx)
+    angle_to_target_deg = to_degrees(angle_to_target)
+
+    # 0~360도로 정규화 (원하면 -180~180도도 가능)
+    angle_to_target_deg = (angle_to_target_deg + 360) % 360
+
+    return angle_to_target_deg, distance, x_target, y_target
+
+def get_file_modification_age_seconds(filepath):
+    try:
+        # 파일의 최종 수정 시간 (Unix timestamp)
+        modified_time = os.path.getmtime(filepath)
+        # 현재 시간 (Unix timestamp)
+        current_time = time.time()
+        # 차이 계산 (초 단위)
+        return int(current_time - modified_time)
+    except FileNotFoundError:
+        print(f"파일을 찾을 수 없습니다: {filepath}")
+        return -1
+    except Exception as e:
+        print(f"오류 발생: {e}")
+        return -1
+
+    
 def estimate_backlash_error(current_distance, full_distance=7662000, full_error=123654):
 #def estimate_backlash_error(current_distance, full_distance=7259818, full_error=89000):
     """
@@ -102,6 +168,7 @@ def estimate_backlash_error(current_distance, full_distance=7662000, full_error=
     error = (current_distance / full_distance) * full_error
     return round(error)
 
+# print(f"현재 이동 거리에서의 예상 오차: {estimate_backlash_error(7000000)} 펄스")
 # # 예시
 # distance = 3000000  # 현재 이동 거리
 # estimated_error = estimate_backlash_error(distance)
@@ -120,7 +187,7 @@ def GetResultMessageFromJsonStr(data_str):
         else:
             print("Unexpected data format.")
     except json.JSONDecodeError as e:
-        print("Invalid JSON:", e)    
+        print(f"Invalid JSON:{data_str}", e)    
     return None,None
 
 def compare_images_region(img1, img2, x1,y1,x2,y2, method='ssim'):
@@ -165,7 +232,7 @@ def calculate_weight_angle(arm_length_mm, max_length=1300, trigger_distance=500,
 # angle = calculate_weight_angle(length)
 # print(f"Arm length: {length} mm → Weight angle: {angle} degrees")
 
-def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5):
+def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir='', timeout=5):
     """
     MJPEG 스트림에서 1프레임을 캡처해서 저장하는 함수
     """
@@ -206,7 +273,7 @@ def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_di
 # from datetime import datetime
 
 def save_image_with_lidar_data(filename, descendable_distance, tilt_deg, obstacle_thresh=0.4,
-                                save_dir=save_dir_download, csv_path=machine_running_csv_filepath):
+                                save_dir='', csv_path=''):
     """
     이미지 저장 + 라이다 데이터 + 라벨 기록 CSV
     """
@@ -317,7 +384,7 @@ def calculate_robot_movement( target_x, target_y, current_length,current_angle=N
     return length_change, angle_change
 
 ref_x = 0.03
-ref_y = 0.48
+ref_y = 0.51
 
 # 마커 좌표: 회전각도 → (x, y)
 marker_coords_goldsample = {
@@ -591,7 +658,12 @@ def insert_or_update_row_to_df(df: pd.DataFrame, new_row, unique_key):
     for column in df.columns:
         if column not in new_row:
             new_row[column] = 'None'
-
+    
+    # 숫자 소수점 → 정수 처리 (옵션)
+    for key, value in new_row.items():
+        if isinstance(value, float) and value.is_integer():
+            new_row[key] = int(value)
+            
     # unique_key가 DataFrame에 있고, 값이 중복된다면 업데이트
     if unique_key in df.columns and new_row[unique_key] in df[unique_key].values:
         # 중복되는 행의 인덱스 찾기
@@ -649,58 +721,81 @@ def insert_row_to_csv(strFileEPC_total, strSplitter, new_row):
 def is_equal(a, b):
     return str(a) == str(b)
 
-def add_or_update_row(filepath: str, new_row: dict, sep: str = '\t', tableid_key = 'TABLEID'):
-    """
-    CSV/TSV 파일에 dict를 추가하거나 업데이트합니다.
-    
-    - sep: 컬럼 구분자 (기본은 탭 '\t')
-    - 파일이 없거나 컬럼이 다르면 새로 생성
-    - TABLEID 중복 시 해당 row를 업데이트
-    """
-    new_row = {tableid_key: new_row[tableid_key].upper(), **{k: v for k, v in new_row.items() if k != tableid_key}}
+# def add_or_update_row(filepath: str, new_row: dict, sep: str = '\t', tableid_key = 'TABLEID'):
+#     new_row = {tableid_key: new_row[tableid_key].upper(), **{k: v for k, v in new_row.items() if k != tableid_key}}
+#     bOK = False
+#     if os.path.exists(filepath):
+#         try:
+#             df = pd.read_csv(filepath, sep=sep)
+#             new_row = {col: new_row[col] for col in df.columns}
+#             # 대소문자 무시하고 매칭
+#             idx = df[df[tableid_key].str.upper() == new_row[tableid_key].upper()].index
+
+#             if not idx.empty:
+#                 # 기존 행 업데이트
+#                 for col in new_row:
+#                     df.loc[idx, col] = new_row[col]
+#             else:
+#                 # 새 행 추가
+#                 df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+#                 # TABLEID 중복 시 해당 row 업데이트
+#                 if df[tableid_key].str.upper().isin([new_row[tableid_key]]).any():
+#                     print(df)
+#                     print(new_row)
+#                     df.loc[df[tableid_key].str.upper() == new_row[tableid_key], :] = new_row
+#                     print(f"[업데이트] TABLEID = {new_row[tableid_key]} 값 업데이트됨.")
+#                 else:
+#                     df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+#                     print(f"[추가] TABLEID = {new_row[tableid_key]} 새로 추가됨.")
+#             bOK = True
+#         except Exception as e:
+#             print(f"[에러] 파일 읽기 실패: {e}.")
+#     else:
+#         df = pd.DataFrame([new_row])
+#         print(f"[생성] 새 파일 생성 및 첫 row 추가.")
+#         bOK = True
+#     # 저장
+#     df.to_csv(filepath, index=False, sep=sep)
+#     print(f"[완료] 파일에 저장되었습니다: {filepath}")
+#     return bOK
+import os
+import pandas as pd
+
+def add_or_update_row(filepath: str, new_row: dict, sep: str = '\t', tableid_key='TABLEID'):
+    new_row[tableid_key] = new_row[tableid_key].upper()
     bOK = False
+
     if os.path.exists(filepath):
         try:
             df = pd.read_csv(filepath, sep=sep)
-            if set(df.columns) != set(new_row.keys()):
-                print(f"[경고] 컬럼 불일치")
-                return bOK
-                # os.remove(filepath)
-                # df = pd.DataFrame([new_row])
-            else:
-                new_row = {col: new_row[col] for col in df.columns}
-                # 대소문자 무시하고 매칭
-                idx = df[df[tableid_key].str.upper() == new_row[tableid_key].upper()].index
+            # 대소문자 무시하고 매칭
+            idx = df[df[tableid_key].str.upper() == new_row[tableid_key].upper()].index
 
-                if not idx.empty:
-                    # 기존 행 업데이트
-                    for col in new_row:
+            if not idx.empty:
+                # 기존 행 업데이트 (new_row에 있는 컬럼만 업데이트)
+                for col in new_row:
+                    if col in df.columns:
                         df.loc[idx, col] = new_row[col]
-                else:
-                    # 새 행 추가
-                    df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-                # # TABLEID 중복 시 해당 row 업데이트
-                # if df[tableid_key].str.upper().isin([new_row[tableid_key]]).any():
-                #     print(df)
-                #     print(new_row)
-                #     df.loc[df[tableid_key].str.upper() == new_row[tableid_key], :] = new_row
-                #     print(f"[업데이트] TABLEID = {new_row[tableid_key]} 값 업데이트됨.")
-                # else:
-                #     df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-                #     print(f"[추가] TABLEID = {new_row[tableid_key]} 새로 추가됨.")
+                print(f"[업데이트] TABLEID = {new_row[tableid_key]} 값 일부 업데이트됨.")
+            else:
+                # 누락된 컬럼은 0으로 채움
+                full_row = {col: new_row.get(col, 0) for col in df.columns}
+                df = pd.concat([df, pd.DataFrame([full_row])], ignore_index=True)
+                print(f"[추가] TABLEID = {new_row[tableid_key]} 새로 추가됨.")
             bOK = True
         except Exception as e:
             print(f"[에러] 파일 읽기 실패: {e}.")
-            # os.remove(filepath)
-            # df = pd.DataFrame([new_row])
     else:
+        # 첫 생성 시 new_row 기반으로 DataFrame 생성
         df = pd.DataFrame([new_row])
         print(f"[생성] 새 파일 생성 및 첫 row 추가.")
         bOK = True
+
     # 저장
     df.to_csv(filepath, index=False, sep=sep)
     print(f"[완료] 파일에 저장되었습니다: {filepath}")
     return bOK
+
 
 def update_motor_spd_by_time(df: pd.DataFrame, target_mbid, ref_mbid, cur_pos, pulses_per_rev=10000, marginTime=0):
     """
@@ -794,55 +889,7 @@ class UbuntuEnv(Enum):
     COMMON = auto()
     ROS_HOSTNAME = auto()
 
-
-def GetUbutuParam(variable_name):
-    if variable_name in os.environ:
-        my_variable = os.environ[variable_name]
-        return my_variable
-    else:
-        return None
-
-
-def get_logger(func_name):
-    """함수 이름을 기반으로 개별 로그 파일을 설정하고, pretty 로그 메서드 포함"""
-    log_dir = f"{GetUbutuParam(UbuntuEnv.SCR_DIR.name)}/"
-    os.makedirs(log_dir, exist_ok=True)
-
-    logger = logging.getLogger(func_name)
-    logger.setLevel(logging.INFO)
-
-    log_file = os.path.join(log_dir, f"{func_name}.log")
-    file_handler = logging.FileHandler(log_file, encoding='utf-8')
-    file_handler.setLevel(logging.INFO)
-
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-
-    if not logger.handlers:
-        logger.addHandler(file_handler)
-
-    # 🔽 pretty 메서드 추가
-    def pretty(url, result, response):
-        logger.info("=" * 100)
-        logger.info(f"URL: {url}")
-        logger.info(f"RESULT: {result}")
-        if isinstance(response, (dict, list)):
-            pretty_response = json.dumps(response, indent=4, ensure_ascii=False)
-            logger.info("RESPONSE:\n" + pretty_response)
-        else:
-            logger.info(f"RESPONSE: {response}")
-        logger.info("=" * 100 + "\n")
-
-    logger.pretty = pretty  # 메서드 바인딩
-
-    return logger
-
-logger_ard = get_logger(f'blb_ard')
-logger_local = get_logger(f'blb_local')
-logger_android = get_logger(f'blb_android')
-logger_svr = get_logger(f'blb_svr')
-logger_api = get_logger(f'blb_api')
-logger_motor = get_logger(f'blb_motor')
+isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
 
 def get_missing_or_next(lst):
     # 리스트가 비어있으면 1 반환
@@ -889,6 +936,25 @@ def get_key_by_value(d, target_value):
     except Exception as e:
         return None
 
+
+def get_extreme_value_by_key_fromDF(df: pd.DataFrame, key_column, condition: bool, target_column):
+    if df.empty or key_column not in df.columns or target_column not in df.columns:
+        return None
+
+    if condition:
+        row = df.loc[df[key_column].idxmax()]
+    else:
+        row = df.loc[df[key_column].idxmin()]
+    
+    value = row[target_column]
+
+    # numpy 타입이면 Python 기본 타입으로 캐스팅
+    if isinstance(value, (np.integer, np.int64)):
+        return int(value)
+    elif isinstance(value, (np.floating, np.float64)):
+        return float(value)
+    else:
+        return value
 
 def get_value_by_key_fromDF(df : pd.DataFrame , key_column, key_value, target_column):
     row = df[df[key_column] == key_value]
@@ -1026,31 +1092,6 @@ def log_all_frames(logmsg='',max_frames=3):
     rospy.loginfo(returnMsg)
     return returnMsg
 
-def control_system_sound(mute: bool):
-    """
-    Mute or unmute the system sound using PulseAudio based on the mute flag.
-    
-    Args:
-    mute (bool): If True, mutes the sound. If False, unmutes the sound.
-    """
-    try:
-        # Determine the mute state based on the boolean input
-        mute_state = '1' if mute else '0'
-        
-        # Run the pactl command to set the mute state
-        subprocess.run(['pactl', 'set-sink-mute', '@DEFAULT_SINK@', mute_state], check=True)
-        
-        if mute:
-            print("System sound muted.")
-        else:
-            print("System sound unmuted.")
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while controlling the sound: {e}")
-
-# # Example usage
-# control_system_sound(True)  # To mute the sound
-# control_system_sound(False) # To unmute the sound
-
 
 def LoadJsonFile(strFilePath):
   dicCaliFinalPos = None
@@ -1061,30 +1102,6 @@ def LoadJsonFile(strFilePath):
     except Exception as e:
         print(e)
   return dicCaliFinalPos
-
-def visualize_point_cloud(cloud):
-    visual = pcl.pcl_visualization.CloudViewing()
-    visual.ShowMonochromeCloud(cloud)
-    visual.Spin()
-    
-def get_connected_monitors():
-    drm_dir = "/sys/class/drm/"
-    connected_monitors = []
-
-    for entry in os.listdir(drm_dir):
-        if "card" in entry and "-DP-" in entry or "-HDMI-" in entry:
-            status_path = os.path.join(drm_dir, entry, "status")
-            if os.path.isfile(status_path):
-                with open(status_path, 'r') as f:
-                    status = f.read().strip()
-                    if status == "connected":
-                        connected_monitors.append(entry)
-
-    return connected_monitors
-
-MAX_INT = sys.maxsize
-MIN_INT = -sys.maxsize - 1
-
 
 def convert_angle(angle):
     """
@@ -1162,6 +1179,20 @@ def calculate_coordinates(distance, angle_degrees, x1=0,y1=0):
     y = distance * math.sin(angle_radians) + y1
     
     return round(x), round(y)
+# 현재 로봇팔 위치
+length = 1100
+angle_deg = 227  # 나침반 바늘이 가리키는 방향 (북서)
+
+# 현재 위치 계산 (원점 기준)
+x0 = length * math.cos(to_radians(angle_deg))
+y0 = length * math.sin(to_radians(angle_deg))
+
+# 북쪽으로 10만큼 이동하고 싶음
+angle, dist, x_target, y_target = calculate_absolute_command(x0, y0, angle_deg, 50)
+
+print(f"목표 좌표: ({x_target:.2f}, {y_target:.2f})")
+print(f"회전모터 각도: {angle:.2f}도 (0=동쪽 기준 반시계)")
+print(f"텔레스코픽 길이: {dist:.2f}")
 
 def calculate_length_and_angle(r, x, y):
     """
@@ -1220,17 +1251,6 @@ def extract_hostname_from_uri(uri):
     return hostname
 
 
-def check_ros_master():
-    try:
-        rosgraph.Master("/rosout").getPid()  # '/rostopic'은 임의의 노드 이름입니다.
-        print("ROS Master is running.")
-        return True
-    except Exception as e:
-        print("Failed to contact ROS Master.")
-        print(e)
-        return False
-
-
 # from SPG_Keys import *
 # from tta_spg.srv import *
 
@@ -1277,16 +1297,15 @@ class StrParser(Enum):
 
 
 def GetLastString(dataStr: str, splitter):
-    callData = None
-    callData = dataStr.split(splitter)[-1]
-    return callData
+    return GetIndexString(dataStr, splitter, -1)
 
-
-def GetROSString(dataStr):
-    callData = String()
-    callData.data = dataStr
-    return callData
-
+def GetIndexString(dataStr: str, splitter, index):
+    try:
+        callData = None
+        callData = dataStr.split(splitter)[index]
+        return callData
+    except Exception as e:
+        return None
 
 def calculate_offset(image_width, image_height, points):
     # 이미지 중심 좌표 계산
@@ -1308,14 +1327,6 @@ def calculate_offset(image_width, image_height, points):
     return percent_diff_x, percent_diff_y
 
 
-def GetMasterIP():
-  ipAddr = extract_hostname_from_uri(GetUbutuParam(UbuntuEnv.ROS_MASTER_URI.name))
-  return ipAddr
-
-def GetMachineStr():
-    return GetUbutuParam(UbuntuEnv.CONFIG.name)
-
-
 def CheckAllKeysExist(className, dicTmp: dict) -> bool:
     for s in className:
         sCurrentTmp = s.name
@@ -1331,23 +1342,9 @@ def is_json(myjson):
         return False
     return True
 
-def get_hostname(ip=None):
-    if ip is None:
-      host = os.uname()[1]
-      # print('HOST:' + host)
-      return host
-    else:
-      slave_hostname = socket.gethostbyaddr(ip)[0]
-      return slave_hostname
-  
 def isFileExist(filePath):
     file_path = Path(filePath)
     return file_path.is_file()
-
-def isServiceExist(serviceName):
-    service_list = rosservice.get_service_list()
-    return serviceName in service_list
-
 
 """ 리턴값을 2개가지는 함수 예제"""
 
@@ -1407,18 +1404,6 @@ def try_parse_int(text):
         return None
 
 
-def getROS_Header(frame_id_str):
-    msgTmp = Header()
-    msgTmp.frame_id = frame_id_str
-    return msgTmp
-
-
-def getROS_Param(param_name):
-    if rospy.has_param(param_name):
-        return rospy.get_param(param_name)
-    return None
-
-
 def getLines_FromFile(filename):
     file_list = getStr_FromFile(filename).splitlines()
     return file_list
@@ -1442,18 +1427,6 @@ def getDic_FromFile(filename, spliter=sDivTab):
               dicReturn[iCurrent[0]] = iCurrent[1]
               # print(iCurrent[0])
     return dicReturn
-
-def save_data_pickle(dataTmp, file_path):
-    with open(file_path, 'wb') as file:
-        pickle.dump(dataTmp, file)
-    rospy.loginfo(f'Data saved to {file_path}')
-
-def load_data_pickle(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as file:
-            return pickle.load(file)
-    else:
-        return None
 
 
 """ 2022-10-30 개발중 , Config 저장용도 """

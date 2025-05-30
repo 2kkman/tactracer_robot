@@ -77,7 +77,18 @@ def BLB_CMD_Profile(PROFILE):
                         ClearArucoTable()
                         AppendTableList(tableList)
                         #TTSAndroid(f'확인버튼을 누르시면 시작합니다.')
-                if paramStr2 == 'T':
+                elif paramStr2 == 'T':
+                    endNode = paramStr1
+                    dicTagretTableInfo = getTableServingInfo(endNode)
+                    rospy.loginfo(dicTagretTableInfo)
+                    #현재 도달한 목적지 테이블의 위치를 가져온다.
+                    infoSERVING_ANGLE = dicTagretTableInfo.get(TableInfo.SERVING_ANGLE.name, None)
+                    infoSERVING_DISTANCE = dicTagretTableInfo.get(TableInfo.SERVING_DISTANCE.name, None)
+                    infoMARKER_ANGLE = dicTagretTableInfo.get(TableInfo.MARKER_ANGLE.name, None)
+                    infoLIFT_Height = dicTagretTableInfo.get(TableInfo.HEIGHT_LIFT.name, None)
+                    lsLiftDown = GetLiftControl(False, infoSERVING_DISTANCE, infoSERVING_ANGLE, infoMARKER_ANGLE,infoLIFT_Height)
+                    node_CtlCenter_globals.listBLB.extend(lsLiftDown)
+                elif paramStr2 == 'M':
                     endNode = paramInt1
                     startNode = GetCurrentNode()
                     listSeqMapOptimized,listSeqMapOrg = getSeqMap(startNode,endNode)
@@ -86,9 +97,9 @@ def BLB_CMD_Profile(PROFILE):
                     # print(f'원본 경로 : {listSeqMapOrg}')
                     lsModbusRequests.extend(listSeqMapOptimized)
                 
-            elif paramInt2 == BLD_PROFILE_CMD.TrayHome.value:
+            elif paramInt2 == BLD_PROFILE_CMD.FOLD_ALL.value:
                 lsModbusRequests.extend(GetLiftControl(True))
-                lsModbusRequests.append(getListedDic(dicServFold))
+                lsModbusRequests.append(getListedDic(GetDicRotateMotorMain(0)))
             else:   #제어HTTP - 마커1 버튼
                 dicAruco = {}
                 lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),1)
