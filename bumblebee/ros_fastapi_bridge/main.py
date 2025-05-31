@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+
 from routers import control
 from routers import MANAGEMENT_SBC
+from routers import DBQ
+
 import uvicorn
 from pathlib import Path
 import rospy
@@ -22,6 +25,7 @@ async def favicon():
     return FileResponse(FAVICON_PATH)
 app.include_router(control.router)
 app.include_router(MANAGEMENT_SBC.router)
+app.include_router(DBQ.router)
 
 @app.get("/")
 def root():
