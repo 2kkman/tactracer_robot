@@ -9,6 +9,19 @@ from tta_blb.srv import *
 from std_msgs.msg import Header, String
 from scipy.spatial import *
 import ros_numpy
+import pcl
+#import pcl.pcl_visualization
+
+# ROS related imports
+import roslibpy
+import rospy
+import rosservice
+import rosgraph
+from geometry_msgs.msg import *
+from sensor_msgs.msg import *
+from std_msgs.msg import *
+import sensor_msgs.point_cloud2 as pc2
+
 minGYRO = -90
 maxGYRO = 45
 aruco_lastDiff_Default = 100

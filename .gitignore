@@ -3,3 +3,5 @@
 *.mp?
 *.json
 *.pyc
+.vscode/settings.json
+bumblebee/example/testShortCut.py

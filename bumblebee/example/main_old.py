@@ -4,87 +4,18 @@ import uvicorn
 import json
 import os
 import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.engine import URL
-from Util import *
-userName="tact"
-pw="bconnect@123"
-dbName="bconnectpoc"
-isRealMachine = get_hostname().find(UbuntuEnv.ITX.name) >= 0
-hostName="172.30.1.151" if isRealMachine else "172.30.1.4"
+
 app = FastAPI()
 SP_META_FILE = "sp.txt"
 
-# 안전하게 DB 연결 정보 입력
-def get_engine():
-    url = URL.create(
-        drivername="mysql+pymysql",
-        username=userName,
-        password=pw,
-        host=hostName,
-        port=3306,
-        database=dbName
-    )
-    return create_engine(url)
-
 def get_connection():
     return mysql.connector.connect(
-        host=hostName,
-        user=userName,
-        password=pw,
-        database=dbName
+        host="172.30.1.4",
+        user="tact",
+        password="bconnect@123",
+        database="bconnectpoc"
     )
-
-# general_log ON/OFF 함수
-def set_general_log(status: bool):
-    log_state = 1 if status else 0
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SET GLOBAL log_output = 'TABLE'")
-        cursor.execute(f"SET GLOBAL general_log = {log_state}")
-        print(f"✅ general_log {'활성화' if status else '비활성화'} 완료")
-    except Exception as e:
-        print("❌ 설정 오류:", e)
-    finally:
-        cursor.close()
-        conn.close()
-
-# 4. general_log 삭제 함수
-def clear_general_log():
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("TRUNCATE TABLE mysql.general_log")
-        print("🧹 general_log 테이블이 성공적으로 비워졌습니다.")
-    except Exception as e:
-        print("❌ 로그 삭제 오류:", e)
-    finally:
-        cursor.close()
-        conn.close()
-        
-# general_log 테이블 조회 함수
-def get_general_log(n: int = 100):
-    # SQLAlchemy 연결 엔진
-    engine = get_engine()
-    #conn = get_connection()
-    query = "SELECT event_time, user_host, command_type, argument FROM mysql.general_log ORDER BY event_time DESC"
-    if n > 0:
-        query += f" LIMIT {n}"
-
-    try:
-        # 쿼리 실행 (경고 없음)
-        df = pd.read_sql(query, engine)
-        #df = pd.read_sql(query, conn)
-        print(df)
-        return df
-        #return df.to_dict(orient="records")
-    except Exception as e:
-        print("❌ 로그 조회 오류:", e)
-        return pd.DataFrame()
-    # finally:
-    #     conn.close()
-            
+    
 def export_sample_rows(limit=10):
     conn = get_connection()
     cursor = conn.cursor()
@@ -179,59 +110,8 @@ def get_procedure_parameters(sp_name):
             return proc["parameters"]
     return []
 
-@app.get("/logging")
-async def stored_procedure(request: Request):
-    query_params = dict(request.query_params)
-    sp_name = int(query_params.pop("enable", 0))
-    if sp_name < 0:
-        clear_general_log()
-    elif sp_name == 1:
-        set_general_log(True)
-        return {"message": "general_log enabled"}
-    elif sp_name == 0:
-        set_general_log(False)
-        return {"message": "general_log disabled"}
-    else:
-        return get_general_log()
-
-
 @app.get("/")
-@app.get("")
 async def call_stored_procedure(request: Request):
-    query_params = dict(request.query_params)
-    sp_name = query_params.pop("sp", None)
-
-    if not sp_name:
-        return load_or_fetch_metadata()
-
-    param_meta = get_procedure_parameters(sp_name)
-    if not param_meta:
-        return load_or_fetch_metadata()
-
-    # IN 파라미터 추출
-    expected_params = [p["PARAMETER_NAME"] for p in param_meta if p["PARAMETER_MODE"] == "IN"]
-
-    # 누락된 파라미터는 '' 처리
-    passed_params = [query_params.get(name, '') for name in expected_params]
-
-    placeholders = ", ".join(["%s"] * len(expected_params))
-    call_query = f"CALL {sp_name}({placeholders})"
-
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    try:
-        cursor.execute(call_query, passed_params)
-        results = cursor.fetchall()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        cursor.close()
-        conn.close()
-
-    return results
-
-
-def call_stored_procedure_old(request: Request):
     query_params = dict(request.query_params)
     sp_name = query_params.pop("sp", None)
 
