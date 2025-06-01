@@ -47,18 +47,6 @@ plt.ioff()  # 인터랙티브 모드 비활성화
 import networkx as nx
 import numpy as np
 import pandas as pd
-import pcl
-#import pcl.pcl_visualization
-
-# ROS related imports
-import roslibpy
-import rospy
-import rosservice
-import rosgraph
-from geometry_msgs.msg import *
-from sensor_msgs.msg import *
-from std_msgs.msg import *
-import sensor_msgs.point_cloud2 as pc2
 
 # HTTP related imports
 import urllib3
@@ -1181,13 +1169,13 @@ def calculate_coordinates(distance, angle_degrees, x1=0,y1=0):
     return round(x), round(y)
 # 현재 로봇팔 위치
 length = 1100
-angle_deg = 227  # 나침반 바늘이 가리키는 방향 (북서)
+angle_deg = 135  # 나침반 바늘이 가리키는 방향 (북서)
 
 # 현재 위치 계산 (원점 기준)
 x0 = length * math.cos(to_radians(angle_deg))
 y0 = length * math.sin(to_radians(angle_deg))
 
-# 북쪽으로 10만큼 이동하고 싶음
+# 북쪽으로 50만큼 이동하고 싶음
 angle, dist, x_target, y_target = calculate_absolute_command(x0, y0, angle_deg, 50)
 
 print(f"목표 좌표: ({x_target:.2f}, {y_target:.2f})")
@@ -1655,7 +1643,7 @@ def if_Number(s):
 
 
 def if_integer(s):
-    reg_exp = "[-+]?\d+$"
+    reg_exp = r"[-+]?\d+$"
     return re.match(reg_exp, s) is not None
 
 
