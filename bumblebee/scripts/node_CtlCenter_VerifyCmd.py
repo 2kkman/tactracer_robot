@@ -536,19 +536,22 @@ def RunListBlbMotorsEx(listBLB):
             if not onScan:
                 TiltTableObstacleScan()
             #dfBackUp = listBLB.pop(0)
-            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            if bResult:
+                bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'암컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateMainControl:
             bResult, bStrMsg = API_MoveMainRotate(distance_target, adjustrate)
             #dfBackUp = listBLB.pop(0)
-            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            if bResult:
+                bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'메인회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateTrayControl:
             bResult, bStrMsg = API_MoveMainTray(distance_target, adjustrate)
             #dfBackUp = listBLB.pop(0)
-            bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            if bResult:
+                bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
             sMsg = f'트레이회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif len(listBLB) > 0:

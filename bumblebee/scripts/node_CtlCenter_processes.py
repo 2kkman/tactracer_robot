@@ -1316,9 +1316,10 @@ def GenerateServingTableList():
                             resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,APIBLB_STATUS_TASK.Completed)
                             SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name])
                             print(f"API RESULT:{resultAPI},{nodeReturn}")
-                            dfReceived.iloc[-1, dfReceived.columns.get_loc('comments')] = getDateTime().timestamp()
-                            dicTest= extract_dicTest(dfReceived)
-                            PrintDF(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))                            
+                            if isRealMachine:
+                                dfReceived.iloc[-1, dfReceived.columns.get_loc('comments')] = getDateTime().timestamp()
+                                dicTest= extract_dicTest(dfReceived)
+                                PrintDF(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))                            
                             RemoveDF()
                             #print(SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name]))
                             return
