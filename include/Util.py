@@ -87,40 +87,69 @@ def get_hostname(ip=None):
 def getDateTime():
   return datetime.now()
 
+def midpoint_polar(length_b, angle_b_deg, length_c, angle_c_deg):
+    # 각도를 라디안으로 변환
+    angle_b_rad = math.radians(angle_b_deg)
+    angle_c_rad = math.radians(angle_c_deg)
+
+    # B와 C의 데카르트(x, y) 좌표 계산
+    x_b = length_b * math.cos(angle_b_rad)
+    y_b = length_b * math.sin(angle_b_rad)
+    x_c = length_c * math.cos(angle_c_rad)
+    y_c = length_c * math.sin(angle_c_rad)
+
+    # 중점 좌표 계산
+    x_mid = (x_b + x_c) / 2
+    y_mid = (y_b + y_c) / 2
+
+    # 중점의 극좌표 (길이, 각도) 계산
+    length_mid = math.hypot(x_mid, y_mid)
+    angle_mid_rad = math.atan2(y_mid, x_mid)
+    angle_mid_deg = math.degrees(angle_mid_rad)
+
+    return round(length_mid), round(angle_mid_deg+360)%360
+
+print(midpoint_polar(1004,282,680,78))
 def to_radians(degrees):
     return degrees * math.pi / 180
 
 def to_degrees(radians):
     return radians * 180 / math.pi
 
-def calculate_absolute_command(x0, y0, compass_angle_deg, north_offset):
+def calculate_new_command(length, rotation_motor_deg, compass_angle_deg, north_offset):
     """
-    x0, y0: 현재 로봇팔 위치 (회전 + 텔레스코픽 결과)
-    compass_angle_deg: 나침반 방향 (북서 = 135도 등)
-    north_offset: 북쪽 방향으로 더 이동할 거리
-    """
-
-    # 현재 바라보는 벡터 방향
-    angle_rad = to_radians(compass_angle_deg)
+    length: 현재 텔레스코픽 길이
+    rotation_motor_deg: 원점 기준 회전모터 각도 (0도 = 동쪽, 반시계+)
+    compass_angle_deg: 나침반이 가리키는 방향 (지리적 0도 = 북쪽, 반시계+)
+    north_offset: 북쪽 방향으로 이동하고 싶은 거리
     
-    # 현재 로봇팔 위치: (x0, y0)
-    # 북쪽 방향 벡터 = (0, 1)
-    # 목표 지점은 현재 위치에서 y축으로 north_offset 만큼 더한 위치
-    x_target = x0
-    y_target = y0 + north_offset
+    return:
+        new_rotation_deg: 새 회전각도 (0도 = 동쪽, 반시계+)
+        new_length: 새 텔레스코픽 길이
+        x_target, y_target: 새 목표 좌표
+    """
 
-    # 원점 기준: 회전 각도 = atan2(y, x)
+    # 현재 로봇팔 위치 (회전모터 각도로부터)
+    theta_rad = to_radians(rotation_motor_deg)
+    x0 = length * math.cos(theta_rad)
+    y0 = length * math.sin(theta_rad)
+
+    # 나침반 기준 정북 방향은 실제 공간상 compass_angle_deg 기준에서 +90도
+    # 즉, 나침반이 135도일 때 북쪽은 0도니까,
+    # 지리적 북쪽 = 현재 로봇팔 방향에서 (0 - compass_angle_deg) 만큼 회전한 방향
+    north_direction_rad = to_radians(rotation_motor_deg + (0 - compass_angle_deg))
+
+    # 북쪽으로 north_offset 만큼 이동한 목표 위치
+    x_target = x0 + north_offset * math.cos(north_direction_rad)
+    y_target = y0 + north_offset * math.sin(north_direction_rad)
+
+    # 원점 기준으로 새 회전각과 거리 계산
     dx = x_target
     dy = y_target
+    new_length = math.hypot(dx, dy)
+    new_rotation_deg = (to_degrees(math.atan2(dy, dx)) + 360) % 360
 
-    distance = math.hypot(dx, dy)
-    angle_to_target = math.atan2(dy, dx)
-    angle_to_target_deg = to_degrees(angle_to_target)
-
-    # 0~360도로 정규화 (원하면 -180~180도도 가능)
-    angle_to_target_deg = (angle_to_target_deg + 360) % 360
-
-    return angle_to_target_deg, distance, x_target, y_target
+    return new_rotation_deg, new_length, x_target, y_target
 
 def get_file_modification_age_seconds(filepath):
     try:
@@ -1053,34 +1082,6 @@ def get_list_depth(lst):
     else:
         return 1 + max(get_list_depth(item) for item in lst) if lst else 1  # 빈 리스트는 깊이가 1
   
-def log_all_frames(logmsg='',max_frames=3):
-    if logmsg is None:
-        logmsg = 'None'
-    # 현재 스택의 모든 프레임 정보를 가져옵니다.
-    stack = inspect.stack()
-    
-    # 첫 번째 프레임(현재 함수 자신)을 제외합니다.
-    stack = stack[1:]
-    
-    # 프레임 정보를 역순으로 순회합니다 (가장 최근의 호출부터).
-    frame_names = [frame.function for frame in reversed(stack)]
-    
-    # max_frames가 지정되었다면, 해당 수만큼만 프레임을 사용합니다.
-    if max_frames >= 1:
-        frame_names = frame_names[-max_frames:]
-    
-    # 함수 이름들을 콜론으로 구분하여 연결합니다.
-    log_message = ":".join(frame_names)
-    # rospy를 사용하여 로그를 출력합니다.
-    returnMsg = ''
-    if logmsg == '':
-        returnMsg = f'{log_message}'        
-    else:
-        returnMsg=f'{logmsg}:{log_message}'
-    rospy.loginfo(returnMsg)
-    return returnMsg
-
-
 def LoadJsonFile(strFilePath):
   dicCaliFinalPos = None
   if isFileExist(strFilePath):
@@ -1169,14 +1170,14 @@ def calculate_coordinates(distance, angle_degrees, x1=0,y1=0):
     return round(x), round(y)
 # 현재 로봇팔 위치
 length = 1100
-angle_deg = 135  # 나침반 바늘이 가리키는 방향 (북서)
-
+angle_deg = 227  # 나침반 바늘이 가리키는 방향 (북서)
+marker_angle =325
 # 현재 위치 계산 (원점 기준)
 x0 = length * math.cos(to_radians(angle_deg))
 y0 = length * math.sin(to_radians(angle_deg))
 
 # 북쪽으로 50만큼 이동하고 싶음
-angle, dist, x_target, y_target = calculate_absolute_command(x0, y0, angle_deg, 50)
+angle, dist, x_target, y_target = calculate_new_command(length, angle_deg, marker_angle, 50)
 
 print(f"목표 좌표: ({x_target:.2f}, {y_target:.2f})")
 print(f"회전모터 각도: {angle:.2f}도 (0=동쪽 기준 반시계)")

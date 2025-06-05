@@ -839,7 +839,6 @@ def MotorBalanceControlEx(bSkip):
             #             node_CtlCenter_globals.listBLB.extend(lsDF)
             #             StopAllMotors()
 
-    
     if isActivatedMotor(modbusIDStr_H):
         #1.특정 포인트를 지나칠때마다 dataframe 의 sub-jobid 의 상태를 업데이트 해야함.
         if len(node_CtlCenter_globals.dicTargetPosFeedBack) > 0:
@@ -1051,7 +1050,6 @@ def MotorBalanceControlEx(bSkip):
                         rospy.loginfo(f"dfReceived not found")
                         #추후 중량값 들어오고 있는 셀로 고치자.
                         #if not isScanOn:
-                        
                         if currentWeight1 > WEIGHT_OCCUPIED:
                             DoorOpen(0)
                         elif currentWeight2 > WEIGHT_OCCUPIED:
@@ -1067,7 +1065,15 @@ def MotorBalanceControlEx(bSkip):
                         dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
                         trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)
                         #회수인 경우는 문을 모두 연다.
-                        if tasktype_current == APIBLB_TASKTYPE.CashPay.value or tasktype_current == APIBLB_TASKTYPE.CollectingEmptyPlattes.value or trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                        df = node_CtlCenter_globals.dfTaskChainInfo
+                        result = df[
+                            (df['tasktype'].astype(str) == '2') & 
+                            (df['taskrunok'].astype(str) == '1')
+                        ].to_dict(orient='records')  
+                        rospy.loginfo(result)
+                        if len(result) == 1:
+                            DoorOpen()                        
+                        elif tasktype_current == APIBLB_TASKTYPE.CashPay.value or tasktype_current == APIBLB_TASKTYPE.CollectingEmptyPlattes.value or trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
                             DoorOpen()
                         # elif trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
                         #     DoorOpen()
@@ -1450,8 +1456,8 @@ def GenerateServingTableList():
                         #회수 혹은 현금 Job 일때는 범블비에서 직접 셀 할당을 해야 한다.
                         if type_targetTask == APIBLB_TASKTYPE.CollectingEmptyPlattes.value or type_targetTask == APIBLB_TASKTYPE.CashPay.value:
                             rackIDCur,empty_cells = GetRackID_Empty()
-                            if empty_cells < 2 or previous_tasktype == str(APIBLB_TASKTYPE.ServingTask.value):
-                            # if rackIDCur == MIN_INT:
+                            #if empty_cells < 2 or previous_tasktype == str(APIBLB_TASKTYPE.ServingTask.value):
+                            if False:
                                 if empty_cells < 2 :
                                     sMsg = "음식이 있을때는 회수할 수 없습니다"
                                 else:
@@ -1581,7 +1587,7 @@ def GenerateServingTableList():
                     nearNode = dicNodeNear[TableInfo.NODE_ID.name]
                     startNode = dicStartNode[SeqMapField.START_NODE.name]
                     isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
-                    if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION: 
+                    if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
                         lsNode1,listSeqMapOrg1=getSeqMap(startNode,nearNode)
                         lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
                         node_CtlCenter_globals.listBLB.clear()

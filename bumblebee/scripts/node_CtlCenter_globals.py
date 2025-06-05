@@ -2,6 +2,10 @@
 from node_CtlCenter_import import *
 start = time.time()
 
+#샤누이사 서버랑 연동할때 True
+enableSvrPath = False
+#enableSvrPath = True
+
 bInitOK = False
 bReturn_CROSS = False
 #현재 위치한 노드ID
@@ -16,9 +20,6 @@ param_IMU_show = True
 param_ARD_show = False
 enableDummyArduino = False
 
-#샤누이사 서버랑 연동할때 True
-enableSvrPath = False
-#enableSvrPath = True
 
 stateDic = {}
 dicTorqueAve = {}

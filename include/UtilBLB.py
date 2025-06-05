@@ -164,6 +164,14 @@ def getROS_Header(frame_id_str):
     msgTmp.frame_id = frame_id_str
     return msgTmp
 
+def get_all_ros_params():
+    params = {}
+    for key in rospy.get_param_names():
+        try:
+            params[key] = rospy.get_param(key)
+        except Exception as e:
+            rospy.logwarn(f"Failed to get param {key}: {e}")
+    return params
 
 def getROS_Param(param_name):
     if rospy.has_param(param_name):
@@ -252,6 +260,34 @@ dicTest = {
     'START_TIME' : getDateTime().timestamp(),
     
 }
+
+def log_all_frames(logmsg='',max_frames=3):
+    if logmsg is None:
+        logmsg = 'None'
+    # 현재 스택의 모든 프레임 정보를 가져옵니다.
+    stack = inspect.stack()
+    
+    # 첫 번째 프레임(현재 함수 자신)을 제외합니다.
+    stack = stack[1:]
+    
+    # 프레임 정보를 역순으로 순회합니다 (가장 최근의 호출부터).
+    frame_names = [frame.function for frame in reversed(stack)]
+    
+    # max_frames가 지정되었다면, 해당 수만큼만 프레임을 사용합니다.
+    if max_frames >= 1:
+        frame_names = frame_names[-max_frames:]
+    
+    # 함수 이름들을 콜론으로 구분하여 연결합니다.
+    log_message = ":".join(frame_names)
+    # rospy를 사용하여 로그를 출력합니다.
+    returnMsg = ''
+    if logmsg == '':
+        returnMsg = f'{log_message}'        
+    else:
+        returnMsg=f'{logmsg}:{log_message}'
+    rospy.loginfo(returnMsg)
+    return returnMsg
+
 
 def extract_dicTest(df: pd.DataFrame) -> dict:
     # 마지막 row 기준 mastercode, endnode
@@ -2158,8 +2194,8 @@ key_motorH = str(ModbusID.MOTOR_H.value)
 key_motorMainRotate = str(ModbusID.ROTATE_MAIN_540.value)
 
 class RackID(Enum):
-    R1 = 1
-    R2 = 0
+    R1 = 0
+    R2 = 1
     @classmethod
     def from_name_or_value(cls, nm, isName):
         for member in cls:
@@ -3839,6 +3875,20 @@ def GetNodePos_fromNode_ID(node_id):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
     result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, MotorWMOVEParams.POS.name)
     return result
+
+def get_warning_ranges():
+    """DataFrame에서 B_START ~ B_END 구간을 추출하여 정렬된 튜플 리스트로 반환"""
+    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_START')]['POS'].tolist())
+    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_END')]['POS'].tolist())
+
+    # 구간 짝짓기
+    return list(zip(b_starts, b_ends))
+
+def is_in_warning_zone(pos):
+    warning_ranges = get_warning_ranges()
+    """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
+    return any(start <= pos <= end for start, end in warning_ranges)
+
 
 def GetNodeID_longest(direction = True):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
@@ -5751,9 +5801,9 @@ def RFIDPwr(enable : int):
 
 def API_ResetQBI(isCoolReset=False):
     if isCoolReset:
-        bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'scr=.rrStartqbi')
-    else:
         bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'cli=reboot')
+    else:
+        bReturn,strResult = API_call_http(BLB_SLAVE_IP_DEFAULT,HTTP_FASTAPI_PORT,EndPoints.MANAGEMENT_SBC.name,f'scr=.rrStartqbi')        
     return bReturn,strResult
 
 def API_ResetITX(isCoolReset=False):
@@ -6182,7 +6232,7 @@ def upsert_table_record(csv_path: str, table_id, node_id, serving_distance, serv
     
     # 기본값
     marker_angle = 0
-    height_lift = 880000
+    height_lift = 610000
     marker_value = -1
    # TABLE_ID가 None이거나 int 변환 불가능할 경우: max + 1로 설정
     try:

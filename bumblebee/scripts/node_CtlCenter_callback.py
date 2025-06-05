@@ -52,6 +52,8 @@ def callbackAck(data,topic_name='' ):
         data: "1707275205.265836:1:30:150,100"
         data: "1707275205.265836:1:30:120,90"
     """
+    if not hasattr(callbackAck, "last_cmd_time"):
+        callbackAck.last_cmd_time = getDateTime()    
     try:
         shaking_protection = [ModbusID.MOTOR_V,ModbusID.TELE_SERV_MAIN ]
         recvData = data.data
@@ -405,21 +407,24 @@ def callbackAck(data,topic_name='' ):
                     #if curNode != node_KITCHEN_STATION and isLiftTrayDown and IsEnableSvrPath():
                         SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
                         nowTime = getDateTime()
+                        callbackAck.last_cmd_time = nowTime
                         # 경과 시간 리스트 (초 단위)
                         time_deltas = [5, 10, 15, 20, 25,30,35,40,45,50,55,60]
-                        # time_deltas = [5, 60]
+                        #time_deltas = [5, 6000]
                         # time_deltas = [3, 6]
                         # 딕셔너리 생성
                         time_dict = {
-                            (nowTime + timedelta(seconds=delta)): ("이제 곧 닫힙니다." if delta == time_deltas[-1] else f"{time_deltas[-1]-delta}초 후 닫힙니다.")
+                            (nowTime + timedelta(seconds=delta)): ("음식을 꺼내주시고 닫기 버튼을 눌러주세요")
+                            #(nowTime + timedelta(seconds=delta)): ("이제 곧 닫힙니다." if delta == time_deltas[-1] else f"{time_deltas[-1]-delta}초 후 닫힙니다.")
                             for delta in time_deltas
                         }
                         #tts 서비스 가용하면 음식을 꺼내가라는 안내방송 진행
                         ttsResult = TTSAndroid(messageTTS,1)
-                        # if ttsResult and IsEnableSvrPath():
-                        #     node_CtlCenter_globals.dicTTS.clear()
-                        #     sorted_time_dict = OrderedDict(sorted(time_dict.items()))
-                        #     node_CtlCenter_globals.dicTTS.update(sorted_time_dict)
+                        if ttsResult:
+                        #if ttsResult and IsEnableSvrPath():
+                            node_CtlCenter_globals.dicTTS.clear()
+                            sorted_time_dict = OrderedDict(sorted(time_dict.items()))
+                            node_CtlCenter_globals.dicTTS.update(sorted_time_dict)
                         
     except Exception as e:
         message = traceback.format_exc()

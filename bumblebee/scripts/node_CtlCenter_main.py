@@ -164,6 +164,7 @@ if __name__ == "__main__":
     # else:
     dicCurNodeInfo=GetNodeDicFromPos(node_CtlCenter_globals.dfNodeInfo,curpos_H)
     curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+    curTableID_fromPulse = dicCurNodeInfo.get(TableInfo.TABLE_ID.name)
     curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
     diff_pos = dicCurNodeInfo.get(MotorWMOVEParams.DIFF_POS.name)
     curNode_pos = int(dicCurNodeInfo.get(posStr))
@@ -172,8 +173,14 @@ if __name__ == "__main__":
       StopEmergency(ALM_User.NODE_NOT_FOUND.value)
     else:
       rospy.loginfo(dicCurNodeInfo)
-      TTSAndroid(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
-      TTSServer(f'현재 {curNodeID_fromPulse}번 노드에 있습니다.')
+      curLoc = curTableID_fromPulse
+      nodetype = '테이블'
+      if curTableID_fromPulse is None:
+        curLoc = curNodeID_fromPulse
+        nodetype = '노드'
+      sTTS = f'현재 {curLoc}번 {nodetype}에 있습니다.'
+      TTSAndroid(sTTS)
+      TTSServer(sTTS)
       SetCurrentNode(curNodeID_fromPulse)
     TiltServFinish()
 
@@ -222,26 +229,54 @@ if __name__ == "__main__":
                 iCnt5s += 1
                 CheckMotorAlarms()
                 # 딕셔너리를 순회하면서 시간을 체크
+                curTargetTable,curTarNode = GetCurrentTargetTable()
+                dfReceived = GetDF(curTargetTable)
+                if dfReceived is not None:
+                  dicFirst = dfReceived.iloc[0]
+                  tasktype_current = int(dicFirst[APIBLB_FIELDS_TASK.tasktype.name])                          
+                else:
+                  tasktype_current = APIBLB_TASKTYPE.ServingTask.value
+                  
                 if len(node_CtlCenter_globals.dicTTS) > 0 and not isActivatedMotor(ModbusID.MOTOR_V.value):
                     if waitFlag:
-                        for scheduled_time, message in list(node_CtlCenter_globals.dicTTS.items()):
-                            if dtNow >= scheduled_time:
-                                TTSAndroid(message,1)
-                                #print(f"{current_time}: {message}")
-                                node_CtlCenter_globals.dicTTS.pop(scheduled_time, None)
-                                #del node_CtlCenter_globals.dicTTS[scheduled_time]
-                                if len(node_CtlCenter_globals.dicTTS) == 0:
-                                    if IsOrderEmpty():
-                                      #오더가 없을시 홈으로 복귀한다.
-                                      InsertTableList(HOME_TABLE)
-                                      #API_SetOrderHome()
-                                    #else:
+                        #if dfReceived is not None:
+                          doorStatus,doorLocked = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
+                          r1,r2,r_total = getLoadWeight()
+                          ableToClose1 = r1 < WEIGHT_OCCUPIED or doorLocked[0]
+                          ableToClose2 = r2 < WEIGHT_OCCUPIED or doorLocked[1]
+                          if not ableToClose1 or not ableToClose2:
+                            callbackAck.last_cmd_time = getDateTime()
+                          
+                          #callbackAck.last_cmd_time = nowTime
+                          for scheduled_time, message in list(node_CtlCenter_globals.dicTTS.items()):
+                            #if tasktype_current == APIBLB_TASKTYPE.ServingTask.value:
+                            if dtNow >= scheduled_time and tasktype_current == APIBLB_TASKTYPE.ServingTask.value:
+                                  if isTimeExceeded(callbackAck.last_cmd_time, 10000):
+                                  #if checkDoor1 or checkDoor2:
+                                    TTSAndroid('이용해주셔서 감사합니다. 문이 닫힙니다.')
+                                    time.sleep(5)
+                                    DoorClose()
                                     SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
-                                elif len(node_CtlCenter_globals.dicTTS) < 3:
-                                  LightTrayCell(TraySector.Cell1.value,LightBlink.Fast.value,LightColor.RED.value)
-                                  time.sleep(MODBUS_WRITE_DELAY)
-                                  LightTrayCell(TraySector.Cell2.value,LightBlink.Fast.value,LightColor.RED.value)
-                                break
+                                  else:
+                                    TTSAndroid(message,1)
+                                    node_CtlCenter_globals.dicTTS.pop(scheduled_time, None)
+                                    
+                                  
+                                  # #print(f"{current_time}: {message}")
+                                  
+                                  # #del node_CtlCenter_globals.dicTTS[scheduled_time]
+                                  # if len(node_CtlCenter_globals.dicTTS) == 0:
+                                  #     if IsOrderEmpty():
+                                  #       #오더가 없을시 홈으로 복귀한다.
+                                  #       InsertTableList(HOME_TABLE)
+                                  #       #API_SetOrderHome()
+                                  #     #else:
+                                  #     SetWaitConfirmFlag(False,AlarmCodeList.JOB_COMPLETED)
+                                  # elif len(node_CtlCenter_globals.dicTTS) < 3:
+                                  #   LightTrayCell(TraySector.Cell1.value,LightBlink.Fast.value,LightColor.RED.value)
+                                  #   time.sleep(MODBUS_WRITE_DELAY)
+                                  #   LightTrayCell(TraySector.Cell2.value,LightBlink.Fast.value,LightColor.RED.value)
+                                  break
                     else:
                         node_CtlCenter_globals.dicTTS.clear()
                         LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)

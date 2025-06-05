@@ -548,7 +548,7 @@ def GetListLiftUp():
 
 def GetLiftControl(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
     #if IsEnableSvrPath() or not isRealMachine:
-    if serve_distance_mm <= 1100 and isUp:        
+    if (serve_distance_mm <= 1100 and isUp):        
         return GetLiftControlScanMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
     else:
         return GetLiftControlRealMode(isUp, serve_distance_mm, serve_angle, marker_angle, height_pulse)
@@ -981,7 +981,7 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
             for jc_id, isCrossStatus in node_CtlCenter_globals.StateSet.items():
                 if cur_pos_cross < roundPulse or cur_pos_cross > 490000:
                     if isCrossStatus == 0:
-                        if curNode in NODES_SPECIAL and isTrue(DI_POT_15): #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
+                        if curNode in NODES_SPECIAL and isTrue(DI_POT_15) and curAngle540 == 0: #세로 로 만들어야 할때 - 분기기에서 충전소로 나갈때
                             API_CROSS_set(jc_id,isCrossStatus)
                         #     if isTrue(DI_POT_15):
                         #         API_CROSS_set(jc_id,isCrossStatus)
@@ -989,7 +989,7 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
                         #     if SI_POT == 'GPI':
                         #         API_CROSS_set(jc_id,isCrossStatus)
                     elif isCrossStatus == 1:    #가로로 만들어야 할때
-                        if curNode == 10:   #분기기에 올라타 있는 상태 - 
+                        if curNode == 10 and curAngle540 == 0:   #분기기에 올라타 있는 상태 - 
                             if isTrue(DI_POT_15):
                                 API_CROSS_set(jc_id,isCrossStatus)
                         else:

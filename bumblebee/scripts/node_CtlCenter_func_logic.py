@@ -1006,7 +1006,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
             doorStatus,doorArray = GetDoorStatus()
             if doorStatus != TRAYDOOR_STATUS.CLOSED:
               DoorClose()
-            TTSAndroid('서빙로봇 범블비입니다. 감사합니다.')
+            TTSAndroid('서빙로봇 범블비입니다. 많이 이용해주세요.')
             
           else:
             TTSAndroid(f'{table_target_tts}실패')

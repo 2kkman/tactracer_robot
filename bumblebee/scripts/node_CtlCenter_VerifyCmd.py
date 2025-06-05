@@ -2,6 +2,8 @@
 from node_CtlCenter_processes import *
 
 def RunListBlbMotorsEx(listBLB):
+    if not hasattr(RunListBlbMotorsEx, "obstacle_retry"):
+        RunListBlbMotorsEx.obstacle_retry = 0    
     lsMotorOperationNew = []
     isReady_Start = False
     isReady_End = False
@@ -45,7 +47,7 @@ def RunListBlbMotorsEx(listBLB):
     curDistanceSrvTele, curAngle_540,cur_angle_360  = GetCurrentPosDistanceAngle()
     #dicInfo_local = listBLB[0]
     stateCharger = isChargerPlugOn()
-    onScan = isScanTableMode(curTargetTable)
+    isScanTable = isScanTableMode(curTargetTable)
     dicTagretTableInfo = getTableServingInfo(curTargetTable)
     infoLIFT_Height = try_parse_int(dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name), 0)
     finalScan = not is_equal(infoLIFT_Height,curTargetTable)
@@ -60,9 +62,12 @@ def RunListBlbMotorsEx(listBLB):
     if isinstance(dicInfo_local, dict):  # 주행모드
         mbid = dicInfo_local.get(MotorWMOVEParams.MBID.name)
         sPOS = dicInfo_local.get(MotorWMOVEParams.POS.name)            
-        sPOS_R = dicInfo_local.get(APIBLB_FIELDS_TASK.distance_total.name, MIN_INT)
+#        sPOS_R = dicInfo_local.get(APIBLB_FIELDS_TASK.distance_total.name, MIN_INT)
+        sPOS_R = dicInfo_local.get(SeqMapField.DISTANCE.name)
+        if sPOS_R is None:
+            print(dicInfo_local)
+            sPOS_R = dicInfo_local.get(APIBLB_FIELDS_TASK.distance_total.name, MIN_INT)
         sDir = dicInfo_local.get(SeqMapField.DIRECTION.name)
-        sPOS_R = dicInfo_local[SeqMapField.DISTANCE.name]         
         start_node = dicInfo_local.get(SeqMapField.START_NODE.name)
         end_node = dicInfo_local.get(SeqMapField.END_NODE.name)
         bIsAllMotorFolded = isReadyToMoveH_and_540()
@@ -76,7 +81,12 @@ def RunListBlbMotorsEx(listBLB):
             DoorClose()
             lsLiftUp = GetLiftControl(True)
             lsBLBTmp = copy.deepcopy(listBLB)
-            listBLB[:] = lsLiftUp + lsBLBTmp            
+            
+            dicRotateDirection = getMainRotateDicByNode(end_node)
+            if CheckMotorOrderValid(dicRotateDirection):
+                listBLB[:] = lsLiftUp + [[dicRotateDirection]] + lsBLBTmp
+            else:
+                listBLB[:] = lsLiftUp + lsBLBTmp    
             return APIBLB_ACTION_REPLY.E106
         else:
             if sPOS is None:
@@ -146,6 +156,9 @@ def RunListBlbMotorsEx(listBLB):
                 #if False:   #임시로 분기기는 무조건 True 라고 가정하자.
                 if bCrossCheck == False and isRealMachine:
                     if NODE_CROSS == GetCurrentNode():
+                        if curAngle_540 != 0:
+                            listBLB.insert(0,[GetDicRotateMotorMain(0)])
+                            return APIBLB_ACTION_REPLY.E108
                         SetWaitCrossFlag(True)
                         UpdateLastCmdTimeStamp()
                         message=f'남은테이블:{node_CtlCenter_globals.listTable},분기기 상황:{strStatusInfo}'
@@ -277,7 +290,7 @@ def RunListBlbMotorsEx(listBLB):
             if iMBID == ModbusID.TELE_SERV_MAIN.value:
                 isArmControl = True
                 distance_target = GetTargetLengthMMServingArm(iPOS,0)
-                if iPOS > cur_pos_srv and onScan:
+                if iPOS > cur_pos_srv and isScanTable:
                     adjustrate = 0.3
                     TiltArucoScan()
                     CamControl(True)
@@ -302,7 +315,9 @@ def RunListBlbMotorsEx(listBLB):
 
             #메인회전 모터 제어
             if iMBID == ModbusID.ROTATE_MAIN_540.value:# and abs(iPOS) > roundPulse:
-                bIsAllMotorFolded540 = isReadyToMoveH_and_540()                
+                if isScanTable:
+                    TiltArucoScan()
+                bIsAllMotorFolded540 = isReadyToMoveH_and_540()
                 # if onScan and dicAruco:
                 #     lsDF = GetNewRotateArmList(dicAruco)
                 #     if lsDF:
@@ -390,23 +405,32 @@ def RunListBlbMotorsEx(listBLB):
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
                 if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan and isRealMachine:    #하강전 라이다 스캔 결과 확인후 내려간다.
                     # imgPath = capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5)
-                    lsObstacleInfo = get_obstacle_data(1)
-                    descendable_distance = node_CtlCenter_globals.DefaultGndDistance
-                    isObstaclePresent = len(lsObstacleInfo)
-                    rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
-                    bins_points = 0
-                    isCoolTimePassed = False
-                    # if isObstaclePresent:
-                    #     descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
-                    #     bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
-                    #     isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
-                    # if imgPath is not None and angle_y is not None and isCoolTimePassed:
-                    #     save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
-                    if isObstaclePresent:
-                        isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
-                        if isCoolTimePassed:
-                            TTSServer(f'테이블 {curTargetTable} 번 선반위에 장애물이 있습니다')
-                        return APIBLB_ACTION_REPLY.E111
+                    lsObstacleInfo = get_obstacle_data(0.5)
+                    #descendable_distance = node_CtlCenter_globals.DefaultGndDistance
+                    if len(lsObstacleInfo) > 0:
+                        df = pd.DataFrame(lsObstacleInfo)                    
+                        #isObstaclePresent = len(lsObstacleInfo)
+                        isObstaclePresent=any(
+                                (df['OBSTACLE_DISTANCE'] <= 0.52) &
+                                (df['OBSTACLE_POINTS'] >= 3)
+                            )                    
+                        rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
+                        bins_points = 0
+                        isCoolTimePassed = False
+                        # if isObstaclePresent:
+                        #     descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
+                        #     bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
+                        #     isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
+                        # if imgPath is not None and angle_y is not None and isCoolTimePassed:
+                        #     save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
+                        if isObstaclePresent:
+                            isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
+                            RunListBlbMotorsEx.obstacle_retry += 1
+                            if isCoolTimePassed:
+                                TTSServer(f'테이블 {curTargetTable} 번 선반위에 장애물이 있습니다')
+                            return APIBLB_ACTION_REPLY.E111
+                        else:
+                            RunListBlbMotorsEx.obstacle_retry = 0
 
                 currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
 
@@ -456,7 +480,7 @@ def RunListBlbMotorsEx(listBLB):
                     #     return APIBLB_ACTION_REPLY.E102
                     #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
                     tray_angle = pulse_to_angle_sse(iPOS)
-                    if abs(tray_angle) > 0:
+                    if abs(tray_angle) >= 0:
                         if dicAruco:
                             marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
                             marker_angle = round(dicAruco.get(ARUCO_RESULT_FIELD.ANGLE.name))
@@ -481,7 +505,7 @@ def RunListBlbMotorsEx(listBLB):
                                 dic_newNodeInfo2[TableInfo.SERVING_DISTANCE.name] = curDistanceSrvTele
                                 dic_newNodeInfo2[TableInfo.SERVING_ANGLE.name] = curAngle_540
                                 dic_newNodeInfo2[TableInfo.MARKER_ANGLE.name] = angle_new
-                                dic_newNodeInfo2[TableInfo.HEIGHT_LIFT.name] = 880000   #나중에 라이다 하강거리로 대체
+                                dic_newNodeInfo2[TableInfo.HEIGHT_LIFT.name] = 610000   #나중에 라이다 하강거리로 대체
                                 dic_newNodeInfo2[TableInfo.MARKER_VALUE.name] = curTargetTable
                                 
                                 add_or_update_row(strFileTableNodeEx,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
@@ -526,14 +550,14 @@ def RunListBlbMotorsEx(listBLB):
             sMsg = f'리프트컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isArmControl:
-            if dfReceivedNew[MotorWMOVEParams.MBID.name].astype(str).isin([str(ModbusID.ROTATE_SERVE_360.value)]).any():
+            if dfReceivedNew[MotorWMOVEParams.MBID.name].astype(str).isin([str(ModbusID.ROTATE_SERVE_360.value)]).any() and not isScanTable:
                 sPosTray = get_last_value_for_key(dfReceivedNew, MotorWMOVEParams.MBID.name, str(ModbusID.ROTATE_SERVE_360.value),MotorWMOVEParams.POS.name)
                 sPosAngle = pulse_to_angle_sse(int(sPosTray),pot_31)
                 bResult, bStrMsg = API_MoveArms(distance_target, adjustrate,sPosAngle, False)
             else:
                 bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
                 
-            if not onScan:
+            if not isScanTable:
                 TiltTableObstacleScan()
             #dfBackUp = listBLB.pop(0)
             if bResult:
