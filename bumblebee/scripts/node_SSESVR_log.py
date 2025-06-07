@@ -127,7 +127,7 @@ dicAllFold = [getMotorMoveDic(ModbusID.BAL_ARM2.value, True, 0, 1150,750,250),
                 getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 0, 253,150,2500)]
 
 dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
-dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, SPD_MOVE_H, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
+dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, SPD_MOVE_H, ACC_DECC_SMOOTH*2,ACC_DECC_MOTOR_H)
         
 dicArmExpand = dicAllExpand[:-1]
 dicArmFold = dicAllFold[:-1]
@@ -1939,14 +1939,13 @@ def RotateMotor360(control360,filter_rate,checkSafety, delayTime = 0):
     if control360 == cur_angle360:
         return bResult,bExecuteMsg        
     di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_RotateTray)
+    acc360 = ACC_360_DOWN
+    decc360 = DECC_360_DOWN
     if control360 >=0:
         targetPulse_serv = GetRotateTrayPulseFromAngle(control360)
-        # diff_serv = (targetPulse_serv - pos_360)
-        # if control360 == 0 and isRealMachine:
-        #     if diff_serv > 0:
-        #         targetPulse_serv += diff_roundPulse
-        #     else:
-        #         targetPulse_serv -= diff_roundPulse
+        if control360 == 0:
+            acc360 = ACC_360_UP
+            decc360 = DECC_360_UP
     else:
         spd360=DEFAULT_RPM_SLOWER
         if len(dicLastAruco)>0:
@@ -1961,7 +1960,7 @@ def RotateMotor360(control360,filter_rate,checkSafety, delayTime = 0):
             return bResult,ALM_User.CALI_ALREADY_DONE.value
         else:
             targetPulse_serv = pos_360 - pot_360
-    dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,ACC_360_UP,DECC_360_UP)
+    dic360 = getMotorMoveDic(ModbusID.ROTATE_SERVE_360.value,True,targetPulse_serv,spd360,acc360,decc360)
     #print(dic540)
     lsCmd = [dic360]
     if si_home == BLD_PROFILE_CMD.ESTOP.name:

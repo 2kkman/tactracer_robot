@@ -405,14 +405,14 @@ def RunListBlbMotorsEx(listBLB):
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
                 if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan and isRealMachine:    #하강전 라이다 스캔 결과 확인후 내려간다.
                     # imgPath = capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5)
-                    lsObstacleInfo = get_obstacle_data(0.5)
+                    lsObstacleInfo = get_obstacle_data(1)
                     #descendable_distance = node_CtlCenter_globals.DefaultGndDistance
                     if len(lsObstacleInfo) > 0:
                         df = pd.DataFrame(lsObstacleInfo)                    
                         #isObstaclePresent = len(lsObstacleInfo)
                         isObstaclePresent=any(
                                 (df['OBSTACLE_DISTANCE'] <= 0.52) &
-                                (df['OBSTACLE_POINTS'] >= 3)
+                                (df['OBSTACLE_POINTS'] >= 2)
                             )                    
                         rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                         bins_points = 0
