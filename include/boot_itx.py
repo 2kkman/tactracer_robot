@@ -31,7 +31,11 @@ def is_gateway_reachable():
         return False
     
 fileno = sys.stdout.fileno()
-ttyResult = os.ttyname(fileno)
+try:
+    ttyResult = os.ttyname(fileno)
+except Exception as e:
+    print(f"Error checking ttyname: {e}")
+    exit(0)
 print(f'파일순번 : {fileno} - 터미널 정보 : {ttyResult}')
 
 strArray = ttyResult.split("/")

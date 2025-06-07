@@ -6329,3 +6329,21 @@ def control_system_sound(mute: bool):
 # control_system_sound(True)  # To mute the sound
 # control_system_sound(False) # To unmute the sound
 
+def ChangeDisplayState(isVideoOn):
+    # 실행할 alias 명령어들을 한 줄로 이어 붙임
+    alias_commands = "vs && ss"
+    if isVideoOn:
+        alias_commands = "kss && rvs"
+
+    # -i 옵션으로 interactive shell을 실행, .bashrc에 등록된 alias 사용 가능
+    command = f"bash -i -c '{alias_commands}'"
+
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+    print("== 전체 실행 결과 ==")
+    print(result.stdout)
+    if result.stderr:
+        print(f"[stderr]\n{result.stderr}")
+        
+# ChangeDisplayState(True)
+# ChangeDisplayState(False)
