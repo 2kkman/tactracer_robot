@@ -180,7 +180,7 @@ if __name__ == "__main__":
         nodetype = '노드'
       sTTS = f'현재 {curLoc}번 {nodetype}에 있습니다.'
       TTSAndroid(sTTS)
-      TTSServer(sTTS)
+      #TTSServer(sTTS)
       SetCurrentNode(curNodeID_fromPulse)
     TiltServFinish()
 

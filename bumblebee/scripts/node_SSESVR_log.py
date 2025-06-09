@@ -726,7 +726,7 @@ def SendCMD_Device(sendbuf, cmdIntervalSec=0.01,isCheckSafety=True, delayTime = 
         logSSE_info(strMsg)
         return False,strMsg
         
-    #log_all_frames(sendbuf)
+    log_all_frames(sendbuf)
     #rfidInstanceDefault()
     bExecuteResult = service_setbool_client_common(ServiceBLB.CMD_DEVICE.value, cmdTmp, Kill)
     return bExecuteResult, AlarmCodeList.OK.name
@@ -1111,10 +1111,9 @@ def callbackMB_15(recvDataMap):
                 if endNodeID_fromNodeID == curNodeID_fromPulse:
                     return                #endNodeType = dicEndNodeInfo[RFID_RESULT.EPC.name]
                 dicCurNodeInfo['END_NODE'] = endnode
-                logSSE_info(dicCurNodeInfo)        
-                #rospy.loginfo(sLogMsg)        
+                #logSSE_info(dicCurNodeInfo)        
+                rospy.loginfo(sLogMsg)        
                 
-
                 curNode_type = str(dicCurNodeInfo.get(RFID_RESULT.EPC.name))
                 curNode_pos = int(dicCurNodeInfo.get(posStr))
                 diffPos = sPOS - curNode_pos
@@ -1135,6 +1134,7 @@ def callbackMB_15(recvDataMap):
                     dicSpdControl = getMotorMoveDic(ModbusID.MOTOR_H.value, True, endNode_pos+diffPos, sSPD_abs,ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)    
                 if dicSpdControl and not is_equal(endnode,0) and curNodeID_fromPulse != startNodeID_fromNodeID:
                     SendCMD_Device([dicSpdControl])
+                    rospy.loginfo(dicSpdControl)
 
         if abs(target_pos - sPOS) > roundPulse * 20:
             return
@@ -1753,9 +1753,13 @@ def service_jog():
         distance_tmp = request.args.get(APIBLB_FIELDS_TASK.distance.name)
         pulse_tmp = request.args.get(posStr)
         spd = try_parse_int(request.args.get(MotorWMOVEParams.SPD.name, DEFAULT_RPM_MID),-1)
+        cur_posH = GetMotorHPos()        
         isAbsPos = True
         if spd < 0: 
             return {"error": "spd string is not valid."}, 400
+        
+        if is_in_slow_zone(cur_posH):
+            spd = DEFAULT_RPM_FAST
         
         if endnode_tmp is None:
             return {"error": "endnode is required."}, 400
@@ -1802,7 +1806,6 @@ def service_jog():
         #dicPotNot=(dicWE_OFF)
         
         si_pot = GetMotorH_SI_POT()
-        cur_posH = GetMotorHPos()        
         # if sEPC is None:
         #     if isScan:
         #         distancePulse=try_parse_int(pulse_tmp)
@@ -1861,7 +1864,8 @@ def service_jog():
             #dicPotNot = dicWE_ON
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.ESTOP.name
         else:
-            listReturnTmp.append(getMotorWPN_OFFDic())
+            #listReturnTmp.append(getMotorWPN_OFFDic())
+            listReturnTmp.append(getMotorWE_OFFDic())
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.MOTORSTOP.name
         
         listReturnTmp.append(dicMotorH)

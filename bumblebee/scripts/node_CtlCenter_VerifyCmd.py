@@ -780,11 +780,11 @@ def RunListBlbMotorsEx(listBLB):
             unique_mbid = df_final[MotorWMOVEParams.MBID.name].unique().tolist()
             if len(unique_mbid) == 1:
                 mbid_current = unique_mbid[0]
-                if is_equal(mbid_current ,ModbusID.MOTOR_V.value):
-                #if is_equal(mbid_current ,ModbusID.ROTATE_SERVE_360.value):
-                    print(f"Lift command detected: {mbid_current}")
                 dicCurrent = lsFinalCmdEx[0]
                 iPos = int(dicCurrent[MotorWMOVEParams.POS.name])
+                if is_equal(mbid_current ,ModbusID.MOTOR_V.value) and iPOS > 0:
+                #if is_equal(mbid_current ,ModbusID.ROTATE_SERVE_360.value):
+                    print(f"Lift command detected: {mbid_current}")
                 iSpd = int(dicCurrent[MotorWMOVEParams.SPD.name])
                 if is_equal(mbid_current, ModbusID.ROTATE_MAIN_540.value):
                     if iSpd == MAINROTATE_RPM_SLOWEST:

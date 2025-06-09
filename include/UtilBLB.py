@@ -3876,18 +3876,34 @@ def GetNodePos_fromNode_ID(node_id):
     result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, MotorWMOVEParams.POS.name)
     return result
 
-def get_warning_ranges():
+def get_slow_ranges(margin=10000):
     """DataFrame에서 B_START ~ B_END 구간을 추출하여 정렬된 튜플 리스트로 반환"""
+    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_START')]['POS'].tolist())
+    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_END')]['POS'].tolist())
+
+    # 구간 짝짓기
+    return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
+
+def get_warning_ranges(margin=10000):
+    """
+    DataFrame에서 B_START ~ B_END 구간을 추출하여,
+    각 구간을 margin 만큼 확장한 정렬된 튜플 리스트로 반환
+    """
     b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_START')]['POS'].tolist())
     b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_END')]['POS'].tolist())
 
-    # 구간 짝짓기
-    return list(zip(b_starts, b_ends))
+    # margin을 반영해 구간 확장
+    return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
 
 def is_in_warning_zone(pos):
     warning_ranges = get_warning_ranges()
     """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
     return any(start <= pos <= end for start, end in warning_ranges)
+
+def is_in_slow_zone(pos):
+    slow_ranges = get_slow_ranges()
+    """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
+    return any(start <= pos <= end for start, end in slow_ranges)
 
 
 def GetNodeID_longest(direction = True):

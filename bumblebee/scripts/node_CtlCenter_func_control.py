@@ -203,10 +203,12 @@ def getMainRotateDicByNode(endNode):
     if curAngle540%180 == 0 and (diff_abs < (MOVE_H_SAMPLE_PULSE / 2) or endNode == NODE_KITCHEN):
         target_angle = curAngle540
     # 목표까지 정방향이면 0도, 역방향이면 180도
-    elif diff_signed > 0:
+    elif endNode == NODE_CROSS:
         target_angle = 0
-    else:
+    elif diff_signed > 0:
         target_angle = 180
+    else:
+        target_angle = 0
     return GetDicRotateMotorMain(target_angle)
 
 # def GetRotateTrayAngleFromPulse(target_pulse):
