@@ -50,6 +50,8 @@ def RunListBlbMotorsEx(listBLB):
     isScanTable = isScanTableMode(curTargetTable)
     dicTagretTableInfo = getTableServingInfo(curTargetTable)
     infoLIFT_Height = try_parse_int(dicTagretTableInfo.get(TableInfo.MARKER_VALUE.name), 0)
+    crop_x1 = try_parse_int(dicTagretTableInfo.get(TableInfo.CROP_X.name), 0)
+    crop_y1 = try_parse_int(dicTagretTableInfo.get(TableInfo.CROP_Y.name), 0)
     finalScan = not is_equal(infoLIFT_Height,curTargetTable)
     dicAruco = {}
     lsAruco = filter_recent_data(ARUCO_RESULT_FIELD.LASTSEEN.name,GetArucoMarkerInfo(),0.2)
@@ -224,9 +226,10 @@ def RunListBlbMotorsEx(listBLB):
         #가장 인접한 노드에서 move 명령어를 한번 더 내보낸다.
         curNode_Type = node_CtlCenter_globals.dicLast_POSITION_INFO[RFID_RESULT.EPC.name]
         curNode_diPot = node_CtlCenter_globals.dicLast_POSITION_INFO[MonitoringField.DI_POT.name]
-        isOKPos = True if node_CtlCenter_globals.dicLast_POSITION_INFO[MotorWMOVEParams.DIFF_POS.name] < 1000 else False
-        if curNode_Type.find(strNOTAG) >= 0 and (is_equal(curNode_diPot,0) and not isOKPos) and isRealMachine:
-            TTSServer('위치를 확인하고 있습니다.')
+        isOKPos = True if node_CtlCenter_globals.dicLast_POSITION_INFO[MotorWMOVEParams.DIFF_POS.name] < roundPulse else False
+        #isOKPos = True
+        if curNode_Type.find(strNOTAG) >= 0 and (is_equal(DI_POT,0) and not isOKPos) and isRealMachine:
+            #TTSServer('위치를 확인하고 있습니다.')
             return APIBLB_ACTION_REPLY.E112
         
         filtered_data = [item for item in dicInfo_local if item]
@@ -404,19 +407,49 @@ def RunListBlbMotorsEx(listBLB):
             #리프팅 모터 제어정보 사전 점검
             if iMBID == ModbusID.MOTOR_V.value and CheckMotorOrderValid(dicArray):
                 if iPOS !=0 and tiltStutus == TRAY_TILT_STATUS.TiltTableObstacleScan and isRealMachine:    #하강전 라이다 스캔 결과 확인후 내려간다.
-                    # imgPath = capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir=save_dir_download, timeout=5)
+                    imgGoldSampleFilename = f'{curTargetTable}.jpg'
+                    imgGoldSamplePath = os.path.join(save_dir_goldsample,imgGoldSampleFilename)
+                    imgCurPath=''
+                    #if True:
+                    if curNode == NODE_KITCHEN or crop_x1 <= 0 or crop_y1 <= 0:
+                        sim_score = 0
+                    elif os.path.exists(imgGoldSamplePath):
+                        imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)
+                        pt_x1=252; pt_y1=182; pt_x2=404; pt_y2=249
+                        if crop_x1 > 0 and crop_y1 > 0:
+                            pt_x1=crop_x1; pt_y1=crop_y1; pt_x2=crop_x1+CROP_WIDTH; pt_y2=crop_y1+CROP_HEIGHT
+                        dicScore, sim_score = compare_image_croppedArea_robust(imgCurPath,imgGoldSamplePath,pt_x1,pt_y1,pt_x2,pt_y2)
+                        # 이미지 비교 (디버그 모드 켜서 과정 확인)
+                        # dicScore, sim_score = compare_image_dynamic_crop(
+                        #     imgCurPath, 
+                        #     imgGoldSamplePath, 
+                        #     crop_width=200, 
+                        #     crop_height=70, 
+                        #     debug=True
+                        # )                        
+                        rospy.loginfo(dicScore)
+                    else:
+                        #sim_score = compare_image_croppedArea(imgCurPath)    
+                        imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=curTargetTable,save_dir=save_dir_download, timeout=5)                        
+                        sim_score = 0
+                    
                     lsObstacleInfo = get_obstacle_data(1)
                     #descendable_distance = node_CtlCenter_globals.DefaultGndDistance
                     if len(lsObstacleInfo) > 0:
                         df = pd.DataFrame(lsObstacleInfo)                    
                         #isObstaclePresent = len(lsObstacleInfo)
-                        isObstaclePresent=any(
-                                (df['OBSTACLE_DISTANCE'] <= 0.52) &
-                                (df['OBSTACLE_POINTS'] >= 2)
+                        isLidarDetected=any(
+                                (df['OBSTACLE_DISTANCE'] <= df['GND_DISTANCE']-0.04) &
+                                (df['OBSTACLE_POINTS'] >= 10)
                             )                    
                         rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                         bins_points = 0
                         isCoolTimePassed = False
+                        sim_limit = int(rospy.get_param('SCORE', default=950))
+                        if sim_score == 0:
+                            isObstaclePresent = isLidarDetected
+                        else:
+                            isObstaclePresent = sim_score < (sim_limit/1000)
                         # if isObstaclePresent:
                         #     descendable_distance = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_DISTANCE.name)
                         #     bins_points = lsObstacleInfo[-1].get(OBSTACLE_INFO.OBSTACLE_POINTS.name)
@@ -424,14 +457,17 @@ def RunListBlbMotorsEx(listBLB):
                         # if imgPath is not None and angle_y is not None and isCoolTimePassed:
                         #     save_image_with_lidar_data(imgPath,descendable_distance,angle_y,bins_points)
                         if isObstaclePresent:
+                            #rospy.loginfo(f'sim_score={sim_score}')
                             isCoolTimePassed = TTSAndroid(TTSMessage.REQUEST_TABLECLEAR.value, 5)
                             RunListBlbMotorsEx.obstacle_retry += 1
                             if isCoolTimePassed:
                                 TTSServer(f'테이블 {curTargetTable} 번 선반위에 장애물이 있습니다')
+                                Path(imgCurPath).unlink(missing_ok=True)
                             return APIBLB_ACTION_REPLY.E111
                         else:
                             RunListBlbMotorsEx.obstacle_retry = 0
-
+                            if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
+                                shutil.move(imgCurPath, imgGoldSamplePath)
                 currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
 
                 if currentWeightTotal >= WEIGHT_LOADCELL_LIMITGRAM*10000:
@@ -803,7 +839,7 @@ def RunListBlbMotorsEx(listBLB):
                     SendCMD_Device(lsFinalCmdEx)
             else:
                 SendCMD_Device(lsFinalCmdEx)                    
-        UpdateLastCmdTimeStamp()
+            UpdateLastCmdTimeStamp()
         UpdateLastBalanceTimeStamp()
         # if len(listBLB) == 0 and not isScanMode():
         #     SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)

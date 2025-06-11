@@ -10,9 +10,13 @@ from statistics import *  # mean, median 등을 직접 사용
 from typing import *
 from urllib.parse import *
 from pathlib import *
+from scipy.spatial.distance import *
+from sklearn.metrics.pairwise import *
+from skimage.feature import *
 import ast
 import glob
 import copy
+import shutil
 import csv
 import difflib
 import heapq
@@ -248,8 +252,34 @@ def calculate_weight_angle(arm_length_mm, max_length=1300, trigger_distance=500,
 # length = 290
 # angle = calculate_weight_angle(length)
 # print(f"Arm length: {length} mm → Weight angle: {angle} degrees")
+def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', timeout=5):
+    """
+    MJPEG 스트림에서 1프레임을 캡처해서 이미지 객체 (numpy array)로 반환하는 함수
+    """
+    try:
+        session = requests.Session()
+        stream = session.get(url, stream=True, verify=False, timeout=timeout)
+        bytes_data = b''
+        for chunk in stream.iter_content(chunk_size=1024):
+            bytes_data += chunk
+            a = bytes_data.find(b'\xff\xd8')  # JPEG 시작
+            b = bytes_data.find(b'\xff\xd9')  # JPEG 끝
+            if a != -1 and b != -1:
+                jpg = bytes_data[a:b+2]
+                bytes_data = bytes_data[b+2:]
+                img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
 
-def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir='', timeout=5):
+                stream.close()
+                return img  # ← 저장 없이 바로 이미지 객체 반환
+
+        print(f"No data in stream")
+        return None
+    except Exception as e:
+        print(traceback.format_exc())
+        print(f"Failed to connect to stream: {e}")
+        return None
+    
+def getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix = 'captured', save_dir='', timeout=5):
     """
     MJPEG 스트림에서 1프레임을 캡처해서 저장하는 함수
     """
@@ -259,67 +289,369 @@ def capture_frame_from_mjpeg(url='https://172.30.1.8:6001/cam', save_dir='', tim
     try:
         session = requests.Session()
         stream = session.get(url, stream=True, verify=False, timeout=timeout)
+        bytes_data = b''
+        for chunk in stream.iter_content(chunk_size=1024):
+            bytes_data += chunk
+            a = bytes_data.find(b'\xff\xd8')  # JPEG 시작
+            b = bytes_data.find(b'\xff\xd9')  # JPEG 끝
+            if a != -1 and b != -1:
+                jpg = bytes_data[a:b+2]
+                bytes_data = bytes_data[b+2:]
+                img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
+
+                # 저장
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+                file_name_save = f"{prefix}_{timestamp}.jpg"
+                save_path = os.path.join(save_dir,file_name_save )
+                cv2.imwrite(save_path, img)
+                print(f"Captured and saved: {save_path}")
+
+                stream.close()
+                return save_path
+        print(f"No data in stream")
+        return None
     except Exception as e:
         print(traceback.format_exc())
         print(f"Failed to connect to stream: {e}")
         return None
 
-    bytes_data = b''
-    for chunk in stream.iter_content(chunk_size=1024):
-        bytes_data += chunk
-        a = bytes_data.find(b'\xff\xd8')  # JPEG 시작
-        b = bytes_data.find(b'\xff\xd9')  # JPEG 끝
-        if a != -1 and b != -1:
-            jpg = bytes_data[a:b+2]
-            bytes_data = bytes_data[b+2:]
-            img = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-
-            # 저장
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            file_name_save = f"captured_{timestamp}.jpg"
-            save_path = os.path.join(save_dir,file_name_save )
-            cv2.imwrite(save_path, img)
-            print(f"Captured and saved: {save_path}")
-
-            stream.close()
-            return file_name_save
-
-    print("Failed to capture frame")
-    return None
+    # print("Failed to capture frame")
+    # return None
 # import csv
-# from datetime import datetime
+# # from datetime import datetime
+# def compare_image_croppedArea(img_path1,img_path2='/root/Downloads/goldsample.jpg', pt_x1 = 252, pt_y1=182,pt_x2=404,pt_y2=249):
+#     # 좌표 정의 (x1, y1) ~ (x2, y2)
+#     pt1 = (pt_x1, pt_y1)
+#     pt2 = (pt_x2, pt_y2)
 
-def save_image_with_lidar_data(filename, descendable_distance, tilt_deg, obstacle_thresh=0.4,
-                                save_dir='', csv_path=''):
+#     # 이미지 불러오기 및 자르기
+#     img1 = cv2.imread(img_path1)
+#     img2 = cv2.imread(img_path2)
+
+#     crop1 = img1[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+#     crop2 = img2[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+
+#     # 흑백 변환
+#     gray1 = cv2.cvtColor(crop1, cv2.COLOR_BGR2GRAY)
+#     gray2 = cv2.cvtColor(crop2, cv2.COLOR_BGR2GRAY)
+
+#     # 구조적 유사도 (SSIM) 계산
+#     similarity_score, diff = ssim(gray1, gray2, full=True)
+
+#     return similarity_score
+def method4_local_binary_pattern(img1, img2):
+    """LBP (Local Binary Pattern) 기반 유사도 - 조명 변화에 강함"""
+    gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY) if len(img1.shape) == 3 else img1
+    gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) if len(img2.shape) == 3 else img2
+    
+    # 크기 맞추기
+    h, w = min(gray1.shape[0], gray2.shape[0]), min(gray1.shape[1], gray2.shape[1])
+    gray1 = cv2.resize(gray1, (w, h))
+    gray2 = cv2.resize(gray2, (w, h))
+    
+    # LBP 계산
+    radius = 3
+    n_points = 8 * radius
+    
+    lbp1 = local_binary_pattern(gray1, n_points, radius, method='uniform')
+    lbp2 = local_binary_pattern(gray2, n_points, radius, method='uniform')
+    
+    # 히스토그램 비교
+    hist1, _ = np.histogram(lbp1.ravel(), bins=n_points + 2, range=(0, n_points + 2))
+    hist2, _ = np.histogram(lbp2.ravel(), bins=n_points + 2, range=(0, n_points + 2))
+    
+    # 정규화
+    hist1 = hist1.astype(float) / (hist1.sum() + 1e-10)
+    hist2 = hist2.astype(float) / (hist2.sum() + 1e-10)
+    
+    # 코사인 유사도
+    similarity = 1 - cosine(hist1, hist2)
+    return max(0, similarity)
+
+def method1_sift_feature_matching(img1, img2):
+    """SIFT 특징점 매칭을 통한 유사도 계산"""
+    # 그레이스케일 변환
+    gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY) if len(img1.shape) == 3 else img1
+    gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) if len(img2.shape) == 3 else img2
+    
+    sift = cv2.SIFT_create()
+    # SIFT 특징점과 디스크립터 추출
+    kp1, des1 = sift.detectAndCompute(gray1, None)
+    kp2, des2 = sift.detectAndCompute(gray2, None)
+    
+    if des1 is None or des2 is None:
+        return 0.0
+    
+    # FLANN 매처 사용
+    FLANN_INDEX_KDTREE = 1
+    index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
+    search_params = dict(checks=50)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
+    
+    matches = flann.knnMatch(des1, des2, k=2)
+        
+    # Lowe's ratio test로 좋은 매치만 선별
+    good_matches = []
+    for match_pair in matches:
+        if len(match_pair) == 2:
+            m, n = match_pair
+            if m.distance < 0.7 * n.distance:
+                good_matches.append(m)
+    
+    # 유사도 계산 (매치된 특징점 비율)
+    similarity = len(good_matches) / max(len(kp1), len(kp2))
+    return min(similarity, 1.0)
+
+def method2_orb_feature_matching(img1, img2):
+    """ORB 특징점 매칭을 통한 유사도 계산 (더 빠름)"""
+    gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY) if len(img1.shape) == 3 else img1
+    gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) if len(img2.shape) == 3 else img2
+    orb = cv2.ORB_create()
+    # ORB 특징점과 디스크립터 추출
+    kp1, des1 = orb.detectAndCompute(gray1, None)
+    kp2, des2 = orb.detectAndCompute(gray2, None)
+    
+    if des1 is None or des2 is None:
+        return 0.0
+    
+    # BFMatcher 사용
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    matches = bf.match(des1, des2)
+    
+    # 거리 기준으로 매치 정렬
+    matches = sorted(matches, key=lambda x: x.distance)
+    
+    # 좋은 매치만 선별 (상위 50% 또는 거리 임계값 사용)
+    good_matches = [m for m in matches if m.distance < 50]
+    
+    similarity = len(good_matches) / max(len(kp1), len(kp2))
+    return min(similarity, 1.0)
+
+def method4_histogram_comparison(img1, img2):
+    """색상 히스토그램 비교 (조명 변화에 어느 정도 강건)"""
+    # HSV 색공간으로 변환 (조명 변화에 더 강건)
+    hsv1 = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV) if len(img1.shape) == 3 else cv2.cvtColor(cv2.cvtColor(img1, cv2.COLOR_GRAY2BGR), cv2.COLOR_BGR2HSV)
+    hsv2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV) if len(img2.shape) == 3 else cv2.cvtColor(cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR), cv2.COLOR_BGR2HSV)
+    
+    # H(색상)와 S(채도) 채널의 히스토그램 계산
+    hist1 = cv2.calcHist([hsv1], [0, 1], None, [50, 60], [0, 180, 0, 256])
+    hist2 = cv2.calcHist([hsv2], [0, 1], None, [50, 60], [0, 180, 0, 256])
+    
+    # 히스토그램 정규화
+    cv2.normalize(hist1, hist1, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
+    cv2.normalize(hist2, hist2, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
+    
+    # 코사인 유사도 계산
+    similarity = cv2.compareHist(hist1, hist2, cv2.HISTCMP_CORREL)
+    return max(0, similarity)  # 음수 값 제거
+
+def method5_edge_based_comparison(img1, img2):
+    """엣지 기반 비교 (구조적 유사성)"""
+    gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY) if len(img1.shape) == 3 else img1
+    gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY) if len(img2.shape) == 3 else img2
+    
+    # Canny 엣지 검출
+    edges1 = cv2.Canny(gray1, 50, 150)
+    edges2 = cv2.Canny(gray2, 50, 150)
+    
+    # 이미지 크기 맞추기
+    h1, w1 = edges1.shape
+    h2, w2 = edges2.shape
+    
+    if h1 != h2 or w1 != w2:
+        # 더 작은 크기로 맞춤
+        h_min, w_min = min(h1, h2), min(w1, w2)
+        edges1 = cv2.resize(edges1, (w_min, h_min))
+        edges2 = cv2.resize(edges2, (w_min, h_min))
+    
+    # 엣지 매칭 점수 계산
+    intersection = cv2.bitwise_and(edges1, edges2)
+    union = cv2.bitwise_or(edges1, edges2)
+    
+    intersection_sum = np.sum(intersection > 0)
+    union_sum = np.sum(union > 0)
+    
+    if union_sum == 0:
+        return 0.0
+    
+    return intersection_sum / union_sum
+
+def compare_image_croppedArea_robust(img_path1, img_path2='/root/Downloads/goldsample.jpg', 
+                                   pt_x1=252, pt_y1=182, pt_x2=404, pt_y2=249):
+    """
+    조명 변화에 강건한 이미지 비교 함수
+    
+    Args:
+        img_path1: 비교할 첫 번째 이미지 경로
+        img_path2: 비교할 두 번째 이미지 경로 (기준 이미지)
+        pt_x1, pt_y1, pt_x2, pt_y2: 자를 영역의 좌표
+    
+    Returns:
+        dict: 다양한 유사도 점수들을 포함한 딕셔너리
+    """
+    
+    # 좌표 정의
+    pt1 = (pt_x1, pt_y1)
+    if pt_x2 < 0 or pt_y2 < 0:
+        pt2 = (pt_x1+150, pt_y1+70)
+    else:
+        pt2 = (pt_x2, pt_y2)
+    
+    # 이미지 불러오기 및 자르기
+    img1 = cv2.imread(img_path1)
+    img2 = cv2.imread(img_path2)
+    
+    if img1 is None or img2 is None:
+        raise ValueError("이미지를 불러올 수 없습니다.")
+    
+    img1_path = Path(img_path1)
+    imgCropSamplePath1 = os.path.join(img1_path.parent,'crop1.jpg')                            
+    imgCropSamplePath2 = os.path.join(img1_path.parent,'crop2.jpg')                            
+    crop1 = img1[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+    crop2 = img2[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+    
+    cv2.imwrite(imgCropSamplePath1, crop1)
+    cv2.imwrite(imgCropSamplePath2, crop2)
+    print(pt1,pt2)
+    result_lbp = method4_local_binary_pattern(crop1,crop2)
+    results = {}
+    results['lbp'] = result_lbp
+    return results,result_lbp
+    # 흑백 변환
+    gray1 = cv2.cvtColor(crop1, cv2.COLOR_BGR2GRAY)
+    gray2 = cv2.cvtColor(crop2, cv2.COLOR_BGR2GRAY)
+    
+    # 1. 히스토그램 균등화 (조명 정규화)
+    eq1 = cv2.equalizeHist(gray1)
+    eq2 = cv2.equalizeHist(gray2)
+    
+    # 2. CLAHE (적응적 히스토그램 균등화) - 더 부드러운 조명 보정
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    clahe1 = clahe.apply(gray1)
+    clahe2 = clahe.apply(gray2)
+    
+    # 3. 가우시안 블러로 노이즈 제거
+    blur1 = cv2.GaussianBlur(clahe1, (3, 3), 0)
+    blur2 = cv2.GaussianBlur(clahe2, (3, 3), 0)
+    
+    # 4. 감마 보정 (선택적)
+    def adjust_gamma(image, gamma=1.0):
+        invGamma = 1.0 / gamma
+        table = np.array([((i / 255.0) ** invGamma) * 255 for i in np.arange(0, 256)])
+        return cv2.LUT(image.astype(np.uint8), table.astype(np.uint8))
+    
+    # 5. 다양한 전처리된 이미지들로 SSIM 계산
+    results = {}
+    
+    result_sift = method1_sift_feature_matching(crop1,crop2)
+    result_orb = method2_orb_feature_matching(crop1,crop2)
+    result_hist = method4_histogram_comparison(crop1,crop2)
+    
+    result_edge = method5_edge_based_comparison(crop1,crop2)
+    
+    
+    results['sift'] = result_sift
+    results['orb'] = result_orb
+    results['hist'] = result_hist
+    results['edge'] = result_edge
+    # 원본 SSIM
+    results['original_ssim'], _ = ssim(gray1, gray2, full=True)
+    
+    # 히스토그램 균등화 후 SSIM
+    results['equalized_ssim'], _ = ssim(eq1, eq2, full=True)
+    
+    # CLAHE 후 SSIM
+    results['clahe_ssim'], _ = ssim(clahe1, clahe2, full=True)
+    
+    # CLAHE + 블러 후 SSIM
+    clahe_blur_ssim,_ = ssim(blur1, blur2, full=True)
+    results['clahe_blur_ssim']= clahe_blur_ssim
+    
+    # 6. 정규화된 상호상관 (Normalized Cross Correlation)
+    # 템플릿 매칭 방식으로 조명 변화에 더 강건
+    ncc = cv2.matchTemplate(blur1, blur2, cv2.TM_CCOEFF_NORMED)
+    results['ncc_score'] = np.max(ncc)
+    
+    # 7. 구조적 특징 기반 비교 (엣지 검출 후 비교)
+    # Canny 엣지 검출
+    edges1 = cv2.Canny(blur1, 50, 150)
+    edges2 = cv2.Canny(blur2, 50, 150)
+    
+    # 엣지 기반 SSIM
+    if np.sum(edges1) > 0 and np.sum(edges2) > 0:
+        results['edge_ssim'], _ = ssim(edges1, edges2, full=True)
+    else:
+        results['edge_ssim'] = 0.0
+    
+    # 8. 최종 종합 점수 계산 (가중 평균)
+    # CLAHE + 블러가 조명 변화에 가장 효과적이므로 높은 가중치
+    weights = {
+        'clahe_blur_ssim': 0.4,
+        'clahe_ssim': 0.25,
+        'ncc_score': 0.2,
+        'edge_ssim': 0.1,
+        'equalized_ssim': 0.05
+    }
+    
+    final_score = sum(results[key] * weight for key, weight in weights.items())
+    results['final_score'] = final_score
+    
+    # 9. 임계값 기반 판정
+    results['is_same'] = final_score > 0.8  # 임계값은 필요에 따라 조정
+    
+    return results,result_lbp*1000
+
+#print(compare_image_croppedArea_robust('/root/Downloads/104_20250610_212355_942986.jpg','/root/Downloads/tableImg/104.jpg'))
+# 사용 예시 및 단순 버전
+def compare_image_croppedArea(img_path1, img_path2='/root/Downloads/goldsample.jpg', 
+                        pt_x1=252, pt_y1=182, pt_x2=-1, pt_y2=-1, threshold=0.8):
+    """단순화된 버전 - 최종 점수만 반환"""
+    result,score = compare_image_croppedArea_robust(img_path1, img_path2, pt_x1, pt_y1, pt_x2, pt_y2)
+    print(result)
+    return score > threshold, score
+
+def save_image_with_lidar_data(filename,imgGoldSamplePath, table_id, tilt_deg, obstacle_thresh,csv_path='',pt_x1=252,pt_y1=182,pt_x2=404,pt_y2=249):
     """
     이미지 저장 + 라이다 데이터 + 라벨 기록 CSV
     """
-    os.makedirs(save_dir, exist_ok=True)
+    try:
+        file_path = Path(filename)
+        save_dir = file_path.parent    
+        os.makedirs(save_dir, exist_ok=True)
+        if os.path.exists(imgGoldSamplePath):
+            results,sim_score = compare_image_croppedArea(filename,imgGoldSamplePath,pt_x1,pt_y1,pt_x2,pt_y2)
+        else:
+            results,sim_score = compare_image_croppedArea(filename)
 
-    # # 이미지 파일명 생성
-    #timestamp = getDateTime().strftime("%Y%m%d_%H%M%S_%f")
-    # filename = f"captured_{timestamp}.jpg"
-    #filepath = os.path.join(save_dir, filename)
+        # # 이미지 파일명 생성
+        #timestamp = getDateTime().strftime("%Y%m%d_%H%M%S_%f")
+        # filename = f"captured_{timestamp}.jpg"
+        #filepath = os.path.join(save_dir, filename)
 
-    # # 저장
-    # cv2.imwrite(filepath, img)
+        # # 저장
+        # cv2.imwrite(filepath, img)
 
-    # 라벨 판단
-    obstacle = 1 if descendable_distance < obstacle_thresh else 0
+        # 라벨 판단
+        #obstacle = 1 if descendable_distance < obstacle_thresh else 0
+        obstacle=obstacle_thresh
 
-    # CSV에 기록
-    header = ['timestamp', 'filename', 'tilt_deg', 'descendable_distance', 'obstacle']
-    row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), filename, tilt_deg, round(descendable_distance, 4), obstacle]
+        # CSV에 기록
+        header = ['timestamp', 'filename', 'tilt_deg', 'descendable_distance', 'obstacle','score']
+        row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), filename, tilt_deg, table_id, obstacle,sim_score]
 
-    write_header = not os.path.exists(csv_path)
+        write_header = not os.path.exists(csv_path)
 
-    with open(csv_path, 'a', newline='') as f:
-        writer = csv.writer(f)
-        if write_header:
-            writer.writerow(header)
-        writer.writerow(row)
+        with open(csv_path, 'a', newline='') as f:
+            writer = csv.writer(f)
+            if write_header:
+                writer.writerow(header)
+            writer.writerow(row)
 
-    print(f"[✔] 저장 완료: {filename} (obstacle={obstacle})")
+        print(f"[✔] 저장 완료: {filename} (유사도={sim_score})")
+    except Exception as e:
+        print(traceback.format_exc())
+        print(f"Failed to Safe data : {e}")
+        return None
 
 def estimate_rotation_center(marker_coords_by_angle):
     """

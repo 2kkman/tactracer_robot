@@ -60,7 +60,7 @@ def callbackAck(data,topic_name='' ):
         logmsg = f"{recvData} from {sys._getframe(0).f_code.co_name} - {sys._getframe(1).f_code.co_name} : {node_CtlCenter_globals.activated_motors}"
         #log_all_frames(recvData)
         rospy.loginfo(logmsg)
-
+        angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name)
         # Colon 으로 메세지를 쪼개어 파싱한다.
         # idx 0 - timestamp, 1 - 완료여부 , 2 - MBID
         lsResult = recvData.split(sDivFieldColon)
@@ -197,7 +197,8 @@ def callbackAck(data,topic_name='' ):
             if node_CtlCenter_globals.dicServoPos.get(mbid_tmp) is None:
               node_CtlCenter_globals.dicServoPos[mbid_tmp] = [0,0]  
             node_CtlCenter_globals.dicServoPos[mbid_tmp][0] = cur_pos
-            #ClearArucoTable()
+            if mbid_tmp == (str)(ModbusID.MOTOR_V.value):
+                TiltTableObstacleScan()
         else:   #STOP ACK
             shakePos = roundPulse/2
             lsShakeFinal = []
@@ -287,20 +288,21 @@ def callbackAck(data,topic_name='' ):
                   node_CtlCenter_globals.dfLinkPosInfo=pd.concat([node_CtlCenter_globals.dfLinkPosInfo, pd.DataFrame([dicLinkInfo])], ignore_index=True)
                 rospy.loginfo(node_CtlCenter_globals.dfLinkPosInfo)
                 
-              if isScanMode():
-                if node_CtlCenter_globals.ScanInfo.get(linkKey) is None:
-                  node_CtlCenter_globals.ScanInfo[linkKey] = []
-                if len(GetArucoMarkerDict()) > 0:
-                    combined_list = list(chain(*GetArucoMarkerDict().values()))
-                    node_CtlCenter_globals.ScanInfo[linkKey].extend(combined_list)
                 
-                #경로길이가 제대로 정의되지 않은 구간을 탐색한 경우 해당 링크(노드와 노드)의 길이를 저장.
-                distancePulse = abs(endPos-startPos)
-                distance_mm = pulseH_to_distance(distancePulse)
-                #node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
-                rospy.loginfo(node_CtlCenter_globals.lsHistory_motorH)
-                if abs(int(distanceTmp)) < 10:
-                  updateShortCutInfo(start_node,end_node,distance_mm)
+            #   if isScanMode():
+            #     if node_CtlCenter_globals.ScanInfo.get(linkKey) is None:
+            #       node_CtlCenter_globals.ScanInfo[linkKey] = []
+            #     if len(GetArucoMarkerDict()) > 0:
+            #         combined_list = list(chain(*GetArucoMarkerDict().values()))
+            #         node_CtlCenter_globals.ScanInfo[linkKey].extend(combined_list)
+                
+            #     #경로길이가 제대로 정의되지 않은 구간을 탐색한 경우 해당 링크(노드와 노드)의 길이를 저장.
+            #     distancePulse = abs(endPos-startPos)
+            #     distance_mm = pulseH_to_distance(distancePulse)
+            #     #node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
+            #     rospy.loginfo(node_CtlCenter_globals.lsHistory_motorH)
+            #     if abs(int(distanceTmp)) < 10:
+            #       updateShortCutInfo(start_node,end_node,distance_mm)
                 
                 #node_CtlCenter_globals.dfLinkPosInfo
                 
@@ -385,9 +387,59 @@ def callbackAck(data,topic_name='' ):
                         messageTTS= TTSMessage.RETURN_30S.value
                 CamControl(False)
                 isLiftTrayDown = isLiftTrayDownFinished()
-                node_current = GetCurrentNode()
+                curTargetTable,node_current = GetCurrentTableNode()
                 doorStatus,doorArray = GetDoorStatus() #TRAYDOOR_STATUS.OPENED
+                # if not isLiftTrayDown and node_current is not None:
+                #     imgGoldSampleFilename = f'{curTargetTable}.jpg'
+                #     imgGoldSamplePath = os.path.join(save_dir_goldsample,imgGoldSampleFilename)
+                #     imgCurPath=''
+                #     if os.path.exists(imgGoldSamplePath):
+                #         imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)                        
+                #         #dicScore, sim_score = compare_image_croppedArea_robust(imgCurPath,imgGoldSamplePath)
+                #         # 이미지 비교 (디버그 모드 켜서 과정 확인)
+                #         dicScore, sim_score = compare_image_dynamic_crop(
+                #             imgCurPath, 
+                #             imgGoldSamplePath, 
+                #             crop_width=200, 
+                #             crop_height=70, 
+                #             debug=True
+                #         )                        
+                #         rospy.loginfo(dicScore)
+
                 if isLiftTrayDown and node_current is not None:
+                    if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                        currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
+                    #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
+                        if curNode == node_KITCHEN_STATION:
+                            DoorOpen()
+                        elif dfReceived is None:
+                            rospy.loginfo(f"dfReceived not found")
+                            #추후 중량값 들어오고 있는 셀로 고치자.
+                            #if not isScanOn:
+                            if currentWeight1 > WEIGHT_OCCUPIED:
+                                DoorOpen(0)
+                            elif currentWeight2 > WEIGHT_OCCUPIED:
+                                DoorOpen(1)
+                            else:
+                                DoorOpen()
+                        else:
+                            SetCurrentNode(dfReceived.iloc[-1][APIBLB_FIELDS_TASK.startnode.name])
+                            dicFirst = dfReceived.iloc[0]
+                            taskid_current = dicFirst[APIBLB_FIELDS_TASK.taskid.name]
+                            tasktype_current = int(dicFirst[APIBLB_FIELDS_TASK.tasktype.name])
+                            dicTaskInfo = GetTaskChainHead(APIBLB_FIELDS_TASK.taskid.name, taskid_current, True)
+                            trayrack = dicTaskInfo.get(APIBLB_FIELDS_TASK.trayrack.name)
+                            #회수인 경우는 문을 모두 연다.
+                            df = node_CtlCenter_globals.dfTaskChainInfo
+                            result = df[
+                                (df['tasktype'].astype(str) == '2') & 
+                                (df['taskrunok'].astype(str) == '1')
+                            ].to_dict(orient='records')  
+                            rospy.loginfo(result)
+                            if len(result) == 1:
+                                DoorOpen()
+                            elif tasktype_current == APIBLB_TASKTYPE.CashPay.value or tasktype_current == APIBLB_TASKTYPE.CollectingEmptyPlattes.value or trayrack is None or GetCurrentNode() == node_KITCHEN_STATION:
+                                DoorOpen()
                     #if int(node_current) != node_KITCHEN_STATION:
                     # 리프트 모터 하강구동이 완료된 경우 30초내로 꺼내가라는 방송을 한다.
                     #if not isScanOn:
@@ -409,7 +461,7 @@ def callbackAck(data,topic_name='' ):
                         nowTime = getDateTime()
                         callbackAck.last_cmd_time = nowTime
                         # 경과 시간 리스트 (초 단위)
-                        time_deltas = [5, 10, 15, 20, 25,30,35,40,45,50,55,60]
+                        time_deltas = [5, 15,25,35,45,55,65]
                         #time_deltas = [5, 6000]
                         # time_deltas = [3, 6]
                         # 딕셔너리 생성
@@ -1005,8 +1057,8 @@ def callback_ARUCO_RESULT(data,topic_name=''):
             if cam_id == None:
                 return
             
-            angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name, -1)
             marker_value = recvDataMap.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name, None)
+            angle_y = node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.Angle_Y.name, -1)
             marker_x = float(recvDataMap.get(ARUCO_RESULT_FIELD.X.name, 0.0))
             marker_y = float(recvDataMap.get(ARUCO_RESULT_FIELD.Y.name, 0.0))
             marker_z = float(recvDataMap.get(ARUCO_RESULT_FIELD.Z.name, 0.0))

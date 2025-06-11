@@ -1717,7 +1717,7 @@ def getRunningMotorsBLBEx():
       for mbid in lsMbid:
           dictModbus = node_CtlCenter_globals.dic_485ex[mbid]
           cur_spd = abs(int(dictModbus.get(MonitoringField.CUR_SPD.name, 0)))
-          if cur_spd > 3:
+          if cur_spd > 10:
             dictPos[mbid]=int(cur_spd)
           # cur_cd = dictModbus.get(MonitoringField.ST_CMD_FINISH.name, 1)
           # cur_pot = dictModbus.get(MonitoringField.DI_POT.name, 1)
@@ -1937,11 +1937,13 @@ def getSeqMap(startNode: int, endNode: int) -> list:
     listSeqMapOrg_B = copy.deepcopy(listSeqMapOrg)
     node_CtlCenter_globals.lastPath = lsPath
     rospy.loginfo(f"원래경로:{listSeqMapOrg_B}")
-    listSeqMapOptimized = getSimplePath2(listSeqMapOrg_B, isScanMode())
+    #listSeqMapOptimized = getSimplePath2(listSeqMapOrg_B, isScanMode())
+    listSeqMapOptimized = getSimplePath2(listSeqMapOrg_B, False)
     rospy.loginfo(f"최적화경로:{listSeqMapOptimized}")
     #최적화 경로와 원래경로를 모두 리턴
     return listSeqMapOptimized,listSeqMapOrg
 
+#print(getSeqMap(14,3))
 
 def getNodeState(nodeID):
     nodeIDint = int(try_parse_float(nodeID))

@@ -548,6 +548,8 @@ def MotorBalanceControlEx(bSkip):
         MotorBalanceControlEx.onCaliR = False
     if not hasattr(MotorBalanceControlEx, "onCaliT"):
         MotorBalanceControlEx.onCaliT = False
+    if not hasattr(MotorBalanceControlEx, "LASTTABLE"):
+        MotorBalanceControlEx.LASTTABLE = 'H1'
     
     #돌고 있는 모터가 없으면 종료
     if not has_common_element(getRunningMotorsBLB(),list_ArmControlMotors):
@@ -1024,7 +1026,36 @@ def MotorBalanceControlEx(bSkip):
                     SendCMD_Device([getMotorMoveDic(ModbusID.MOTOR_V.value,True,target_pulse,DEFAULT_RPM_MID, ACC_DECC_SMOOTH,ACC_DECC_SMOOTH)])
                     UpdateLastBalanceTimeStamp()
                     # rospy.loginfo(f'트레이 세이프티 정지!:{lastLD_Raw}')
-        
+        if rpmLift < 0:
+            isWait = GetWaitConfirmFlag()
+            openTargetPos = roundPulse
+            table_id = GetPositionInfo('TABLE_ID')
+            dicTagretTableInfo = getTableServingInfo(table_id)
+            crop_x1 = try_parse_int(dicTagretTableInfo.get(TableInfo.CROP_X.name), 0)
+            crop_y1 = try_parse_int(dicTagretTableInfo.get(TableInfo.CROP_Y.name), 0)
+            pt_x1=252; pt_y1=182; pt_x2=404; pt_y2=249
+            if crop_x1 > 0 and crop_y1 > 0:
+                pt_x1=crop_x1; pt_y1=crop_y1; pt_x2=crop_x1+CROP_WIDTH; pt_y2=crop_y1+CROP_HEIGHT
+            
+            if not isWait and cur_pos_lift < openTargetPos and MotorBalanceControlEx.LASTTABLE != table_id:
+                lsObstacleInfo = get_obstacle_data(0.5)
+                if len(lsObstacleInfo) > 0:
+                    df = pd.DataFrame(lsObstacleInfo)                    
+                    isObstaclePresent=any(
+                            (df['OBSTACLE_DISTANCE'] <= df['GND_DISTANCE']-0.04) &
+                            (df['OBSTACLE_POINTS'] >= 1)
+                        )
+                    rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
+                    bins_points = 0
+                    isCoolTimePassed = False
+                    imgPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
+                    if imgPath is not None and angle_y != 0 and table_id is not None:
+                    #if imgPath is not None and angle_y is not None and isCoolTimePassed:
+                        imgGoldSampleFilename = f'{table_id}.jpg'
+                        imgGoldSamplePath = os.path.join(save_dir_goldsample,imgGoldSampleFilename)                            
+                        save_image_with_lidar_data(imgPath,imgGoldSamplePath,table_id,angle_y,isObstaclePresent,machine_running_csv_filepath,pt_x1,pt_y1,pt_x2,pt_y2)
+                        #MotorBalanceControlEx.LASTTABLE = table_id
+            
         #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현
         if rpmLift > 0 and not GetWaitConfirmFlag():
             #openTargetPos = round(pot_cur_lift * DOOROPEN_PERCENT)
@@ -1041,8 +1072,9 @@ def MotorBalanceControlEx(bSkip):
                 if curNode != node_KITCHEN_STATION:
                     TTSServer(f'로봇이 {curTargetTable} 번 테이블에 도착하였습니다.')
 
-                fileAge = get_file_modification_age_seconds(strFileTableNodeEx)
-                if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
+                #fileAge = get_file_modification_age_seconds(strFileTableNodeEx)
+                if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
                     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
                     if curNode == node_KITCHEN_STATION:
                         DoorOpen()
@@ -1587,7 +1619,8 @@ def GenerateServingTableList():
                     nearNode = dicNodeNear[TableInfo.NODE_ID.name]
                     startNode = dicStartNode[SeqMapField.START_NODE.name]
                     isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
-                    if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
+                    if not isPathValid and not (targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
+                    #if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
                         lsNode1,listSeqMapOrg1=getSeqMap(startNode,nearNode)
                         lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
                         node_CtlCenter_globals.listBLB.clear()
@@ -1600,9 +1633,9 @@ def GenerateServingTableList():
                     filtered_rows = dfOrg_local[abs(dfOrg_local[SeqMapField.DISTANCE.name]) < 10].to_dict(orient="records")
                     #if len(filtered_rows) == 0 and not isScanMode():
                     if not isScanMode():
-                      lsLiftDown = GetLiftControl(False, infoSERVING_DISTANCE, infoSERVING_ANGLE, infoMARKER_ANGLE,infoHEIGHT_LIFT)
-                      node_CtlCenter_globals.listBLB.extend(lsLiftDown)
-                    #node_CtlCenter_globals.listBLB = lsLiftDown + node_CtlCenter_globals.listBLB
+                      if not (nodeTarget_local == NODE_KITCHEN and not IsEnableSvrPath()):
+                        lsLiftDown = GetLiftControl(False, infoSERVING_DISTANCE, infoSERVING_ANGLE, infoMARKER_ANGLE,infoHEIGHT_LIFT)
+                        node_CtlCenter_globals.listBLB.extend(lsLiftDown)
                 try:
                     node_CtlCenter_globals.robot.trigger_start_serving()
                     if infoTABLE_ID == HOME_TABLE:

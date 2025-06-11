@@ -28,6 +28,7 @@ aruco_lastDiff_Default = 100
 MAX_INT = sys.maxsize
 MIN_INT = -sys.maxsize - 1
 save_dir_download = "/root/Downloads"
+save_dir_goldsample = "/root/Downloads/tableImg"
 machine_running_csv_filename = 'IsCleanTable.csv'
 machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_csv_filename)
 
@@ -45,8 +46,11 @@ ACC_DECC_SMOOTH = 800
 ACC_DECC_LONG = 3000
 CAM_OFFSET_TOP_X = 26
 CAM_OFFSET_TOP_Y = -85
+CROP_WIDTH = 250
+CROP_HEIGHT = 70
 
 class IPList(Enum):
+    BLB_TABLET_IP = '172.30.1.35'
     BLB_SVR_IP = '172.30.1.4'
     BLB_RFID_IP = '172.30.1.29'
     BLB_ANDROID_IP = '172.30.1.22'
@@ -325,7 +329,8 @@ def extract_dicTest(df: pd.DataFrame) -> dict:
 
     return dicTest
 #print(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))
-
+#BLB_TABLET_IP_DEFAULT =ip_dict[IPList.BLB_TABLET_IP.name]
+BLB_TABLET_IP_DEFAULT ='172.30.1.35'
 BLB_SVR_IP_DEFAULT=ip_dict[IPList.BLB_SVR_IP.name]
 BLB_RFID_IP=ip_dict[IPList.BLB_RFID_IP.name]
 BLB_ANDROID_IP_DEFAULT=ip_dict[IPList.BLB_ANDROID_IP.name]
@@ -824,6 +829,8 @@ class TableInfo(Enum):
     MOVE_DISTANCE = auto()
     HEIGHT_LIFT = auto()
     MARKER_VALUE = auto()
+    CROP_X = auto()
+    CROP_Y = auto()
 
 class RailNodeInfo(Enum):
     NOTAG = auto()
@@ -1527,8 +1534,8 @@ def API_CHARGER_Init():
 def SendAlarmHTTP(alarmMsg, tts=True, TTS_IP=BLB_ANDROID_IP_DEFAULT):
     rtMsg = log_all_frames(alarmMsg)
     rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.alarm.name, f'{getCurrentTime(spliter=sDivFieldColon, includeDate=True)}={rtMsg}')  
-    if tts:
-        API_call_Android(TTS_IP,HTTP_COMMON_PORT,"tts=10,10,알람이 발생하였습니다.")
+    # if tts:
+    #     API_call_Android(TTS_IP,HTTP_COMMON_PORT,"tts=10,10,알람이 발생하였습니다.")
     return rs
 
 def logSSE_error(msg):
@@ -5912,17 +5919,18 @@ def TTSServer(ttsMsg, ttsIntervalSec=5):
         if now - TTSServer.last_tts_time < ttsIntervalSec:
             return False
 
-    # 다르거나, 쿨타임이 지난 경우 TTS 실행
-    dictParam = {APIBLB_TTS.texttoplays.name:ttsMsg,
-                APIBLB_TTS.langtypes.name:'ko-KR',
-                APIBLB_TTS.noofplayss.name:1,
-                APIBLB_TTS.playstatuss.name:1,
-                APIBLB_TTS.col1s.name:0,
-                APIBLB_TTS.col2s.name:0,
-                APIBLB_TTS.SPstatus.name:2
-    }
-    paramStr=urllib.parse.urlencode(dictParam)
-    bReturn,strResult = API_call(svrIP=BLB_SVR_IP_DEFAULT,port=BLB_SVR_PORT_DEFAULT,serviceName=APIBLB_METHODS_GET.SetTexttoSpeechListDetails.name, fieldValue=paramStr)
+    # # 다르거나, 쿨타임이 지난 경우 TTS 실행
+    # dictParam = {APIBLB_TTS.texttoplays.name:ttsMsg,
+    #             APIBLB_TTS.langtypes.name:'ko-KR',
+    #             APIBLB_TTS.noofplayss.name:1,
+    #             APIBLB_TTS.playstatuss.name:1,
+    #             APIBLB_TTS.col1s.name:0,
+    #             APIBLB_TTS.col2s.name:0,
+    #             APIBLB_TTS.SPstatus.name:2
+    # }
+    # paramStr=urllib.parse.urlencode(dictParam)
+    #bReturn,strResult = API_call(svrIP=BLB_SVR_IP_DEFAULT,port=BLB_SVR_PORT_DEFAULT,serviceName=APIBLB_METHODS_GET.SetTexttoSpeechListDetails.name, fieldValue=paramStr)
+    bReturn,strResult = API_call_http(BLB_TABLET_IP_DEFAULT,HTTP_COMMON_PORT,"speak",f'msg={ttsMsg}')
     return bReturn,strResult
 # print(TTSServer('음식이나왔습니다'))
 # print(TTSServer('음식이나왔습니다'))

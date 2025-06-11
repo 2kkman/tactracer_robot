@@ -8,7 +8,7 @@ class TTSMessage(Enum):
     ARUCO_FOLD_TUNING = '서빙 위치가 변경되었습니다.'
     ARUCO_NOT_CORRECTED = '테이블 감지 시도 횟수를 초과했습니다.'
     ALARM_DETECTED = '알람이 감지되어 긴급정지 합니다'
-    REMAIN_30S = '주문하신 음식이 나왔습니다.'
+    REMAIN_30S = '주문하신 음식이 나왔습니다.꺼내주세요.'
     PAY_30S = '현금을 담아주세요.'
     RETURN_30S = '빈그릇을 담아주세요'
     ALARM_BATTERY = '배터리를 충전해주세요.'

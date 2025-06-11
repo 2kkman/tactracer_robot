@@ -101,7 +101,7 @@ def CheckMotorOrderValid(dictMotor):
     # if pos >= potpos or pos <= notpos:
     #     return False
     distance_pulse = abs(int(pos) - cur_pos)
-    if distance_pulse < (PULSES_PER_ROUND/5):
+    if distance_pulse < (PULSES_PER_ROUND/10):
         if mbid_class == ModbusID.TELE_SERV_MAIN:
             SendInfoHTTP(f'현재서빙암펄스:{cur_pos},생략된지시정보:{dictMotor}')
         return False
@@ -200,13 +200,14 @@ def getMainRotateDicByNode(endNode):
     diff_abs = abs(diff_signed)
     #pot_cur540,not_cur540,cmdpos540,cur_pos540 =GetPotNotCurPosServo(ModbusID.ROTATE_MAIN_540)
     # 목표지점까지 거리가 60만 펄스 이내이고 현재 각도가 0도 혹은 180 도면 현재 메인회전 각도 그대로 리턴을 한다.
-    if curAngle540%180 == 0 and (diff_abs < (MOVE_H_SAMPLE_PULSE / 2) or endNode == NODE_KITCHEN):
+    if endNode == NODE_CROSS:
+        target_angle = 0
+    elif curAngle540%180 == 0:# and (diff_abs < (MOVE_H_SAMPLE_PULSE / 2) or endNode == NODE_KITCHEN):
+    #elif curAngle540%180 == 0 and (diff_abs < (MOVE_H_SAMPLE_PULSE / 2) or endNode == NODE_KITCHEN):
         target_angle = curAngle540
     # 목표까지 정방향이면 0도, 역방향이면 180도
-    elif endNode == NODE_CROSS:
-        target_angle = 0
     elif diff_signed > 0:
-        target_angle = 180
+        target_angle = 0
     else:
         target_angle = 0
     return GetDicRotateMotorMain(target_angle)
@@ -755,6 +756,7 @@ def Tilting_old(tiltStatus : TRAY_TILT_STATUS):
 
 #라
 def TiltTableObstacleScan():
+    #SetCameraMode(CameraMode.MAIN_LOW)
     Tilting(TRAY_TILT_STATUS.TiltTableObstacleScan)
 
 #아르코마커 수평탐색
@@ -766,7 +768,7 @@ def TiltArucoScan(cropProfile=LidarCropProfile.CHECK_GROUND):
 
 #주행모드.
 def TiltFace(cropProfile = LidarCropProfile.MOTOR_H):
-    SetCameraMode(CameraMode.WIDE_LOW)
+    SetCameraMode(CameraMode.MAIN_LOW)
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltFace)
     ClearDistanceBox()

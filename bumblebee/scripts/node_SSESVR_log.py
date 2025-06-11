@@ -53,7 +53,7 @@ if not isRealMachine:
 
 #pub_RFID_DF = rospy.Publisher(TopicName.RFID_DF.name, String, queue_size=1)
 target_pulse_cw = 50000000
-ACC_DECC_MOTOR_H = 3000
+ACC_DECC_MOTOR_H = 5000
 ACC_DECC_NORMAL = 3000
 findNodeTryPulse = roundPulse*10
 #target_pulse_ccw = -target_pulse_cw

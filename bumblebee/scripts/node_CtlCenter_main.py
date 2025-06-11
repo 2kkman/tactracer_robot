@@ -74,7 +74,8 @@ if __name__ == "__main__":
     if not bReturn_ANDROID:
       rospy.loginfo(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
       print(TTSServer('스마트폰 통신을 점검해주세요.'))
-      raise ValueError(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
+      if isRealMachine:
+        raise ValueError(f"안드로이드 통신에러:{node_CtlCenter_globals.BLB_ANDROID_IP}:{BLB_ANDROID_PORT}")
     else:
       rospy.loginfo(f"안드로이드 통신성공:{strResult_ANDROID}")
     if isRealMachine:
@@ -179,8 +180,8 @@ if __name__ == "__main__":
         curLoc = curNodeID_fromPulse
         nodetype = '노드'
       sTTS = f'현재 {curLoc}번 {nodetype}에 있습니다.'
-      TTSAndroid(sTTS)
-      #TTSServer(sTTS)
+      #TTSAndroid(sTTS)
+      TTSServer(sTTS)
       SetCurrentNode(curNodeID_fromPulse)
     TiltServFinish()
 
