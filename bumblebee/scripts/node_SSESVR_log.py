@@ -126,7 +126,7 @@ dicAllFold = [getMotorMoveDic(ModbusID.BAL_ARM2.value, True, 0, 1150,750,250),
                 getMotorMoveDic(ModbusID.BAL_ARM1.value, True, 0, 1500,250,250),
                 getMotorMoveDic(ModbusID.TELE_SERV_MAIN.value, True, 0, 253,150,2500)]
 
-dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)
+dicSpdSlow = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, DEFAULT_RPM_NORMAL, ACC_DECC_SMOOTH*2,ACC_DECC_MOTOR_H)
 dicSpdFast = getMotorSpeedDic(ModbusID.MOTOR_H.value, True, SPD_MOVE_H, ACC_DECC_SMOOTH*2,ACC_DECC_MOTOR_H)
         
 dicArmExpand = dicAllExpand[:-1]
@@ -157,6 +157,7 @@ dicLastMotor15 = {}
 dicLastMotor11 = {}
 dicLastAruco = {}
 dicLastPosition = {}
+dicLastCross = {}
 dicPulsePos = {}
 topicName_ServoPrefix = 'MB_'
 topicName_MotorH = f'{topicName_ServoPrefix}{ModbusID.MOTOR_H.value}'
@@ -252,6 +253,15 @@ def onScaning():
     if angle_y is not None and is_between(-3,3,angle_y):
         onScan = True
     return onScan        
+
+def onForwarding():
+    dicAndroid = GetAndroidInfoDic()
+    angle_y = dicAndroid.get(DataKey.Angle_Y.name)
+    onScan = False
+    if angle_y is not None and is_between(-88,-91,angle_y):
+        onScan = True
+    return onScan        
+
     # table_id=dicLastPosition.get(TableInfo.TABLE_ID.name)
     # if table_id is None:
     #     dicAndroid = GetAndroidInfoDic()
@@ -742,7 +752,7 @@ def callbackACK(recvData):
     global lastcalledAck
     global epcTotalView
     global endPos
-    
+    global dicLastCross
     try:
         '''
         print(dfEPCTotal)
@@ -820,8 +830,9 @@ def callbackACK(recvData):
                 pot_pos = pot_540 if is_equal(mbid_tmp,ModbusID.ROTATE_MAIN_540.value) else pot_360
                 if abs(stopped_pos) >= pot_pos:
                     target_pos = stopped_pos%pot_pos
-                    if target_pos < 0:
-                        target_pos += pot_pos
+                    target_loop = abs(int(stopped_pos/pot_pos))
+                    if stopped_pos < 0:
+                        target_pos = stopped_pos + (pot_pos*target_loop)
                     dicLoc = getMotorLocationSetDic(mbid_tmp,target_pos)
                     #dicLoc = getMotorHomeDic(mbid_tmp)
                     SendCMD_Device([getMotorWHOME_OFFDic(mbid_tmp),dicLoc])
@@ -862,14 +873,6 @@ def callbackACK(recvData):
             #if curNodeID_fromPulse in NODES_SPECIAL and curNodeID_fromPulse == endnode:
                 endNodePos = GetNodePos_fromNode_ID(endnode)
                 #노드ID 및 각도로 이미지 저장할 파일이름 생성
-                cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
-                imgGoldSampleFilename = f"{endnode}_{cur_angle540}.jpg"
-                imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',save_dir=dirCommonStatus, timeout=5)
-                imgGoldSamplePath = os.path.join(dirCommonStatus,imgGoldSampleFilename)
-                if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
-                    shutil.move(imgCurPath, imgGoldSamplePath)
-                elif os.path.exists(imgCurPath):
-                    Path(imgCurPath).unlink(missing_ok=True)
 
                 if stopped_pos != endNodePos:
                     dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, endNodePos)
@@ -1093,12 +1096,12 @@ def callbackMB_15(recvDataMap):
             dicEndNodeInfoFromNodeID=GetNodeDicFromPos(dfNodeInfo,endnode_pos)
         endNodeID_fromNodeID = dicEndNodeInfoFromNodeID.get(TableInfo.NODE_ID.name)
         endNode_type = str(dicEndNodeInfoFromNodeID.get(RFID_RESULT.EPC.name))
-        endNode_pos = int(dicEndNodeInfoFromNodeID.get('POS'))
+        endNode_pos = int(dicEndNodeInfoFromNodeID.get(key_pos))
         dicCurNodeInfo=GetNodeDicFromPos(dfNodeInfo,sPOS,di_pot_status)        
         curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
         
-        #if di_pot_status and curNodeID_fromPulse != startNodeID_fromNodeID:
-        if di_pot_status:
+        if di_pot_status and curNodeID_fromPulse != startNodeID_fromNodeID:
+        #if di_pot_status:
             sLogMsg = f'도그위치:{sPOS},시작위치:{last_started_pos},목표위치:{target_pos},목표노드:{endnode},속도:{sSPD_signed}'
             rospy.loginfo(sLogMsg)
             # if abs(last_started_pos - sPOS) > roundPulse * 10:
@@ -1130,22 +1133,25 @@ def callbackMB_15(recvDataMap):
                 diffPos = sPOS - curNode_pos
                 lastNode = curNodeID_fromPulse
                 
-                dicSpdControl = {}
+                dicSpdControl = getMotorMoveDic(ModbusID.MOTOR_H.value, True, endNode_pos+diffPos, sSPD_abs,ACC_DECC_SMOOTH*2,ACC_DECC_MOTOR_H)
                 if curNode_type.find(RailNodeInfo.R_END.name) >= 0:
                     if sSPD_signed > 0 and sSPD_abs > 100:
-                        dicSpdControl.update(dicSpdFast)
+                        dicSpdControl[MotorWMOVEParams.SPD.name] = SPD_MOVE_H
                     if sSPD_signed < 0 and sSPD_abs > 100:
-                        dicSpdControl.update(dicSpdSlow)
+                        dicSpdControl[MotorWMOVEParams.SPD.name] = DEFAULT_RPM_NORMAL
                 elif curNode_type.find(RailNodeInfo.R_START.name) >= 0:
                     if sSPD_signed < 0:
-                        dicSpdControl.update(dicSpdFast)
+                        dicSpdControl[MotorWMOVEParams.SPD.name] = SPD_MOVE_H
                     else:
-                        dicSpdControl.update(dicSpdSlow)
+                        dicSpdControl[MotorWMOVEParams.SPD.name] = DEFAULT_RPM_NORMAL
                 elif not is_in_warning_zone(sPOS-diffPos) and curNodeID_fromPulse != NODE_KITCHEN:
-                    dicSpdControl = getMotorMoveDic(ModbusID.MOTOR_H.value, True, endNode_pos+diffPos, sSPD_abs,ACC_DECC_SMOOTH,ACC_DECC_MOTOR_H)    
+                    rospy.loginfo(f'위치보정:{dicSpdControl}')
+                    #dicSpdControl = getMotorMoveDic(ModbusID.MOTOR_H.value, True, endNode_pos+diffPos, sSPD_abs,ACC_DECC_SMOOTH*2,ACC_DECC_MOTOR_H)
+                else:
+                    dicSpdControl.clear()
                 if dicSpdControl and not is_equal(endnode,0) and curNodeID_fromPulse != startNodeID_fromNodeID:
                     SendCMD_Device([dicSpdControl])
-                    rospy.loginfo(dicSpdControl)
+                    rospy.loginfo(f'현재노드:{curNodeID_fromPulse},목표노드:{endnode},현재위치:{sPOS},목표위치:{target_pos},속도:{sSPD_signed},보정위치:{dicSpdControl[MotorWMOVEParams.POS.name]},시작위치:{last_started_pos},엔코더오차:{sPOS-last_started_pos}')                    
 
         if abs(target_pos - sPOS) > roundPulse * 20:
             return
@@ -1647,10 +1653,13 @@ service_last_cmd_time = 0
 def service_cross():
     global service_last_cmd_time
     global dicLastPosition
+    global dicLastCross
     try:
         now = time.time()
-        recvJunctionStatus=immutable_multi_dict_to_dict(request.args)
+        #recvJunctionStatus=immutable_multi_dict_to_dict(request.args)
+        recvJunctionStatus=request.args.to_dict()
         recvJunctionStatus[MonitoringField.LASTSEEN.name]=getDateTime().timestamp()
+        dicLastCross.update(recvJunctionStatus)
         data_out = json.dumps(recvJunctionStatus)
         pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
         dic_tof = shared_data.get(topicName_TOF,{})
@@ -1696,9 +1705,9 @@ def service_cross():
         if cur_pos is not None:
             cur_pos = int(cur_pos)
             status = -1
-            if cur_pos < roundPulse:
+            if cur_pos < roundPulse*2:
                 status = 1
-            if cur_pos > 490000:
+            if cur_pos > 480000:
                 status = 0
             dicCross = {MQTT_FIELD.TOPIC.name : MQTT_TOPIC_VALUE.MSG_CROSS_REQUEST.value,MonitoringField.LASTSEEN.name:getDateTime().timestamp(),
                         MQTT_FIELD.PAYLOAD.name : {devID : status}}
@@ -1780,17 +1789,17 @@ def service_jog():
         #     chargeSensor = dic_CROSSINFO.get(SMARTPLUG_INFO.GPI1_CHARGE.name)
         #     if isTrue(chargeSensor):
         #         lastNode = 1
+        table_id=dicLastPosition[TableInfo.TABLE_ID.name]
+        curNode=dicLastPosition[TableInfo.NODE_ID.name]
+        cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
+        cur_angle360=dicLastPosition[TableInfo.MARKER_ANGLE.name]            
         
         endnode = try_parse_int(endnode_tmp,MIN_INT)
         if endnode == 0:   #현재 테이블 값 등을 저장
-            table_id=dicLastPosition[TableInfo.TABLE_ID.name]
-            node_id=dicLastPosition[TableInfo.NODE_ID.name]
-            cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
-            cur_angle360=dicLastPosition[TableInfo.MARKER_ANGLE.name]            
             cur_tof = GetServDistanceFromPulse()
             dic_newNodeInfo2 = {}
             dic_newNodeInfo2[TableInfo.TABLE_ID.name] = table_id
-            dic_newNodeInfo2[TableInfo.NODE_ID.name] = node_id
+            dic_newNodeInfo2[TableInfo.NODE_ID.name] = curNode
             dic_newNodeInfo2[TableInfo.SERVING_DISTANCE.name] = cur_tof
             dic_newNodeInfo2[TableInfo.SERVING_ANGLE.name] = cur_angle540
             dic_newNodeInfo2[TableInfo.MARKER_ANGLE.name] = cur_angle360
@@ -1816,7 +1825,7 @@ def service_jog():
         sEPC = get_key_by_value(epcnodeinfo, endnode)
         #dicPotNot=(dicWE_OFF)
         
-        si_pot = GetMotorH_SI_POT()
+        di_pot,di_not,di_home,di_estop, si_pot,si_home=GetMotorSensor(topicName_MotorH)
         # if sEPC is None:
         #     if isScan:
         #         distancePulse=try_parse_int(pulse_tmp)
@@ -1852,6 +1861,8 @@ def service_jog():
         #isCrossRailRunOK = isCrossRailDirection()        
         
         distancePulseTarget = GetNodePos_fromNode_ID(endnode)
+        distancePulseTarget_CCW = distancePulseTarget-MOVE_H_WHOLE_LOOP
+        distancePulseTarget_CW = distancePulseTarget+MOVE_H_WHOLE_LOOP
         if not isRealMachine:
             bResult,bExecuteMsg=SendCMD_Device([getMotorLocationSetDic(ModbusID.MOTOR_H.value,distancePulseTarget)])
             return {bResult: bExecuteMsg}, 200
@@ -1859,7 +1870,13 @@ def service_jog():
         if distancePulseTarget is None:
             return {"ERR": "endNode not found"}, 400      
         distanceDiffSigned = distancePulseTarget-(cur_posH)
+        distanceDiffSigned_CCW = distancePulseTarget_CCW-(cur_posH)
         distanceDiffAbs = abs(distanceDiffSigned)
+        distanceDiffAbs_CCW = abs(distanceDiffSigned_CCW)
+        
+        # if distanceDiffAbs_CCW < distanceDiffAbs:
+        #     distancePulseTarget = distancePulseTarget_CCW
+        
         # pos_cross = GetNodePos_fromNode_ID(NODE_CROSS)
         # node_longest = GetNodeID_longest(False)
         # pos_longest = GetNodePos_fromNode_ID(node_longest)
@@ -1892,6 +1909,19 @@ def service_jog():
         sJob = 'JOG'
         if isScan:
             sJob = 'SCAN'
+        else:
+            cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
+            cross_di_pot = isTrue(dicLastCross.get(MonitoringField.DI_POT.name))
+            cross_di_not = isTrue(dicLastCross.get(MonitoringField.DI_NOT.name))
+            imgGoldSampleFilename = f"{curNode}_{cur_angle540}_{cross_di_not}.jpg"
+            if isTrue(di_pot) and cur_angle540 % 180 == 0 and (cross_di_pot or cross_di_not) and not os.path.exists(imgGoldSampleFilename):
+                imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',save_dir=dirCommonStatus, timeout=5)
+                imgGoldSamplePath = os.path.join(dirCommonStatus,imgGoldSampleFilename)
+                if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
+                    shutil.move(imgCurPath, imgGoldSamplePath)
+                elif os.path.exists(imgCurPath):
+                    Path(imgCurPath).unlink(missing_ok=True)
+            
         sMsg = f"{sJob} from {startPos} to :{distancePulseTarget},Node:{endnode},EPC:{sEPC}"
         rospy.loginfo(sMsg)
         time.sleep(MODBUS_EXCEPTION_DELAY*10)

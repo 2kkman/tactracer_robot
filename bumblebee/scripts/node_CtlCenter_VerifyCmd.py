@@ -506,7 +506,8 @@ def RunListBlbMotorsEx(listBLB):
                             #SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)
             #elif iMBID == ModbusID.ROTATE_SERVE_360.value and CheckMotorOrderValid(dicArray) and GetTiltStatus() == TRAY_TILT_STATUS.TiltTrayCenter:
             elif iMBID == ModbusID.ROTATE_SERVE_360.value:
-                if not dicAruco:
+                tray_angle = pulse_to_angle_sse(iPOS)
+                if not dicAruco and tray_angle != 0:
                     TiltTableObstacleScan()
                 if CheckMotorOrderValid(dicArray):
                     #트레이 모터를 움직일때 현재 서빙부의 길이를 구한 후 200mm 이상이지 않으면 알람.
@@ -515,7 +516,7 @@ def RunListBlbMotorsEx(listBLB):
                     #     StopEmergency(ALM_User.TRAY360_SAFETY.value)
                     #     return APIBLB_ACTION_REPLY.E102
                     #전개후 아르코 마커가 인식되었을때 세부조절과 각도 튜닝 들어감.
-                    tray_angle = pulse_to_angle_sse(iPOS)
+                    
                     if abs(tray_angle) >= 0:
                         if dicAruco:
                             marker_value = dicAruco.get(ARUCO_RESULT_FIELD.MARKER_VALUE.name)
@@ -593,11 +594,13 @@ def RunListBlbMotorsEx(listBLB):
             else:
                 bResult, bStrMsg = API_MoveArms(distance_target, adjustrate)
                 
-            if not isScanTable:
+            if not isScanTable and distance_target > 100:
                 TiltTableObstacleScan()
             #dfBackUp = listBLB.pop(0)
             if bResult:
                 bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            else:
+                StopEmergency(bStrMsg)
             sMsg = f'암컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateMainControl:
@@ -605,6 +608,8 @@ def RunListBlbMotorsEx(listBLB):
             #dfBackUp = listBLB.pop(0)
             if bResult:
                 bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            else:
+                StopEmergency(bStrMsg)                
             sMsg = f'메인회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif isRotateTrayControl:
@@ -612,6 +617,8 @@ def RunListBlbMotorsEx(listBLB):
             #dfBackUp = listBLB.pop(0)
             if bResult:
                 bResult, bStrMsg = GetResultMessageFromJsonStr(bStrMsg)
+            else:
+                StopEmergency(bStrMsg)                
             sMsg = f'트레이회전컨트롤:{bResult},{bStrMsg}'
             rospy.loginfo(sMsg)
         elif len(listBLB) > 0:
@@ -814,6 +821,7 @@ def RunListBlbMotorsEx(listBLB):
             #     SendCMD_Device(lsFinalCmdEx)
             df_final = pd.DataFrame(lsFinalCmdEx)
             unique_mbid = df_final[MotorWMOVEParams.MBID.name].unique().tolist()
+            bResult = True
             if len(unique_mbid) == 1:
                 mbid_current = unique_mbid[0]
                 dicCurrent = lsFinalCmdEx[0]
@@ -836,10 +844,15 @@ def RunListBlbMotorsEx(listBLB):
                     sMsg = f'트레이회전컨트롤:{bResult},{bStrMsg}'
                     rospy.loginfo(sMsg)
                 else:
-                    SendCMD_Device(lsFinalCmdEx)
+                    bResult, bStrMsg = SendCMD_Device(lsFinalCmdEx)
             else:
-                SendCMD_Device(lsFinalCmdEx)                    
-            UpdateLastCmdTimeStamp()
+                bResult, bStrMsg = SendCMD_Device(lsFinalCmdEx)                    
+            
+            if bResult:
+                UpdateLastCmdTimeStamp()
+            else:
+                StopEmergency(bStrMsg, True, False)
+                return APIBLB_ACTION_REPLY.E500
         UpdateLastBalanceTimeStamp()
         # if len(listBLB) == 0 and not isScanMode():
         #     SetWaitConfirmFlag(True,AlarmCodeList.WAITING_USER)

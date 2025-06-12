@@ -283,10 +283,10 @@ def callbackAck(data,topic_name='' ):
                 linkKey = GetLinkKey(start_node,end_node)
                 #if not IsEnableSvrPath():
                 SetCurrentNode(end_node)
-                dicLinkInfo = {TableInfo.LINK_ID.name:linkKey,SeqMapField.START_NODE.name:startPos,SeqMapField.END_NODE.name:endPos}
-                if node_CtlCenter_globals.dfLinkPosInfo.empty or linkKey not in node_CtlCenter_globals.dfLinkPosInfo[SeqMapField.START_NODE.name]:
-                  node_CtlCenter_globals.dfLinkPosInfo=pd.concat([node_CtlCenter_globals.dfLinkPosInfo, pd.DataFrame([dicLinkInfo])], ignore_index=True)
-                rospy.loginfo(node_CtlCenter_globals.dfLinkPosInfo)
+                # dicLinkInfo = {TableInfo.LINK_ID.name:linkKey,SeqMapField.START_NODE.name:startPos,SeqMapField.END_NODE.name:endPos}
+                # if node_CtlCenter_globals.dfLinkPosInfo.empty or linkKey not in node_CtlCenter_globals.dfLinkPosInfo[SeqMapField.START_NODE.name]:
+                #   node_CtlCenter_globals.dfLinkPosInfo=pd.concat([node_CtlCenter_globals.dfLinkPosInfo, pd.DataFrame([dicLinkInfo])], ignore_index=True)
+                # rospy.loginfo(node_CtlCenter_globals.dfLinkPosInfo)
                 
                 
             #   if isScanMode():
@@ -574,6 +574,7 @@ def callbackBLB_CMD(data,topic_name=''):
                 lsDicArray = json.loads(lsDicArray)            
             if len(lsDicArray) > 0:
                 node_CtlCenter_globals.dfTaskChainInfo = GetDFTaskChain(lsDicArray)
+                node_CtlCenter_globals.enableSvrPath = True
                 if isReadyToMoveH_and_540() and isCharging() and IsOrderEmpty() and isRealMachine:
                     BLB_CMD_Profile('H1,T')
             return          

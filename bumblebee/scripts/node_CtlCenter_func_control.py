@@ -708,9 +708,10 @@ def Tilting(tiltStatus : TRAY_TILT_STATUS):
     # targetServo = mapRange(tiltStatus.value, minGYRO,maxGYRO,0,180)
     # SendCMDArd(f"S:10,{round(targetServo)}")
     bresult, bResultStr = TiltingARD(tiltStatus)
-    rospy.loginfo(bResultStr)
+    #rospy.loginfo(bResultStr)
     ClearDistanceV()
     node_CtlCenter_globals.tiltStatus = tiltStatus
+    log_all_frames(tiltStatus)
     UpdateLidarDistanceBoxTimeStamp()
     
 def Tilting_old(tiltStatus : TRAY_TILT_STATUS):
@@ -933,6 +934,7 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
     dicStatusData[APIBLB_FIELDS_NAVI.current_station.name] = GetCurrentNode()
     curDistanceSrvTele, curAngle540,cur_angle_360  = GetCurrentPosDistanceAngle()
     dicStatusData[APIBLB_FIELDS_INFO.angle.name] = curAngle540
+    
     curTargetTable,curTarNode = GetCurrentTargetTable()
     tasktype = APIBLB_TASKTYPE.Parking
     dfReceived = GetDF(curTargetTable)
@@ -956,6 +958,8 @@ def SendStatus(blb_status: BLB_STATUS_FIELD):
     
     dicStatusData[APIBLB_FIELDS_STATUS.df.name] = dfReceived.to_json(orient='records')    
     dicStatusData[MonitoringField.LASTSEEN.name] = getDateTime().timestamp()
+    dicStatusData[BLB_CMD_STATUS.STAND_ALONE.name] = not IsEnableSvrPath()
+    dicStatusData[BLB_STATUS_FIELD.WAITING.name] = GetWaitConfirmFlag()
     sendbuf = json.dumps(dicStatusData)
     if pub_BLB_STATUS is not None:
         pub_BLB_STATUS.publish(sendbuf)

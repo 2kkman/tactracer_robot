@@ -48,9 +48,9 @@ class ALM_User(Enum):
     TOPICNAME_WRONG = "50105: wrong topicname"
     TRAYDOOR_ERROR = "50000: DOOR sensor signals must be exclusive."
     INTERNAL_EXCEPTION = "52097: err : "
+    DUG_NOT_FOUND = "50002: DUG NOT FOUND"
     
 class ALM_Fatal(Enum):
-    SW_ERROR = "50002: sw error"
     MAP_PARSE_ERROR = "50100: map parse error"
     MAP_LOAD_ERROR = "50101: map load error"
     MAP_TOO_LARGE = "50102: map is too large"

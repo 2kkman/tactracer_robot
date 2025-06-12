@@ -173,6 +173,8 @@ if __name__ == "__main__":
     CamControl(False)
     if abs(diff_pos) > roundPulse*100:
       StopEmergency(ALM_User.NODE_NOT_FOUND.value)
+    elif curNode_type.find(strNOTAG) >=0 and not isTrue(DI_POT):
+      StopEmergency(ALM_User.DUG_NOT_FOUND.value)
     else:
       rospy.loginfo(dicCurNodeInfo)
       curLoc = curTableID_fromPulse
@@ -181,8 +183,8 @@ if __name__ == "__main__":
         curLoc = curNodeID_fromPulse
         nodetype = '노드'
       sTTS = f'현재 {curLoc}번 {nodetype}에 있습니다.'
-      #TTSAndroid(sTTS)
-      TTSServer(sTTS)
+      TTSAndroid(sTTS)
+      #TTSServer(sTTS)
       SetCurrentNode(curNodeID_fromPulse)
     TiltServFinish()
 

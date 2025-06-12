@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="BLB_MAIN" pkg="tta_blb" type="node_CtlCenter_main.py" respawn="False" output="log"> 
+  <node name="BLB_MAIN" pkg="tta_blb" type="node_CtlCenter_main.py" respawn="False" output="screen"> 
   </node>
 </launch>

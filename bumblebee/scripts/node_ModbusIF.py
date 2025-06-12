@@ -1412,11 +1412,10 @@ while not rospy.is_shutdown():
                   return485data[MonitoringField.CUR_CURRENT.name] = cur_current
                   return485data[MonitoringField.OVER_LOAD.name] = cur_ovrLoad
                   return485data[MonitoringField.CUR_TORQUE.name] = cur_torque
-                  laststart = DATETIME_OLD
+                  laststart = DATETIME_OLD.timestamp()
                   if dic_485_laststart_timestamp.get(modbusID) is not None:
                       laststart = dic_485_laststart_timestamp.get(modbusID)
                   return485data[MonitoringField.LASTSTART.name] = laststart
-                  
                   cur_pos = return485data.get(MonitoringField.CUR_POS.name)
                   if cur_pos is not None:
                     lastpos = return485data[MonitoringField.CUR_POS.name]

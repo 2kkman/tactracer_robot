@@ -1,2 +1,2 @@
 START_NODE	START_STATUS	END_NODE	END_STATUS	DISTANCE	CROSS_STATUS	DIRECTION	direction	detailcode_list	distance_list	endnode_list	taskid	tasktype	ordertype
-10	0	1	-1	1800	{10: 0}	S	S						
+3	-1	1	-1	-1100	{}	S	S						

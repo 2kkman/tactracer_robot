@@ -345,6 +345,7 @@ CAM_LOCATION_MARGIN_FINE = 0.1
 PATH_RECORDING = '/root/Downloads/'
 MOVE_H_SAMPLE_PULSE = 1200000
 MOVE_H_SAMPLE_MM = 2820
+MOVE_H_WHOLE_LOOP = 25650000
 MARKER_X_RATE = 100*(0.899221 - 0.0065129)/60.0
 MARKER_Y_RATE = 100*(0.545958 + 0.340437)/60.0
 
@@ -361,7 +362,7 @@ SPD_TRAY_MARKER_SCAN = 700
 
 MAX_ANGLE_BLBBODY = 360
 MAX_ANGLE_TRAY = 360
-SPEED_RATE_H = 0.75
+SPEED_RATE_H = 0.8
 SPEED_RATE_ARM = 0.5
 DEFAULT_RPM_MIN = 2
 DEFAULT_RPM_SLOW = 300
@@ -667,6 +668,7 @@ class BLB_CMD_STATUS(Enum):
     CANCEL = auto()
     RESUME = auto()
     RELOAD_SVR = auto()
+    STAND_ALONE = auto()
 
 class TRAY_ARD_Field(Enum):
     """
@@ -1533,8 +1535,8 @@ def API_CHARGER_Init():
 def SendAlarmHTTP(alarmMsg, tts=True, TTS_IP=BLB_ANDROID_IP_DEFAULT):
     rtMsg = log_all_frames(alarmMsg)
     rs = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.alarm.name, f'{getCurrentTime(spliter=sDivFieldColon, includeDate=True)}={rtMsg}')  
-    # if tts:
-    #     API_call_Android(TTS_IP,HTTP_COMMON_PORT,"tts=10,10,알람이 발생하였습니다.")
+    if tts:
+        API_call_Android(TTS_IP,HTTP_COMMON_PORT,"tts=10,10,로그확인.")
     return rs
 
 def logSSE_error(msg):
@@ -2423,6 +2425,7 @@ class MotorWMOVEParams(Enum):
     POT = auto()  #SW POT
     NOT = auto()  #SW NOT
     DIFF_POS = auto()   #현재위치와 마스터 노드위치의 차이
+key_pos = MotorWMOVEParams.POS.name
 
 class MotorCommandManager:
     def __init__(self, data):
@@ -2541,15 +2544,17 @@ def SaveTableInfo(curTableInt):
     return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.CONTROL.name, msg)  
 
 
-def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False):
+def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False,cross_pos=0):
     try:
         # DataFrame 복사 및 diff 계산
         df = dfTemp.copy()
-        posStr = MotorWMOVEParams.POS.name
+        posStr = key_pos
         epcStr = RFID_RESULT.EPC.name
         if posStr not in df.columns:
             return []
 
+        # if pos_target < cross_pos:
+        #     pos_target += MOVE_H_WHOLE_LOOP
         # onlyRealNode 조건에 따라 EPC 필터링
         if onlyRealNode and epcStr in df.columns:
             df = df[df[epcStr].astype(str).str.contains(strNOTAG)]
@@ -2565,14 +2570,13 @@ def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode
         # 가까운 값 정렬 및 추출
         nearest_rows = df.nsmallest(nearPoints, MotorWMOVEParams.DIFF_POS.name)
         result = nearest_rows.to_dict(orient='records')
+        #print(df)
         return result
     except Exception:
         return []
 
-
-
 def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False):
-    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode)
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode,cross_pos=-roundPulse*10)
     if lsResult:
         return lsResult[0]
     else:
@@ -3352,7 +3356,7 @@ def getMotorMoveString(mbid, isMode: bool, pos, spd, acc, decc):
         f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
         f"{MotorWMOVEParams.CMD.name}{sDivFieldColon}{MotorCmdField.WMOVE.name}{sDivItemComma}"
         f"{MotorWMOVEParams.MODE.name}{sDivFieldColon}{modeVal}{sDivItemComma}"
-        f"{MotorWMOVEParams.POS.name}{sDivFieldColon}{int(pos)}{sDivItemComma}"
+        f"{key_pos}{sDivFieldColon}{int(pos)}{sDivItemComma}"
         f"{MotorWMOVEParams.SPD.name}{sDivFieldColon}{int(spd)}{sDivItemComma}"
         f"{MotorWMOVEParams.ACC.name}{sDivFieldColon}{int(acc)}{sDivItemComma}"
         f"{MotorWMOVEParams.DECC.name}{sDivFieldColon}{int(decc)}"
@@ -3421,7 +3425,7 @@ def getMotorLocationSetString(mbid,positionPulse=EMERGENCY_DECC):
     sCmd = (
         f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
         f"{MotorWMOVEParams.CMD.name}{sDivFieldColon}{MotorCmdField.WLOC.name}{sDivItemComma}"
-        f"{MotorWMOVEParams.POS.name}{sDivFieldColon}{positionPulse}"
+        f"{key_pos}{sDivFieldColon}{positionPulse}"
     )
     return sCmd
 
@@ -3874,33 +3878,46 @@ def GetNodeID_fromEPC(epc):
 
 def GetNodePos_fromEPC(epc):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
-    result = get_value_by_key_fromDF(df, MAPFIELD.EPC.name, epc, MotorWMOVEParams.POS.name)
+    result = get_value_by_key_fromDF(df, MAPFIELD.EPC.name, epc, key_pos)
     return result
 
 def GetNodePos_fromNode_ID(node_id):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
-    result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, MotorWMOVEParams.POS.name)
+    result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, key_pos)
     return result
-
-def get_slow_ranges(margin=10000):
+NODE_CROSS_PULSE = GetNodePos_fromNode_ID(NODE_CROSS)
+def get_slow_ranges(margin=10000,offset=-MOVE_H_WHOLE_LOOP):
     """DataFrame에서 B_START ~ B_END 구간을 추출하여 정렬된 튜플 리스트로 반환"""
-    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_START')]['POS'].tolist())
-    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_END')]['POS'].tolist())
+    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_START')][key_pos].tolist())
+    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('R_END')][key_pos].tolist())
 
-    # 구간 짝짓기
-    return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
+    # # 구간 짝짓기
+    # return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
+    ranges = []
+    for start, end in zip(b_starts, b_ends):
+        original = (start - margin, end + margin)
+        offset_applied = (original[0] + offset, original[1] + offset)
+        ranges.extend([original, offset_applied])
+    return ranges
 
-def get_warning_ranges(margin=10000):
+def get_warning_ranges(margin=10000,offset=-MOVE_H_WHOLE_LOOP):
     """
     DataFrame에서 B_START ~ B_END 구간을 추출하여,
     각 구간을 margin 만큼 확장한 정렬된 튜플 리스트로 반환
     """
-    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_START')]['POS'].tolist())
-    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_END')]['POS'].tolist())
+    b_starts = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_START')][key_pos].tolist())
+    b_ends = sorted(dfNodeInfo[dfNodeInfo['EPC'].str.contains('B_END')][key_pos].tolist())
 
-    # margin을 반영해 구간 확장
-    return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
-
+    # # margin을 반영해 구간 확장
+    # return [(start - margin, end + margin) for start, end in zip(b_starts, b_ends)]
+    ranges = []
+    for start, end in zip(b_starts, b_ends):
+        original = (start - margin, end + margin)
+        offset_applied = (original[0] + offset, original[1] + offset)
+        ranges.extend([original, offset_applied])
+    return ranges
+    
+print(get_warning_ranges())
 def is_in_warning_zone(pos):
     warning_ranges = get_warning_ranges()
     """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
@@ -3914,7 +3931,7 @@ def is_in_slow_zone(pos):
 
 def GetNodeID_longest(direction = True):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
-    result = get_extreme_value_by_key_fromDF(df, MotorWMOVEParams.POS.name, direction, TableInfo.NODE_ID.name)
+    result = get_extreme_value_by_key_fromDF(df, key_pos, direction, TableInfo.NODE_ID.name)
     return result
 
 def GetNodeDic_fromNodeID(node_id):
@@ -3922,14 +3939,7 @@ def GetNodeDic_fromNodeID(node_id):
     if filtered.empty:
         return None
     return filtered.iloc[-1].to_dict()
-
 #print(GetNodeDic_fromNodeID(3))
-
-def GetEPC_Loc_Master(epc):
-    df = pd.read_csv(strFileEPC_total, sep=sDivTab)
-    #epcnodeinfo = df_to_dict_int_values(df, MAPFIELD.EPC.name, MonitoringField.CUR_POS.name)
-    result=get_last_value_for_key(df, MAPFIELD.EPC.name, epc,MotorWMOVEParams.POS.name)
-    return result
 
 def getSpeedTableInfo(MBID, k,adjustRate=1.0,file_path = strFileTableSpd):
     MBIDKey = MotorWMOVEParams.MBID.name
@@ -4173,12 +4183,12 @@ def extract_pos_by_mbid(lsCmdArray):
               for cmd in element:
                   #print(f'Check : {element}')
                   mbid = cmd.get(MotorWMOVEParams.MBID.name)
-                  pos = cmd.get(MotorWMOVEParams.POS.name)
+                  pos = cmd.get(key_pos)
                   if mbid and pos:
                       pos_dict[mbid] = pos
           elif isinstance(element, dict):
               mbid = element.get(MotorWMOVEParams.MBID.name)
-              pos = element.get(MotorWMOVEParams.POS.name)
+              pos = element.get(key_pos)
               if mbid and pos:
                   pos_dict[mbid] = pos
     except Exception as e:
@@ -4820,7 +4830,7 @@ def merge_dataframes(temp_recv, temp_getseq):
             result.loc[idx, APIBLB_FIELDS_TASK.taskid.name] = taskid
             result.loc[idx, APIBLB_FIELDS_TASK.tasktype.name] = tasktype
             result.loc[idx, APIBLB_FIELDS_TASK.ordertype.name] = ordertype
-    print(result)
+    #print(result)
     return result
   
 # Function to process the dataframe according to the request
@@ -5840,7 +5850,7 @@ def API_ResetAndroid():
     return bReturn,strResult
 
 def API_MoveH(POS,spd,endnode):
-    msg = f"{MotorWMOVEParams.POS.name}={POS}&{MotorWMOVEParams.SPD.name}={spd}&endnode={endnode}"
+    msg = f"{key_pos}={POS}&{MotorWMOVEParams.SPD.name}={spd}&endnode={endnode}"
     rtMsg = log_all_frames(msg)
     SendInfoHTTP(rtMsg)
     bReturn,strResult = API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.JOG.name, msg)
@@ -6160,7 +6170,7 @@ def CheckMotorCmdValid(listDF,dictPos):
             rospy.loginfo(f"Invalid command: {dictTmp}")
             continue
         if dictTmp[MotorWMOVEParams.CMD.name] == MotorCmdField.WMOVE.name:
-            iPos = int(dictTmp[MotorWMOVEParams.POS.name])
+            iPos = int(dictTmp[key_pos])
             mbid = dictTmp[MotorWMOVEParams.MBID.name]
             runMode = dictTmp[MotorWMOVEParams.MODE.name]
             curPos = dictPos[mbid]
@@ -6190,7 +6200,7 @@ sDI_ESTOP =MonitoringField.DI_ESTOP.name
 sInv_Key = RFID_RESULT.inventoryMode.name
 sALIVE_Key = RFID_RESULT.status.name
 wmoveStr = MotorCmdField.WMOVE.name
-posStr = MotorWMOVEParams.POS.name
+posStr = key_pos
 cmdStr = MotorWMOVEParams.CMD.name
 mbidStr = MotorWMOVEParams.MBID.name
 

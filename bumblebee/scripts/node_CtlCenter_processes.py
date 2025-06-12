@@ -522,9 +522,10 @@ def CheckETCActions():
     timestampStarted_str = GetItemsFromModbusTable(ModbusID.MOTOR_V,MonitoringField.LASTSTART)
     dt = convert_timestamp_to_datetime(timestamp_str)
     dtV = convert_timestamp_to_datetime(timestampStarted_str)
-    if isTimeExceeded(dt,10000) and isCharging() and IsOrderEmpty():
+    if isTimeExceeded(dt,30000) and isCharging() and IsOrderEmpty():
         checkIntervalSec = 120
-        SendAlarmHTTP('시스템을 리셋합니다.')
+        TTSAndroid('시스템을 리셋합니다.')
+        #SendAlarmHTTP('시스템을 리셋합니다.')
         API_ResetQBI(True)
         API_ResetITX(False)
     else:
@@ -1053,7 +1054,7 @@ def MotorBalanceControlEx(bSkip):
             if crop_x1 > 0 and crop_y1 > 0:
                 pt_x1=crop_x1; pt_y1=crop_y1; pt_x2=crop_x1+CROP_WIDTH; pt_y2=crop_y1+CROP_HEIGHT
             
-            if not isWait and cur_pos_lift < openTargetPos and MotorBalanceControlEx.LASTTABLE != table_id:
+            if not isWait and cur_pos_lift < openTargetPos and MotorBalanceControlEx.LASTTABLE != table_id and GetTiltStatus() == TRAY_TILT_STATUS.TiltTableObstacleScan:
                 lsObstacleInfo = get_obstacle_data(0.5)
                 if len(lsObstacleInfo) > 0:
                     df = pd.DataFrame(lsObstacleInfo)                    
@@ -1064,12 +1065,16 @@ def MotorBalanceControlEx(bSkip):
                     rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                     bins_points = 0
                     isCoolTimePassed = False
-                    imgPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
-                    if imgPath is not None and angle_y != 0 and table_id is not None:
+                    imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
+                    TiltFace()
+                    if imgCurPath is not None and angle_y != 0 and table_id is not None:
                     #if imgPath is not None and angle_y is not None and isCoolTimePassed:
                         imgGoldSampleFilename = f'{table_id}.jpg'
                         imgGoldSamplePath = os.path.join(save_dir_goldsample,imgGoldSampleFilename)                            
-                        save_image_with_lidar_data(imgPath,imgGoldSamplePath,table_id,angle_y,isObstaclePresent,machine_running_csv_filepath,pt_x1,pt_y1,pt_x2,pt_y2)
+                        if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
+                            shutil.move(imgCurPath, imgGoldSamplePath)
+                        else:
+                            save_image_with_lidar_data(imgCurPath,imgGoldSamplePath,table_id,angle_y,isObstaclePresent,machine_running_csv_filepath,pt_x1,pt_y1,pt_x2,pt_y2)
                         #MotorBalanceControlEx.LASTTABLE = table_id
             
         #리프트 하강시 중간 지점에서부터 도어 자동열림 기능 구현

@@ -112,6 +112,12 @@ def convert_timestamp_to_datetime(timestamp_str):
 # dt = convert_timestamp_to_datetime(timestamp_str)
 # if dt:
 #     print("✅ 변환된 datetime:", dt)
+
+def insert_suffix_before_extension(filepath, suffix):
+    dirname, basename = os.path.split(filepath)
+    filename, ext = os.path.splitext(basename)
+    new_filename = f"{filename}{suffix}{ext}"
+    return os.path.join(dirname, new_filename)
     
 def midpoint_polar(length_b, angle_b_deg, length_c, angle_c_deg):
     # 각도를 라디안으로 변환
@@ -644,7 +650,11 @@ def save_image_with_lidar_data(filename,imgGoldSamplePath, table_id, tilt_deg, o
             results,sim_score = compare_image_croppedArea(filename,imgGoldSamplePath,pt_x1,pt_y1,pt_x2,pt_y2)
         else:
             results,sim_score = compare_image_croppedArea(filename)
-
+        sim_score_int = int(sim_score*100000)
+        new_path = insert_suffix_before_extension(imgGoldSamplePath, f'_{sim_score_int}')
+        if not os.path.exists(new_path) and os.path.exists(filename):
+            shutil.move(filename, new_path)
+            filename = new_path
         # # 이미지 파일명 생성
         #timestamp = getDateTime().strftime("%Y%m%d_%H%M%S_%f")
         # filename = f"captured_{timestamp}.jpg"
