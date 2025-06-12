@@ -33,6 +33,11 @@ machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_cs
 NODE_KITCHEN = 1
 NODE_CROSS = 10
 NODES_SPECIAL = [NODE_KITCHEN,NODE_CROSS]
+def isInnerNode(node_id):
+    """
+    Check if the node ID is an inner node (not a special node).
+    """
+    return node_id <4 
 
 HTTP_COMMON_PORT=6001
 HTTP_FASTAPI_PORT=6002
@@ -6183,7 +6188,7 @@ def CheckMotorCmdValid(listDF,dictPos):
     return lsdfTable
 
 def GetErrResponse(e):
-    return {False: f'{ALM_User.INTERNAL_EXCEPTION.value}{e}'}, 500    
+    return {False: f'{ALM_User.INTERNAL_EXCEPTION.value}{e}'}, 400
 
 sEPCKey = RFID_RESULT.EPC.name
 sRSSIKey = RFID_RESULT.RSSI.name

@@ -414,7 +414,7 @@ def RunListBlbMotorsEx(listBLB):
                     if curNode == NODE_KITCHEN or crop_x1 <= 0 or crop_y1 <= 0:
                         sim_score = 0
                     elif os.path.exists(imgGoldSamplePath):
-                        imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)
+                        imgCurPath = getimage_file_from_mjpeg(url='https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)
                         pt_x1=252; pt_y1=182; pt_x2=404; pt_y2=249
                         if crop_x1 > 0 and crop_y1 > 0:
                             pt_x1=crop_x1; pt_y1=crop_y1; pt_x2=crop_x1+CROP_WIDTH; pt_y2=crop_y1+CROP_HEIGHT
@@ -430,7 +430,7 @@ def RunListBlbMotorsEx(listBLB):
                         rospy.loginfo(dicScore)
                     else:
                         #sim_score = compare_image_croppedArea(imgCurPath)    
-                        imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=curTargetTable,save_dir=save_dir_download, timeout=5)                        
+                        imgCurPath = getimage_file_from_mjpeg(url='https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam', prefix=curTargetTable,save_dir=save_dir_download, timeout=5)                        
                         sim_score = 0
                     
                     lsObstacleInfo = get_obstacle_data(1)

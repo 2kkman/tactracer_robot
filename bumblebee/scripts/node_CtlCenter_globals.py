@@ -5,8 +5,8 @@ start = time.time()
 #샤누이사 서버랑 연동할때 True
 enableSvrPath = False
 #enableSvrPath = True
-if not isRealMachine:
-    enableSvrPath = True
+# if not isRealMachine:
+#     enableSvrPath = True
 
 bInitOK = False
 bReturn_CROSS = False

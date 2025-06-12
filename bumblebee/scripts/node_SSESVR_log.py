@@ -152,6 +152,7 @@ lastPos = None
 lastAck = ''
 isScan = False
 isRetry = False
+isMotorH_Calied = False
 lastcalledAck = DATETIME_OLD
 dicLastMotor15 = {}
 dicLastMotor11 = {}
@@ -1654,6 +1655,7 @@ def service_cross():
     global service_last_cmd_time
     global dicLastPosition
     global dicLastCross
+    global isMotorH_Calied
     try:
         now = time.time()
         #recvJunctionStatus=immutable_multi_dict_to_dict(request.args)
@@ -1673,7 +1675,15 @@ def service_cross():
         currentAngle_arm1 =round(mapRange(pos_BAL1,0,pot_arm1,0,90))
         di_pot = dicLastMotor15.get(sDI_POT)
         dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))
+        diff_pos = dicPostion.get(MotorWMOVEParams.DIFF_POS.name, roundPulse)
+        curNode_type = str(dicPostion.get(RFID_RESULT.EPC.name))
         node_id = dicPostion.get(TableInfo.NODE_ID.name)
+        isOKPos = True if diff_pos < roundPulse else False
+        if not isMotorH_Calied:
+            if curNode_type.find(strNOTAG) >= 0 and (is_equal(di_pot,0) and not isOKPos):
+                TTSAndroid('주행 캘리브레이션을 완료해주세요.',10)
+            else:
+                isMotorH_Calied = True
         table_id = find_most_similar_table_id(node_id,distance_tof,cur_angle540)
         dicPostion[ARUCO_RESULT_FIELD.X.name]=x
         dicPostion[ARUCO_RESULT_FIELD.Y.name]=y
@@ -1776,13 +1786,13 @@ def service_jog():
         cur_posH = GetMotorHPos()        
         isAbsPos = True
         if spd < 0: 
-            return {"error": "spd string is not valid."}, 400
+            return {False: "spd string is not valid."}, 400
         
         if is_in_slow_zone(cur_posH):
             spd = DEFAULT_RPM_FAST
         
         if endnode_tmp is None:
-            return {"error": "endnode is required."}, 400
+            return {False: "endnode is required."}, 400
         
         # dic_CROSSINFO = shared_data.get(TopicName.CROSS_INFO.name)
         # if dic_CROSSINFO:
@@ -1806,7 +1816,7 @@ def service_jog():
             add_or_update_row(strFileTableNodeEx,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
             
             #new_csv_node = generate_node_graph_from_csv(csvPathNodes,strFileShortCut)
-            return {"OK": "Table Saved"}, 200      
+            return {True:"Table Saved"}, 200      
         # if endnode == 0:
         #     dfScan = pd.read_csv(strFileEPC_scan, sep=sDivTab)
         #     avg_df = dfScan.groupby("NODE_ID", as_index=False)["POS"].mean()
@@ -1863,12 +1873,12 @@ def service_jog():
         distancePulseTarget = GetNodePos_fromNode_ID(endnode)
         distancePulseTarget_CCW = distancePulseTarget-MOVE_H_WHOLE_LOOP
         distancePulseTarget_CW = distancePulseTarget+MOVE_H_WHOLE_LOOP
-        if not isRealMachine:
-            bResult,bExecuteMsg=SendCMD_Device([getMotorLocationSetDic(ModbusID.MOTOR_H.value,distancePulseTarget)])
-            return {bResult: bExecuteMsg}, 200
+        # if not isRealMachine:
+        #     bResult,bExecuteMsg=SendCMD_Device([getMotorLocationSetDic(ModbusID.MOTOR_H.value,distancePulseTarget)])
+        #     return {bResult: bExecuteMsg}, 200
         
         if distancePulseTarget is None:
-            return {"ERR": "endNode not found"}, 400      
+            return {False: ALM_User.NODE_NOT_FOUND.value}, 400
         distanceDiffSigned = distancePulseTarget-(cur_posH)
         distanceDiffSigned_CCW = distancePulseTarget_CCW-(cur_posH)
         distanceDiffAbs = abs(distanceDiffSigned)
@@ -1884,6 +1894,14 @@ def service_jog():
         # if distanceDiffSigned > 0:
         #     backlashPos = estimate_backlash_error(current_distance=distanceDiffSigned,full_distance= full_distanceCurrent, full_error=260000)   
         #     distancePulseTarget = distancePulseTarget - backlashPos
+        if curNode == NODE_KITCHEN and distancePulseTarget < 0:
+            return {False:ALM_User.SAFETY_MOTORH_3.value}, 400
+        if curNode == NODE_KITCHEN and distancePulseTarget > NODE_CROSS_PULSE:
+            return {False:ALM_User.SAFETY_MOTORH_4.value}, 400
+        if isInnerNode(curNode) and endnode == NODE_CROSS and not isTrue(cross_di_pot):
+            return {False:ALM_User.CROSS_STATUS_INVALID.value}, 400
+        if not isInnerNode(curNode) and endnode == NODE_CROSS and not isTrue(cross_di_not):
+            return {False:ALM_User.CROSS_STATUS_INVALID.value}, 400
         dicMotorH = getMotorMoveDic(ModbusID.MOTOR_H.value,isAbsPos,distancePulseTarget,spd,ACC_DECC_MOTOR_H,ACC_DECC_MOTOR_H)
         
         if  distanceDiffAbs < roundPulse / 2 and si_pot != "ESTOP":
@@ -1892,17 +1910,16 @@ def service_jog():
             #dicPotNot = dicWE_ON
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.ESTOP.name
         else:
-            #listReturnTmp.append(getMotorWPN_OFFDic())
-            listReturnTmp.append(getMotorWE_OFFDic())
+            listReturnTmp.append(getMotorWPN_OFFDic())
+            #listReturnTmp.append(getMotorWE_OFFDic())
             callbackMB_15.ESTOP_ON = BLD_PROFILE_CMD.MOTORSTOP.name
         
         listReturnTmp.append(dicMotorH)
-        if getChargerPlugStatus():
-            SetChargerPlug(False)
-            time.sleep(MODBUS_EXCEPTION_DELAY)        
-        # if not getRFIDInvStatus():
-        #     RFIDControl(True)
-        #     time.sleep(MODBUS_EXCEPTION_DELAY)
+        if curNode == NODE_KITCHEN:
+            if getChargerPlugStatus():
+                SetChargerPlug(False)
+                time.sleep(MODBUS_EXCEPTION_DELAY)        
+                
         lastRSSI = None
         #startPos = try_parse_int(dicMotorPos.get('MB_15'),MIN_INT)
         startPos = GetMotorHPos()
@@ -1915,7 +1932,7 @@ def service_jog():
             cross_di_not = isTrue(dicLastCross.get(MonitoringField.DI_NOT.name))
             imgGoldSampleFilename = f"{curNode}_{cur_angle540}_{cross_di_not}.jpg"
             if isTrue(di_pot) and cur_angle540 % 180 == 0 and (cross_di_pot or cross_di_not) and not os.path.exists(imgGoldSampleFilename):
-                imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',save_dir=dirCommonStatus, timeout=5)
+                imgCurPath = getimage_file_from_mjpeg(url='https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam',save_dir=dirCommonStatus, timeout=5)
                 imgGoldSamplePath = os.path.join(dirCommonStatus,imgGoldSampleFilename)
                 if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
                     shutil.move(imgCurPath, imgGoldSamplePath)

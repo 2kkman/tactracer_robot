@@ -173,7 +173,7 @@ if __name__ == "__main__":
     CamControl(False)
     if abs(diff_pos) > roundPulse*100:
       StopEmergency(ALM_User.NODE_NOT_FOUND.value)
-    elif curNode_type.find(strNOTAG) >=0 and not isTrue(DI_POT):
+    elif curNode_type.find(strNOTAG) >=0 and not isTrue(DI_POT) and isRealMachine:
       StopEmergency(ALM_User.DUG_NOT_FOUND.value)
     else:
       rospy.loginfo(dicCurNodeInfo)

@@ -1065,7 +1065,7 @@ def MotorBalanceControlEx(bSkip):
                     rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                     bins_points = 0
                     isCoolTimePassed = False
-                    imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
+                    imgCurPath = getimage_file_from_mjpeg(url=f'https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
                     TiltFace()
                     if imgCurPath is not None and angle_y != 0 and table_id is not None:
                     #if imgPath is not None and angle_y is not None and isCoolTimePassed:
