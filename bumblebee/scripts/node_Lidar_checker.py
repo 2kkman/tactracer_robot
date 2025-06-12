@@ -31,65 +31,158 @@ fieldvalue = f'topicname={TopicName.ANDROID.name}'
 log_period = float(rospy.get_param(f"~{ROS_PARAMS.lidar_interval.name}", default=0.2))
 ground_threshold = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_margin.name}", default=0.04))
 ground_distance_limit = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.560))
-point_threshold_min = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=MIN_VALID_POINTS))
+lidar_obstacle_points = int(rospy.get_param(f"~{ROS_PARAMS.lidar_obstacle_points.name}", default=-1))
 
 ipAddr = GetMasterIP()
-# Ground보다 위쪽(bin_z > ground_z) 중 points threshold 넘는 것만 배열로 리턴하는 버전
-def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.26, crop_y_low=0.0, crop_y_high=0.55, max_descend_distance=2.0,
-                              bin_size=0.005, point_threshold=point_threshold_min, ground_threshold =0.04,ground_distance_limit = ground_distance_limit ):
+# Param 체크 간격 (초)
+PARAM_CHECK_INTERVAL = 1.0
+
+def watch_param_changes():
+    global lidar_obstacle_points
+    prev_value = None
+    if lidar_obstacle_points < 0:
+        rospy.set_param(ROS_PARAMS.lidar_obstacle_points.name, MIN_VALID_POINTS)
+        lidar_obstacle_points = MIN_VALID_POINTS
+    while not rospy.is_shutdown():
+        try:
+            current_value = rospy.get_param("lidar_obstacle_points")
+            if current_value != prev_value:
+                rospy.loginfo(f"🔄 Param changed: lidar_obstacle_points = {current_value}")
+                lidar_obstacle_points = current_value
+                prev_value = current_value
+        except KeyError:
+            rospy.logwarn("⚠️ Param 'lidar_obstacle_points' not set yet.")
+        time.sleep(PARAM_CHECK_INTERVAL)
+        
+# # Ground보다 위쪽(bin_z > ground_z) 중 points threshold 넘는 것만 배열로 리턴하는 버전
+# def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.22, crop_y_low=0.0, crop_y_high=0.55, max_descend_distance=2.0,
+#                               bin_size=0.005, point_threshold=lidar_obstacle_points, ground_threshold =0.04,ground_distance_limit = ground_distance_limit ):
+#     """
+#     Ground 계산 후, Ground보다 라이다쪽에 있는 장애물 후보 리스트를 리턴하는 버전
+#     points: np.array(N, 3)
+#     tilt_deg: 라이다 틸트 각도
+#     crop_x, crop_y: crop 범위 (m)
+#     max_descend_distance: 최대 하강 거리 (m)
+#     bin_size: z binning 간격 (m)
+#     point_threshold: 장애물 후보로 인정할 최소 포인트 수
+#     """
+#     # import numpy as np
+
+#     tilt_rad = np.deg2rad(tilt_deg)
+#     cos_t = np.cos(tilt_rad)
+#     sin_t = np.sin(tilt_rad)
+
+#     valid_points = points[~np.isnan(points[:, 2])]
+#     if valid_points.shape[0] == 0:
+#         return max_descend_distance, None, []
+
+#     # (1) 틸트 회전 적용
+#     rotated_points = np.zeros_like(valid_points)
+#     rotated_points[:, 0] = valid_points[:, 0]
+#     rotated_points[:, 1] = valid_points[:, 1] * cos_t + valid_points[:, 2] * sin_t
+#     rotated_points[:, 2] = -valid_points[:, 1] * sin_t + valid_points[:, 2] * cos_t
+
+#     # (2) crop
+#     cropped_points = []
+#     for x, y, z in rotated_points:
+#         if (left_x <= x <= right_x) and (crop_y_low <= y <= crop_y_high):
+#             cropped_points.append((x, y, z))
+
+#     if not cropped_points:
+#         return max_descend_distance, None, []
+
+#     cropped_points = np.array(cropped_points)
+
+#     # (3) Z 오름차순 정렬
+#     z_values = np.sort(cropped_points[:, 2])
+
+#     # (4) Z binning
+#     z_min, z_max = np.min(z_values), np.max(z_values)
+#     bins = np.arange(z_min, z_max + bin_size, bin_size)
+#     hist, bin_edges = np.histogram(z_values, bins=bins)
+
+#     # (5) Ground bin 탐색 (가장 포인트 많은 bin)
+#     if hist.size == 0:
+#         return max_descend_distance, None, []        
+#     max_bin_idx = np.argmax(hist)
+#     ground_z_start = min(round(bin_edges[max_bin_idx],mm_float_precion),ground_distance_limit)
+#     ground_z_end = bin_edges[max_bin_idx + 1]
+#     #ground_z_center = (ground_z_start + ground_z_end) / 2.0
+
+#     # (6) 장애물 후보 찾기
+#     #obstacle_candidates = []
+#     obstacle_candidates = []
+#     for idx in range(len(hist)):
+#         if hist[idx] == 0:
+#             continue
+
+#         bin_start = bin_edges[idx]
+#         bin_end = bin_edges[idx + 1]
+#         bin_center = round((bin_start + bin_end) / 2.0, mm_float_precion)
+#         diff_bin_gnd = ground_z_start - bin_center 
+#         #if diff_bin_gnd > ground_threshold and hist[idx] > point_threshold:
+#         if True:
+#             obstacle_candidates.append({bin_center:int(hist[idx])})
+#             # obstacle_candidates.append({
+#             #     "center_z": bin_center,
+#             #     "point_count": hist[idx]
+#             # })
+    
+#     # (7) 최종 descendable_distance는 Ground 기준
+#     #descendable_distance = np.clip(ground_z_center, 0, max_descend_distance)
+#     return ground_z_start, cropped_points, obstacle_candidates
+
+def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.22, crop_y_low=0.0, crop_y_high=0.55, max_descend_distance=2.0,
+                              bin_size=0.005, point_threshold=lidar_obstacle_points, ground_threshold=0.04, ground_distance_limit=ground_distance_limit):
     """
     Ground 계산 후, Ground보다 라이다쪽에 있는 장애물 후보 리스트를 리턴하는 버전
-    points: np.array(N, 3)
-    tilt_deg: 라이다 틸트 각도
-    crop_x, crop_y: crop 범위 (m)
-    max_descend_distance: 최대 하강 거리 (m)
-    bin_size: z binning 간격 (m)
-    point_threshold: 장애물 후보로 인정할 최소 포인트 수
+    NaN 포인트 개수도 함께 반환함
     """
-    # import numpy as np
+    # (0) NaN 포인트 수 계산
+    nan_count = np.isnan(points[:, 2]).sum()
 
+    # (1) NaN 제외한 유효 포인트 필터링
+    valid_points = points[~np.isnan(points[:, 2])]
+    if valid_points.shape[0] == 0:
+        return max_descend_distance, None, [], nan_count
+
+    # (2) 틸트 회전 적용
     tilt_rad = np.deg2rad(tilt_deg)
     cos_t = np.cos(tilt_rad)
     sin_t = np.sin(tilt_rad)
 
-    valid_points = points[~np.isnan(points[:, 2])]
-    if valid_points.shape[0] == 0:
-        return max_descend_distance, None, []
-
-    # (1) 틸트 회전 적용
     rotated_points = np.zeros_like(valid_points)
     rotated_points[:, 0] = valid_points[:, 0]
     rotated_points[:, 1] = valid_points[:, 1] * cos_t + valid_points[:, 2] * sin_t
     rotated_points[:, 2] = -valid_points[:, 1] * sin_t + valid_points[:, 2] * cos_t
 
-    # (2) crop
+    # (3) crop
     cropped_points = []
     for x, y, z in rotated_points:
         if (left_x <= x <= right_x) and (crop_y_low <= y <= crop_y_high):
             cropped_points.append((x, y, z))
 
     if not cropped_points:
-        return max_descend_distance, None, []
+        return max_descend_distance, None, [], nan_count
 
     cropped_points = np.array(cropped_points)
 
-    # (3) Z 오름차순 정렬
+    # (4) Z 오름차순 정렬
     z_values = np.sort(cropped_points[:, 2])
 
-    # (4) Z binning
+    # (5) Z binning
     z_min, z_max = np.min(z_values), np.max(z_values)
     bins = np.arange(z_min, z_max + bin_size, bin_size)
     hist, bin_edges = np.histogram(z_values, bins=bins)
 
-    # (5) Ground bin 탐색 (가장 포인트 많은 bin)
     if hist.size == 0:
-        return max_descend_distance, None, []        
-    max_bin_idx = np.argmax(hist)
-    ground_z_start = min(round(bin_edges[max_bin_idx],mm_float_precion),ground_distance_limit)
-    ground_z_end = bin_edges[max_bin_idx + 1]
-    #ground_z_center = (ground_z_start + ground_z_end) / 2.0
+        return max_descend_distance, None, [], nan_count
 
-    # (6) 장애물 후보 찾기
+    # (6) Ground bin 탐색 (가장 포인트 많은 bin)
+    max_bin_idx = np.argmax(hist)
+    ground_z_start = min(round(bin_edges[max_bin_idx], mm_float_precion), ground_distance_limit)
+
+    # (7) 장애물 후보 탐색
     obstacle_candidates = []
     for idx in range(len(hist)):
         if hist[idx] == 0:
@@ -98,30 +191,29 @@ def find_obstacle_candidates(points, tilt_deg=31, left_x=-0.33, right_x=0.26, cr
         bin_start = bin_edges[idx]
         bin_end = bin_edges[idx + 1]
         bin_center = round((bin_start + bin_end) / 2.0, mm_float_precion)
-        diff_bin_gnd = ground_z_start - bin_center 
-        if diff_bin_gnd > ground_threshold and hist[idx] > point_threshold:
-            obstacle_candidates.append({bin_center:int(hist[idx])})
-            # obstacle_candidates.append({
-            #     "center_z": bin_center,
-            #     "point_count": hist[idx]
-            # })
-    
-    # (7) 최종 descendable_distance는 Ground 기준
-    #descendable_distance = np.clip(ground_z_center, 0, max_descend_distance)
-    return ground_z_start, cropped_points, obstacle_candidates
+        diff_bin_gnd = ground_z_start - bin_center
+        if True:  # 기존 조건 유지
+            obstacle_candidates.append({bin_center: int(hist[idx])})
+
+    return ground_z_start, cropped_points, obstacle_candidates, int(nan_count)
 
 def get_filtered_points(pointcloud):
     half_x = BASKET_WIDTH_CM / 200.0
     half_y = BASKET_LENGTH_CM / 200.0
     valid_points = []
-    for point in pc2.read_points(pointcloud, field_names=("x", "y", "z"), skip_nans=True):
+    null_count = 0
+    for point in pc2.read_points(pointcloud, field_names=("x", "y", "z"), skip_nans=False):
         x, y, z = point
+        if any(np.isnan([x, y, z])):
+            null_count += 1
+            continue  # NaN 포인트는 유효하지 않음
         x = -x
         y = -y
         if -half_x <= x <= half_x and -half_y <= y <= half_y:
             if Z_IGNORE_THRESHOLD_MIN <= z <= Z_IGNORE_THRESHOLD_MAX:
                 valid_points.append((x, y, z))
-    return valid_points
+    return valid_points, null_count
+
 
 def create_pc2(points, frame_id):
     header = Header()
@@ -184,15 +276,20 @@ def pointcloud_callback(msg):
     #global cropped_pub, marker_pub, last_log_time
     global cropped_pub,last_log_time,pub_obstacle
     now = rospy.get_time()
-    points = get_filtered_points(msg)
+    points, null_count = get_filtered_points(msg)
 
-    if len(points) < point_threshold_min:
+    if len(points) < lidar_obstacle_points:
         if now - last_log_time > log_period:
             rospy.loginfo("✅ 장애물 없음 (유효 포인트 부족)")
             last_log_time = now
         return
 
     z_vals = [p[2] for p in points]
+    if not z_vals:
+        if now - last_log_time > log_period:
+            rospy.loginfo("✅ 장애물 없음 (Z 값 없음)")
+            last_log_time = now
+        return    
     closest_obstacle_z = min(z_vals)  # 아래로 향하므로 가장 작은 Z가 가장 가까운 장애물
 
     lidar_to_basket_bottom = LIDAR_TO_BASKET_BOTTOM_CM / 100.0
@@ -211,20 +308,24 @@ def pointcloud_callback(msg):
         #print(recvDataMap)
 
         points = np.array(list(pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)))
-        crop_y_low=0;crop_y_high=0.55;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=point_threshold_min;ground_threshold_current=0.04;ground_distance_limit=0.56
+        crop_y_low=0;crop_y_high=0.55;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=lidar_obstacle_points;ground_threshold_current=0.04;ground_distance_limit=0.56
         if is_between(-20,-90,angle_y):
             crop_y_low=-0.15;crop_y_high=0.30;max_descend_distance=2.0;bin_size=0.005;point_threshold_current=10;ground_threshold_current =0.04;ground_distance_limit=2
         #distanceMax, cropped_points = calculate_descendable_distance_with_rotation(points,angle_y)
         #distanceMax, cropped_points = calculate_descendable_distance_with_rotation(points,angle_y)
         #distanceMax, cropped_points= calculate_descendable_distance(points,angle_y,-0.3,0.25)
-        ground_z_center, cropped_points, lsDicObstacle= find_obstacle_candidates(points,angle_y,crop_y_low=crop_y_low,crop_y_high=crop_y_high,point_threshold=point_threshold_current,ground_threshold=ground_threshold_current,ground_distance_limit=ground_distance_limit)
+        ground_z_center, cropped_points, lsDicObstacle,null_count = find_obstacle_candidates(points,angle_y,crop_y_low=crop_y_low,crop_y_high=crop_y_high,point_threshold=point_threshold_current,ground_threshold=ground_threshold_current,ground_distance_limit=ground_distance_limit)
         returnObstanceData = {}
         if lsDicObstacle:
             first_item = next(iter(lsDicObstacle[0].items()))
             obstacle_distance, bin_points = first_item
             if obstacle_distance < 1.49:    
+                # Ground bin 포인트 수 계산
+                gnd_bin_points = sum(1 for z in cropped_points[:, 2] if ground_z_center - bin_size <= z <= ground_z_center + bin_size)                
                 returnObstanceData[OBSTACLE_INFO.LASTSEEN.name] = getDateTime().timestamp()
                 returnObstanceData[OBSTACLE_INFO.GND_DISTANCE.name] = ground_z_center
+                returnObstanceData[OBSTACLE_INFO.GND_POINT.name] = int(gnd_bin_points)  #GND 포인트 수
+                returnObstanceData[OBSTACLE_INFO.NULL_POINT.name] = int(null_count)
                 returnObstanceData[OBSTACLE_INFO.OBSTACLE_DISTANCE.name] =obstacle_distance
                 returnObstanceData[OBSTACLE_INFO.OBSTACLE_POINTS.name] = bin_points
                 data_out = json.dumps(returnObstanceData)
@@ -274,4 +375,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+
 

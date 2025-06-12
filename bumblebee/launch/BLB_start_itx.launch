@@ -7,6 +7,7 @@
   <include file="$(find tta_blb)/launch/BLB_MONITOR.launch" />
   <include file="$(find tta_blb)/launch/BLB_ANDROID.launch" />
   <include file="$(find tta_blb)/launch/BLB_MODBUS.launch" />
+  <include file="$(find tta_blb)/launch/BLB_MAIN.launch" />
   
   <!--   
   DEV에서만 실행되어야 할 노드 -->

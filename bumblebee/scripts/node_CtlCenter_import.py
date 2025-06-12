@@ -34,7 +34,7 @@ BLB_ANDROID_PORT = HTTP_COMMON_PORT
 node_CHARGING_STATION = NODE_SPECIAL_VALUE.CHARGING_STATION.value
 node_KITCHEN_STATION = NODE_SPECIAL_VALUE.KITCHEN_STATION.value
 node_NOT_TABLE = NODE_SPECIAL_VALUE.NOT_TABLE.value
-node_name = "node_CtlCenter"
+node_name = "BLB_MAIN"
 dicLidarCropProfile = {LidarCropProfile.MOTOR_H: {
         LIDAR_CROP_PARAMS.range_min_z.name : 0.05,
         LIDAR_CROP_PARAMS.range_max_z.name : 1,

@@ -445,7 +445,7 @@ def RunListBlbMotorsEx(listBLB):
                         rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                         bins_points = 0
                         isCoolTimePassed = False
-                        sim_limit = int(rospy.get_param('SCORE', default=950))
+                        sim_limit = int(rospy.get_param('SCORE', default=990))
                         if sim_score == 0:
                             isObstaclePresent = isLidarDetected
                         else:

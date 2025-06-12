@@ -70,7 +70,9 @@ import requests
 from datetime import datetime
 import platform
 import socket
-
+MAX_INT = sys.maxsize
+MIN_INT = -sys.maxsize - 1
+DATETIME_OLD = datetime(2013, 2, 18, 23, 0, 30)
 def get_hostname(ip=None):
     if ip is None:
         # Windows에서도 동작하도록 platform.system()에 따라 처리
@@ -88,9 +90,29 @@ def get_hostname(ip=None):
             return slave_hostname
         except Exception as e:
             return f"UNKNOWN_IP_HOSTNAME: {e}"
+
 def getDateTime():
   return datetime.now()
 
+def convert_timestamp_to_datetime(timestamp_str):
+    try:
+        # 문자열을 float으로 변환
+        timestamp_float = float(timestamp_str)
+        # datetime 객체로 변환
+        dt = getDateTime().fromtimestamp(timestamp_float)
+        return dt
+    except ValueError:
+        print("❌ 유효하지 않은 숫자 형식입니다.")
+    except OSError:
+        print("❌ 타임스탬프 범위를 벗어났습니다.")
+    except Exception as e:
+        print(f"❌ 알 수 없는 오류: {e}")
+    return DATETIME_OLD
+# timestamp_str = "1749646429.930042"
+# dt = convert_timestamp_to_datetime(timestamp_str)
+# if dt:
+#     print("✅ 변환된 datetime:", dt)
+    
 def midpoint_polar(length_b, angle_b_deg, length_c, angle_c_deg):
     # 각도를 라디안으로 변환
     angle_b_rad = math.radians(angle_b_deg)
@@ -1702,10 +1724,10 @@ def getCMDDictFromStr(dataStr: str, keyValueSpliter=":", itemSpliter=","):
         if set(COMMON_CMD.__members__.keys()) == set(dicResultRaw.keys()):
             return dicResultRaw
         else:
-            rospy.loginfo(dataStr)
+            print(dataStr)
             return None
     except Exception as e:
-        rospy.loginfo(e)
+        print(e)
 
 
 def getDictFromDF(df: pd.DataFrame, key: str, value: str):
@@ -2268,7 +2290,8 @@ def GetKoreanFromNumber(strNum):
 
 
 def getTimestamp():
-    current_time = rospy.get_rostime()
+    current_time= getDateTime().timestamp()
+    #current_time = rospy.get_rostime()
 
     # 년-월-일 시:분:초 포맷 예시
     # timestamp_str = datetime.fromtimestamp(current_time.to_sec()).strftime('%Y-%m-%d %H:%M:%S')
@@ -2426,8 +2449,8 @@ def calculate_angles(a, b, c):
         gamma_degrees = math.degrees(gamma)
     except Exception as e:
         message = traceback.format_exc()
-        rospy.loginfo(message)    
-        rospy.loginfo(f'Param a, b, c : {a},{b},{c}')    
+        print(message)    
+        print(f'Param a, b, c : {a},{b},{c}')    
     return alpha_degrees, beta_degrees, gamma_degrees
 
 lastperiod_secs = getDateTime()
@@ -2639,7 +2662,7 @@ def save_dict_to_csv(file_path: str, data: dict, limit : int):
             df = pd.concat([existing_df, df])
         except Exception as e:
             print(f"Error reading existing CSV file: {existing_df}")
-            log_all_frames(file_path)
+            print(file_path)
     
     df = df.sort_values(by='timestamp')  # 오래된 순으로 정렬
     df = df.iloc[-limit:]  # 100개 초과 시 오래된 항목 삭제

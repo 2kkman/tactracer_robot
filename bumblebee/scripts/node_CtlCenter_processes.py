@@ -480,6 +480,7 @@ def CheckMotorAlarms():
           SetWaitConfirmFlag(True, {key:value})
 
 def CheckETCActions():
+    global checkIntervalSec
     lsCmdRelase = []
     releasePulse = round(roundPulse/10)
     cur_node = GetCurrentNode()
@@ -515,6 +516,21 @@ def CheckETCActions():
             TTSAndroid(f'{curNode_sse}번 노드로 변경되었습니다.')
     if len(lsCmdRelase) > 0:
         SendCMD_DeviceService(lsCmdRelase)
+    
+    #timestamp_str = GetItemsFromModbusTable(ModbusID.MOTOR_H,MonitoringField.LASTSEEN)
+    timestamp_str = node_CtlCenter_globals.dic_CROSSINFO.get(MonitoringField.LASTSEEN.name)
+    timestampStarted_str = GetItemsFromModbusTable(ModbusID.MOTOR_V,MonitoringField.LASTSTART)
+    dt = convert_timestamp_to_datetime(timestamp_str)
+    dtV = convert_timestamp_to_datetime(timestampStarted_str)
+    if isTimeExceeded(dt,10000) and isCharging() and IsOrderEmpty():
+        checkIntervalSec = 120
+        SendAlarmHTTP('시스템을 리셋합니다.')
+        API_ResetQBI(True)
+        API_ResetITX(False)
+    else:
+        checkIntervalSec = 5
+    if isTimeExceeded(dtV,120000) and not isReadyToMoveH_and_540() and isCharging() and IsOrderEmpty():
+        node_CtlCenter_globals.listBLB.extend(BLB_CMD_Profile('1,26'))
     
 def CheckETCAlarms():
     lsAlarmMBID,dic_AlmCDTable,dic_AlmNMTable=getBLBMotorStatus()

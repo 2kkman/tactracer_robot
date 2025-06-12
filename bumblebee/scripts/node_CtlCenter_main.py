@@ -2,6 +2,7 @@
 
 from node_CtlCenter_VerifyCmd import *
 node_CtlCenter_globals.listBLB.clear()
+checkIntervalSec = 5
 
 def get_available_services():
     """
@@ -204,7 +205,7 @@ if __name__ == "__main__":
     
     if not isRealMachine:
       DoorClose()
-
+    
     while not rospy.is_shutdown():
         try:
             dtNow = getDateTime() 
@@ -298,7 +299,7 @@ if __name__ == "__main__":
                   SendStatus(blbStatus)
                 node_CtlCenter_globals.lastMainLoopTimeStamp = getDateTime()
                 #배터리 저전압 등 체크는 n초마다 한번씩
-                if iCnt5s % 5 == 0:
+                if iCnt5s % checkIntervalSec == 0:
                   CheckETCActions()
                 #TODO 동적 밸런싱 기능 - 중량에 따른 밸런싱암 길이 조절
                 # if GetWaitConfirmFlag():z

@@ -25,8 +25,6 @@ import sensor_msgs.point_cloud2 as pc2
 minGYRO = -90
 maxGYRO = 45
 aruco_lastDiff_Default = 100
-MAX_INT = sys.maxsize
-MIN_INT = -sys.maxsize - 1
 save_dir_download = "/root/Downloads"
 save_dir_goldsample = "/root/Downloads/tableImg"
 machine_running_csv_filename = 'IsCleanTable.csv'
@@ -41,7 +39,6 @@ HTTP_FASTAPI_PORT=6002
 WEIGHT_OCCUPIED = 100
 HOME_TABLE='H1'
 HOME_CHARGE='P1'
-DATETIME_OLD = datetime(2013, 2, 18, 23, 0, 30)
 ACC_DECC_SMOOTH = 800
 ACC_DECC_LONG = 3000
 CAM_OFFSET_TOP_X = 26
@@ -752,6 +749,8 @@ class OBSTACLE_INFO(Enum):
     OBSTACLE_DISTANCE = auto()  # 알람정보 수신
     OBSTACLE_POINTS= auto()  # info 정보 수신 (디버그용)
     GND_DISTANCE = auto()  # 탐지된 선반 높이
+    GND_POINT = auto()  # 탐지된 선반 높이
+    NULL_POINT = auto()  # 탐지된 선반 높이
 
 class TopicName(Enum):
     CMD_DEVICE = auto()  # 모드버스 제어 커맨드 토픽.

@@ -2,6 +2,10 @@
 from node_CtlCenter_import import *
 import node_CtlCenter_globals
 
+def isCharging():
+  ischarge= str(node_CtlCenter_globals.dic_BMS.get(MonitoringField_BMS.battery_status.name,"UNKNOWN")).upper()  
+  return ischarge.find('DIS') < 0
+
 def SendKeepAlive(sendbuf):
     if pub_ka is not None:
         pub_ka.publish(sendbuf)

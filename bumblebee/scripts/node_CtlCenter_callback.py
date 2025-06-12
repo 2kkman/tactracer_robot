@@ -410,7 +410,7 @@ def callbackAck(data,topic_name='' ):
                     if doorStatus == TRAYDOOR_STATUS.CLOSED:
                         currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
                     #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
-                        if curNode == node_KITCHEN_STATION:
+                        if node_current == node_KITCHEN_STATION:
                             DoorOpen()
                         elif dfReceived is None:
                             rospy.loginfo(f"dfReceived not found")
@@ -570,7 +570,12 @@ def callbackBLB_CMD(data,topic_name=''):
         if APIBLB_FIELDS_ACTION.chainlist.name in recvDataMap.keys():
             #관리자 툴에서 지시정보를 입력하면 여기로 가결정 정보가 온다.
             lsDicArray=recvDataMap[APIBLB_FIELDS_ACTION.chainlist.name]
-            node_CtlCenter_globals.dfTaskChainInfo = GetDFTaskChain(lsDicArray)  
+            if (type(lsDicArray) != list):
+                lsDicArray = json.loads(lsDicArray)            
+            if len(lsDicArray) > 0:
+                node_CtlCenter_globals.dfTaskChainInfo = GetDFTaskChain(lsDicArray)
+                if isReadyToMoveH_and_540() and isCharging() and IsOrderEmpty() and isRealMachine:
+                    BLB_CMD_Profile('H1,T')
             return          
         elif APIBLB_FIELDS_ACTION.target.name in recvDataMap.keys():
           #target = 주행시작하라는 지시 확정 명령어

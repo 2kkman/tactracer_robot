@@ -806,8 +806,9 @@ def callbackACK(recvData):
             #     lsCmdCaliHome = [getMotorWHOME_OFFDic(mbid_tmp),getMotorHomeDic(mbid_tmp)]
             #     bSafetyCheck,strMsg = SendCMD_Device(lsCmdCaliHome)
             #     logSSE_info(f'Cali {mbid_tmp} Result:{bSafetyCheck},{strMsg}')
-            # #POT 예정 펄스보다 5바퀴 이상 차이나면 모든 모터를 중지하고 알람을 날린다
             # el
+            
+            # #POT 예정 펄스보다 5바퀴 이상 차이나면 모든 모터를 중지하고 알람을 날린다
             if mbid_instance in lsReleaseMotors and not onScaning():
                 if isTrue(isPot) or isTrue(isNot):
                     diffPos = abs(last_targeted_pos - stopped_pos)
@@ -860,6 +861,16 @@ def callbackACK(recvData):
             if curNodeID_fromPulse == endnode:
             #if curNodeID_fromPulse in NODES_SPECIAL and curNodeID_fromPulse == endnode:
                 endNodePos = GetNodePos_fromNode_ID(endnode)
+                #노드ID 및 각도로 이미지 저장할 파일이름 생성
+                cur_angle540=dicLastPosition[TableInfo.SERVING_ANGLE.name]
+                imgGoldSampleFilename = f"{endnode}_{cur_angle540}.jpg"
+                imgCurPath = getimage_file_from_mjpeg(url='https://172.30.1.8:6001/cam',save_dir=dirCommonStatus, timeout=5)
+                imgGoldSamplePath = os.path.join(dirCommonStatus,imgGoldSampleFilename)
+                if not os.path.exists(imgGoldSamplePath) and os.path.exists(imgCurPath):
+                    shutil.move(imgCurPath, imgGoldSamplePath)
+                elif os.path.exists(imgCurPath):
+                    Path(imgCurPath).unlink(missing_ok=True)
+
                 if stopped_pos != endNodePos:
                     dicLoc = getMotorLocationSetDic(ModbusID.MOTOR_H.value, endNodePos)
                     SendCMD_Device([dicLoc])
