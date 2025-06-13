@@ -510,8 +510,8 @@ def CheckETCActions():
             elif DI_NOT:
                 lsCmdRelase.append(getMotorMoveDic(modbus.value,True, curpos+releasePulse,MAINROTATE_RPM_SLOWEST,ACC_DECC_SMOOTH,ACC_DECC_SMOOTH))
     else:
-        curNode_sse = node_CtlCenter_globals.dicLast_POSITION_INFO['NODE_ID']
-        if GetCurrentNode() != curNode_sse and IsOrderEmpty():
+        curNode_sse = node_CtlCenter_globals.dicLast_POSITION_INFO.get(TableInfo.NODE_ID.name)
+        if curNode_sse is not None and GetCurrentNode() != curNode_sse and IsOrderEmpty():
             SetCurrentNode(curNode_sse)
             TTSAndroid(f'{curNode_sse}번 노드로 변경되었습니다.')
     if len(lsCmdRelase) > 0:
@@ -522,7 +522,7 @@ def CheckETCActions():
     timestampStarted_str = GetItemsFromModbusTable(ModbusID.MOTOR_V,MonitoringField.LASTSTART)
     dt = convert_timestamp_to_datetime(timestamp_str)
     dtV = convert_timestamp_to_datetime(timestampStarted_str)
-    if isTimeExceeded(dt,30000) and isCharging() and IsOrderEmpty():
+    if isTimeExceeded(dt,30000) and cur_node == node_KITCHEN_STATION and IsOrderEmpty():
         checkIntervalSec = 120
         TTSAndroid('시스템을 리셋합니다.')
         #SendAlarmHTTP('시스템을 리셋합니다.')
@@ -530,7 +530,10 @@ def CheckETCActions():
         API_ResetITX(False)
     else:
         checkIntervalSec = 5
-    if isTimeExceeded(dtV,120000) and not isReadyToMoveH_and_540() and isCharging() and IsOrderEmpty():
+    td = getDateTime() - dtV
+    tds = td.total_seconds()
+    print(tds)
+    if isTimeExceeded(dtV,12000) and not isReadyToMoveH_and_540() and cur_node == node_KITCHEN_STATION and IsOrderEmpty():
         node_CtlCenter_globals.listBLB.extend(BLB_CMD_Profile('1,26'))
     
 def CheckETCAlarms():
@@ -858,7 +861,7 @@ def MotorBalanceControlEx(bSkip):
             #             node_CtlCenter_globals.listBLB.extend(lsDF)
             #             StopAllMotors()
 
-    if isActivatedMotor(modbusIDStr_H):
+    if isActivatedMotor(modbusIDStr_H) and not isRealMachine:
         #1.특정 포인트를 지나칠때마다 dataframe 의 sub-jobid 의 상태를 업데이트 해야함.
         if len(node_CtlCenter_globals.dicTargetPosFeedBack) > 0:
             #rospy.loginfo(node_CtlCenter_globals.dicTargetPosFeedBack)

@@ -200,7 +200,7 @@ dirCommonStatus =f"{getConfigPath(UbuntuEnv.COMMON.name)}/status"
 
 filePath_param_parse = f"{dirCommonParser}/param_SD.txt"
 # Main configuration files
-csvPathNodes = f'{dirPath}/node_info.csv'
+csvPathNodes = f'{dirPath}/node_info.txt'
 csvPathalarm = f'{dirPath}/history_alarm.csv'
 csvPathInfo = f'{dirPath}/history_info.csv'
 #machineName = 'ITX' if get_hostname().find(UbuntuEnv.ITX.name) >= 0 else 'DEV'
@@ -763,6 +763,7 @@ class TopicName(Enum):
     CMD_DEVICE = auto()  # 모드버스 제어 커맨드 토픽.
     KEEPALIVE = auto()  # KEEP_ALIVE 메세지 발행 토픽
     MB_ = auto()  # 모드버스 장비별 모니터링 메세지
+    GPI_ = auto()  # 모드버스 장비별 센서 트리거 모니터링 메세지
     ACK = auto()  # 모터 구동 ACK 메세지
     BLB_STATUS = auto() # 제어센터에서 발행하는 커맨드 처리 현황. (map string 으로 전달)    
     BLB_STATUS_HTTPS = auto() # HTTPS 에서 발행하는 커맨드 처리 현황 (임과장에게 전달되는 맵)
@@ -2402,6 +2403,7 @@ class MotorCmdField(Enum):
     WMOVE = auto()  # 모터 회전 명령
     WCALI = auto()  # 모터 캘리브레이션 명령
     WSTOP = auto()  # 모터 중지
+    WSET_DECC = auto()  # 비상정지 감속도 설정
     WALM_C = auto()  # 모터 알람 클리어
     WZERO = auto()  # 현재 위치를 엔코더값 0 으로 초기화
     WLOC = auto()  # 현재 위치값을 지정한 파라미터로 임의설정
@@ -2549,11 +2551,11 @@ def SaveTableInfo(curTableInt):
     return API_call_http(IP_MASTER,HTTP_COMMON_PORT,EndPoints.CONTROL.name, msg)  
 
 
-def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False,cross_pos=0):
+def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode=False,posStr = key_pos):
     try:
         # DataFrame 복사 및 diff 계산
         df = dfTemp.copy()
-        posStr = key_pos
+        
         epcStr = RFID_RESULT.EPC.name
         if posStr not in df.columns:
             return []
@@ -2580,10 +2582,18 @@ def find_nearest_pos(dfTemp, pos_target, nearPoints=1, signedSpd=0, onlyRealNode
     except Exception:
         return []
 
-def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False):
-    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode,cross_pos=-roundPulse*10)
-    if lsResult:
-        return lsResult[0]
+def GetNodeDicFromPos(dfTemp, pos_target : int, isRealNode = False,posStrKey = key_pos):
+    lsResult = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode,posStr=key_pos)
+    lsResult2 = find_nearest_pos(dfTemp,pos_target, nearPoints=1,signedSpd=0,onlyRealNode=isRealNode,posStr='POS2')
+    if lsResult and lsResult2:
+        r1 = lsResult[0]
+        r2 = lsResult2[0]
+        #print(r1,r2)
+        if r1['DIFF_POS'] > r2['DIFF_POS']:
+            return r2
+        else:   
+            return r1
+        #return lsResult[0]
     else:
         return {}
 
@@ -3426,6 +3436,14 @@ def getMotorStopString(mbid,decc=EMERGENCY_DECC):
     )
     return sCmd
 
+def getMotorSetDeccString(mbid,decc=EMERGENCY_DECC):
+    sCmd = (
+        f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
+        f"{MotorWMOVEParams.CMD.name}{sDivFieldColon}{MotorCmdField.WSET_DECC.name}{sDivItemComma}"
+        f"{MotorWMOVEParams.DECC.name}{sDivFieldColon}{decc}"
+    )
+    return sCmd
+
 def getMotorLocationSetString(mbid,positionPulse=EMERGENCY_DECC):
     sCmd = (
         f"{MotorWMOVEParams.MBID.name}{sDivFieldColon}{mbid}{sDivItemComma}"
@@ -3462,6 +3480,10 @@ def getMotorLocationSetDic(mbid,position_pulse):
 
 def getMotorStopDic(mbid,decc=EMERGENCY_DECC):
     strVal = getMotorStopString(mbid,decc)
+    return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
+
+def getMotorSetDeccDic(mbid,decc=EMERGENCY_DECC):
+    strVal = getMotorSetDeccString(mbid,decc)
     return getDic_strArr(strVal, sDivFieldColon, sDivItemComma)
 
 def getMotorHomeString(mbid):
@@ -3884,6 +3906,11 @@ def GetNodeID_fromEPC(epc):
 def GetNodePos_fromEPC(epc):
     df = pd.read_csv(strFileEPC_total, sep=sDivTab)
     result = get_value_by_key_fromDF(df, MAPFIELD.EPC.name, epc, key_pos)
+    return result
+
+def GetNodePos2_fromNode_ID(node_id):
+    df = pd.read_csv(strFileEPC_total, sep=sDivTab)
+    result = get_value_by_key_fromDF(df, TableInfo.NODE_ID.name, node_id, 'POS2')
     return result
 
 def GetNodePos_fromNode_ID(node_id):

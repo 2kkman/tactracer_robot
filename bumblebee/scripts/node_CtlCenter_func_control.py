@@ -757,19 +757,24 @@ def Tilting_old(tiltStatus : TRAY_TILT_STATUS):
 
 #라
 def TiltTableObstacleScan():
-    SetCameraMode(CameraMode.MAIN_LOW)
+    if getCurrentCamMode() != CameraMode.MAIN_LOW.value:
+        SetCameraMode(CameraMode.MAIN_LOW)
     Tilting(TRAY_TILT_STATUS.TiltTableObstacleScan)
 
 #아르코마커 수평탐색
 def TiltArucoScan(cropProfile=LidarCropProfile.CHECK_GROUND):
-    SetCameraMode(CameraMode.WIDE_LOW)
+    if getCurrentCamMode() != CameraMode.WIDE_LOW.value:
+        SetCameraMode(CameraMode.WIDE_LOW)
+    #SetCameraMode(CameraMode.WIDE_LOW)
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltDown)
     #Tilting(TRAY_TILT_STATUS.TiltFace)
 
 #주행모드.
 def TiltFace(cropProfile = LidarCropProfile.MOTOR_H):
-    SetCameraMode(CameraMode.MAIN_LOW)
+    if getCurrentCamMode() != CameraMode.MAIN_LOW.value:
+        SetCameraMode(CameraMode.MAIN_LOW)
+    #SetCameraMode(CameraMode.MAIN_LOW)
     SetLidarCrop(cropProfile)
     Tilting(TRAY_TILT_STATUS.TiltFace)
     ClearDistanceBox()
@@ -782,7 +787,8 @@ def TiltServFinish(cropProfile = LidarCropProfile.MOTOR_V):
   dicSet = { LIDAR_CROP_PARAMS.range_max_x.name : round(max(lsResult),3)} 
   Tilting(TRAY_TILT_STATUS.TiltMax)
   SetDynamicConfigROS(dicSet)
-  SetCameraMode(CameraMode.FRONT_LOW)
+  if getCurrentCamMode() != CameraMode.FRONT_LOW.value:
+      SetCameraMode(CameraMode.FRONT_LOW)
 
 #20250427 - 1호기에서는 쓰이지 않음
 def TiltDetectingMonitor(cropProfile = LidarCropProfile.MOTOR_V):

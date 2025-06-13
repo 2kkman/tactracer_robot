@@ -2,6 +2,13 @@
 from node_CtlCenter_import import *
 import node_CtlCenter_globals
 
+def getCurrentCamMode():
+  camid = int(node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.ACTIVATED_CAM.name,MIN_INT))
+  img_width = int(node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.IMG_WIDTH.name,MIN_INT))
+  img_height = int(node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.IMG_HEIGHT.name,MIN_INT))
+  camStr = f"camid={camid}{sDivItemComma}{img_width}{sDivItemComma}{img_height}"
+  return camStr
+
 def isCharging():
   ischarge= str(node_CtlCenter_globals.dic_BMS.get(MonitoringField_BMS.battery_status.name,"UNKNOWN")).upper()  
   return ischarge.find('DIS') < 0

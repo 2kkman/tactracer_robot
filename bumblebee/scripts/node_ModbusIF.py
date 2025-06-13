@@ -132,6 +132,7 @@ dic_485Inverted = {}
 dic_485pollLen = {}
 dic_485pollRate = {}
 dic_topics = {}
+dic_topics_gpi = {}
 dic_status = {}
 dicConfigTmp = {}
 dicConfigInitReverse = {}
@@ -436,6 +437,7 @@ def Setup(mbidCur=None):
     global dicConfigInitReverse
     global dicInitTimeStamp
     global iTryCheckModbus
+    global dic_topics_gpi
     #global dic_485TorQueLimitInfo
     # ModbusConfig.txt 를 읽어들인다.
     isSetupNow = True
@@ -560,6 +562,11 @@ def Setup(mbidCur=None):
                 pub_kpalive = rospy.Publisher(
                     f"{TopicName.MB_.name}{mbid}", String, queue_size=ROS_TOPIC_QUEUE_SIZE
                 )
+                pub_GPI = rospy.Publisher(
+                    f"{TopicName.GPI_.name}{mbid}", String, queue_size=ROS_TOPIC_QUEUE_SIZE
+                )
+                if mbid not in lsSlowDevices:
+                    dic_topics_gpi[mbid] = pub_GPI
                 dic_topics[mbid] = pub_kpalive
                 dic_485ctl[mbid] = instrumentH
                 dic_485cmd[mbid] = dicConfigcmd
@@ -1461,7 +1468,7 @@ while not rospy.is_shutdown():
                     dic_status[modbusID] = {}
                   dic_status[modbusID].update(return485data)
                   sendbuf = getStr_fromDic(dic_status[modbusID], sDivFieldColon, sDivItemComma)
-                  dic_topics[modbusID].publish(sendbuf)
+                  dic_topics[modbusID].publish(sendbuf)                  
                   int485id = int(modbusID)
                   # motorOpCheck = dic_485ack[int485id]
 
@@ -1475,6 +1482,9 @@ while not rospy.is_shutdown():
                   flagHOME = return485data.get(f"{MonitoringField.DI_HOME.name}", None)
                   flagSPD = return485data.get(f"{MonitoringField.CUR_SPD.name}", None)
                   flagPOS = return485data.get(f"{MonitoringField.CUR_POS.name}", None)
+                  if  isTrue(flagESTOP) or isTrue(flagNOT) or isTrue(flagPOT) or isTrue(flagHOME):
+                    dic_topics_gpi[modbusID].publish(sendbuf)
+
                   if isTrue(flagNOT):
                     cur_pos = try_parse_int(return485data.get(f"{MonitoringField.CUR_POS.name}"), MIN_INT)
                     if cur_pos != MIN_INT:  
