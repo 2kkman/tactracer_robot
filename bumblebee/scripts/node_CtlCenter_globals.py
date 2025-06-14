@@ -76,7 +76,7 @@ CROSS.txt 예제 (교차로 정보)
 #100번 크로스 상태1 일때 시작점은 끊김(-1) , 끝점은 91와 연결된 상태.
 """
 # 테이블을 제외한 분기기, 리프트, 엑세스 도어의 nodeID 가 등록된 변수
-StateInfo: Dict[str, list] = {}
+StateInfo: Dict[int, list] = {}
 
 #테이블 스캔시 스캔정보 임시저장.
 #노드의 시작+끝 값이 KEY, 아르코마커 dict 의 배열이 Value 가 됨.

@@ -915,7 +915,7 @@ def callbackModbus(data,topic_name):
         #shake_level = try_parse_float(node_CtlCenter_globals.dicARD_CARRIER.get(CARRIER_STATUS.SHAKE_TRAY.name,0))
         shake_level = try_parse_float(node_CtlCenter_globals.dicARD_CARRIER.get(DataKey.MOVE_LEVEL.name,0))
         if node_CtlCenter_globals.dicModbusShakeLevel.get(mbid) is None:
-          node_CtlCenter_globals.dicModbusShakeLevel[mbid] = []
+            node_CtlCenter_globals.dicModbusShakeLevel[mbid] = []
         node_CtlCenter_globals.dicModbusShakeLevel[mbid].append(shake_level)
         #if mbid == str(ModbusID.BAL_ARM1.value):
         node_CtlCenter_globals.dicTopicCallbackTimeStamp[topic_name] = getDateTime()

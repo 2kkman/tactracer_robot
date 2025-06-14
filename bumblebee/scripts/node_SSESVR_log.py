@@ -1604,61 +1604,16 @@ def service_cross():
     global dicLastCross
     global isMotorH_Calied
     try:
-        now = time.time()
         #recvJunctionStatus=immutable_multi_dict_to_dict(request.args)
         recvJunctionStatus=request.args.to_dict()
         recvJunctionStatus[MonitoringField.LASTSEEN.name]=getDateTime().timestamp()
         dicLastCross.update(recvJunctionStatus)
         data_out = json.dumps(recvJunctionStatus)
-        pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
-        dic_tof = shared_data.get(topicName_TOF,{})
-        #lsCheckArms = [pos_BAL1,pos_BAL2,pos_ServArm]
-        pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
-        distance_tof = GetTofDistance()
-        cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
-        x,y=calculate_coordinates(pos_ServArm_mm,cur_angle540)
-        cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
-        cur_pos_mm = pulseH_to_distance(pos_MotorH)
-        currentAngle_arm1 =round(mapRange(pos_BAL1,0,pot_arm1,0,90))
-        di_pot = dicLastMotor15.get(sDI_POT)
-        dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))
-        diff_pos = dicPostion.get(MotorWMOVEParams.DIFF_POS.name, roundPulse)
-        curNode_type = str(dicPostion.get(RFID_RESULT.EPC.name))
-        node_id = dicPostion.get(TableInfo.NODE_ID.name)
-        isOKPos = True if diff_pos < roundPulse else False
-        if not isMotorH_Calied:
-            if curNode_type.find(strNOTAG) >= 0 and (is_equal(di_pot,0) and not isOKPos) and isRealMachine:
-                TTSAndroid('주행 캘리브레이션을 완료해주세요.',10)
-            else:
-                isMotorH_Calied = True
-        table_id = find_most_similar_table_id(node_id,distance_tof,cur_angle540)
-        dicPostion[ARUCO_RESULT_FIELD.X.name]=x
-        dicPostion[ARUCO_RESULT_FIELD.Y.name]=y
-        dicPostion[TableInfo.TABLE_ID.name]=table_id
-        dicPostion[MonitoringField.DI_POT.name]=di_pot
-        dicPostion[TableInfo.SERVING_ANGLE.name]=cur_angle540
-        dicPostion[TableInfo.MARKER_ANGLE.name]=cur_angle360
-        dicPostion['cur_pos_mm']=cur_pos_mm
-        dicPostion[TableInfo.SERVING_DISTANCE.name]=distance_tof
-        dicPostion['currentAngle_arm1']=currentAngle_arm1
-        dicPostion['onScaning']=onScaning()
-        
-        data_out2 = json.dumps(dicPostion)
-        dicLastPosition.update(dicPostion)
-        pub_BLB_POS.publish(data_out2)
-
         pub_BLB_CROSS.publish(data_out)
+
         cur_pos =  recvJunctionStatus.get(MonitoringField.CUR_POS.name, None)
         ipaddr = recvJunctionStatus.get(CALLBELL_FIELD.IP.name, None)
         devID = GetLastString(ipaddr, ".")
-        
-        if now - service_last_cmd_time > cmdIntervalSec:
-            bSmartPlugAlive = handle_charge()
-            if bSmartPlugAlive:
-                service_last_cmd_time = now
-            else:
-                service_last_cmd_time = now + 60
-
         if cur_pos is not None:
             cur_pos = int(cur_pos)
             status = -1
@@ -1674,7 +1629,7 @@ def service_cross():
         logSSE_error(traceback.format_exc())
         rospy.logerr(f"데이터 처리 오류: {e}")
         return GetErrResponse(e)  
-    return {"message": f"{request.method},{request.args}"}, 200  
+    return {True: status }, 200  
 
 @app.route('/CHARGE', methods=['GET'])
 def service_charge():
@@ -2057,7 +2012,6 @@ def service_cmd_device():
                 if control540 != MIN_INT:
                     bResult,bExecuteMsg=RotateMotor540(control540,filter_rate,False)
                     reponseCode = 200 if bResult else 400
-                
                     
             return {bResult:bExecuteMsg}, reponseCode
         elif control360 != MIN_INT:
@@ -2350,6 +2304,66 @@ def handle_connect():
     except:
         pass
     
+def publish_cross():
+    global service_last_cmd_time
+    global dicLastPosition
+    global dicLastCross
+    global isMotorH_Calied
+    
+    time.sleep(5) 
+    while True:
+        try:
+            pos_BAL1,pos_BAL2,pos_LiftV,pos_540,pos_360,pos_ServArm,pos_MotorH = GetAllMotorPos()
+            pos_ServArm_mm = GetTargetLengthMMServingArm(pos_ServArm)
+            distance_tof = GetTofDistance()
+            cur_angle540=abs(GetRotateMainAngleFromPulse(pos_540))
+            x,y=calculate_coordinates(pos_ServArm_mm,cur_angle540)
+            cur_angle360=GetRotateTrayAngleFromPulse(pos_360)
+            cur_pos_mm = pulseH_to_distance(pos_MotorH)
+            currentAngle_arm1 =round(mapRange(pos_BAL1,0,pot_arm1,0,90))
+            di_pot = dicLastMotor15.get(sDI_POT)
+            dicPostion=GetNodeDicFromPos(dfNodeInfo,pos_MotorH,isTrue(di_pot))
+            diff_pos = dicPostion.get(MotorWMOVEParams.DIFF_POS.name, roundPulse)
+            curNode_type = str(dicPostion.get(RFID_RESULT.EPC.name))
+            node_id = dicPostion.get(TableInfo.NODE_ID.name)
+            isOKPos = True if diff_pos < roundPulse else False
+            if not isMotorH_Calied:
+                if curNode_type.find(strNOTAG) >= 0 and (is_equal(di_pot,0) and not isOKPos) and isRealMachine:
+                    TTSAndroid('주행 캘리브레이션을 완료해주세요.',10)
+                else:
+                    isMotorH_Calied = True
+            table_id = find_most_similar_table_id(node_id,distance_tof,cur_angle540)
+            dicPostion[ARUCO_RESULT_FIELD.X.name]=x
+            dicPostion[ARUCO_RESULT_FIELD.Y.name]=y
+            dicPostion[TableInfo.TABLE_ID.name]=table_id
+            dicPostion[MonitoringField.DI_POT.name]=di_pot
+            dicPostion[TableInfo.SERVING_ANGLE.name]=cur_angle540
+            dicPostion[TableInfo.MARKER_ANGLE.name]=cur_angle360
+            dicPostion['CUR_POS']=pos_MotorH
+            dicPostion['CUR_POS_MM']=cur_pos_mm
+            dicPostion[TableInfo.SERVING_DISTANCE.name]=distance_tof
+            dicPostion['currentAngle_arm1']=currentAngle_arm1
+            dicPostion['onScaning']=onScaning()
+            data_out2 = json.dumps(dicPostion)
+            dicLastPosition.update(dicPostion)
+            pub_BLB_POS.publish(data_out2)
+        except Exception as e:
+            print("Error calling /CROSS:", e)
+        time.sleep(0.2)
+    
+def publish_smartplug():
+    global service_last_cmd_time
+    global dicLastPosition
+    global dicLastCross
+    global isMotorH_Calied
+    now = time.time()
+    if now - service_last_cmd_time > cmdIntervalSec:
+        bSmartPlugAlive = handle_charge()
+        if bSmartPlugAlive:
+            service_last_cmd_time = now
+        else:
+            service_last_cmd_time = now + 60
+
 def publish_loop():
     time.sleep(5) 
     while True:
@@ -2433,14 +2447,12 @@ def monitor_dict():
         time.sleep(CHECK_INTERVAL)
 
 def start_background_thread():
-    # thread_monitor = threading.Thread(target=monitor_dict)
-    # thread_monitor.daemon = True  # Flask 종료 시 함께 종료
-    # thread_monitor.start()
-
-    if not isRealMachine:
+    if isRealMachine:
+        thread = threading.Thread(target=publish_smartplug)
+    else:
         thread = threading.Thread(target=publish_loop)
-        thread.daemon = True  # Flask 종료 시 함께 종료
-        thread.start()
+    thread.daemon = True  # Flask 종료 시 함께 종료
+    thread.start()
 
 if __name__ == "__main__":
     try:
@@ -2450,6 +2462,7 @@ if __name__ == "__main__":
         loaded_data2 = load_csv_to_dict(csvPathalarm, sort_ascending=False)
         shared_data[TopicName.HISTORY_ALARM.name] = loaded_data2
 
+        threading.Thread(target=publish_cross, daemon=True).start()
         threading.Thread(target=update_data, daemon=True).start()
         start_background_thread()
 
