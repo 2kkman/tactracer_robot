@@ -1652,7 +1652,7 @@ def service_ros():
     resp_cd = 400
     try:
         key = request.args.get('key')
-        value = request.args.get('val')
+        value = request.args.get('value')
         if key is None:
             return get_all_ros_params()
             bMsg = ALM_User.CMD_FORMAT_INVALID.value

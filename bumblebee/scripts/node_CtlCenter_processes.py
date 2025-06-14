@@ -1093,13 +1093,11 @@ def MotorBalanceControlEx(bSkip):
                     LightTrayCell(TraySector.Cell1.value,LightBlink.Normal.value,LightColor.BLUE.value)                        
                 
                 currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
-                if curNode != node_KITCHEN_STATION:
-                    TTSServer(f'로봇이 {curTargetTable} 번 테이블에 도착하였습니다.')
-
                 #fileAge = get_file_modification_age_seconds(strFileTableNodeEx)
                 if doorStatus == TRAYDOOR_STATUS.CLOSED:
                 #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
                     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
+                    TTSAndroid("문이 열립니다.")
                     if curNode == node_KITCHEN_STATION:
                         DoorOpen()
                     elif dfReceived is None:

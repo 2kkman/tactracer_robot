@@ -407,7 +407,11 @@ def callbackAck(data,topic_name='' ):
                 #         rospy.loginfo(dicScore)
 
                 if isLiftTrayDown and node_current is not None:
+                    if node_current != node_KITCHEN_STATION:
+                        TTSServer(f'로봇이 {curTargetTable} 번 테이블에 도착하였습니다.')
+                    
                     if doorStatus == TRAYDOOR_STATUS.CLOSED:
+                        TTSAndroid("문이 열립니다.")
                         currentWeight1,currentWeight2,currentWeightTotal = getLoadWeight()
                     #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
                         if node_current == node_KITCHEN_STATION:
