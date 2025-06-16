@@ -485,8 +485,9 @@ def CheckETCActions():
     releasePulse = round(roundPulse/10)
     cur_node = GetCurrentNode()
     DI_POT,DI_NOT,DI_HOME,SI_POT = GetPotNotHomeStatus(ModbusID.MOTOR_H)
+    r1,r2,r_total = getLoadWeight()
     if isRealMachine and cur_node == node_KITCHEN_STATION and isTrue(DI_POT) and IsOrderEmpty():
-        r1,r2,r_total = getLoadWeight()
+        
         node_CtlCenter_globals.DefaultGndDistance = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))
         #로드셀 오차가 시간이 지날수록 -값이 누적된다.
         #로드셀 -20g 이하 값이 될때 로드셀 초기화한다
@@ -533,7 +534,8 @@ def CheckETCActions():
     td = getDateTime() - dtV
     tds = td.total_seconds()
     print(tds)
-    if isTimeExceeded(dtV,12000) and not isReadyToMoveH_and_540() and cur_node == node_KITCHEN_STATION and IsOrderEmpty():
+    #if  r1 < WEIGHT_OCCUPIED and r2 < WEIGHT_OCCUPIED:
+    if isTimeExceeded(dtV,3600000) and not isReadyToMoveH_and_540() and cur_node == node_KITCHEN_STATION and IsOrderEmpty():
         node_CtlCenter_globals.listBLB.extend(BLB_CMD_Profile('1,26'))
     
 def CheckETCAlarms():
@@ -887,6 +889,7 @@ def MotorBalanceControlEx(bSkip):
                         min_notStarted_detailcode = dfReceived[dfReceived[key_detailcode] > iDetailcode][key_detailcode].min()
                         dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, APIBLB_FIELDS_NAVI.workstatus.name] = curState
                         dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'comments'] = getDateTime().timestamp()
+                        dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'nodetype'] = spd_cur_H
                         #PrintDF(dfReceived)
                         #서버로 전송
                         STATUS_TASK=APIBLB_STATUS_TASK.Running
@@ -1069,7 +1072,7 @@ def MotorBalanceControlEx(bSkip):
                     bins_points = 0
                     isCoolTimePassed = False
                     imgCurPath = getimage_file_from_mjpeg(url=f'https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam', prefix=table_id, save_dir=save_dir_download, timeout=5)
-                    TiltFace()
+                    #TiltFace()
                     if imgCurPath is not None and angle_y != 0 and table_id is not None:
                     #if imgPath is not None and angle_y is not None and isCoolTimePassed:
                         imgGoldSampleFilename = f'{table_id}.jpg'
@@ -1097,7 +1100,7 @@ def MotorBalanceControlEx(bSkip):
                 if doorStatus == TRAYDOOR_STATUS.CLOSED:
                 #if doorStatus == TRAYDOOR_STATUS.CLOSED and fileAge > 10:
                     rospy.loginfo(f"도어현재포지션:오픈포지션:POT-{cur_pos_lift}:{openTargetPos}:{pot_cur_lift}")
-                    TTSAndroid("문이 열립니다.")
+                    #TTSAndroid('유투브에서 범블비 서빙로봇을 검색하세요')
                     if curNode == node_KITCHEN_STATION:
                         DoorOpen()
                     elif dfReceived is None:
@@ -1373,13 +1376,13 @@ def GenerateServingTableList():
                     if workstatusLast is None or int(workstatusLast) != APIBLB_STATUS_TASK.Completed.value:
                         if workstatusFirst is not None and int(workstatusLast) != APIBLB_STATUS_TASK.Ideal.value:
                             rospy.loginfo_throttle(20, '작업이 완료되지 않았습니다')
-                            resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,APIBLB_STATUS_TASK.Completed)
                             SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name])
                             print(f"API RESULT:{resultAPI},{nodeReturn}")
                             if isRealMachine:
                                 dfReceived.iloc[-1, dfReceived.columns.get_loc('comments')] = getDateTime().timestamp()
                                 dicTest= extract_dicTest(dfReceived)
                                 PrintDF(insert_or_update_row_to_csv(strFileServiceData,sDivTab,dicTest,'mastercode'))                            
+                            resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,APIBLB_STATUS_TASK.Completed)
                             RemoveDF()
                             #print(SetTaskCompleted(dicFirst[APIBLB_FIELDS_TASK.taskid.name]))
                             return
@@ -1636,10 +1639,12 @@ def GenerateServingTableList():
                     rospy.loginfo(f"타겟노드 정보가 없습니다. {targetNode}")
                     raise ValueError(f"타겟노드 정보가 없습니다. {targetNode}")
                 targetNodeType = targetNodeInfo[RFID_RESULT.EPC.name]
+                startNode = dicStartNode[SeqMapField.START_NODE.name]
                 if targetNodeType.find(strNOTAG) < 0:   #도그가 없는 가상 노드가 목적지인 경우 목적지에서 가장 가까운 도그가 있는 노드를 경유한다
-                    dicNodeNear = GetNodeDicFromPos(dfNodeInfo,targetPOS,True)
-                    nearNode = dicNodeNear[TableInfo.NODE_ID.name]
-                    startNode = dicStartNode[SeqMapField.START_NODE.name]
+                    nearNode = find_nearest_valid_node(dfNodeInfo,targetNode)
+                    #dicNodeNear = GetNodeDicFromPos(dfNodeInfo,targetPOS,True)
+                    #dicNodeNear = GetNodeDic_fromNodeID(nearNode)
+                    #nearNode = dicNodeNear[TableInfo.NODE_ID.name]
                     isPathValid = len(node_CtlCenter_globals.listBLB) > 1 and node_CtlCenter_globals.listBLB[-2][SeqMapField.END_NODE.name] == nearNode
                     if not isPathValid and not (targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
                     #if not isPathValid and not (startNode < 4 and targetNode < 4) and nearNode != node_KITCHEN_STATION and nearNode != GetCurrentNode(): 
@@ -1648,6 +1653,13 @@ def GenerateServingTableList():
                         node_CtlCenter_globals.listBLB.clear()
                         node_CtlCenter_globals.listBLB.extend(lsNode1)
                         node_CtlCenter_globals.listBLB.extend(lsNode2)
+                elif targetNode == node_EXCEPTION:
+                    nearNode = 20
+                    lsNode1,listSeqMapOrg1=getSeqMap(startNode,nearNode)
+                    lsNode2,listSeqMapOrg2=getSeqMap(nearNode,targetNode)
+                    node_CtlCenter_globals.listBLB.clear()
+                    node_CtlCenter_globals.listBLB.extend(lsNode1)
+                    node_CtlCenter_globals.listBLB.extend(lsNode2)
 
                 #if True:
                 if nodeTarget_local not in node_CtlCenter_globals.lsNoLiftDownNodes:

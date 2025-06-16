@@ -27,6 +27,7 @@ maxGYRO = 45
 aruco_lastDiff_Default = 100
 save_dir_download = "/root/Downloads"
 save_dir_goldsample = "/root/Downloads/tableImg"
+save_dir_nodesample = "/root/Downloads/nodeImg"
 machine_running_csv_filename = 'IsCleanTable.csv'
 machine_running_csv_filepath = os.path.join(save_dir_download,machine_running_csv_filename)
 
@@ -196,7 +197,7 @@ dirCommonMap =f"{getConfigPath(UbuntuEnv.COMMON.name)}/map"
 dirCommonMotor =f"{getConfigPath(UbuntuEnv.COMMON.name)}/motor"
 dirCommonCali =f"{getConfigPath(UbuntuEnv.COMMON.name)}/cali"
 dirCommonParser =f"{getConfigPath(UbuntuEnv.COMMON.name)}/parser"
-dirCommonStatus =f"{getConfigPath(UbuntuEnv.COMMON.name)}/status"
+dirCommonStatus =f"{save_dir_download}/nodeImg"
 
 filePath_param_parse = f"{dirCommonParser}/param_SD.txt"
 # Main configuration files
@@ -297,14 +298,15 @@ def log_all_frames(logmsg='',max_frames=3):
 
 def extract_dicTest(df: pd.DataFrame) -> dict:
     # 마지막 row 기준 mastercode, endnode
+    first_row = df.iloc[0]
     last_row = df.iloc[-1]
     mastercode = int(last_row['mastercode']) if pd.notnull(last_row['mastercode']) else None
     endnode = str(last_row['endnode'])
-
+    total_weight =  str(first_row['nodetype'])
     # distance 합계
     #total_distance = df['distance'].sum()
     total_distance = df.iloc[:-1]['distance'].sum()
-    total_weight = abs(pd.to_numeric(df['nodetype'], errors='coerce').max(skipna=True) or 0)
+    #total_weight = abs(pd.to_numeric(df['nodetype'], errors='coerce').max(skipna=True) or 0)
 
     # comments 컬럼에서 최소/최대 (NaN 제외)
     if 'comments' in df.columns:
@@ -844,6 +846,9 @@ class RailNodeInfo(Enum):
     NONE = auto()
     R_END = auto()
     R_START = auto()
+    B_END = auto()
+    B_START = auto()
+    
 strNOTAG = RailNodeInfo.NOTAG.name    
 
 class ARUCO_RESULT_FIELD(Enum):
@@ -1145,6 +1150,12 @@ class DisconnectedNodeError(GraphError):
     def __init__(self, message="There are disconnected nodes"):
         self.message = message
         super().__init__(self.message)
+
+def PrintDF(dfReceived):
+  if dfReceived is None or dfReceived.empty:
+    return
+  columns_to_keep = [field.name for field in APIBLB_FIELDS_TASK if field.name in dfReceived.columns]
+  log_all_frames(dfReceived[columns_to_keep].to_string())  
 
 
 def generate_table_info(new_csv_path: str, table_info_path: str,pot_540,pot_360):
@@ -1454,7 +1465,7 @@ def API_call(svrIP=BLB_SVR_IP_DEFAULT, port=BLB_SVR_PORT_DEFAULT,baseDir = 'api/
             strResult = response.text
             bReturn = True
         else:
-            strResult=(f"err url:{url}. code: {response.status_code}")
+            strResult=(f"err url:{url},{response.text}:{response.status_code}")
     except requests.exceptions.RequestException as e:
         strResult=(f"An error occurred: {e}")
     #master_uri = GetUbutuParam(UbuntuEnv.ROS_MASTER_URI.name)
@@ -1508,14 +1519,24 @@ def API_call_http(svrIP=BLB_SVR_IP_DEFAULT, port=9000,serviceName=APIBLB_METHODS
             strResult = response.text
             bReturn = True
         else:
-            strResult=(f"err url:{url}. code: {response.status_code}")
+            strResult=(f"err url:{url},{response.text}:{response.status_code}")
     except requests.exceptions.RequestException as e:
         strResult=(f"An error occurred: {e}")
     #master_uri = GetUbutuParam(UbuntuEnv.ROS_MASTER_URI.name)
     #IP_MASTER = extract_hostname_from_uri(master_uri)
-    if svrIP != IP_MASTER:
-        log_all_frames(url)
-        print(strResult)        
+    sMsg = f'{url}->{bReturn},{strResult}'    
+    if svrIP == IP_MASTER:
+        logger_local.info(sMsg)
+        #logger_local.pretty(url=url,result=bReturn,response=strResult)
+    elif port == HTTP_COMMON_PORT:
+        #logger_android.info(sMsg)
+        logger_android.pretty(url=url,result=bReturn,response=strResult)
+    else:
+        logger_svr.pretty(url=url,result=bReturn,response=strResult)
+    
+    # if svrIP != IP_MASTER:
+    #     log_all_frames(url)
+    #     print(strResult)        
     return bReturn,strResult
 
 
@@ -1603,12 +1624,16 @@ def API_robot_navigation_info(df=pd.DataFrame(),STATUS_TASK=APIBLB_STATUS_TASK.R
     #final_statoin = dicLast[APIBLB_FIELDS_TASK.endnode.name]
     final_station = dicLast[APIBLB_FIELDS_TASK.startnode.name]
     
-    task_status = dicLast[APIBLB_FIELDS_TASK.workstatus.name]
+    task_status = int(dicLast[APIBLB_FIELDS_TASK.workstatus.name])
     if task_status == APIBLB_STATUS_TASK.Completed.value:
         mst_status = APIBLB_STATUS_TASK.Completed.value
         current_node = dicLast[APIBLB_FIELDS_TASK.startnode.name]
         current_task = dicLast[APIBLB_FIELDS_TASK.detailcode.name]
         start_station = current_node
+        curTime = getCurrentTime('',True)
+        fname = f'{curTime}_{endnode}.txt'
+        jobFileFullPath= os.path.join(dirCommonStatus, fname)
+        df.to_csv(jobFileFullPath, index=False, sep=sDivTab)
     elif task_status == APIBLB_STATUS_TASK.NONE.value:
         mst_status = APIBLB_STATUS_TASK.Ideal.value
         task_status=mst_status
@@ -1655,8 +1680,11 @@ def API_robot_navigation_info(df=pd.DataFrame(),STATUS_TASK=APIBLB_STATUS_TASK.R
                     APIBLB_FIELDS_NAVI.current_station.name:current_node
                   }
     API_call(serviceName=APIBLB_METHODS_POST.robot_Current_node_info.name,fieldValue=urllib.parse.urlencode(dictReplyTable2))
+    
     return API_call(svrIP=BLB_SVR_IP_DEFAULT,serviceName=APIBLB_METHODS_GET.robot_navigation_info.name, fieldValue=urllib.parse.urlencode(dictReplyTable)), current_node
-
+# df = pd.read_csv(strRecvDF, sep=sDivTab)
+# a,b = API_robot_navigation_info(df,APIBLB_STATUS_TASK.Completed)
+# print(a,b)
 def API_public_strtopic(topic, dictParam):
     dictParam['topic'] = topic
     json_str = json.dumps(dictParam)
@@ -3949,14 +3977,16 @@ def get_warning_ranges(margin=10000,offset=-MOVE_H_WHOLE_LOOP):
         ranges.extend([original, offset_applied])
     return ranges
     
-print(get_warning_ranges())
+print(get_warning_ranges(roundPulse, 0))
 def is_in_warning_zone(pos):
-    warning_ranges = get_warning_ranges()
+    warning_ranges = get_warning_ranges(roundPulse, 0)
+    print(warning_ranges)
     """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
     return any(start <= pos <= end for start, end in warning_ranges)
 
 def is_in_slow_zone(pos):
-    slow_ranges = get_slow_ranges()
+    slow_ranges = get_slow_ranges(roundPulse, 0)
+    print(slow_ranges)
     """특정 위치값 pos가 주의 구간 내에 있는지 판단"""
     return any(start <= pos <= end for start, end in slow_ranges)
 
@@ -4717,12 +4747,6 @@ def remove_adjacent_duplicates(data):
 
     return result
   
-def PrintDF(dfReceived):
-  if dfReceived is None or dfReceived.empty:
-    return
-  columns_to_keep = [field.name for field in APIBLB_FIELDS_TASK if field.name in dfReceived.columns]
-  log_all_frames(dfReceived[columns_to_keep].to_string())  
-
     # PrintDF(temp_recv)
     # print(temp_getseq)
     # # 컬럼 타입을 정수로 변환

@@ -122,7 +122,7 @@ def callbackAck(data,topic_name='' ):
         #     endNodeRFID = get_key_by_value(node_CtlCenter_globals.EPCNodeInfo, endNode)
         #     if endNodeRFID is not None:
         #       lastSeenEPC = node_CtlCenter_globals.dicRFIDTmp.get(endNodeRFID, DATETIME_OLD)
-        #       cali_pulse = 200000
+        #       akjium nbbb b b b b b b _pulse = 200000
         #       if try_parse_int(torque_ave) < 0:
         #         cali_pulse = cali_pulse * -1
         #       dicCali = getMotorMoveDic(ModbusID.MOTOR_H.value, False, cali_pulse, DEFAULT_RPM_SLOWER,ACC_MOVE_H,DECC_MOVE_H)
@@ -247,7 +247,7 @@ def callbackAck(data,topic_name='' ):
                     avg_values = calculate_average_values(GetArucoMarkerDict())
                     print_average_values(avg_values)
 
-            # # 수평모터 구동이 완료된 경우 다음목적지로 이동해야 한다.
+            # # 수평모터 구동이 완료된 경우 다음목적지로 이동해야  한다.
             # if mbid_tmp == (str)(ModbusID.MOTOR_H.value):
             #     # 다음 목적지가 없으면 (node_target == 0) 운행 종료
             #     # 다음목적지가 있으면 현재 노드를 node_target 으로 변경하고 node_target = 0 처리
@@ -547,7 +547,7 @@ def callBackLidarDistance(data,topic_name='' ):
         SendAlarmHTTP(e,True,node_CtlCenter_globals.BLB_ANDROID_IP)
         # SendFeedback(e)
 
-
+lastNodeH = NODE_KITCHEN
 def callbackBLB_CMD(data,topic_name=''):
     """_summary_
         /BLB_CMD 토픽, 즉 UI, 혹은 MQTT 등에서 날라오는 명령어를 모니터링
@@ -581,6 +581,7 @@ def callbackBLB_CMD(data,topic_name=''):
                 node_CtlCenter_globals.enableSvrPath = True
                 if isReadyToMoveH_and_540() and isCharging() and IsOrderEmpty() and isRealMachine:
                     BLB_CMD_Profile('H1,T')
+                    TTSServer('서빙모드시작')
             return          
         elif APIBLB_FIELDS_ACTION.target.name in recvDataMap.keys():
           #target = 주행시작하라는 지시 확정 명령어
@@ -830,6 +831,7 @@ def callbackModbus(data,topic_name):
         BUS_TEMP:35,OVER_LOAD:0,CMD_POS:100000,CUR_POS:100000,DI_NOT:0,DI_POT:0,DI_HOME:0,
         DI_ESTOP:1,DI_02:0,DI_01:0,DO_02:3,DO_01:1,LASTSEEN:1707275473.4336,MBID:15"
     """
+    global lastNodeH
     #global lock
     try:
         recvData = data.data
@@ -859,58 +861,103 @@ def callbackModbus(data,topic_name):
             node_CtlCenter_globals.dic_485ex[mbid].update(recvDataMap)
         else:
             node_CtlCenter_globals.dic_485ex[mbid] = recvDataMap
-        
         if topic_name == 'GPI_15':
+            curTargetTable,curTarNode = GetCurrentTargetTable()
+            dfReceived = GetDF(curTargetTable)           
             #1.특정 포인트를 지나칠때마다 dataframe 의 sub-jobid 의 상태를 업데이트 해야함.
-            cur_pos_h = try_parse_int(recvDataMap.get(MonitoringField.CUR_POS.name),MIN_INT)
-            if len(node_CtlCenter_globals.dicTargetPosFeedBack) > 0 and cur_pos_h != MIN_INT:
+            curpos_H = try_parse_int(recvDataMap.get(MonitoringField.CUR_POS.name),MIN_INT)
+            curspd_H = try_parse_int(recvDataMap.get(MonitoringField.CUR_SPD.name),MIN_INT)
+            dicCurNodeInfo=GetNodeDicFromPos(node_CtlCenter_globals.dfNodeInfo,curpos_H)
+            curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
+
+            if dfReceived is not None and dicCurNodeInfo and curNodeID_fromPulse != lastNodeH:
+            #if len(node_CtlCenter_globals.dicTargetPosFeedBack) > 0 and curpos_H != MIN_INT:
                 #rospy.loginfo(node_CtlCenter_globals.dicTargetPosFeedBack)
                 #dicTargetPosFeedBack value 가 sub-jobid 임.
-                curTargetTable,curTarNode = GetCurrentTargetTable()
-                dfReceived = GetDF(curTargetTable)                
-                keys_to_pop = [key for key in node_CtlCenter_globals.dicTargetPosFeedBack if abs(cur_pos_h - key) <= roundPulse * 3]
-                if keys_to_pop is not None and dfReceived is not None:
-                    for iPosCheckPoint in keys_to_pop:
-                        strDetailcode = node_CtlCenter_globals.dicTargetPosFeedBack.pop(iPosCheckPoint,None)
-                        rospy.loginfo(f'POP Value:{iPosCheckPoint},DetailCode:{strDetailcode}')
-                        iDetailcode = try_parse_int(strDetailcode)
-                        if strDetailcode is not None and iDetailcode > 0:
-                            #Pause 플래그가 걸려있는지 미리 확인한다.
-                            curState = APIBLB_STATUS_TASK.Running.value
-                            lsPaused = dfReceived[dfReceived[APIBLB_FIELDS_NAVI.workstatus.name] == APIBLB_STATUS_TASK.Paused.value].tail(1).to_dict(orient='records')
-                            if len(lsPaused) > 0:
-                                curState = APIBLB_STATUS_TASK.Paused.value
+                lastNodeH = curNodeID_fromPulse
+                dicCurNode = getDictFromDF(dfReceived, APIBLB_FIELDS_NAVI.endnode.name, curNodeID_fromPulse)
+                if len(dicCurNode) > 0:
+                    strDetailcode = dicCurNode.get(key_detailcode)
+                    comments = try_parse_float(dicCurNode.get('comments'))
+                    if comments > 0:
+                        return
+                    else:
+                        rospy.loginfo(f'Update NodeID:{curNodeID_fromPulse},comments:{comments}')
+                    iDetailcode = try_parse_int(strDetailcode)
+                    curState = APIBLB_STATUS_TASK.Running.value
+                    lsPaused = dfReceived[dfReceived[APIBLB_FIELDS_NAVI.workstatus.name] == APIBLB_STATUS_TASK.Paused.value].tail(1).to_dict(orient='records')
+                    if len(lsPaused) > 0:
+                        curState = APIBLB_STATUS_TASK.Paused.value
+                    # #detailcode 는 정수형태의 문자열로 오며 오름차순이므로 정수로 바꿔 비교한다
+                    # dfReceived[key_detailcode] = dfReceived[key_detailcode].astype(int)
+                    #방금 지나친 지점에 해당하는 detailcode 보다 낮은것들은 다 완료로 바꾼다
+                    dfReceived.loc[dfReceived[key_detailcode] <= iDetailcode, APIBLB_FIELDS_NAVI.workstatus.name] = APIBLB_STATUS_TASK.Completed.value
+                    #방금 지나친 지점에 해당하는 detailcode 보다 높은값들중 가장 작은걸 골라서 running 이나 pause 로 바꾼다
+                    min_notStarted_detailcode = dfReceived[dfReceived[key_detailcode] > iDetailcode][key_detailcode].min()
+                    dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, APIBLB_FIELDS_NAVI.workstatus.name] = curState
+                    dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'comments'] = getDateTime().timestamp()
+                    dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'lineyval'] = curspd_H
+                    #PrintDF(dfReceived)
+                    #서버로 전송
+                    STATUS_TASK=APIBLB_STATUS_TASK.Running
+                    if GetWaitConfirmFlag():
+                        STATUS_TASK=APIBLB_STATUS_TASK.Paused
+                    
+                    resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,STATUS_TASK)
+                    if nodeReturn is None:
+                        rospy.loginfo(resultAPI)
+                    else:
+                        SetCurrentNode(nodeReturn)
+                    # DataFrame을 리스트로 변환
+                    data_list = dfReceived.to_dict(orient="records")
+                    # 리스트를 JSON 문자열로 변환
+                    json_string = json.dumps(data_list, ensure_ascii=False)
+                    pub_DF.publish(json_string)
+                    node_current = GetCurrentNode()
+                    UpdateXY_nodeInfo(node_current)                
+                # keys_to_pop = [key for key in node_CtlCenter_globals.dicTargetPosFeedBack if abs(curpos_H - key) <= roundPulse * 3]
+                # if keys_to_pop is not None and dfReceived is not None:
+                #     for iPosCheckPoint in keys_to_pop:
+                #         strDetailcode = node_CtlCenter_globals.dicTargetPosFeedBack.pop(iPosCheckPoint,None)
+                #         rospy.loginfo(f'POP Value:{iPosCheckPoint},DetailCode:{strDetailcode}')
+                #         iDetailcode = try_parse_int(strDetailcode)
+                #         if strDetailcode is not None and iDetailcode > 0:
+                #             #Pause 플래그가 걸려있는지 미리 확인한다.
+                #             curState = APIBLB_STATUS_TASK.Running.value
+                #             lsPaused = dfReceived[dfReceived[APIBLB_FIELDS_NAVI.workstatus.name] == APIBLB_STATUS_TASK.Paused.value].tail(1).to_dict(orient='records')
+                #             if len(lsPaused) > 0:
+                #                 curState = APIBLB_STATUS_TASK.Paused.value
 
-                            # #detailcode 는 정수형태의 문자열로 오며 오름차순이므로 정수로 바꿔 비교한다
-                            # dfReceived[key_detailcode] = dfReceived[key_detailcode].astype(int)
-                            #방금 지나친 지점에 해당하는 detailcode 보다 낮은것들은 다 완료로 바꾼다
-                            dfReceived.loc[dfReceived[key_detailcode] <= iDetailcode, APIBLB_FIELDS_NAVI.workstatus.name] = APIBLB_STATUS_TASK.Completed.value
-                            #방금 지나친 지점에 해당하는 detailcode 보다 높은값들중 가장 작은걸 골라서 running 이나 pause 로 바꾼다
-                            min_notStarted_detailcode = dfReceived[dfReceived[key_detailcode] > iDetailcode][key_detailcode].min()
-                            dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, APIBLB_FIELDS_NAVI.workstatus.name] = curState
-                            dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'comments'] = getDateTime().timestamp()
-                            #PrintDF(dfReceived)
-                            #서버로 전송
-                            STATUS_TASK=APIBLB_STATUS_TASK.Running
-                            if GetWaitConfirmFlag():
-                                STATUS_TASK=APIBLB_STATUS_TASK.Paused
+                #             # #detailcode 는 정수형태의 문자열로 오며 오름차순이므로 정수로 바꿔 비교한다
+                #             # dfReceived[key_detailcode] = dfReceived[key_detailcode].astype(int)
+                #             #방금 지나친 지점에 해당하는 detailcode 보다 낮은것들은 다 완료로 바꾼다
+                #             dfReceived.loc[dfReceived[key_detailcode] <= iDetailcode, APIBLB_FIELDS_NAVI.workstatus.name] = APIBLB_STATUS_TASK.Completed.value
+                #             #방금 지나친 지점에 해당하는 detailcode 보다 높은값들중 가장 작은걸 골라서 running 이나 pause 로 바꾼다
+                #             min_notStarted_detailcode = dfReceived[dfReceived[key_detailcode] > iDetailcode][key_detailcode].min()
+                #             dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, APIBLB_FIELDS_NAVI.workstatus.name] = curState
+                #             dfReceived.loc[dfReceived[key_detailcode] == min_notStarted_detailcode, 'comments'] = getDateTime().timestamp()
+                #             #PrintDF(dfReceived)
+                #             #서버로 전송
+                #             STATUS_TASK=APIBLB_STATUS_TASK.Running
+                #             if GetWaitConfirmFlag():
+                #                 STATUS_TASK=APIBLB_STATUS_TASK.Paused
                             
-                            resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,STATUS_TASK)
-                            if nodeReturn is None:
-                                rospy.loginfo(resultAPI)
-                            else:
-                                SetCurrentNode(nodeReturn)
-                            # DataFrame을 리스트로 변환
-                            data_list = dfReceived.to_dict(orient="records")
-                            # 리스트를 JSON 문자열로 변환
-                            json_string = json.dumps(data_list, ensure_ascii=False)
-                            pub_DF.publish(json_string)
-                            node_current = GetCurrentNode()
-                            UpdateXY_nodeInfo(node_current)
-                            # if len(node_CtlCenter_globals.lsHistory_motorH) > 1:
-                            #   node_CtlCenter_globals.lsHistory_motorH[-1][SeqMapField.END_NODE.name]=int(node_current)
-                        # else:   #Stand alone mode
-                        #     node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
+                #             resultAPI, nodeReturn = API_robot_navigation_info(dfReceived,STATUS_TASK)
+                #             if nodeReturn is None:
+                #                 rospy.loginfo(resultAPI)
+                #             else:
+                #                 SetCurrentNode(nodeReturn)
+                #             # DataFrame을 리스트로 변환
+                #             data_list = dfReceived.to_dict(orient="records")
+                #             # 리스트를 JSON 문자열로 변환
+                #             json_string = json.dumps(data_list, ensure_ascii=False)
+                #             pub_DF.publish(json_string)
+                #             node_current = GetCurrentNode()
+                #             UpdateXY_nodeInfo(node_current)
+                #             # if len(node_CtlCenter_globals.lsHistory_motorH) > 1:
+                #             #   node_CtlCenter_globals.lsHistory_motorH[-1][SeqMapField.END_NODE.name]=int(node_current)
+                #         # else:   #Stand alone mode
+                #         #     node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
                 else:
                     rospy.loginfo_throttle(10,node_CtlCenter_globals.dicTargetPosFeedBack)
             return

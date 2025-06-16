@@ -396,6 +396,7 @@ def method4_local_binary_pattern(img1, img2):
     similarity = 1 - cosine(hist1, hist2)
     return max(0, similarity)
 
+
 def method1_sift_feature_matching(img1, img2):
     """SIFT 특징점 매칭을 통한 유사도 계산"""
     # 그레이스케일 변환
@@ -2579,6 +2580,34 @@ def get_closest_value(data_dict, target_key):
 def find_closest_value(arr, target):
     return min(arr, key=lambda x: (abs(x - target), x))
 
+def find_nearest_valid_node(dfNodeInfo: pd.DataFrame, node_id: int) -> int:
+    # 현재 노드의 위치(POS) 추출
+    current_node = dfNodeInfo[dfNodeInfo['NODE_ID'] == node_id]
+    if current_node.empty:
+        raise ValueError(f"NODE_ID {node_id} not found in the DataFrame")
+
+    pos_ref = current_node.iloc[0]['POS']
+
+    # 제외할 EPC 키워드
+    excluded_keywords = ['NONE', 'B_START', 'B_END']
+
+    # 유효한 EPC만 필터링
+    def is_valid_epc(epc: str):
+        return not any(keyword in epc for keyword in excluded_keywords)
+
+    df_candidates = dfNodeInfo[dfNodeInfo['NODE_ID'] != node_id].copy()
+    df_candidates = df_candidates[df_candidates['EPC'].apply(is_valid_epc)]
+
+    # POS 기준 거리 계산
+    df_candidates['distance'] = np.abs(df_candidates['POS'] - pos_ref)
+
+    # 가장 가까운 노드 반환
+    if df_candidates.empty:
+        return None  # 유효 노드 없음
+
+    nearest_node_id = df_candidates.loc[df_candidates['distance'].idxmin(), 'NODE_ID']
+    return int(nearest_node_id)
+    
 def safe_read_json(json_str):
   try:
     #   # json_str 이 None 이거나 유효하지 않으면 빈 DataFrame 반환
@@ -2847,6 +2876,44 @@ def compute_position(target_marker,current_marker):
     distance, angleD = compute_final_position_and_angle(movements)
     print(distance, angleD)
     return distance, (angleD+270)%360
+
+def find_most_similar_image(sample_path, folder_path, extension):
+    sample_img = cv2.imread(sample_path)
+    if sample_img is None:
+        raise ValueError(f"Sample image not found: {sample_path}")
+
+    best_similarity = -1
+    best_match_path = None
+
+    for filename in os.listdir(folder_path):
+        if filename.lower().endswith(extension.lower()):
+            compare_path = os.path.join(folder_path, filename)
+            compare_img = cv2.imread(compare_path)
+            if compare_img is None:
+                continue
+
+            try:
+                #similarity = method1_sift_feature_matching(sample_img, compare_img)    #느리지만 정확
+                similarity = method2_orb_feature_matching(sample_img, compare_img)     
+                #similarity = method4_histogram_comparison(sample_img, compare_img)      #못 쓰겠음
+                #similarity = method5_edge_based_comparison(sample_img, compare_img)  #성공
+                #similarity = method4_local_binary_pattern(sample_img, compare_img)  #일부분만 비교할때, 위치 비교는 별로
+                print(compare_path,similarity)
+                if similarity > best_similarity:
+                    best_similarity = similarity
+                    best_match_path = compare_path
+            except Exception as e:
+                print(f"Error comparing {compare_path}: {e}")
+
+    return best_match_path, best_similarity
+
+# best_match_path, best_similarity=find_most_similar_image(
+#     '/root/Downloads/1_0_False.jpg',
+#     '/root/Downloads/nodeImg',
+#     '.jpg')
+
+#print(f"Best match: {best_match_path}, Similarity: {best_similarity:.4f}")
+
     
 def ConvertArucoSizeToReal(arucoDistance):    
     pulse_value = (arucoDistance / 58) * 32
@@ -2857,3 +2924,4 @@ def ConvertRealToArucoSize(realDistance):
     return (aruco_value)
 CAMERA_DISTANCE_FROM_CENTER = ConvertRealToArucoSize(0.32)
 print(os.path.splitext(os.path.basename(__file__))[0],getDateTime())
+

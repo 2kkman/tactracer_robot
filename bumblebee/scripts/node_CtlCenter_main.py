@@ -69,7 +69,6 @@ if __name__ == "__main__":
     rospy.loginfo(f"{node_name} Started")     
     #runFromLaunch = float(rospy.get_param(f"~{ROS_PARAMS.lidar_gnd_limit.name}", default=0.56))    
     LightWelcome(False)
-
     
     bReturn_ANDROID,strResult_ANDROID=API_call_Android(node_CtlCenter_globals.BLB_ANDROID_IP,BLB_ANDROID_PORT,f'svrip={IP_MASTER}')
     if not bReturn_ANDROID:

@@ -48,9 +48,9 @@ def GetAllMotorPosDic():
     return dictPos
   
 def GetPosServo(mbid:ModbusID):
-  cmd_pos = GetItemsFromModbusTable(mbid,MonitoringField.CMD_POS)
+  #cmd_pos = GetItemsFromModbusTable(mbid,MonitoringField.CMD_POS)
   cur_pos = GetItemsFromModbusTable(mbid,MonitoringField.CUR_POS)
-  return int(cmd_pos),int(cur_pos)
+  return int(cur_pos),int(cur_pos)
 
 def GetTimeFromRPM(mbid : ModbusID,target_pulse_str,rotateRPM):
   target_pulse = try_parse_int(target_pulse_str)
@@ -1017,7 +1017,7 @@ def SetWaitConfirmFlag(flag_bool, reason):
             doorStatus,doorArray = GetDoorStatus()
             if doorStatus != TRAYDOOR_STATUS.CLOSED:
               DoorClose()
-            TTSAndroid('서빙로봇 범블비입니다. 많이 이용해주세요.')
+            #TTSAndroid('서빙로봇 범블비입니다. 많이 이용해주세요.')
             
           else:
             TTSAndroid(f'{table_target_tts}실패')
@@ -1359,7 +1359,7 @@ def GetTablelist(idx=0):
   log_all_frames(idx)
   if len(node_CtlCenter_globals.listTable) > idx:
     return str(node_CtlCenter_globals.listTable[idx])
-  TTSAndroid('테이블 인덱스 에러.')
+  #TTSAndroid('테이블 인덱스 에러.')
   return MIN_INT
 
 def InsertTableList(tableTarget_local,idx=0):
@@ -1371,7 +1371,7 @@ def InsertTableList(tableTarget_local,idx=0):
     else:
       rospy.loginfo(log_all_frames(tableTarget_local))
     #node_CtlCenter_globals.table_target = tableTarget_local
-    table_target_tts = tableTarget_local if try_parse_int(tableTarget_local, MIN_INT) == MIN_INT else f'T{tableTarget_local}'
+    #table_target_tts = tableTarget_local if try_parse_int(tableTarget_local, MIN_INT) == MIN_INT else f'T{tableTarget_local}'
     SetTableTarget(GetTablelist(0))
     
 def AppendTableList(tableTarget_local):

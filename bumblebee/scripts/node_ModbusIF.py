@@ -324,6 +324,10 @@ def callbackCmd(data):
                 #         time.sleep(0.1)
                 #     Setup(sMBID)
                     
+                if sCMDValue == MotorCmdField.WLOC.name:
+                    #print(recvDataMap)
+                    dic_485_lastpos_started[sMBID] = int(recvDataMap[MotorWMOVEParams.POS.name])
+                    
                 if sCMDValue == MotorCmdField.WMOVE.name:
                     dtnow = getDateTime().timestamp()
                     lock.acquire()

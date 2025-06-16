@@ -59,8 +59,8 @@ def RunListBlbMotorsEx(listBLB):
     if len(lsAruco) > 0:
         dicAruco = lsAruco[0]
         #lsDF = GetNewRotateArmList(dicAruco)
-    
-    
+    isOKPos = True if node_CtlCenter_globals.dicLast_POSITION_INFO[MotorWMOVEParams.DIFF_POS.name] < roundPulse else False
+    curNode_Type = node_CtlCenter_globals.dicLast_POSITION_INFO[RFID_RESULT.EPC.name]    
     if isinstance(dicInfo_local, dict):  # 주행모드
         mbid = dicInfo_local.get(MotorWMOVEParams.MBID.name)
         sPOS = dicInfo_local.get(MotorWMOVEParams.POS.name)            
@@ -90,7 +90,10 @@ def RunListBlbMotorsEx(listBLB):
             else:
                 listBLB[:] = lsLiftUp + lsBLBTmp    
             return APIBLB_ACTION_REPLY.E106
-        else:
+        else:        
+            if curNode_Type.find(strNOTAG) >= 0 and (is_equal(DI_POT,0) and not isOKPos) and isRealMachine:
+                return APIBLB_ACTION_REPLY.E112
+
             if sPOS is None:
                 donCare = -1
                 #서버에서 받아온 정보가 있는 경우
@@ -190,14 +193,14 @@ def RunListBlbMotorsEx(listBLB):
                         lsDicRotateDirection = [dicRotateDirection]
                         listBLB.insert(0,lsDicRotateDirection)
                         return APIBLB_ACTION_REPLY.E108
-                TiltFace()
+                
                 endnode_current = dicInfo_local_org.get(SeqMapField.END_NODE.name)
                 pulseTarget= GetNodePos_fromNode_ID(endnode_current)
                 dicInfo_local[MotorWMOVEParams.POS.name] = pulseTarget
                 rospy.loginfo(dicInfo_local)
                 if dicInfo_local_org.get(SeqMapField.END_NODE.name) is not None:
                     node_CtlCenter_globals.lsHistory_motorH.append(dicInfo_local_org)
-                
+                TiltFace()
                 bReturn,strResult=API_MoveH(pulseTarget,SPD_MOVE_H,endnode_current)
                 rospy.loginfo(f'현재펄스:{cur_posH}, 타겟펄스:{pulseTarget}')
                 bReturn,strResult=GetResultMessageFromJsonStr(strResult)
@@ -233,9 +236,6 @@ def RunListBlbMotorsEx(listBLB):
         #종료코드는 IsPOT == 1 이어야 위치결정이 완료된것임. 수정할것
         #현재노드가 NONE 타입 이라면 한번에 멈출 예정.
         #가장 인접한 노드에서 move 명령어를 한번 더 내보낸다.
-        curNode_Type = node_CtlCenter_globals.dicLast_POSITION_INFO[RFID_RESULT.EPC.name]
-        curNode_diPot = node_CtlCenter_globals.dicLast_POSITION_INFO[MonitoringField.DI_POT.name]
-        isOKPos = True if node_CtlCenter_globals.dicLast_POSITION_INFO[MotorWMOVEParams.DIFF_POS.name] < roundPulse else False
         #isOKPos = True
         if curNode_Type.find(strNOTAG) >= 0 and (is_equal(DI_POT,0) and not isOKPos) and isRealMachine:
             #TTSServer('위치를 확인하고 있습니다.')
@@ -423,7 +423,7 @@ def RunListBlbMotorsEx(listBLB):
                     if curNode == NODE_KITCHEN or crop_x1 <= 0 or crop_y1 <= 0:
                         sim_score = 0
                     elif os.path.exists(imgGoldSamplePath):
-                        imgCurPath = getimage_file_from_mjpeg(url='https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)
+                        imgCurPath = getimage_file_from_mjpeg(url=f'https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam',prefix=curTargetTable, save_dir=save_dir_download, timeout=5)
                         pt_x1=252; pt_y1=182; pt_x2=404; pt_y2=249
                         if crop_x1 > 0 and crop_y1 > 0:
                             pt_x1=crop_x1; pt_y1=crop_y1; pt_x2=crop_x1+CROP_WIDTH; pt_y2=crop_y1+CROP_HEIGHT
@@ -439,17 +439,19 @@ def RunListBlbMotorsEx(listBLB):
                         rospy.loginfo(dicScore)
                     else:
                         #sim_score = compare_image_croppedArea(imgCurPath)    
-                        imgCurPath = getimage_file_from_mjpeg(url='https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam', prefix=curTargetTable,save_dir=save_dir_download, timeout=5)                        
+                        imgCurPath = getimage_file_from_mjpeg(url=f'https://{BLB_ANDROID_IP_DEFAULT}:{HTTP_COMMON_PORT}/cam', prefix=curTargetTable,save_dir=save_dir_download, timeout=5)                        
                         sim_score = 0
                     
+                    if df is not None:
+                        df.iloc[-1, df.columns.get_loc('nodetype')] = sim_score
                     lsObstacleInfo = get_obstacle_data(1)
                     #descendable_distance = node_CtlCenter_globals.DefaultGndDistance
                     if len(lsObstacleInfo) > 0:
-                        df = pd.DataFrame(lsObstacleInfo)                    
+                        dfObs = pd.DataFrame(lsObstacleInfo)                    
                         #isObstaclePresent = len(lsObstacleInfo)
                         isLidarDetected=any(
-                                (df['OBSTACLE_DISTANCE'] <= df['GND_DISTANCE']-0.04) &
-                                (df['OBSTACLE_POINTS'] >= 10)
+                                (dfObs['OBSTACLE_DISTANCE'] <= dfObs['GND_DISTANCE']-0.04) &
+                                (dfObs['OBSTACLE_POINTS'] >= 10)
                             )                    
                         rospy.loginfo(json.dumps(lsObstacleInfo, indent=4))
                         bins_points = 0
@@ -557,8 +559,8 @@ def RunListBlbMotorsEx(listBLB):
                                 add_or_update_row(strFileTableNodeEx,dic_newNodeInfo2, sDivTab,TableInfo.TABLE_ID.name)
                                 
                                 #df.to_csv(strFileTableNodeEx, index=False, sep=sDivTab)
-                                df = pd.read_csv(strFileTableNodeEx, dtype={TableInfo.NODE_ID.name: int}, sep=sDivTab)
-                                filtered = df[(df[TableInfo.NODE_ID.name] == curNode) & (df[TableInfo.MARKER_VALUE.name] < 0)]
+                                dfNode = pd.read_csv(strFileTableNodeEx, dtype={TableInfo.NODE_ID.name: int}, sep=sDivTab)
+                                filtered = dfNode[(df[TableInfo.NODE_ID.name] == curNode) & (dfNode[TableInfo.MARKER_VALUE.name] < 0)]
                                 lsDictNotScaned = filtered.to_dict(orient='records')
                                 if len(lsDictNotScaned)>0:
                                     dicNext = lsDictNotScaned[0]

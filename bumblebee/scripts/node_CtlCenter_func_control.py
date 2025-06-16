@@ -569,12 +569,14 @@ def GetLiftUpControl():
         listBLBTmp.append(lsArmControl) #밸런스암 수축
     else:
         dicRotate360 = GetDicRotateMotorTray(0,SPD_360,ACC_360_UP, ACC_DECC_LONG)
+        dicRotate540 = GetDicRotateMotorMain(0)
         lsArmControl = GetStrArmExtendMain(0,0,True)
         lsArmControl.append(dicRotate360)
         lsLiftUp = GetListLiftUp()
         #isHome = GetItemsFromModbusTable(ModbusID.ROTATE_SERVE_360, MonitoringField.DI_HOME)
         listBLBTmp.append(lsLiftUp) #리프트를 먼저 올리고
         listBLBTmp.append(lsArmControl) #밸런스암 수축
+        listBLBTmp.append([dicRotate540]) #몸통회전해서 각 잡고
     return listBLBTmp        
     
 def GetLiftControlScanMode(isUp: bool, serve_distance_mm = 1800, serve_angle = 100, marker_angle = 90, height_pulse = 100000):
@@ -787,8 +789,8 @@ def TiltServFinish(cropProfile = LidarCropProfile.MOTOR_V):
   dicSet = { LIDAR_CROP_PARAMS.range_max_x.name : round(max(lsResult),3)} 
   Tilting(TRAY_TILT_STATUS.TiltMax)
   SetDynamicConfigROS(dicSet)
-  if getCurrentCamMode() != CameraMode.FRONT_LOW.value:
-      SetCameraMode(CameraMode.FRONT_LOW)
+#   if getCurrentCamMode() != CameraMode.FRONT_LOW.value:
+#       SetCameraMode(CameraMode.FRONT_LOW)
 
 #20250427 - 1호기에서는 쓰이지 않음
 def TiltDetectingMonitor(cropProfile = LidarCropProfile.MOTOR_V):
