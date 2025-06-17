@@ -858,6 +858,7 @@ def callbackACK(recvData):
         #현재 노드 추정
         # lsCurNode = find_nearest_pos(dfNodeInfo,stopped_pos,1)
         # dicCurNodeInfo = lsCurNode[0]
+        #2343254o5ut
         dicCurNodeInfo=GetNodeDicFromPos(dfNodeInfo,stopped_pos,isTrue(isPot))        
         #print(lsCurNode)
         curNodeID_fromPulse = dicCurNodeInfo.get(TableInfo.NODE_ID.name)
