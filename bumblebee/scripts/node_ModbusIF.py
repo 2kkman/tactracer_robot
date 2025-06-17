@@ -919,17 +919,17 @@ def pollRead(modbusID,start_addr,len_items):
       start_addr, (int)(len_items), 3
   )
   if len(resultList) == 0:
-      print(f"Empty Read data MBID:{modbusID}-1")
+      print(f"Empty Read data MBID:{modbusID}-00")
   # time.sleep(read_delay * 100)
   for intTmp in resultList:
       bytesTmp = intTmp.to_bytes(2, byteorder="big")
       resultMulti.append(bytesTmp[0])
       resultMulti.append(bytesTmp[1])
-  print_time(f"{modbusID}-2")
+  print_time(f"{modbusID}-1")
   strBMSDataPartByte = bytearray(resultMulti)
   strBMSDataPartBit = ConstBitStream(strBMSDataPartByte)
   readBytes = 0
-  print_time(3.3)
+  print_time(f"{modbusID}-1")
   idxTmp = 0
   for itemName, itemLenStr in dicRecord.items():
       # idxTmp += 1
@@ -961,7 +961,7 @@ def pollRead(modbusID,start_addr,len_items):
           )  
 #   if start_addr == 1029:
 #     print(return485data)
-
+  print_time(f"{modbusID}-3")
   return return485data
 
 stopAllMotors()
@@ -1192,7 +1192,7 @@ while not rospy.is_shutdown():
                                 print(lastAlarmMsg)
                                 SendAlarmHTTP(lastAlarmMsg)
                                 lastAlarmMsg=curAlarmMsg
-                      print_time(2.4)
+                      print_time(f'{modbusID}-4')
 
                       isPot = isTrue(dicModbus.get(MonitoringField.DI_POT.name, None))
                       isNot = isTrue(dicModbus.get(MonitoringField.DI_NOT.name, None))
@@ -1378,6 +1378,7 @@ while not rospy.is_shutdown():
                       #     pass
               # 복수개의 read 지시를 마친 후 타는 루틴
               # print(return485data)
+              print_time(f'{modbusID}-5')
               if len(return485data) > 0:
                   # return485data[f'LASTSEEN_{modbusID}'] = getDateTime().timestamp()
                   return485data[MonitoringField.LASTSEEN.name] = getDateTime().timestamp()
@@ -1472,7 +1473,8 @@ while not rospy.is_shutdown():
                     dic_status[modbusID] = {}
                   dic_status[modbusID].update(return485data)
                   sendbuf = getStr_fromDic(dic_status[modbusID], sDivFieldColon, sDivItemComma)
-                  dic_topics[modbusID].publish(sendbuf)                  
+                  dic_topics[modbusID].publish(sendbuf)
+                  print_time(f'{modbusID}-E')                  
                   int485id = int(modbusID)
                   # motorOpCheck = dic_485ack[int485id]
 
